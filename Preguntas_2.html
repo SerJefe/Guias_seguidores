@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Práctica SER JEFE - Nivel 2: Autocomprensión Estratégica</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@700&family=Bebas+Neue&family=Inter:wght@400;700&family=Raleway:ital,wght@1,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-blue: #003f6b;
+            --brand-gold: #e0c05a;
+            --attention-red: #d7263d;
+            --attention-yellow: #eac500;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .font-montserrat-bold { font-family: 'Montserrat', sans-serif; font-weight: 700; }
+        .font-poppins-bold { font-family: 'Poppins', sans-serif; font-weight: 700; }
+        .font-bebas-neue { font-family: 'Bebas Neue', sans-serif; }
+        .font-inter-regular { font-family: 'Inter', sans-serif; font-weight: 400; }
+        .font-inter-bold { font-family: 'Inter', sans-serif; font-weight: 700; }
+        .font-raleway-bold-italic { font-family: 'Raleway', sans-serif; font-weight: 700; font-style: italic; }
+
+        .bg-brand-blue { background-color: var(--brand-blue); }
+        .text-brand-blue { color: var(--brand-blue); }
+        .border-brand-blue { border-color: var(--brand-blue); }
+
+        .bg-brand-gold { background-color: var(--brand-gold); }
+        .text-brand-gold { color: var(--brand-gold); }
+        .border-brand-gold { border-color: var(--brand-gold); }
+
+        .bg-attention-red { background-color: var(--attention-red); }
+        .text-attention-red { color: var(--attention-red); }
+        
+        .bg-attention-yellow { background-color: var(--attention-yellow); }
+        .text-attention-yellow { color: var(--attention-yellow); }
+
+        .container {
+            max-width: 900px; 
+            margin-left: auto;
+            margin-right: auto;
+            padding: 20px;
+        }
+
+        .guia-header {
+            background-color: var(--brand-blue);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 5px solid var(--brand-gold);
+        }
+        .guia-header h1 {
+            font-size: 2.8rem; 
+            margin-bottom: 0.5rem;
+        }
+        .guia-header p {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2rem;
+            color: var(--brand-gold);
+        }
+
+        .section-nivel {
+            margin-top: 40px;
+            padding: 25px;
+            background-color: #f9fafb; 
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-left: 5px solid var(--brand-blue);
+        }
+
+        .nivel-title {
+            font-size: 2.2rem; 
+            color: var(--brand-blue);
+            margin-bottom: 10px;
+            border-bottom: 2px solid var(--brand-gold);
+            padding-bottom: 5px;
+        }
+
+        .sub-title { 
+            font-size: 1.8rem; 
+            color: var(--brand-blue);
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .sub-title-purpose {
+             font-size: 1.8rem;
+             color: var(--brand-gold); 
+             background-color: var(--brand-blue);
+             padding: 8px 15px;
+             border-radius: 5px;
+             display: inline-block;
+        }
+
+
+        .purpose-text {
+            font-style: italic;
+            color: #555;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #eef2f7; 
+            border-radius: 5px;
+        }
+
+        .question-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        .question-list li {
+            padding: 10px;
+            margin-bottom: 8px;
+            background-color: #fff;
+            border-left: 3px solid var(--brand-gold);
+            border-radius: 4px;
+            box-shadow: 0 2px 3px rgba(0,0,0,0.05);
+        }
+        .question-list li::before {
+            content: "➔";
+            color: var(--brand-blue);
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .evaluation-block {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+        }
+        .evaluation-block h4 { 
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            color: var(--brand-blue);
+            margin-bottom: 8px;
+        }
+        .evaluation-block p {
+            margin-bottom: 5px;
+            color: #454545;
+        }
+        
+        .highlight-attention {
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .highlight-red {
+            background-color: var(--attention-red);
+            color: white;
+        }
+        .highlight-yellow {
+            background-color: var(--attention-yellow);
+            color: var(--brand-blue); 
+            font-weight: bold;
+        }
+
+        .final-callout {
+            margin-top: 40px;
+            padding: 25px;
+            background-color: var(--brand-blue);
+            color: white;
+            border-radius: 8px;
+            text-align: center;
+            border-top: 5px solid var(--brand-gold);
+        }
+        .final-callout h2 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.8rem;
+            color: var(--brand-gold);
+            margin-bottom: 15px;
+        }
+        .final-callout p {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            font-size: 0.9rem;
+            color: #777;
+            border-top: 1px solid #ddd;
+        }
+        .footer strong {
+            color: var(--brand-blue);
+        }
+
+        .cita {
+            display: block;
+            margin: 10px 0;
+            padding: 10px 15px;
+            background-color: #f0f0f0;
+            border-left: 4px solid var(--brand-gold);
+        }
+
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <div class="guia-header">
+        <h1 class="font-montserrat-bold">Guía Práctica SER JEFE - Nivel 2</h1>
+        <p>Una herramienta para SER... siendo el JEFE que tu equipo necesita.</p>
+    </div>
+
+    <div class="container">
+        <div class="intro-text py-6 text-lg">
+            <p class="font-inter-regular mb-4">Hola, esta guía es un recurso vivo diseñado para ustedes. No es un examen, sino una brújula para la auto-observación y el crecimiento continuo en su rol como JEFE. La verdadera maestría en la jefatura se cultiva con la reflexión constante.</p>
+            <p class="font-inter-regular font-bold text-brand-blue">Los invito a tomarse el tiempo, no solo para responder estas preguntas, sino para <strong class="text-attention-red">calendarizar momentos de revisión periódica</strong>. Analicen sus respuestas, observen su evolución y ajusten su rumbo. Este es un ejercicio de <strong class="text-attention-yellow">responsabilidad y compromiso</strong> con su desarrollo y el de sus equipos.</p>
+        </div>
+
+        <section class="section-nivel">
+            <h2 class="font-poppins-bold nivel-title">NIVEL 2: Preguntas Profundas de Autocomprensión Estratégica</h2>
+            
+            <h3 class="font-bebas-neue sub-title-purpose">Propósito de este Nivel:</h3>
+            <p class="purpose-text font-inter-regular">Llevarte a cuestionar tu impacto real, la coherencia de tus acciones, tus patrones de comportamiento y cómo estos configuran el entorno de trabajo para tu equipo.</p>
+
+            <h3 class="font-bebas-neue sub-title">Preguntas Clave:</h3>
+            <ul class="question-list font-inter-regular">
+                <li>¿Cómo estoy manejando la presión y las exigencias del entorno actual? ¿Lo transmito al equipo de forma productiva?</li>
+                <li>¿Estoy creando activamente un espacio seguro donde los miembros del equipo se sientan cómodos para compartir ideas, errores y preocupaciones?</li>
+                <li>¿Estoy ayudando a mis colaboradores a asumir un sentido profundo de responsabilidad por sus tareas y resultados?</li>
+                <li>¿Cómo estoy identificando y ayudando a eliminar obstáculos que impiden el logro de los objetivos del equipo?</li>
+                <li>¿Estoy guiando a mi equipo eficazmente a través de las transiciones y los cambios?</li>
+                <li>¿Estoy reconociendo y valorando activamente las fortalezas únicas de cada persona en el equipo? ¿Cómo las potencio?</li>
+                <li>¿Estoy utilizando el método socrático (preguntas reflexivas) para desafiar supuestos y fomentar el pensamiento crítico, en lugar de solo dar respuestas?</li>
+            </ul>
+
+            <div class="highlight-attention highlight-yellow mt-6">
+                <p class="font-inter-bold">¡Atención! Este nivel requiere una honestidad brutal consigo mismo. No se trata de juzgarse, sino de comprender para mejorar.</p>
+            </div>
+
+            <h3 class="font-bebas-neue sub-title">Evaluación Estratégica:</h3>
+            <div class="evaluation-block">
+                <h4 class="font-inter-bold">Nivel Actual:</h4>
+                <p class="font-inter-regular">¿En qué situaciones o con qué personas tiendo a operar con automatismos o de manera reactiva, en lugar de estratégica?</p>
+            </div>
+            <div class="evaluation-block">
+                <h4 class="font-inter-bold">Nivel Deseado:</h4>
+                <p class="font-inter-regular">¿Qué tipo de entorno quiero diseñar conscientemente como JEFE? Un entorno que fomente la <span class="font-raleway-bold-italic text-brand-blue">innovación, la colaboración y el alto desempeño</span>.</p>
+            </div>
+            <div class="evaluation-block">
+                <h4 class="font-inter-bold">Obstáculos:</h4>
+                <p class="font-inter-regular">¿Qué patrones mentales, creencias limitantes o dinámicas de equipo están impidiendo esta evolución hacia el entorno deseado?</p>
+            </div>
+            <div class="evaluation-block">
+                <h4 class="font-inter-bold">Alternativas y Desaprendizaje:</h4>
+                <p class="font-inter-regular">¿Qué nuevas estrategias o enfoques puedo probar? Crucialmente, ¿qué viejos hábitos o creencias debo <strong class="text-attention-red">desaprender</strong> para avanzar?</p>
+            </div>
+        </section>
+
+        <div class="final-callout">
+            <h2 class="font-poppins-bold">El Camino del JEFE Consciente</h2>
+            <p class="font-inter-regular">Esta guía es un punto de partida. El verdadero trabajo reside en la práctica diaria, en la <strong class="text-brand-gold">auto-observación honesta</strong> y en el <strong class="text-brand-gold">compromiso con la mejora continua</strong>.</p>
+            <p class="font-inter-regular">Recuerden: <strong class="text-white">Solo se puede SER... siendo.</strong> Y ser un gran JEFE es un viaje constante de descubrimiento y adaptación.</p>
+            <p class="font-inter-regular mt-4">¡Adelante! Tienen el poder de transformar su jefatura y, con ello, la experiencia de sus equipos.</p>
+        </div>
+
+    </div> 
+
+    <footer class="footer">
+        <p>&copy; <span id="currentYearN2"></span> Guía desarrollada para <strong>SER JEFE x Sebastián Sánchez</strong> - Nivel 2.</p>
+        <p>Fomentando una jefatura con sentido humano.</p>
+    </footer>
+
+    <script>
+        document.getElementById('currentYearN2').textContent = new Date().getFullYear();
+    </script>
+
+</body>
+</html>
