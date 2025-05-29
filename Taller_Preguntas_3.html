@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plantilla Guía de Trabajo - SER JEFE - Nivel 3</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@700&family=Bebas+Neue&family=Inter:wght@400;700&family=Raleway:ital,wght@1,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-blue: #003f6b;
+            --brand-gold: #e0c05a;
+            --attention-red: #d7263d;
+            --attention-yellow: #eac500;
+            --light-gray: #f9fafb;
+            --medium-gray: #eef2f7;
+            --dark-gray: #333;
+            --text-gray: #555;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--dark-gray);
+            line-height: 1.6;
+            background-color: var(--light-gray);
+        }
+
+        .font-montserrat-bold { font-family: 'Montserrat', sans-serif; font-weight: 700; }
+        .font-poppins-bold { font-family: 'Poppins', sans-serif; font-weight: 700; }
+        .font-bebas-neue { font-family: 'Bebas Neue', sans-serif; }
+        .font-inter-regular { font-family: 'Inter', sans-serif; font-weight: 400; }
+        .font-inter-bold { font-family: 'Inter', sans-serif; font-weight: 700; }
+        .font-raleway-bold-italic { font-family: 'Raleway', sans-serif; font-weight: 700; font-style: italic; }
+
+        .bg-brand-blue { background-color: var(--brand-blue); }
+        .text-brand-blue { color: var(--brand-blue); }
+        .border-brand-blue { border-color: var(--brand-blue); }
+
+        .bg-brand-gold { background-color: var(--brand-gold); }
+        .text-brand-gold { color: var(--brand-gold); }
+        .border-brand-gold { border-color: var(--brand-gold); }
+        .hover\:bg-brand-gold-darker:hover { background-color: #c8ab49; }
+
+
+        .container {
+            max-width: 1200px; 
+            margin-left: auto;
+            margin-right: auto;
+            padding: 20px;
+        }
+
+        .guia-header {
+            background-color: var(--brand-blue);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 5px solid var(--brand-gold);
+        }
+        .guia-header h1 {
+            font-size: 2.8rem; 
+            margin-bottom: 0.5rem;
+        }
+        .guia-header p {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2rem;
+            color: var(--brand-gold);
+        }
+
+        .intro-text {
+            padding: 20px;
+            margin-bottom: 30px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .intro-text p {
+            margin-bottom: 10px;
+        }
+
+        .table-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            overflow-x: auto; 
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background-color: var(--brand-blue);
+            color: var(--brand-gold);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+        td.question-column {
+            font-weight: 600;
+            color: var(--brand-blue);
+            min-width: 250px; 
+        }
+        textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: var(--brand-gold);
+            box-shadow: 0 0 0 2px rgba(224, 192, 90, 0.3);
+        }
+        
+        .nivel-header td {
+            background-color: var(--medium-gray);
+            font-weight: bold;
+            color: var(--brand-blue);
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-align: center;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .btn-gold {
+            background-color: var(--brand-gold);
+            color: var(--brand-blue);
+        }
+        .btn-gold:hover {
+            background-color: #c8ab49; 
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            font-size: 0.9rem;
+            color: #777;
+            border-top: 1px solid #ddd;
+        }
+        .footer strong {
+            color: var(--brand-blue);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="guia-header">
+        <h1 class="font-montserrat-bold">Plantilla: Guía de Trabajo SER JEFE - Nivel 3</h1>
+        <p>Tu espacio para la reflexión y el plan de acción: Transformación y Sentido Existencial.</p>
+    </div>
+
+    <div class="container">
+        <div class="intro-text">
+            <h2 class="font-poppins-bold text-2xl text-brand-blue mb-4">¡Bienvenido a tu Guía de Trabajo Personalizada - Nivel 3!</h2>
+            <p class="font-inter-regular">Este es el <strong>Nivel 3: Transformación y Sentido Existencial</strong>. Estas preguntas te invitan a una reflexión profunda sobre tus motivaciones y el impacto trascendente de tu rol como JEFE.</p>
+            <p class="font-inter-regular"><strong>Instrucciones:</strong></p>
+            <ul class="list-disc list-inside font-inter-regular ml-4 mb-4">
+                <li>Dedica tiempo de calidad para estas preguntas; pueden requerir una introspección mayor.</li>
+                <li>Completa las columnas con tus reflexiones más sinceras.</li>
+                <li>Descarga tus respuestas para continuar este viaje de autoconocimiento.</li>
+            </ul>
+            <p class="font-inter-bold text-brand-blue">Este nivel es fundamental para ejercer una jefatura desde un lugar de <strong class="text-attention-red">autenticidad y propósito profundo</strong>.</p>
+        </div>
+
+        <div class="table-container">
+            <table id="tablaGuiaTrabajoN3">
+                <thead>
+                    <tr>
+                        <th>Pregunta Clave</th>
+                        <th>Mi Reflexión: Nivel Actual</th>
+                        <th>Mi Reflexión: Nivel Deseado</th>
+                        <th>Mi Reflexión: Obstáculos Identificados</th>
+                        <th>Mi Plan de Acción: Alternativas y Prácticas Existenciales</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="nivel-header">
+                        <td colspan="5">NIVEL 3: Transformación y Sentido Existencial</td>
+                    </tr>
+                    <tr>
+                        <td class="question-column">¿Cuáles son los fundamentos reales de mi autoridad como JEFE? ¿Se basan en el cargo, el conocimiento, la conexión o el miedo?</td>
+                        <td><textarea placeholder="Escribe aquí tu reflexión..."></textarea></td>
+                        <td><textarea placeholder="Escribe aquí tu reflexión..."></textarea></td>
+                        <td><textarea placeholder="Escribe aquí tu reflexión..."></textarea></td>
+                        <td><textarea placeholder="Escribe aquí tu plan de acción..."></textarea></td>
+                    </tr>
+                    <tr>
+                        <td class="question-column">¿Reflexiono honestamente sobre por qué acepté ser JEFE en primer lugar? ¿Sigo alineado con esos motivos iniciales o han cambiado?</td>
+                        <td><textarea placeholder="Escribe aquí tu reflexión..."></textarea></td>
+                        <td><textarea placeholder="Escribe aquí tu reflexión..."></textarea></td>
+                        <td><textarea placeholder="Escribe aquí tu reflexión..."></textarea></td>
+                        <td><textarea placeholder="Escribe aquí tu plan de acción..."></textarea></td>
+                    </tr>
+                    <tr>
+                        <td class="question-column">¿Qué creencias fundamentales (sobre el trabajo, las personas, el éxito) están moviendo mi forma de actuar y tomar decisiones como JEFE?</td>
+                        <td><textarea placeholder="Escribe aquí tu reflexión..."></textarea></td>
+                        <td><textarea placeholder="Escribe aquí tu reflexión..."></textarea></td>
+                        <td><textarea placeholder="Escribe aquí tu reflexión..."></textarea></td>
+                        <td><textarea placeholder="Escribe aquí tu plan de acción..."></textarea></td>
+                    </tr>
+                    <tr>
+                        <td class="question-column">¿Estoy cayendo en la trampa de creer que sé lo que es mejor para la vida o carrera de mis colaboradores, sin preguntarles genuinamente?</td>
+                        <td><textarea placeholder="Escribe aquí tu reflexión..."></textarea></td>
+                        <td><textarea placeholder="Escribe aquí tu reflexión..."></textarea></td>
+                        <td><textarea placeholder="Escribe aquí tu reflexión..."></textarea></td>
+                        <td><textarea placeholder="Escribe aquí tu plan de acción..."></textarea></td>
+                    </tr>
+                    <tr>
+                        <td class="question-column">¿Estoy invirtiendo tiempo y energía de forma deliberada en aumentar mi autoconciencia y mi inteligencia emocional?</td>
+                        <td><textarea placeholder="Escribe aquí tu reflexión..."></textarea></td>
+                        <td><textarea placeholder="Escribe aquí tu reflexión..."></textarea></td>
+                        <td><textarea placeholder="Escribe aquí tu reflexión..."></textarea></td>
+                        <td><textarea placeholder="Escribe aquí tu plan de acción..."></textarea></td>
+                    </tr>
+                    <tr>
+                        <td class="question-column">¿Estoy fomentando activamente una cultura donde el feedback (en todas direcciones) sea visto y utilizado como una herramienta de crecimiento, no de castigo?</td>
+                        <td><textarea placeholder="Escribe aquí tu reflexión..."></textarea></td>
+                        <td><textarea placeholder="Escribe aquí tu reflexión..."></textarea></td>
+                        <td><textarea placeholder="Escribe aquí tu reflexión..."></textarea></td>
+                        <td><textarea placeholder="Escribe aquí tu plan de acción..."></textarea></td>
+                    </tr>
+                    <tr>
+                        <td class="question-column">¿Estoy ayudando a mi equipo a navegar la "zona neutra" del cambio (ese espacio de incertidumbre entre lo viejo y lo nuevo) con empatía y claridad?</td>
+                        <td><textarea placeholder="Escribe aquí tu reflexión..."></textarea></td>
+                        <td><textarea placeholder="Escribe aquí tu reflexión..."></textarea></td>
+                        <td><textarea placeholder="Escribe aquí tu reflexión..."></textarea></td>
+                        <td><textarea placeholder="Escribe aquí tu plan de acción..."></textarea></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button id="downloadBtnN3" class="btn btn-gold">Descargar Respuestas Nivel 3 (CSV)</button>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; <span id="currentYearN3"></span> Plantilla Guía de Trabajo (Nivel 3) desarrollada para <strong>SER JEFE x Sebastián Sánchez</strong>.</p>
+        <p>Fomentando una jefatura con sentido humano.</p>
+    </footer>
+
+    <script>
+        document.getElementById('currentYearN3').textContent = new Date().getFullYear();
+
+        function escapeCsvData(data) {
+            if (data === null || data === undefined) {
+                return "";
+            }
+            data = String(data);
+            if (data.search(/("|,|\n)/g) >= 0) {
+                data = '"' + data.replace(/"/g, '""') + '"';
+            }
+            return data;
+        }
+
+        document.getElementById('downloadBtnN3').addEventListener('click', function() {
+            const table = document.getElementById('tablaGuiaTrabajoN3');
+            let csvContent = "data:text/csv;charset=utf-8,";
+
+            const headers = [];
+            table.querySelectorAll('thead th').forEach(header => {
+                headers.push(escapeCsvData(header.textContent));
+            });
+            csvContent += headers.join(",") + "\r\n";
+            
+            const nivelHeaderCell = table.querySelector('tbody tr.nivel-header td');
+            if (nivelHeaderCell) {
+                 csvContent += escapeCsvData(nivelHeaderCell.textContent) + ",,,, \r\n";
+            }
+
+            table.querySelectorAll('tbody tr').forEach(row => {
+                if (row.classList.contains('nivel-header')) {
+                    return; 
+                }
+                const rowData = [];
+                rowData.push(escapeCsvData(row.cells[0].textContent));
+                row.querySelectorAll('textarea').forEach(textarea => {
+                    rowData.push(escapeCsvData(textarea.value));
+                });
+                csvContent += rowData.join(",") + "\r\n";
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "guia_trabajo_ser_jefe_nivel_3.csv");
+            document.body.appendChild(link); 
+            link.click();
+            document.body.removeChild(link);
+        });
+    </script>
+
+</body>
+</html>
