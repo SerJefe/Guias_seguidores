@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SER JEFE: Red Neuronal Evolutiva</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis-network.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis-network.min.css" rel="stylesheet" type="text/css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Lato:wght@300;400;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --brand-blue-dark: #123f62; /* Azul oscuro más profundo para fondos */
+            --brand-blue-medium: #1b5782; /* Azul corporativo principal */
+            --brand-gold: #DBC078;      /* Dorado/Beige elegante */
+            --brand-gold-darker: #c8ab49;
+            --text-light: #f0f0f0;
+            --text-dark: #1a202c; /* Color de texto oscuro para nodos activos resaltados */
+            --inactive-opacity-value: 0.3; /* Valor numérico directo para opacidad */
+            --active-opacity-value: 1.0;   /* Valor numérico directo para opacidad */
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: var(--brand-blue-dark);
+            color: var(--text-light);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .header {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--brand-gold);
+            text-align: center;
+            padding: 15px 0;
+            margin: 0;
+            font-size: 1.8rem; /* Ajustado para móviles */
+            font-weight: 800;
+            background-color: var(--brand-blue-dark);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+        
+        .content-wrapper {
+            display: flex;
+            flex-direction: column; /* Apilado en móvil */
+            flex-grow: 1;
+            overflow: hidden;
+        }
+
+        #mindMapContainer {
+            width: 100%; /* Ancho completo en móvil */
+            height: 60vh; /* Altura ajustada en móvil */
+            background-color: var(--brand-blue-medium);
+            border-bottom: 2px solid var(--brand-gold);
+        }
+
+        #infoPanelContainer {
+            width: 100%; /* Ancho completo en móvil */
+            height: 40vh; /* Altura ajustada en móvil */
+            background-color: var(--brand-blue-dark);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        #infoPanel {
+            padding: 15px;
+            overflow-y: auto;
+            box-sizing: border-box;
+            flex-grow: 1;
+        }
+
+        #infoPanel h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--brand-gold);
+            margin-top: 0;
+            font-size: 1.2rem;
+            border-bottom: 1px solid var(--brand-gold-darker);
+            padding-bottom: 8px;
+            margin-bottom: 10px;
+        }
+
+        #infoPanel p, #infoPanel ul, #infoPanel li {
+            color: var(--text-light);
+            line-height: 1.6;
+            font-size: 0.9rem;
+        }
+        #infoPanel ul {
+            padding-left: 20px;
+            margin-bottom: 10px;
+        }
+        #infoPanel li {
+            margin-bottom: 5px;
+        }
+        #infoPanel strong {
+            color: var(--brand-gold);
+        }
+
+        .vis-network:focus {
+            outline: none;
+        }
+
+        div.vis-tooltip {
+            font-family: 'Lato', sans-serif;
+            background-color: #0d2c40; /* Azul aún más oscuro para tooltip */
+            color: var(--brand-gold);
+            border: 1px solid var(--brand-gold);
+            padding: 10px;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(219, 192, 120, 0.3);
+            max-width: 300px; 
+            white-space: pre-wrap; 
+            font-size: 0.85rem;
+        }
+
+        .evolution-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            background-color: var(--brand-blue-dark);
+            border-top: 1px solid var(--brand-gold-darker);
+        }
+
+        .evolution-controls button {
+            background-color: var(--brand-gold);
+            color: var(--brand-blue-dark);
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 0.8rem;
+        }
+        .evolution-controls button:hover:not(:disabled) {
+            background-color: var(--brand-gold-darker);
+        }
+        .evolution-controls button:disabled {
+            background-color: #555;
+            color: #999;
+            cursor: not-allowed;
+        }
+        #evolutionStageLabel {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--brand-gold);
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+         /* Estilos para Desktop */
+        @media (min-width: 768px) {
+            .header {
+                font-size: 2.2rem;
+                padding: 20px 0;
+            }
+            .content-wrapper {
+                flex-direction: row; /* Lado a lado en desktop */
+            }
+            #mindMapContainer {
+                width: 70%;
+                height: 100%;
+                border-right: 2px solid var(--brand-gold);
+                border-bottom: none;
+            }
+            #infoPanelContainer {
+                width: 30%;
+                height: 100%;
+                border-top: none;
+            }
+            #infoPanel {
+                padding: 20px;
+            }
+            #infoPanel h2 {
+                font-size: 1.5rem;
+            }
+             #infoPanel p, #infoPanel ul, #infoPanel li {
+                font-size: 1rem;
+            }
+            .evolution-controls {
+                 padding: 15px 20px;
+            }
+            .evolution-controls button {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+            #evolutionStageLabel {
+                font-size: 1rem;
+            }
+        }
+
+        /* Scrollbar personalizado */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--brand-blue-dark);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--brand-gold);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--brand-gold-darker);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <i class="fas fa-brain" style="margin-right: 10px;"></i>SER JEFE: Evolución Neuronal
+    </div>
+    
+    <div class="content-wrapper">
+        <div id="mindMapContainer"></div>
+        <div id="infoPanelContainer">
+            <div id="infoPanel">
+                <h2>Información Detallada</h2>
+                <p id="nodeInfoContent">Selecciona un nodo en la red para ver su información y cómo se activa en la evolución.</p>
+            </div>
+            <div class="evolution-controls">
+                <button id="prevStageBtn"><i class="fas fa-chevron-left"></i> Etapa Ant.</button>
+                <span id="evolutionStageLabel">Etapa: 0</span>
+                <button id="nextStageBtn">Sig. Etapa <i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        // --- Helper function to get CSS variable values ---
+        function getCssVar(varName, fallback = '#CCCCCC') {
+            if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+                const value = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+                return value || fallback;
+            }
+            return fallback;
+        }
+
+        // --- DATA DE LA METODOLOGÍA ---
+        const metodologia = {
+            principioRector: "Un JEFE es quien LOGRA QUE OTROS LOGREN.",
+            filosofiaTransversal: "Solo se puede SER... siendo.",
+            fases: [
+                {
+                    id: "f1",
+                    titulo: "FASE 1: ANATOMÍA FUNCIONAL DEL JEFE – LOS CIMIENTOS DEL SER",
+                    enfoque: "Semestral 1",
+                    info: "Esta fase se centra en los componentes internos y las capacidades fundamentales que el JEFE debe cultivar. Es la inmersión inicial en el propio SER para construir una base sólida.",
+                    stageStart: 1, // Etapa en la que esta fase se activa
+                    modulos: [
+                        {
+                            id: "f1m1",
+                            titulo: "MÓDULO 1.1: EL SISTEMA NERVIOSO CENTRAL DEL JEFE",
+                            subtitulo: "PERCEPCIÓN, COGNICIÓN Y COMUNICACIÓN ESTRATÉGICA",
+                            enfoque: "Bimestral 1",
+                            stageStart: 1,
+                            meses: [
+                                {
+                                    id: "f1m1mes1",
+                                    titulo: "MES 1: Conciencia Fenomenológica y Empatía Profunda",
+                                    temaPrincipal: "Comprendiendo el \"Mundo de Vida\" del Colaborador.",
+                                    explicacionBreve: "La jefatura efectiva nace de entender la experiencia única de cada persona. Aprende a suspender tus juicios (epoché) y a conectar con la realidad subjetiva de tu equipo para construir relaciones auténticas y lograr que logren. Solo se es... siendo consciente del otro.",
+                                    stageStart: 1,
+                                    semanas: [
+                                        { id: "f1m1mes1s1", titulo: "Semana 1: ¿Qué es la Fenomenología para un JEFE?", contenido: "Frases sobre la percepción, preguntas reflexivas sobre cómo interpretamos a los demás." },
+                                        { id: "f1m1mes1s2", titulo: "Semana 2: Empatía Profunda vs. Simpatía", contenido: "Diferencias clave (Goleman, Brené Brown), tips para desarrollar empatía cognitiva y emocional." },
+                                        { id: "f1m1mes1s3", titulo: "Semana 3: El Arte de la Escucha Activa Radical", contenido: "Técnicas de escucha, importancia de captar lo verbal, paraverbal y no verbal." },
+                                        { id: "f1m1mes1s4", titulo: "Semana 4: Co-construyendo Significado", contenido: "Ejercicios de parafraseo, cómo asegurar el entendimiento mutuo." }
+                                    ]
+                                },
+                                {
+                                    id: "f1m1mes2",
+                                    titulo: "MES 2: Pensamiento Sistémico: La Visión Periférica del JEFE",
+                                    temaPrincipal: "Comprendiendo la Interconexión y las Dinámicas Complejas.",
+                                    explicacionBreve: "Tu equipo y organización son sistemas vivos. Desarrolla la visión para ver más allá de los eventos aislados, identificar patrones (arquetipos sistémicos) y comprender cómo tus acciones impactan el todo. Un JEFE ve el bosque, no solo los árboles.",
+                                    stageStart: 2,
+                                    semanas: [
+                                        { id: "f1m1mes2s1", titulo: "Semana 5: ¿Qué es el Pensamiento Sistémico?", contenido: "Introducción a la Quinta Disciplina de Senge. Metáforas de sistemas, ejemplos." },
+                                        { id: "f1m1mes2s2", titulo: "Semana 6: Identificando Bucles de Retroalimentación", contenido: "Compensadora y Reforzadora. Casos prácticos." },
+                                        { id: "f1m1mes2s3", titulo: "Semana 7: Arquetipos Sistémicos Comunes en Equipos", contenido: "Límites al crecimiento, Desplazamiento de la carga. Diagnóstico y abordaje." },
+                                        { id: "f1m1mes2s4", titulo: "Semana 8: El JEFE como Diseñador de Sistemas que Aprenden", contenido: "Cómo fomentar una cultura de aprendizaje sistémico." }
+                                    ]
+                                },
+                                {
+                                    id: "f1m1mes3",
+                                    titulo: "MES 3: Comunicación Multidimensional y Resonante",
+                                    temaPrincipal: "El Arte de Transmitir con Claridad e Impacto Total.",
+                                    explicacionBreve: "Tus palabras son solo el 7%. Aprende a alinear tu mensaje verbal, tu tono de voz (paraverbal) y tu lenguaje corporal (no verbal) para construir credibilidad, confianza y asegurar que tu comunicación realmente resuene y movilice.",
+                                    stageStart: 3,
+                                    semanas: [
+                                        { id: "f1m1mes3s1", titulo: "Semana 9: La Tríada de la Comunicación (Mehrabian)", contenido: "Verbal, Paraverbal, No Verbal. Coherencia, lectura de señales." },
+                                        { id: "f1m1mes3s2", titulo: "Semana 10: Feedback Constructivo y Continuo", contenido: "Más allá del SBI. Principios para un feedback que desarrolle." },
+                                        { id: "f1m1mes3s3", titulo: "Semana 11: Gestión Estratégica de la Información", contenido: "Flujo y transparencia. Asegurar información correcta a personas correctas." },
+                                        { id: "f1m1mes3s4", titulo: "Semana 12: Asertividad Empática", contenido: "Comunicando Límites con Respeto. Cómo decir \"no\"." }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            id: "f1m2",
+                            titulo: "MÓDULO 1.2: EL SISTEMA MUSCULOESQUELÉTICO DEL JEFE",
+                            subtitulo: "ESTRUCTURA, DIRECCIÓN Y SOPORTE PARA LA ACCIÓN",
+                            enfoque: "Bimestral 2",
+                            stageStart: 4,
+                            meses: [
+                                {
+                                    id: "f1m2mes4",
+                                    titulo: "MES 4: Arquitectura de Objetivos Claros y Empoderadores",
+                                    temaPrincipal: "Definiendo el \"Qué\" y Otorgando Autonomía en el \"Cómo\".",
+                                    explicacionBreve: "Un JEFE define el destino (objetivos SMART, OKRs), pero confía en la capacidad de su equipo para navegar la ruta. Aprende a co-crear metas que inspiren y a delegar con maestría, fomentando la autonomía y la responsabilidad.",
+                                    stageStart: 4,
+                                    semanas: [
+                                        { id: "f1m2mes4s1", titulo: "Semana 13: El Poder de los Objetivos SMART y OKRs", contenido: "Cómo formular objetivos que realmente funcionen." },
+                                        { id: "f1m2mes4s2", titulo: "Semana 14: Delegación Efectiva: Principios y Prácticas", contenido: "Más allá de asignar tareas, cómo empoderar a través de la delegación." },
+                                        { id: "f1m2mes4s3", titulo: "Semana 15: Evitando la Microgestión: Fomentando la Confianza", contenido: "Señales de microgestión y cómo cultivar un ambiente de autonomía." },
+                                        { id: "f1m2mes4s4", titulo: "Semana 16: Visualización del Fracaso (Huberman) como Herramienta de Planificación", contenido: "Cómo anticipar obstáculos de forma constructiva con tu equipo." }
+                                    ]
+                                },
+                                {
+                                    id: "f1m2mes5",
+                                    titulo: "MES 5: La Integridad como Columna Vertebral del JEFE",
+                                    temaPrincipal: "Cimentando la Confianza y la Coherencia Moral.",
+                                    explicacionBreve: "La integridad no es negociable. Es la coherencia entre tus valores, palabras y acciones. Un JEFE íntegro construye la confianza que es la base de equipos sólidos y resultados sostenibles. (Teoría de Agencia, Seguridad Psicológica).",
+                                    stageStart: 5,
+                                    semanas: [
+                                        { id: "f1m2mes5s1", titulo: "Semana 17: ¿Qué Significa SER un JEFE Íntegro?", contenido: "Definición, importancia, ejemplos." },
+                                        { id: "f1m2mes5s2", titulo: "Semana 18: Transparencia y Justicia en la Toma de Decisiones", contenido: "Cómo comunicar decisiones difíciles, cómo ser equitativo." },
+                                        { id: "f1m2mes5s3", titulo: "Semana 19: Modelando el Comportamiento Ético Esperado", contenido: "El poder del ejemplo, cómo tus acciones definen la norma." },
+                                        { id: "f1m2mes5s4", titulo: "Semana 20: Admitir Errores y Asumir Responsabilidad: La Humildad del JEFE", contenido: "La vulnerabilidad como fortaleza en la jefatura." }
+                                    ]
+                                },
+                                {
+                                    id: "f1m2mes6",
+                                    titulo: "MES 6: Cultivo de la Responsabilidad (Accountability) y la Propiedad",
+                                    temaPrincipal: "El Músculo del Compromiso Individual y Colectivo.",
+                                    explicacionBreve: "La responsabilidad florece donde hay claridad y empoderamiento. Un JEFE cultiva una cultura donde cada miembro se apropia de sus resultados y donde existe una responsabilidad mutua por el éxito del equipo (Katzenbach & Smith, Belbin).",
+                                    stageStart: 6,
+                                    semanas: [
+                                        { id: "f1m2mes6s1", titulo: "Semana 21: Responsabilidad Individual: Claridad de Roles y Expectativas", contenido: "Cómo asegurar que todos sepan qué se espera de ellos." },
+                                        { id: "f1m2mes6s2", titulo: "Semana 22: Fomentando la Responsabilidad Mutua en el Equipo", contenido: "Estrategias para que el equipo se apoye y se haga responsable colectivamente." },
+                                        { id: "f1m2mes6s3", titulo: "Semana 23: El JEFE como Modelo de Rendición de Cuentas", contenido: "Cómo tu propia responsabilidad inspira al equipo." },
+                                        { id: "f1m2mes6s4", titulo: "Semana 24: Retrospectivas de Equipo: Aprendiendo de Éxitos y Fracasos", contenido: "Cómo crear espacios para la reflexión y la mejora continua." }
+                                    ]
+                                }
+                            ]
+                        },
+                         {
+                            id: "f1m3",
+                            titulo: "MÓDULO 1.3: EL SISTEMA CIRCULATORIO DEL JEFE",
+                            subtitulo: "FLUJO DE MOTIVACIÓN, ENERGÍA Y RECONOCIMIENTO",
+                            enfoque: "Bimestral 3",
+                            stageStart: 7,
+                            meses: [
+                                {
+                                    id: "f1m3mes7",
+                                    titulo: "MES 7: Nutrición de la Motivación Intrínseca",
+                                    temaPrincipal: "Satisfaciendo las Necesidades de Autonomía, Competencia y Relación (TAD).",
+                                    explicacionBreve: "La motivación real viene de adentro. Un JEFE es un \"nutricionista\" que crea un entorno donde florecen la autonomía, la sensación de competencia y la conexión genuina.",
+                                    stageStart: 7,
+                                    semanas: [
+                                        { id: "f1m3mes7s1", titulo: "Semana 25: Introducción a la Teoría de la Autodeterminación (Deci & Ryan)", contenido: "Las 3 necesidades psicológicas básicas." },
+                                        { id: "f1m3mes7s2", titulo: "Semana 26: Fomentando la Autonomía en el Trabajo Diario", contenido: "Ofrecer opciones, flexibilidad, evitar el control excesivo." },
+                                        { id: "f1m3mes7s3", titulo: "Semana 27: Desarrollando la Competencia y el Dominio Personal (Senge)", contenido: "Feedback para el desarrollo, oportunidades de aprendizaje, retos estimulantes." },
+                                        { id: "f1m3mes7s4", titulo: "Semana 28: Construyendo Relaciones y Pertenencia en el Equipo", contenido: "Fomentar colaboración, apoyo mutuo, mostrar interés genuino." }
+                                    ]
+                                },
+                                {
+                                    id: "f1m3mes8",
+                                    titulo: "MES 8: El Arte del Reconocimiento y la Valoración Genuina",
+                                    temaPrincipal: "El Oxígeno para el Alto Desempeño.",
+                                    explicacionBreve: "El reconocimiento específico, sincero y oportuno es vital. Un JEFE sabe que valorar el esfuerzo y los logros refuerza comportamientos, eleva la moral y guía al equipo hacia la excelencia.",
+                                    stageStart: 8,
+                                    semanas: [
+                                        { id: "f1m3mes8s1", titulo: "Semana 29: Más Allá del \"Gracias\": Tipos de Reconocimiento Efectivo", contenido: "Reconocimiento público, privado, formal, informal." },
+                                        { id: "f1m3mes8s2", titulo: "Semana 30: Personalizando el Reconocimiento", contenido: "¿Qué Valora Cada Miembro de tu Equipo? La importancia de conocer las preferencias individuales." },
+                                        { id: "f1m3mes8s3", titulo: "Semana 31: Creando una Cultura de Apreciación Multidireccional", contenido: "Entre Pares. Herramientas y prácticas para fomentar el reconocimiento entre compañeros." },
+                                        { id: "f1m3mes8s4", titulo: "Semana 32: Celebrando Progresos y Éxitos", contenido: "El Impacto en la Motivación. Cómo integrar la celebración en la rutina del equipo." }
+                                    ]
+                                },
+                                {
+                                    id: "f1m3mes9",
+                                    titulo: "MES 9: Gestión de la Homeostasis Emocional del Equipo",
+                                    temaPrincipal: "Comprendiendo y Validando el Espectro Emocional.",
+                                    explicacionBreve: "Las emociones son parte del juego. Un JEFE con inteligencia emocional (Goleman) y alfabetización emocional (Brené Brown) crea seguridad psicológica para que el equipo navegue el estrés y la vulnerabilidad, fortaleciendo la resiliencia.",
+                                    stageStart: 9,
+                                    semanas: [
+                                        { id: "f1m3mes9s1", titulo: "Semana 33: Inteligencia Emocional para JEFES: Las 4 Claves", contenido: "Autoconciencia, autogestión, conciencia social, gestión de relaciones." },
+                                        { id: "f1m3mes9s2", titulo: "Semana 34: Alfabetización Emocional: Nombrando para Comprender", contenido: "Ampliando el vocabulario emocional, reconociendo la gama de emociones." },
+                                        { id: "f1m3mes9s3", titulo: "Semana 35: Creando Seguridad Psicológica: El Fundamento de la Vulnerabilidad", contenido: "Cómo hacer que tu equipo se sienta seguro para ser auténtico y tomar riesgos." },
+                                        { id: "f1m3mes9s4", titulo: "Semana 36: El JEFE como Regulador Emocional: Modelando y Validando", contenido: "Gestionar tus propias emociones y ayudar al equipo a procesar las suyas." }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: "f2",
+                    titulo: "FASE 2: FISIOLOGÍA DE LA JEFATURA – PROCESOS DINÁMICOS PARA EL LOGRO SOSTENIDO",
+                    enfoque: "Semestral 2",
+                    info: "Esta fase se enfoca en los procesos dinámicos y adaptativos que el JEFE implementa en su interacción con el equipo y el entorno.",
+                    stageStart: 10, 
+                    modulos: [
+                        {
+                            id: "f2m1",
+                            titulo: "MÓDULO 2.1: EL SISTEMA INMUNOLÓGICO DEL JEFE",
+                            subtitulo: "ADAPTACIÓN, RESILIENCIA Y RESOLUCIÓN CONSTRUCTIVA",
+                            enfoque: "Bimestral 4",
+                            stageStart: 10,
+                            meses: [
+                                {
+                                    id: "f2m1mes10",
+                                    titulo: "MES 10: Orquestación de la Transición y el Cambio (William Bridges)",
+                                    temaPrincipal: "Guiando a Través de la Incertidumbre Hacia Nuevos Comienzos.",
+                                    explicacionBreve: "El cambio es un evento, la transición es el viaje interior. Un JEFE acompaña a su equipo por las etapas de finalización, zona neutral y nuevos comienzos, transformando la incertidumbre en oportunidad.",
+                                    stageStart: 10,
+                                    semanas: [
+                                        { id: "f2m1mes10s1", titulo: "Semana 37: Entendiendo el Modelo de Transición de Bridges", contenido: "Las 3 fases y sus características." },
+                                        { id: "f2m1mes10s2", titulo: "Semana 38: Facilitando las \"Finalizaciones\": El Arte de Dejar Ir", contenido: "Cómo ayudar al equipo a procesar lo que termina." },
+                                        { id: "f2m1mes10s3", titulo: "Semana 39: Navegando la \"Zona Neutral\": Productividad en la Incertidumbre", contenido: "Estrategias para mantener la moral y el enfoque durante la ambigüedad." },
+                                        { id: "f2m1mes10s4", titulo: "Semana 40: Consolidando \"Nuevos Comienzos\": Abrazando el Futuro", contenido: "Cómo reforzar la nueva realidad y celebrar los avances." }
+                                    ]
+                                },
+                                {
+                                    id: "f2m1mes11",
+                                    titulo: "MES 11: El Diálogo Socrático como Herramienta de Descubrimiento",
+                                    temaPrincipal: "Facilitando la Auto-Solución y el Pensamiento Crítico.",
+                                    explicacionBreve: "Un JEFE sabio no da respuestas, hace preguntas poderosas. El método socrático (mayéutica, elenchus) guía a los colaboradores a descubrir sus propias soluciones, fomentando la autonomía y el aprendizaje profundo.",
+                                    stageStart: 11,
+                                    semanas: [
+                                        { id: "f2m1mes11s1", titulo: "Semana 41: El Poder de las Preguntas: Introducción al Método Socrático", contenido: "¿Por qué preguntar en lugar de decir?" },
+                                        { id: "f2m1mes11s2", titulo: "Semana 42: Técnicas de Preguntas Abiertas y Exploratorias", contenido: "Ejemplos de preguntas para diferentes situaciones (resolución de problemas, coaching)." },
+                                        { id: "f2m1mes11s3", titulo: "Semana 43: Desafiando Supuestos y Fomentando la Reflexión Crítica", contenido: "Cómo usar el \"elenchus\" de manera constructiva." },
+                                        { id: "f2m1mes11s4", titulo: "Semana 44: El JEFE como \"Partero\" de Ideas: La Mayéutica en Acción", contenido: "Casos prácticos de facilitación del descubrimiento." }
+                                    ]
+                                },
+                                {
+                                    id: "f2m1mes12",
+                                    titulo: "MES 12: Construcción de Consenso y Sinergia Colaborativa",
+                                    temaPrincipal: "Potenciando la Inteligencia Colectiva del Equipo.",
+                                    explicacionBreve: "Las mejores decisiones suelen ser co-creadas. Un JEFE facilita procesos para que el equipo llegue a acuerdos que todos puedan apoyar, transformando la diversidad de opiniones en una fuerza sinérgica. (Proyecto Aristóteles).",
+                                    stageStart: 12,
+                                    semanas: [
+                                        { id: "f2m1mes12s1", titulo: "Semana 45: ¿Qué es el Consenso y Por Qué es Importante?", contenido: "Diferencia entre consenso, unanimidad y voto mayoritario." },
+                                        { id: "f2m1mes12s2", titulo: "Semana 46: Técnicas para Facilitar la Generación de Ideas (Brainstorming, NGT)", contenido: "Herramientas prácticas para la discusión grupal." },
+                                        { id: "f2m1mes12s3", titulo: "Semana 47: Asegurando la Inclusión de Todas las Voces", contenido: "Cómo gestionar dinámicas de grupo para una participación equitativa." },
+                                        { id: "f2m1mes12s4", titulo: "Semana 48: De la Discusión al Compromiso: Cerrando Acuerdos", contenido: "Métodos para probar el consenso y asegurar la alineación." }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            id: "f2m2",
+                            titulo: "MÓDULO 2.2: EL SISTEMA DE CRECIMIENTO Y DESARROLLO DEL JEFE",
+                            subtitulo: "APRENDIZAJE CONTINUO Y EVOLUCIÓN",
+                            enfoque: "Bimestral 5",
+                            stageStart: 13,
+                             meses: [
+                                {
+                                    id: "f2m2mes13",
+                                    titulo: "MES 13 (AÑO 2): El JEFE como Arquitecto de Entornos de Aprendizaje",
+                                    temaPrincipal: "Cultivando la Capacidad de \"Aprender a Aprender\" (Andragogía, Senge).",
+                                    explicacionBreve: "El aprendizaje es la clave de la adaptación. Un JEFE diseña experiencias y un entorno donde los adultos (Knowles) y el equipo (Senge) desarrollan continuamente su maestría y capacidad de respuesta.",
+                                    stageStart: 13,
+                                    semanas: [
+                                        { id: "f2m2mes13s1", titulo: "Semana 49: Principios de Andragogía: Cómo Aprenden los Adultos", contenido: "Aplicando los 5 principios de Knowles en la jefatura." },
+                                        { id: "f2m2mes13s2", titulo: "Semana 50: Fomentando el Dominio Personal en Cada Colaborador", contenido: "Cómo apoyar la búsqueda individual de maestría." },
+                                        { id: "f2m2mes13s3", titulo: "Semana 51: El Aprendizaje en Equipo: Diálogo y Reflexión Colectiva", contenido: "Herramientas para que el equipo aprenda de su propia experiencia." },
+                                        { id: "f2m2mes13s4", titulo: "Semana 52: Creando una Cultura de Aprendizaje Continuo y Seguridad Psicológica", contenido: "Cómo hacer del aprendizaje una norma y del error una oportunidad." }
+                                    ]
+                                },
+                                {
+                                    id: "f2m2mes14",
+                                    titulo: "MES 14 (AÑO 2): Liderazgo Situacional y Adaptativo (Hersey-Blanchard)",
+                                    temaPrincipal: "Flexibilidad en la Intervención Según la Madurez del Colaborador.",
+                                    explicacionBreve: "No hay un único estilo de JEFE que funcione para todos, todo el tiempo. Aprende a diagnosticar el nivel de desarrollo (competencia y compromiso) de tus colaboradores y adapta tu estilo (dirigir, persuadir, participar, delegar) para maximizar su potencial.",
+                                    stageStart: 14,
+                                    semanas: [
+                                        { id: "f2m2mes14s1", titulo: "Semana 53: Introducción al Modelo de Liderazgo Situacional®", contenido: "Los 4 niveles de desarrollo y los 4 estilos de liderazgo." },
+                                        { id: "f2m2mes14s2", titulo: "Semana 54: Diagnosticando la Madurez del Colaborador para la Tarea", contenido: "Herramientas y preguntas para evaluar competencia y compromiso." },
+                                        { id: "f2m2mes14s3", titulo: "Semana 55: Aplicando los Estilos S1 (Dirigir) y S2 (Persuadir/Coaching)", contenido: "Cuándo y cómo usar estos estilos de mayor dirección." },
+                                        { id: "f2m2mes14s4", titulo: "Semana 56: Aplicando los Estilos S3 (Participar) y S4 (Delegar)", contenido: "Cuándo y cómo usar estos estilos de mayor empoderamiento." }
+                                    ]
+                                },
+                                {
+                                    id: "f2m2mes15",
+                                    titulo: "MES 15 (AÑO 2): Identificación y Mitigación de Factores Desmotivantes (Herzberg)",
+                                    temaPrincipal: "Manteniendo un Ecosistema Saludable para el Logro.",
+                                    explicacionBreve: "Tan importante como motivar es eliminar lo que desmotiva. Un JEFE actúa como guardián de la salud del equipo, asegurando los factores de higiene y potenciando los motivadores (Herzberg) para un rendimiento óptimo.",
+                                    stageStart: 15,
+                                    semanas: [
+                                        { id: "f2m2mes15s1", titulo: "Semana 57: La Teoría de los Dos Factores de Herzberg", contenido: "Factores de higiene vs. factores motivacionales." },
+                                        { id: "f2m2mes15s2", titulo: "Semana 58: Identificando Desmotivadores Comunes en el Entorno Laboral", contenido: "Falta de crecimiento, comunicación deficiente, microgestión, etc." },
+                                        { id: "f2m2mes15s3", titulo: "Semana 59: Estrategias para Asegurar los Factores de Higiene", contenido: "Rol del JEFE en garantizar condiciones justas y adecuadas." },
+                                        { id: "f2m2mes15s4", titulo: "Semana 60: Potenciando los Factores Motivacionales para un Compromiso Duradero", contenido: "Diseño de trabajo enriquecido, reconocimiento, responsabilidad." }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: "f3",
+                    titulo: "FASE 3: LA JEFATURA EVOLUTIVA – HACIA LA MAESTRÍA Y EL LEGADO",
+                    enfoque: "Años 2 a 10+",
+                    info: "Esta fase se enfoca en la profundización, la especialización y la contribución a la evolución del concepto de JEFATURA.",
+                    stageStart: 16,
+                    modulos: [ 
+                        {
+                            id: "f3m1",
+                            titulo: "AÑOS 2-5: CICLOS DE MEJORA CONTINUA Y ESPECIALIZACIÓN",
+                            subtitulo: "",
+                            enfoque: "Anual/Semestral",
+                            stageStart: 16,
+                            meses: [ 
+                                { id: "f3m1t1", titulo: "El JEFE como Mentor y Desarrollador de Talento", stageStart: 16, explicacionBreve: "Desarrollar una maestría en el acompañamiento y crecimiento del talento individual." },
+                                { id: "f3m1t2", titulo: "Jefatura Ágil y Gestión de la Innovación", stageStart: 17, explicacionBreve: "Liderar en entornos cambiantes, fomentando la agilidad y la innovación en el equipo." },
+                                { id: "f3m1t3", titulo: "Inteligencia Cultural: Liderando Equipos Diversos", stageStart: 18, explicacionBreve: "Gestionar y potenciar la diversidad cultural para un mayor rendimiento y creatividad." },
+                                { id: "f3m1t4", titulo: "NeuroLiderazgo Avanzado", stageStart: 19, explicacionBreve: "Aplicaciones prácticas profundas de la neurociencia para optimizar la jefatura." },
+                                { id: "f3m1t5", titulo: "El JEFE y la Sostenibilidad del Bienestar del Equipo", stageStart: 20, explicacionBreve: "Crear estrategias a largo plazo para el bienestar físico y mental del equipo." }
+                            ]
+                        },
+                        {
+                            id: "f3m2",
+                            titulo: "AÑOS 6-10: CONSOLIDACIÓN Y EXPANSIÓN – LA UNIVERSIDAD DE LA JEFATURA",
+                            subtitulo: "",
+                            enfoque: "Multianual",
+                            stageStart: 21,
+                            meses: [ 
+                                { id: "f3m2t1", titulo: "Investigación y Evolución del Modelo SER JEFE", stageStart: 21, explicacionBreve: "Contribuir activamente a la mejora y adaptación continua de la metodología." },
+                                { id: "f3m2t2", titulo: "Formación de Formadores en la Metodología Inmersiva", stageStart: 22, explicacionBreve: "Capacitar a otros para diseminar los principios de SER JEFE." },
+                                { id: "f3m2t3", titulo: "Creación de Comunidades de Práctica Globales", stageStart: 23, explicacionBreve: "Conectar JEFES a nivel mundial para compartir y aprender." },
+                                { id: "f3m2t4", titulo: "Desarrollo de Estándares de Excelencia en la Jefatura", stageStart: 24, explicacionBreve: "Establecer benchmarks y guías para la jefatura con sentido." },
+                                { id: "f3m2t5", titulo: "El Legado del JEFE: Contribuyendo a un Mundo Laboral Más Humano", stageStart: 25, explicacionBreve: "Dejar una huella positiva y transformadora en el ámbito laboral." }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        };
+
+        const MAX_STAGES = 25; 
+        let currentEvolutionStage = 0;
+
+        // --- VIS.JS SETUP ---
+        const container = document.getElementById('mindMapContainer');
+        const nodes = new vis.DataSet([]);
+        const edges = new vis.DataSet([]);
+        const data = { nodes: nodes, edges: edges };
+        
+        // --- Resolved Colors for Vis.js Options ---
+        const brandGold = getCssVar('--brand-gold', '#DBC078');
+        const brandGoldDarker = getCssVar('--brand-gold-darker', '#c8ab49');
+        const brandBlueDark = getCssVar('--brand-blue-dark', '#123f62');
+        const textLight = getCssVar('--text-light', '#f0f0f0');
+        
+        const options = {
+            autoResize: true,
+            height: '100%',
+            width: '100%',
+            layout: {
+                hierarchical: false,
+            },
+            interaction: {
+                hover: true,
+                tooltipDelay: 200,
+                navigationButtons: false, 
+                keyboard: true,
+                dragNodes: true,
+                dragView: true,
+                zoomView: true
+            },
+            physics: {
+                enabled: true,
+                barnesHut: {
+                    gravitationalConstant: -30000, 
+                    centralGravity: 0.1,         
+                    springLength: 120,            
+                    springConstant: 0.03,         
+                    damping: 0.1,                
+                    avoidOverlap: 0.3             
+                },
+                solver: 'barnesHut',
+                stabilization: {
+                    iterations: 1000, 
+                    fit: true,
+                    updateInterval: 25,
+                    onlyDynamicEdges: false
+                },
+                adaptiveTimestep: true
+            },
+            nodes: {
+                borderWidth: 1.5,
+                borderWidthSelected: 3,
+                font: { // Default font settings for nodes
+                    color: textLight,
+                    size: 11, 
+                    face: 'Lato',
+                    multi: 'html',
+                    align: 'center',
+                    strokeWidth: 0.2,
+                    strokeColor: brandBlueDark
+                },
+                shapeProperties: {
+                    interpolation: false 
+                },
+                shadow: {
+                    enabled: true,
+                    color: 'rgba(0,0,0,0.3)',
+                    size: 6,
+                    x: 3,
+                    y: 3
+                }
+            },
+            edges: {
+                width: 1,
+                color: {
+                    color: 'rgba(219, 192, 120, 0.4)', 
+                    highlight: brandGold,
+                    hover: brandGoldDarker,
+                    inherit: false
+                },
+                arrows: {
+                    to: { enabled: true, scaleFactor: 0.5, type: 'arrow' }
+                },
+                smooth: {
+                    enabled: true,
+                    type: "continuous"
+                }
+            },
+            groups: { // Define styles for each group using resolved colors
+                root: {
+                    color: { background: brandGold, border: brandGoldDarker, highlight: { background: brandGoldDarker, border: brandGold } },
+                    font: { color: brandBlueDark, size: 18, face: 'Montserrat', weight: 'bold' },
+                    shape: 'ellipse',
+                    size: 60,
+                    mass: 5
+                },
+                fase: {
+                    color: { background: '#2a7cb3', border: brandGold, highlight: { background: '#3a8fba', border: brandGoldDarker } },
+                    font: { color: textLight, size: 15, face: 'Montserrat', weight: 'bold' },
+                    shape: 'hexagon',
+                    size: 45,
+                    mass: 4
+                },
+                modulo: {
+                    color: { background: '#3a8fba', border: brandGold, highlight: { background: '#4a9fcb', border: brandGoldDarker } },
+                    font: { color: textLight, size: 13, face: 'Montserrat' },
+                    shape: 'box',
+                    margin: 10,
+                    size: 35,
+                    mass: 3
+                },
+                mes: {
+                    color: { background: '#5a9fcb', border: brandGold, highlight: { background: '#6aaedc', border: brandGoldDarker } },
+                    font: { color: textLight, size: 12 },
+                    shape: 'ellipse',
+                    size: 25,
+                    mass: 2
+                },
+                semana: {
+                    color: { background: 'rgba(90, 159, 203, 0.7)', border: brandGold, highlight: { background: 'rgba(106, 174, 220, 0.9)', border: brandGoldDarker } },
+                    font: { color: textLight, size: 10 },
+                    shape: 'dot',
+                    size: 15,
+                    mass: 1
+                }
+            }
+        };
+
+        const network = new vis.Network(container, data, options);
+        const infoPanelTitle = document.querySelector('#infoPanel h2');
+        const infoPanelContent = document.getElementById('nodeInfoContent');
+        const evolutionStageLabel = document.getElementById('evolutionStageLabel');
+        const prevStageBtn = document.getElementById('prevStageBtn');
+        const nextStageBtn = document.getElementById('nextStageBtn');
+
+        // --- FUNCIÓN PARA POBLAR LA RED ---
+        function populateNetwork() {
+            const tempNodes = [];
+            const tempEdges = [];
+            const nodeInfoStore = {};
+
+            const rootId = 'root';
+            tempNodes.push({ 
+                id: rootId, 
+                label: '<b>SER JEFE</b>\nMetodología', 
+                group: 'root', 
+                level: 0,
+                title: metodologia.principioRector + "\n" + metodologia.filosofiaTransversal, // Tooltip
+                data: { tipo: 'raiz', ...metodologia, baseSize: 60 } // Store original data and baseSize
+            });
+            nodeInfoStore[rootId] = {
+                title: "METODOLOGÍA INMERSIVA: EL CAMINO PARA SER JEFE",
+                content: `<p><strong>Principio Rector:</strong> ${metodologia.principioRector}</p>
+                          <p><strong>Filosofía Transversal:</strong> ${metodologia.filosofiaTransversal}</p>
+                          <p class="mt-2"><em>Selecciona una etapa de evolución para explorar la metodología.</em></p>`
+            };
+            
+            metodologia.fases.forEach((fase) => {
+                const faseBaseSize = 45;
+                tempNodes.push({ 
+                    id: fase.id, 
+                    label: fase.titulo.split('–')[0].trim(), 
+                    group: 'fase', 
+                    level: 1,
+                    title: fase.titulo + "\n" + fase.enfoque,
+                    data: { tipo: 'fase', ...fase, baseSize: faseBaseSize }
+                });
+                tempEdges.push({ from: rootId, to: fase.id, length: 200 });
+                nodeInfoStore[fase.id] = { title: fase.titulo, content: `<p><strong>Enfoque:</strong> ${fase.enfoque}</p><p>${fase.info}</p>` };
+
+                fase.modulos.forEach((modulo) => {
+                    const moduloBaseSize = 35;
+                    tempNodes.push({ 
+                        id: modulo.id, 
+                        label: modulo.titulo.split(':')[0].trim(), 
+                        group: 'modulo', 
+                        level: 2,
+                        title: modulo.titulo + "\n" + modulo.subtitulo + "\n" + modulo.enfoque,
+                        data: { tipo: 'modulo', ...modulo, baseSize: moduloBaseSize }
+                    });
+                    tempEdges.push({ from: fase.id, to: modulo.id, length: 180 });
+                    nodeInfoStore[modulo.id] = { title: modulo.titulo, content: `<p><strong>Subtítulo:</strong> ${modulo.subtitulo}</p><p><strong>Enfoque:</strong> ${modulo.enfoque}</p>` };
+
+                    modulo.meses.forEach((mes) => {
+                        const mesBaseSize = 25;
+                        tempNodes.push({ 
+                            id: mes.id, 
+                            label: mes.titulo.split(':')[0].trim(), 
+                            group: 'mes', 
+                            level: 3,
+                            title: mes.titulo,
+                            data: { tipo: 'mes', ...mes, baseSize: mesBaseSize }
+                        });
+                        tempEdges.push({ from: modulo.id, to: mes.id, length: 150 });
+                        let mesContent = `<p><strong>Tema Principal:</strong> ${mes.temaPrincipal || ''}</p>
+                                          <p>${mes.explicacionBreve}</p>`;
+                        if (mes.semanas) {
+                            mesContent += `<h3 class="text-sm font-bold mt-3 mb-1 text-[var(--brand-gold)]">Contenido Semanal Sugerido:</h3><ul>`;
+                            mes.semanas.forEach(semana => {
+                                mesContent += `<li><strong>${semana.titulo.split(':')[1] ? semana.titulo.split(':')[1].trim() : semana.titulo }:</strong> ${semana.contenido}</li>`;
+                            });
+                            mesContent += `</ul>`;
+                        }
+                        nodeInfoStore[mes.id] = { title: mes.titulo, content: mesContent };
+
+                        if (mes.semanas) {
+                            mes.semanas.forEach((semana) => {
+                                const semanaBaseSize = 15;
+                                const semanaLabel = semana.titulo.substring(0, semana.titulo.indexOf(':') !== -1 ? semana.titulo.indexOf(':') : 15) + (semana.titulo.length > 15 ? '...' : '');
+                                tempNodes.push({ 
+                                    id: semana.id, 
+                                    label: semanaLabel, 
+                                    group: 'semana', 
+                                    level: 4,
+                                    title: semana.titulo,
+                                    data: { tipo: 'semana', ...semana, baseSize: semanaBaseSize }
+                                });
+                                tempEdges.push({ from: mes.id, to: semana.id, length: 100 });
+                                nodeInfoStore[semana.id] = { title: semana.titulo, content: `<p>${semana.contenido}</p>` };
+                            });
+                        }
+                    });
+                });
+            });
+            
+            nodes.add(tempNodes);
+            edges.add(tempEdges);
+            window.nodeInfoStore = nodeInfoStore; 
+            console.log("Nodes added to DataSet:", nodes.get({ returnType: "Array" }));
+        }
+
+        // --- LÓGICA DE EVOLUCIÓN ---
+        function updateNodeAppearance(stage) {
+            const updatedNodes = [];
+            const activeHighlightBg = getCssVar('--brand-gold');
+            const activeHighlightBorder = getCssVar('--brand-blue-dark');
+            const activeHighlightFontColor = getCssVar('--text-dark'); // Using text-dark for active highlighted nodes
+
+            nodes.get({ returnType: "Array" }).forEach(node => {
+                const nodeData = node.data;
+                const baseSize = nodeData.baseSize || options.groups[node.group]?.size || 15;
+
+                let isNodeActivatedInThisStage = (nodeData && nodeData.stageStart === stage);
+                let isNodeGenerallyActive = (nodeData && nodeData.stageStart !== undefined && nodeData.stageStart <= stage) || node.id === 'root';
+
+                const updatePayload = {
+                    id: node.id,
+                    opacity: isNodeGenerallyActive ? parseFloat(getCssVar('--active-opacity-value')) : parseFloat(getCssVar('--inactive-opacity-value')),
+                    hidden: false,
+                    size: isNodeActivatedInThisStage ? baseSize * 1.2 : baseSize,
+                    font: { 
+                        ...(options.groups[node.group]?.font || options.nodes.font), // Start with group/default font
+                        weight: isNodeActivatedInThisStage ? 'bold' : (options.groups[node.group]?.font?.weight || 'normal'),
+                    },
+                };
+
+                if (isNodeActivatedInThisStage) {
+                    updatePayload.color = { 
+                        background: activeHighlightBg, 
+                        border: activeHighlightBorder,
+                        highlight: { background: activeHighlightBg, border: activeHighlightBorder }, // Keep highlight same as active
+                        hover: { background: activeHighlightBg, border: activeHighlightBorder } // Keep hover same as active
+                    };
+                    updatePayload.font.color = activeHighlightFontColor;
+                } else {
+                    // For other nodes, rely on group colors defined in options.
+                    // No need to set updatePayload.color, Vis.js will use group color.
+                    // Font color will also come from group or default node font color.
+                     updatePayload.font.color = options.groups[node.group]?.font?.color || options.nodes.font.color;
+                }
+                updatedNodes.push(updatePayload);
+            });
+            nodes.update(updatedNodes);
+            console.log(`Nodes updated for stage ${stage}. Count: ${updatedNodes.length}`);
+        }
+        
+        function updateEvolutionStage(newStage) {
+            currentEvolutionStage = Math.max(0, Math.min(newStage, MAX_STAGES));
+            evolutionStageLabel.textContent = `Etapa: ${currentEvolutionStage}`;
+            prevStageBtn.disabled = currentEvolutionStage === 0;
+            nextStageBtn.disabled = currentEvolutionStage === MAX_STAGES;
+            updateNodeAppearance(currentEvolutionStage);
+
+            let focusNodeId = 'root';
+            if (currentEvolutionStage > 0) {
+                 const activeElement = findActiveElementForStage(currentEvolutionStage);
+                 if (activeElement) {
+                    focusNodeId = activeElement.id;
+                 }
+            }
+            if (nodes.get(focusNodeId)) {
+                 network.focus(focusNodeId, { 
+                     scale: network.getScale() > 0.4 ? network.getScale() : 0.4, // Adjusted min scale
+                     animation: true 
+                 });
+            }
+        }
+
+        function findActiveElementForStage(stage) {
+            // Helper to find the most specific active element for focusing
+            for (const fase of metodologia.fases) {
+                if (fase.stageStart === stage) return fase;
+                for (const modulo of fase.modulos) {
+                    if (modulo.stageStart === stage) return modulo;
+                    for (const mes of modulo.meses) {
+                        if (mes.stageStart === stage) return mes;
+                        if (mes.semanas) {
+                             for (const semana of mes.semanas) {
+                                 if (semana.stageStart === stage) return semana; // Though semanas don't have stageStart in current data
+                             }
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+
+        prevStageBtn.addEventListener('click', () => updateEvolutionStage(currentEvolutionStage - 1));
+        nextStageBtn.addEventListener('click', () => updateEvolutionStage(currentEvolutionStage + 1));
+
+        // --- EVENTOS DE LA RED ---
+        network.on("click", function (params) {
+            const nodeId = params.nodes[0];
+            if (nodeId && window.nodeInfoStore[nodeId]) {
+                const nodeInfo = window.nodeInfoStore[nodeId];
+                infoPanelTitle.textContent = nodeInfo.title;
+                infoPanelContent.innerHTML = nodeInfo.content;
+            } else {
+                infoPanelTitle.textContent = "Información Detallada";
+                infoPanelContent.innerHTML = "<p>Selecciona un nodo en la red para ver su información y cómo se activa en la evolución.</p>";
+            }
+        });
+        
+        network.once('stabilized', function () {
+           if (container.offsetWidth > 0 && container.offsetHeight > 0) {
+             network.fit({ animation: { duration: 700, easingFunction: 'easeInOutQuad' } });
+           }
+        });
+        
+        let resizeTimer;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function() {
+                if (network && container.offsetWidth > 0 && container.offsetHeight > 0) {
+                    network.redraw();
+                    network.fit({ animation: { duration: 500, easingFunction: 'easeInOutQuad' } });
+                }
+            }, 250);
+        });
+
+        // --- INICIALIZACIÓN ---
+        populateNetwork();
+        updateEvolutionStage(0); 
+
+    </script>
+</body>
+</html>
