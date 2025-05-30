@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma SER JEFE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Montserrat:wght@700&family=Poppins:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-blue: #003f6b;
+            --brand-gold: #e0c05a;
+            --brand-gold-darker: #c8ab49;
+            --brand-blue-darker: #003355;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .font-montserrat-bold { font-family: 'Montserrat', sans-serif; font-weight: 700; }
+        .font-poppins-bold { font-family: 'Poppins', sans-serif; font-weight: 700; }
+
+        .level-content {
+            display: none;
+        }
+        .level-content.active {
+            display: block;
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #4a5568; /* slate-600 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--brand-gold);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--brand-gold-darker);
+        }
+        .content-card {
+            max-height: 70vh; 
+            overflow-y: auto;
+            background-color: #1e293b; /* slate-800, slightly darker than body for card */
+            border-left: 5px solid var(--brand-gold);
+        }
+        .btn-brand-blue {
+            background-color: var(--brand-blue);
+            color: white;
+        }
+        .btn-brand-blue:hover {
+            background-color: var(--brand-blue-darker);
+        }
+        .btn-brand-gold {
+            background-color: var(--brand-gold);
+            color: var(--brand-blue);
+        }
+        .btn-brand-gold:hover {
+            background-color: var(--brand-gold-darker);
+        }
+    </style>
+</head>
+<body class="bg-[#0f172a] text-gray-200 min-h-screen flex flex-col items-center justify-center p-4 sm:p-6">
+
+    <div class="bg-[#1e293b] shadow-2xl rounded-xl p-6 sm:p-10 w-full max-w-4xl border-t-4 border-brand-gold">
+        <header class="mb-8 text-center">
+            <h1 class="text-4xl sm:text-5xl font-montserrat-bold text-[var(--brand-gold)]">Plataforma SER JEFE</h1>
+            <p id="level-indicator" class="text-[var(--brand-gold)] opacity-80 mt-2 text-lg font-poppins-bold"></p>
+        </header>
+
+        <main id="platform-content">
+            <div id="level-1" class="level-content content-card p-4 sm:p-6 rounded-lg shadow-lg">
+                <h2 class="text-3xl font-poppins-bold mb-6 text-[var(--brand-gold)]">Nivel 1: Fundamentos para SER JEFE y Autoconocimiento</h2>
+                
+                <div class="mb-8">
+                    <h3 class="text-2xl font-semibold mb-3 text-gray-100">I. Definición de Objetivos y Compromisos</h3>
+                    <div class="pl-4">
+                        <h4 class="text-xl font-medium mt-4 mb-2 text-[var(--brand-gold)] opacity-90">Objetivo</h4>
+                        <ul class="list-disc ml-6 mb-4 space-y-1 text-gray-300">
+                            <li>¿Cuál quieres lograr?</li>
+                            <li>¿Cómo describirías ahora tus objetivos?</li>
+                            <li>¿Qué significarían para ti?</li>
+                            <li>Nivel de logro (1-10)</li>
+                            <li>¿Cómo llegaste a asignar nivel?</li>
+                            <li>Identificación con objetivos</li>
+                        </ul>
+                        <h4 class="text-xl font-medium mt-4 mb-2 text-[var(--brand-gold)] opacity-90">Compromisos</h4>
+                        <ul class="list-disc ml-6 mb-4 space-y-1 text-gray-300">
+                            <li>Acciones y condiciones</li>
+                            <li>¿Cuáles 3 acciones debes dejar de hacer?</li>
+                        </ul>
+                        <h4 class="text-xl font-medium mt-4 mb-2 text-[var(--brand-gold)] opacity-90">Objetivos SMART</h4>
+                        <p class="text-gray-400 mb-2">Un objetivo SMART es Específico, Medible, Alcanzable, Relevante y Temporal.</p>
+                        <h5 class="text-lg font-medium mt-3 mb-1 text-[var(--brand-gold)] opacity-80">M - Medibles:</h5>
+                        <ul class="list-disc ml-6 mb-4 space-y-1 text-gray-300">
+                            <li>Criterio esencial.</li>
+                            <li>Evaluar éxito/fracaso.</li>
+                            <li>Forma objetiva de medir.</li>
+                            <li>Fecha límite, número, cambio porcentual, elemento cuantificable.</li>
+                            <li>Medir con KPI (indicadores clave de rendimiento).</li>
+                            <li>Objetivo medible = objetivo que puede alcanzarse.</li>
+                        </ul>
+                        <h5 class="text-lg font-medium mt-3 mb-1 text-[var(--brand-gold)] opacity-80">Metas vs. Objetivos:</h5>
+                        <ul class="list-disc ml-6 mb-4 space-y-1 text-gray-300">
+                            <li>Metas: más largo plazo.</li>
+                            <li>Objetivos: periodos más cortos.</li>
+                            <li>Aplicar método SMART a ambos.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <h3 class="text-2xl font-semibold mb-3 text-gray-100">VI. Poder y Autoridad en la Jefatura</h3>
+                     <div class="pl-4">
+                        <h4 class="text-xl font-medium mt-4 mb-2 text-[var(--brand-gold)] opacity-90">Poder</h4>
+                        <ul class="list-disc ml-6 mb-4 space-y-1 text-gray-300">
+                            <li>Latín 'potere' (capacidad de hacer).</li>
+                            <li>Capacidad de poner en marcha acción/evento.</li>
+                            <li>Dimensión social/política.</li>
+                            <li>Posibilidad de tomar decisiones y otros cumplan.</li>
+                        </ul>
+                        <h4 class="text-xl font-medium mt-4 mb-2 text-[var(--brand-gold)] opacity-90">Autoridad en el Rol de Jefe</h4>
+                        <h5 class="text-lg font-medium mt-3 mb-1 text-[var(--brand-gold)] opacity-80">Autoridad:</h5>
+                        <ul class="list-disc ml-6 mb-4 space-y-1 text-gray-300">
+                            <li>Prestigio y confianza.</li>
+                            <li>Por competencia o conocimientos.</li>
+                        </ul>
+                        <h5 class="text-lg font-medium mt-3 mb-1 text-[var(--brand-gold)] opacity-80">Jefatura vs. Liderazgo:</h5>
+                        <ul class="list-disc ml-6 mb-4 space-y-1 text-gray-300">
+                            <li>Se puede ser líder sin ser jefe.</li>
+                            <li>Se puede ser jefe sin ser líder.</li>
+                            <li>Para ser jefe no se necesita ser líder (aunque idealmente se complementan).</li>
+                        </ul>
+                    </div>
+                </div>
+                 <div class="mb-8">
+                    <h3 class="text-2xl font-semibold mb-3 text-gray-100">IV. Roles y Órdenes Organizacionales para el Jefe</h3>
+                     <div class="pl-4">
+                        <h4 class="text-xl font-medium mt-4 mb-2 text-[var(--brand-gold)] opacity-90">Rol del Jefe</h4>
+                        <ul class="list-disc ml-6 mb-4 space-y-1 text-gray-300">
+                            <li>Territorio diferente a líder/capo.</li>
+                            <li>Ambiente social formal/específico.</li>
+                            <li>Sistema de autoridad y control.</li>
+                            <li>Implica la acción de obedecer por parte del equipo.</li>
+                        </ul>
+                        <h4 class="text-xl font-medium mt-4 mb-2 text-[var(--brand-gold)] opacity-90">Órdenes (Cosmos/Taxis)</h4>
+                        <ul class="list-disc ml-6 mb-4 space-y-1 text-gray-300">
+                            <li>Empresa: empieza como orden taxis (organización) y continúa.</li>
+                            <li>Triada autoridad, obediencia, control (rol decisivo en empresa occidente).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div id="level-2" class="level-content content-card p-4 sm:p-6 rounded-lg shadow-lg">
+                <h2 class="text-3xl font-poppins-bold mb-6 text-[var(--brand-gold)]">Nivel 2: Comunicación Efectiva y Coaching para el Jefe</h2>
+                <div class="pl-4">
+                    <h3 class="text-2xl font-semibold mb-3 text-gray-100">II. El Jefe como Coach y el Arte de Preguntar</h3>
+                    
+                    <h4 class="text-xl font-medium mt-4 mb-2 text-[var(--brand-gold)] opacity-90">Etapas del Coaching desde la Jefatura</h4>
+                    <h5 class="text-lg font-medium mt-3 mb-1 text-[var(--brand-gold)] opacity-80">Escuchar empáticamente:</h5>
+                    <ul class="list-disc ml-6 mb-4 text-gray-300">
+                        <li>Entender situación del colaborador.</li>
+                        <li>Facilitar la toma de conciencia.</li>
+                        <li>Clarificar: ¿Qué significa lo que dices? ¿Cómo lo dirías diferente?</li>
+                        <li>Explorar: ¿Qué piensas y sientes?</li>
+                    </ul>
+
+                    <h4 class="text-xl font-medium mt-4 mb-2 text-[var(--brand-gold)] opacity-90">Explorar Impacto y Posibilidades</h4>
+                    <ul class="list-disc ml-6 mb-4 text-gray-300">
+                        <li>¿Qué efectos tiene la decisión para el equipo y la organización?</li>
+                        <li>¿Qué exigencias implica esta decisión?</li>
+                        <li>¿Qué posibilidades de acción futuras se abren o cierran?</li>
+                    </ul>
+
+                    <h4 class="text-xl font-medium mt-4 mb-2 text-[var(--brand-gold)] opacity-90">Preguntas Adicionales Estratégicas (Ejemplos)</h4>
+                    <ul class="list-disc ml-6 mb-4 text-gray-300">
+                        <li>¿Esta situación se repite en otros contextos?</li>
+                        <li>¿Recuerdas una situación similar y cómo la resolviste?</li>
+                        <li>¿Qué te impide avanzar en esto?</li>
+                         <li>¿De dónde surge esta perspectiva o idea?</li>
+                    </ul>
+                    
+                    <h4 class="text-xl font-medium mt-4 mb-2 text-[var(--brand-gold)] opacity-90">Escucha Activa del Jefe</h4>
+                    <ul class="list-disc ml-6 mb-4 text-gray-300">
+                        <li>Habilidad fundamental para la jefatura.</li>
+                        <li>Atención plena y sin interrupciones.</li>
+                        <li>Observar más allá de las palabras (lenguaje corporal, tono).</li>
+                        <li>Evitar juzgar: liberar la mente de preconceptos.</li>
+                        <li class="font-semibold text-[var(--brand-gold)] opacity-80">Trampas comunes al escuchar:</li>
+                        <ul class="list-circle ml-6 text-gray-300">
+                            <li>Discutir la interpretación de los hechos en lugar de los hechos mismos.</li>
+                            <li>Deslegitimar la perspectiva del otro.</li>
+                            <li>Distraerse pensando en la siguiente pregunta o respuesta.</li>
+                            <li>Buscar culpables en lugar de soluciones.</li>
+                        </ul>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="level-3" class="level-content content-card p-4 sm:p-6 rounded-lg shadow-lg">
+                <h2 class="text-3xl font-poppins-bold mb-6 text-[var(--brand-gold)]">Nivel 3: Entendimiento Profundo: Fenomenología y el SER del Jefe</h2>
+                <div class="pl-4">
+                    <h3 class="text-2xl font-semibold mb-3 text-gray-100">III. Fenomenología y Construcción de la Realidad en la Jefatura</h3>
+                    
+                    <h4 class="text-xl font-medium mt-4 mb-2 text-[var(--brand-gold)] opacity-90">Principios de Husserl para el Jefe</h4>
+                     <h5 class="text-lg font-medium mt-3 mb-1 text-[var(--brand-gold)] opacity-80">Claves para la Comprensión:</h5>
+                    <ul class="list-disc ml-6 mb-4 text-gray-300">
+                        <li>Las realidades del equipo no siempre siguen una lógica matemática.</li>
+                        <li>Existen múltiples realidades: experiencias, fenómenos, emociones.</li>
+                        <li>Los fenómenos son individuales: cada colaborador vive su propia realidad.</li>
+                        <li>Interpretar los fenómenos de otros desde mi perspectiva es desconfigurarlos.</li>
+                        <li>Como jefe, no puedo decir 'te entiendo perfectamente'.</li>
+                        <li>Comprender al otro no es 'ponerse en sus zapatos', sino validar su experiencia.</li>
+                    </ul>
+
+                    <h4 class="text-xl font-medium mt-4 mb-2 text-[var(--brand-gold)] opacity-90">El Lenguaje como Constructor de la Realidad del Jefe</h4>
+                     <h5 class="text-lg font-medium mt-3 mb-1 text-[var(--brand-gold)] opacity-80">Homo Loquens (El ser que habla):</h5>
+                    <p class="ml-6 mb-2 text-gray-300">El jefe, y cada miembro del equipo, construye su mundo a través del lenguaje.</p>
+                    
+                    <h4 class="text-xl font-medium mt-4 mb-2 text-[var(--brand-gold)] opacity-90">Perspectiva Existencialista para el Jefe (Sartre y Heidegger)</h4>
+                     <h5 class="text-lg font-medium mt-3 mb-1 text-[var(--brand-gold)] opacity-80">El Ser del Jefe (Sartre):</h5>
+                    <ul class="list-disc ml-6 mb-4 text-gray-300">
+                        <li>Ser-en-sí: La jefatura como rol definido, con sus inercias.</li>
+                        <li>Ser-para-sí: La posibilidad del jefe de elegirse, de proyectar su forma de SER JEFE.</li>
+                    </ul>
+                     <h5 class="text-lg font-medium mt-3 mb-1 text-[var(--brand-gold)] opacity-80">Dasein (Ser-ahí del Jefe - Heidegger):</h5>
+                    <ul class="list-disc ml-6 mb-4 text-gray-300">
+                        <li>El jefe como "ser-ahí": en un contexto social, ontológico.</li>
+                        <li>Con potencialidades y posibilidades.</li>
+                        <li>"Cosa lanzada al frente": El jefe siempre está proyectándose hacia el futuro.</li>
+                    </ul>
+                     <h4 class="text-xl font-medium mt-4 mb-2 text-[var(--brand-gold)] opacity-90">Entendimiento del Jefe</h4>
+                        <ul class="list-disc ml-6 mb-4 space-y-1 text-gray-300">
+                            <li>Ontológico: ¿Quién estoy SIENDO como jefe?</li>
+                            <li>Teleológico: ¿Hacia dónde dirijo mis acciones y las del equipo? ¿Cuál es el fin?</li>
+                        </ul>
+                </div>
+            </div>
+
+            <div id="level-4" class="level-content content-card p-4 sm:p-6 rounded-lg shadow-lg">
+                <h2 class="text-3xl font-poppins-bold mb-6 text-[var(--brand-gold)]">Nivel 4: Neurociencia para JEFES: Motivación y Decisión</h2>
+                <div class="pl-4">
+                    <h3 class="text-2xl font-semibold mb-3 text-gray-100">V. Neurociencia Aplicada a la Jefatura</h3>
+                    
+                    <h4 class="text-xl font-medium mt-4 mb-2 text-[var(--brand-gold)] opacity-90">Dopamina: Clave para la Motivación del Equipo</h4>
+                    <ul class="list-disc ml-6 mb-4 text-gray-300">
+                        <li>La dopamina no es la recompensa, es la preparación y la búsqueda.</li>
+                        <li>Como jefe, impulsa la creación y la persecución de metas.</li>
+                        <li>Fomenta una mentalidad de crecimiento: el placer está en el esfuerzo y la búsqueda.</li>
+                        <li>Manejo del Error de Predicción de Recompensa para evitar desmotivación.</li>
+                        <li>Entender el Equilibrio Placer-Dolor para mantener la motivación a largo plazo.</li>
+                    </ul>
+
+                    <h4 class="text-xl font-medium mt-4 mb-2 text-[var(--brand-gold)] opacity-90">Control Consciente e Inserción Subjetiva del Jefe</h4>
+                    <ul class="list-disc ml-6 mb-4 text-gray-300">
+                        <li>Evaluar la experiencia biológica propia y del equipo.</li>
+                        <li>Introducir pensamientos y narrativas positivas deliberadamente.</li>
+                        <li>Recompensar el proceso de esfuerzo, no solo el resultado final.</li>
+                        <li>El jefe tiene la capacidad de controlar los horarios de recompensas internas.</li>
+                    </ul>
+
+                    <h4 class="text-xl font-medium mt-4 mb-2 text-[var(--brand-gold)] opacity-90">Plasticidad Neuronal y Aprendizaje Continuo del Jefe</h4>
+                    <ul class="list-disc ml-6 mb-4 text-gray-300">
+                        <li>El cerebro del jefe (y del equipo) puede cambiar en respuesta a la experiencia.</li>
+                        <li>Desencadenantes: Foco (acetilcolina), Urgencia/Importancia (norepinefrina).</li>
+                        <li>Los cambios reales y la consolidación del aprendizaje suceden durante el descanso.</li>
+                    </ul>
+                    <h4 class="text-xl font-medium mt-4 mb-2 text-[var(--brand-gold)] opacity-90">Toma de Decisiones del Jefe y Economía Conductual</h4>
+                     <ul class="list-disc ml-6 mb-4 text-gray-300">
+                        <li>La emoción a menudo supera la razón en la toma de decisiones.</li>
+                        <li>Nudges (Pequeños Empujones): El contexto diseñado por el jefe afecta las decisiones del equipo.</li>
+                        <li>Estrategias: Simplificar procesos, destacar factores importantes, promover normas sociales positivas.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="level-5" class="level-content content-card p-4 sm:p-6 rounded-lg shadow-lg">
+                <h2 class="text-3xl font-poppins-bold mb-6 text-[var(--brand-gold)]">Nivel 5: Sistemas, Ética y Cultura para el JEFE</h2>
+                <div class="mb-8">
+                    <h3 class="text-2xl font-semibold mb-3 text-gray-100">IV. El Jefe y la Teoría de Sistemas Sociales y Organizacionales</h3>
+                    <div class="pl-4">
+                        <h4 class="text-xl font-medium mt-4 mb-2 text-[var(--brand-gold)] opacity-90">El Jefe y el Concepto de Sistema</h4>
+                        <ul class="list-disc ml-6 mb-4 text-gray-300">
+                            <li>La organización como un sistema con un entorno.</li>
+                        </ul>
+                        <h4 class="text-xl font-medium mt-4 mb-2 text-[var(--brand-gold)] opacity-90">Teoría de Sistemas Sociales (Luhmann) Aplicada por el Jefe</h4>
+                        <ul class="list-disc ml-6 mb-4 text-gray-300">
+                            <li>Autorreferencia del sistema (equipo/organización).</li>
+                            <li>Límites: El jefe gestiona las interdependencias sistema/entorno.</li>
+                            <li>Diferenciación del sistema: El jefe puede generar entornos internos.</li>
+                        </ul>
+                        <h4 class="text-xl font-medium mt-4 mb-2 text-[var(--brand-gold)] opacity-90">La Quinta Disciplina (Peter Senge) para el Jefe</h4>
+                        <ul class="list-disc ml-6 mb-4 text-gray-300">
+                            <li>Realimentación Compensadora: El jefe como gestor de procesos que actúan como frenos o aceleradores hacia metas.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mb-8">
+                    <h3 class="text-2xl font-semibold mb-3 text-gray-100">VII. Devenir, Moral y Ética en la Jefatura</h3>
+                     <div class="pl-4">
+                        <h4 class="text-xl font-medium mt-4 mb-2 text-[var(--brand-gold)] opacity-90">Moral (histórica) vs. Ética del Jefe</h4>
+                        <ul class="list-disc ml-6 mb-4 text-gray-300">
+                            <li>Moral: Normas y juicios establecidos. El jefe debe ser consciente de ellos.</li>
+                            <li>Ética del Jefe: Comprender lo bueno/malo como fronteras dinámicas. El camino que trazan los actos diarios del jefe.</li>
+                        </ul>
+                        <h4 class="text-xl font-medium mt-4 mb-2 text-[var(--brand-gold)] opacity-90">El Jefe, la Existencia del Otro (Tú) y el Nosotros</h4>
+                        <ul class="list-disc ml-6 mb-4 text-gray-300">
+                            <li>El "Yo" del jefe nunca está encapsulado; se comparte y construye con el equipo.</li>
+                            <li>Fomentar la libertad y acción del "Nosotros" (equipo).</li>
+                        </ul>
+                         <h4 class="text-xl font-medium mt-4 mb-2 text-[var(--brand-gold)] opacity-90">Acciones Humanas y la Jefatura</h4>
+                        <ul class="list-disc ml-6 mb-4 text-gray-300">
+                            <li>Las acciones (del jefe y del equipo) tienden a lo que se acredita como bueno (para sí).</li>
+                            <li>El jefe ayuda a alinear lo "bueno para sí" con lo "bueno para el equipo/organización".</li>
+                        </ul>
+                    </div>
+                </div>
+                 <div class="mb-8">
+                    <h3 class="text-2xl font-semibold mb-3 text-gray-100">VIII. El Jefe como Gestor de Cultura y Motivación</h3>
+                    <div class="pl-4">
+                        <h4 class="text-xl font-medium mt-4 mb-2 text-[var(--brand-gold)] opacity-90">Dimensiones Culturales y su Impacto en la Jefatura</h4>
+                        <ul class="list-disc ml-6 mb-4 text-gray-300">
+                            <li>Orientación futura del equipo.</li>
+                            <li>Balance entre Individualidad y Colectivismo.</li>
+                            <li>Manejo de la Evasión de la Incertidumbre.</li>
+                            <li>Gestión de la Distancia al Poder.</li>
+                        </ul>
+                        <h4 class="text-xl font-medium mt-4 mb-2 text-[var(--brand-gold)] opacity-90">El Jefe y la Identidad, Autonomía y Disfrute del Equipo</h4>
+                         <h5 class="text-lg font-medium mt-3 mb-1 text-[var(--brand-gold)] opacity-80">Identidad:</h5>
+                        <ul class="list-disc ml-6 mb-4 text-gray-300">
+                            <li>Ayudar a los colaboradores a construir cómo quieren SER en su rol.</li>
+                            <li>Fomentar el "ser ahí con sentido".</li>
+                        </ul>
+                         <h5 class="text-lg font-medium mt-3 mb-1 text-[var(--brand-gold)] opacity-80">Autonomía:</h5>
+                        <ul class="list-disc ml-6 mb-4 text-gray-300">
+                            <li>Fomentar la "propia ley" (responsabilidad y criterio).</li>
+                            <li>Empoderar para decidir hacer y decidir decidir.</li>
+                        </ul>
+                        <h5 class="text-lg font-medium mt-3 mb-1 text-[var(--brand-gold)] opacity-80">Disfrute:</h5>
+                        <ul class="list-disc ml-6 mb-4 text-gray-300">
+                            <li>"Sacarle jugo a la fruta": Encontrar satisfacción en el trabajo (con sus euforias y disforias).</li>
+                            <li>Disfrutar el sufrimiento si es parte de la construcción y el crecimiento.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="mt-8 flex justify-between items-center">
+            <button id="prev-button" class="btn-brand-blue font-semibold py-2 px-6 rounded-lg shadow-md transition duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed">
+                Anterior
+            </button>
+            <div id="progress-dots" class="flex space-x-2">
+                </div>
+            <button id="next-button" class="btn-brand-gold font-semibold py-2 px-6 rounded-lg shadow-md transition duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed">
+                Siguiente
+            </button>
+        </footer>
+    </div>
+
+    <script>
+        const levels = [
+            { id: 'level-1', title: 'Nivel 1: Fundamentos para SER JEFE y Autoconocimiento' },
+            { id: 'level-2', title: 'Nivel 2: Comunicación Efectiva y Coaching para el Jefe' },
+            { id: 'level-3', title: 'Nivel 3: Entendimiento Profundo: Fenomenología y el SER del Jefe' },
+            { id: 'level-4', title: 'Nivel 4: Neurociencia para JEFES: Motivación y Decisión' },
+            { id: 'level-5', title: 'Nivel 5: Sistemas, Ética y Cultura para el JEFE' }
+        ];
+        let currentLevelIndex = 0;
+
+        const levelIndicator = document.getElementById('level-indicator');
+        const platformContent = document.getElementById('platform-content');
+        const prevButton = document.getElementById('prev-button');
+        const nextButton = document.getElementById('next-button');
+        const progressDotsContainer = document.getElementById('progress-dots');
+
+        function displayLevel(index) {
+            document.querySelectorAll('.level-content').forEach(levelDiv => {
+                levelDiv.classList.remove('active');
+            });
+
+            const currentLevelDiv = document.getElementById(levels[index].id);
+            if (currentLevelDiv) {
+                currentLevelDiv.classList.add('active');
+                currentLevelDiv.scrollTop = 0;
+            }
+
+            levelIndicator.textContent = `Estás en el ${levels[index].title} (${index + 1}/${levels.length})`;
+
+            prevButton.disabled = index === 0;
+            nextButton.disabled = index === levels.length - 1;
+            
+            updateProgressDots(index);
+        }
+        
+        function updateProgressDots(activeIndex) {
+            progressDotsContainer.innerHTML = ''; 
+            levels.forEach((level, index) => {
+                const dot = document.createElement('div');
+                dot.classList.add('w-3', 'h-3', 'rounded-full', 'transition-all', 'duration-300', 'cursor-pointer');
+                if (index === activeIndex) {
+                    dot.style.backgroundColor = 'var(--brand-gold)';
+                    dot.classList.add('scale-125');
+                } else {
+                    dot.style.backgroundColor = '#4a5568'; // slate-600
+                }
+                dot.addEventListener('click', () => {
+                    currentLevelIndex = index;
+                    displayLevel(currentLevelIndex);
+                });
+                progressDotsContainer.appendChild(dot);
+            });
+        }
+
+        prevButton.addEventListener('click', () => {
+            if (currentLevelIndex > 0) {
+                currentLevelIndex--;
+                displayLevel(currentLevelIndex);
+            }
+        });
+
+        nextButton.addEventListener('click', () => {
+            if (currentLevelIndex < levels.length - 1) {
+                currentLevelIndex++;
+                displayLevel(currentLevelIndex);
+            }
+        });
+
+        displayLevel(currentLevelIndex);
+    </script>
+
+</body>
+</html>

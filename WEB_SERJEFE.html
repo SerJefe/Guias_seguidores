@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ser Jefe x Sebastián Sánchez - Desmitificando y Dando Valor al Jefe</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        :root {
+            --brand-blue: #003f6b;
+            --brand-gold: #e0c05a;
+            --brand-gold-darker: #c8ab49; /* Slightly darker gold for hover */
+        }
+        /* Brand Colors */
+        .bg-brand-blue { background-color: var(--brand-blue); }
+        .text-brand-gold { color: var(--brand-gold); }
+        .border-brand-gold { border-color: var(--brand-gold); }
+        .hover\:bg-brand-gold:hover { background-color: var(--brand-gold); }
+        .hover\:text-brand-blue:hover { color: var(--brand-blue); }
+        .hover\:text-brand-gold:hover { color: var(--brand-gold); }
+        .hover\:border-brand-gold:hover { border-color: var(--brand-gold); }
+        .hover\:bg-brand-blue-darker:hover { background-color: #003355; }
+        .hover\:bg-brand-gold-darker:hover { background-color: var(--brand-gold-darker); } /* Hover for gold buttons */
+
+        /* General Styles */
+        html { scroll-behavior: smooth; }
+        .handprint-svg {
+            fill: var(--brand-gold);
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem;
+        }
+        .social-icon { transition: color 0.3s ease; }
+
+        /* Card Styles */
+        .h-full-card {
+             display: flex;
+             flex-direction: column;
+             height: 100%;
+        }
+        .card-content {
+            flex-grow: 1;
+        }
+        .card-button {
+            margin-top: auto;
+        }
+
+        /* Sobre Mí Image Styles */
+        #sobre-mi img {
+             max-width: 250px;
+             margin-left: auto;
+             margin-right: auto;
+        }
+        @media (min-width: 768px) {
+             #sobre-mi .flex-row {
+                 align-items: flex-start;
+             }
+             #sobre-mi img {
+                 max-width: 100%;
+                 margin-left: 0;
+                 margin-right: 0;
+             }
+        }
+
+        /* Quote Styles */
+        .quote-card {
+            border-left: 4px solid var(--brand-gold);
+            background-color: #f9fafb; /* bg-gray-50 */
+        }
+        .quote-mark {
+            font-size: 3rem;
+            line-height: 1;
+            color: var(--brand-gold);
+            opacity: 0.6;
+        }
+
+        /* Enhanced Button Styles */
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem; /* py-3 px-6 */
+            border-radius: 0.5rem; /* rounded-lg */
+            font-weight: 600; /* semibold */
+            text-align: center;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.1s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            cursor: pointer;
+        }
+        .btn:active {
+             transform: translateY(1px); /* Slight press effect */
+             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-gold {
+            background-color: var(--brand-gold);
+            color: var(--brand-blue);
+        }
+        .btn-gold:hover {
+            background-color: var(--brand-gold-darker);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-blue {
+            background-color: var(--brand-blue);
+            color: white;
+        }
+        .btn-blue:hover {
+            background-color: var(--brand-blue-darker);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+         .btn-outline-gold {
+            border: 2px solid var(--brand-gold);
+            color: var(--brand-gold);
+            background-color: transparent;
+            padding: calc(0.75rem - 2px) calc(1.5rem - 2px); /* Adjust padding for border */
+         }
+         .btn-outline-gold:hover {
+            background-color: var(--brand-gold);
+            color: var(--brand-blue);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+         }
+
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <header class="bg-brand-blue text-brand-gold sticky top-0 z-50 shadow-md">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="#inicio" class="text-2xl font-bold hover:text-white transition duration-300">Sebastián Sánchez A.</a>
+            <div class="hidden md:flex space-x-6 items-center">
+                <a href="#inicio" class="hover:text-white transition duration-300">Inicio</a>
+                <a href="#sobre-mi" class="hover:text-white transition duration-300">Sobre Mí</a>
+                <a href="#filosofia" class="hover:text-white transition duration-300">Filosofía</a>
+                <a href="#principios" class="hover:text-white transition duration-300">Principios</a>
+                <a href="#pensamientos" class="hover:text-white transition duration-300">Pensamientos</a>
+                <a href="#blog" class="hover:text-white transition duration-300">Blog</a>
+                <a href="#preguntas" class="hover:text-white transition duration-300">Preguntas</a>
+                <a href="#servicios" class="hover:text-white transition duration-300">Servicios</a>
+                <a href="#contacto" class="hover:text-white transition duration-300">Contacto</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-3 border-t border-gray-700">
+            <a href="#inicio" class="block py-2 hover:text-white transition duration-300">Inicio</a>
+            <a href="#sobre-mi" class="block py-2 hover:text-white transition duration-300">Sobre Mí</a>
+            <a href="#filosofia" class="block py-2 hover:text-white transition duration-300">Filosofía</a>
+            <a href="#principios" class="block py-2 hover:text-white transition duration-300">Principios</a>
+            <a href="#pensamientos" class="block py-2 hover:text-white transition duration-300">Pensamientos</a>
+            <a href="#blog" class="block py-2 hover:text-white transition duration-300">Blog</a>
+            <a href="#preguntas" class="block py-2 hover:text-white transition duration-300">Preguntas</a>
+            <a href="#servicios" class="block py-2 hover:text-white transition duration-300">Servicios</a>
+            <a href="#contacto" class="block py-2 hover:text-white transition duration-300">Contacto</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="inicio" class="bg-brand-blue text-white py-20 md:py-32">
+            <div class="container mx-auto px-6 text-center">
+                 <svg class="handprint-svg" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M211.1 133.4C211.1 106.4 233.5 84 260.5 84c10.2 0 19.8 3.1 27.8 8.5 10.1-11.9 24.2-19.8 40-19.8 27 0 49.4 22.4 49.4 49.4 0 4.9-1.8 11.1-3.6 16.4 13.3 9.5 22.4 24.8 22.4 41.8 0 27-22.4 49.4-49.4 49.4-7.8 0-14.9-1.8-21.2-5.4-3.6 14.9-18 25.4-34.8 25.4s-31.2-10.5-34.8-25.4c-6.3 3.6-13.4 5.4-21.2 5.4-27 0-49.4-22.4-49.4-49.4 0-17 9.1-32.3 22.4-41.8-1.8-5.3-3.6-11.5-3.6-16.4zM448 348.4c0-13.4-10.2-24.8-22.4-27v-99.4c22.4-2.2 40-21.2 40-44.6 0-24.8-18-45.8-40-49.4V84c0-46.4-37.6-84-84-84-44.6 0-81.8 34.8-84 79.6C154.4 79.6 152.2 80 150 80c-46.4 0-84 37.6-84 84v18.8c-22 3.6-40 23.4-40 47.2 0 26.4 21.6 48 48 48h8v104.4c0 46.4 37.6 84 84 84h144c46.4 0 84-37.6 84-84v-12.4c12.2 2.2 22.4 13.6 22.4 27 0 15.5-12.9 28-28.4 28H320c-15.5 0-28-12.5-28-28v-84h-48v84c0 15.5-12.5 28-28 28H116.4c-15.5 0-28-12.5-28-28v-84H48c-15.5 0-28-12.5-28-28s12.5-28 28-28h40c15.5 0 28 12.5 28 28v84h48v-84c0-15.5 12.5-28 28-28h48c15.5 0 28 12.5 28 28v84h48v-84c0-15.5 12.5-28 28-28h40c15.5 0 28 12.5 28 28v84h48v-96.4c-12.2-2.2-22.4-13.6-22.4-27z"/>
+                 </svg>
+                <h1 class="text-4xl md:text-6xl font-bold mb-4 text-brand-gold">SER JEFE</h1>
+                <p class="text-xl md:text-2xl mb-2 text-brand-gold">x Sebastián Sánchez</p>
+                <p class="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-8">Transforma tu rol. Acompaña, conecta, potencia. Descubre una forma de ejercer la jefatura con sentido humano, empezando por SER... siendo.</p>
+                <a href="#filosofia" class="btn btn-gold">Conoce la Filosofía</a>
+            </div>
+        </section>
+
+        <section id="sobre-mi" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-brand-blue">Sobre Mí</h2>
+                <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center md:items-start gap-8 md:gap-12">
+                    <div class="w-full md:w-1/3 flex-shrink-0 text-center md:text-left">
+                         <img src="https://placehold.co/300x300/003f6b/e0c05a?text=Sebastián+Sánchez"
+                             alt="Foto de perfil de Sebastián Sánchez"
+                             class="rounded-lg shadow-lg mx-auto w-64 h-64 md:w-full md:max-w-xs object-cover"
+                             onerror="this.src='https://placehold.co/300x300/cccccc/ffffff?text=Imagen+no+disponible'; this.alt='Imagen de marcador de posición'">
+                    </div>
+                    <div class="w-full md:w-2/3 text-lg text-gray-700 leading-relaxed space-y-4">
+                        <p><span class="text-xl">👋</span> ¡Hola! Soy Sebastián y de mí solo sé que soy <strong class="text-brand-blue">SIENDO</strong>, porque la vida aunque se planee solo tiene el instante del <strong class="text-brand-blue">YA</strong> para decidir hacia dónde caminar.</p>
+                        <p>Soy el creador de "<strong class="text-brand-blue">SER.JEFE</strong>", un espacio para resignificar la JEFATURA desde la conciencia, la estrategia y el SER.</p>
+                        <p>Creo que ser jefe no es imponer, es <strong class="text-brand-blue">inspirar</strong>. No es controlar, es <strong class="text-brand-blue">conectar</strong>.</p>
+                        <p>Desde mi experiencia como ingeniero, gerente, docente, papá y socio, comparto herramientas reales para <strong class="text-brand-blue">SER.JEFE con SENTIDO</strong>.</p>
+                        <p class="font-semibold text-xl text-brand-blue mt-6">Quiero ayudar a que las personas sean el JEFE que quieren SER.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="filosofia" class="py-16 md:py-24 bg-brand-blue text-gray-200">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-brand-gold">Filosofía: SER... siendo</h2>
+                 <div class="max-w-4xl mx-auto text-lg leading-relaxed space-y-6 text-center">
+                    <p>"En la vida solo se puede SER... siendo."</p>
+                    <p>A menudo decimos querer ser coherentes con una imagen que construimos: "yo soy esto, he logrado aquello, estudié esto, trabajo aquí". Esta idea nos presiona a actuar siempre de acuerdo a esa descripción, a 'ser y parecer'.</p>
+                    <p>He encontrado que la forma más auténtica y coherente de ser es simplemente 'siendo' en cada momento. El 'ser y parecer' es un filtro mental, pero nuestras decisiones nacen de impulsos más profundos: emociones, sensaciones, la sabiduría del cuerpo.</p>
+                    <p>El pensamiento añade lógica después, pero el sentido real lo capta nuestro sistema nervioso, nuestros órganos, esa red química y energética que informa a un cerebro que nunca ha visto el exterior directamente.</p>
+                    <p>Nos comportamos basados en la información que recibimos del entorno a través de nuestros sentidos. Por eso, la única coherencia posible es la del instante presente, adaptándonos y respondiendo a lo que emerge.</p>
+                    <p class="font-semibold text-brand-gold">Solo se es... siendo.</p>
+                     <div class="mt-10">
+                        <a href="#blog" class="btn btn-outline-gold">Explora Reflexiones</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="principios" class="py-16 md:py-24 bg-gray-50">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-brand-blue">Principios para un Acompañamiento con Sentido</h2>
+                <p class="text-center text-lg text-gray-600 mb-12 max-w-3xl mx-auto">Guías prácticas y el 'por qué' detrás de un ejercicio de la jefatura más humano y efectivo.</p>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-brand-gold h-full-card">
+                        <div class="card-content">
+                            <h3 class="text-xl font-bold mb-3 text-brand-blue">Fomentar Autonomía y Disfrute</h3>
+                            <p class="text-gray-600">La verdadera motivación surge de la identidad y la libertad de acción. Tu rol es crear el contexto adecuado, explicando por qué esto potencia al equipo más que 'intentar motivar'.</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-brand-gold h-full-card">
+                         <div class="card-content">
+                            <h3 class="text-xl font-bold mb-3 text-brand-blue">Comunicación como Interpretación Mutua</h3>
+                            <p class="text-gray-600">Ir más allá de las palabras. Escuchar para comprender la experiencia del otro, entendiendo por qué atender lo verbal, paraverbal y corporal es clave para conectar.</p>
+                        </div>
+                    </div>
+                     <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-brand-gold h-full-card">
+                         <div class="card-content">
+                            <h3 class="text-xl font-bold mb-3 text-brand-blue">Comprender, no 'Manejar' Emociones</h3>
+                            <p class="text-gray-600">Las emociones son información valiosa. Aprende a acompañarlas y comprenderlas, descubriendo por qué esto es más efectivo que intentar controlarlas.</p>
+                        </div>
+                    </div>
+                     <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-brand-gold h-full-card">
+                         <div class="card-content">
+                            <h3 class="text-xl font-bold mb-3 text-brand-blue">Preguntar sin Juicio (Estilo Socrático)</h3>
+                            <p class="text-gray-600">Abandona la creencia de saber qué es mejor para el otro. Explora por qué usar preguntas poderosas ayuda a que descubran sus propias soluciones.</p>
+                        </div>
+                    </div>
+                     <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-brand-gold h-full-card">
+                         <div class="card-content">
+                            <h3 class="text-xl font-bold mb-3 text-brand-blue">Responsabilidad Clara, Personas Capaces</h3>
+                            <p class="text-gray-600">Define el 'qué' lograr, no el 'cómo'. Entiende por qué entregar responsabilidad clara permite que las personas piensen y desarrollen su potencial.</p>
+                        </div>
+                    </div>
+                     <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-brand-gold h-full-card">
+                         <div class="card-content">
+                            <h3 class="text-xl font-bold mb-3 text-brand-blue">Equipos: Valorar, Conectar, Aprender</h3>
+                            <p class="text-gray-600">Descubre por qué fomentar la valoración individual, reconocer diferencias, comunicación fluida y aprendizaje conjunto construye equipos sólidos.</p>
+                        </div>
+                    </div>
+                </div>
+                 <p class="text-center mt-10 text-gray-600 italic max-w-3xl mx-auto">Inspirado en conceptos de La Quinta Disciplina, William Bridges, Fenomenología, Teoría de Agencia, Pensamiento Socrático y la experiencia práctica.</p>
+            </div>
+        </section>
+
+        <section id="pensamientos" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-brand-blue">Pensamientos y Frases</h2>
+                <div class="max-w-4xl mx-auto space-y-8">
+                    <div class="quote-card p-6 rounded-lg shadow-md">
+                        <span class="quote-mark block text-left">“</span>
+                        <p class="text-xl md:text-2xl italic text-gray-700 leading-relaxed ml-4 -mt-4">
+                            La jefatura no se trata de tener las respuestas, sino de saber hacer las preguntas correctas para que el equipo las encuentre.
+                        </p>
+                        <p class="text-right mt-4 text-gray-600">- Sebastián Sánchez A.</p>
+                    </div>
+                    <div class="quote-card p-6 rounded-lg shadow-md">
+                         <span class="quote-mark block text-left">“</span>
+                        <p class="text-xl md:text-2xl italic text-gray-700 leading-relaxed ml-4 -mt-4">
+                           'Ser siendo' en el rol de jefe significa aceptar que no controlas todo, pero sí puedes influir en el cómo se navegan juntos los desafíos.
+                        </p>
+                         <p class="text-right mt-4 text-gray-600">- Sebastián Sánchez A.</p>
+                    </div>
+                     <div class="quote-card p-6 rounded-lg shadow-md opacity-75">
+                         <span class="quote-mark block text-left">“</span>
+                        <p class="text-xl md:text-2xl italic text-gray-700 leading-relaxed ml-4 -mt-4">
+                           [Aquí puedes añadir otra frase o pensamiento inspirador...]
+                        </p>
+                         <p class="text-right mt-4 text-gray-600">- Sebastián Sánchez A.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="blog" class="py-16 md:py-24 bg-gray-50">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-brand-blue">Blog: Reflexiones y Herramientas Prácticas</h2>
+                <p class="text-center text-lg text-gray-600 mb-12 max-w-3xl mx-auto">Un espacio de aprendizaje continuo. Explorando preguntas, compartiendo experiencias y herramientas aplicables para tu día a día como jefe.</p>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 h-full-card">
+                        <div class="card-content">
+                            <div class="w-full h-48 bg-gray-300 rounded-md mb-4 animate-pulse flex items-center justify-center text-gray-500">
+                                <i class="fas fa-lightbulb text-4xl"></i>
+                            </div>
+                            <p class="text-sm text-gray-500 mb-1">24 de Abril, 2025</p>
+                            <h3 class="text-xl font-bold mb-2 text-brand-blue">Herramienta: El Arte de Crear Contexto (No 'Motivar')</h3>
+                            <p class="text-gray-600 mb-4">Pasos prácticos para diseñar un entorno donde la autonomía y el disfrute florezcan naturalmente en tu equipo.</p>
+                        </div>
+                        <a href="#" class="btn btn-blue w-full card-button">Leer y Comentar &rarr;</a>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 h-full-card">
+                        <div class="card-content">
+                            <div class="w-full h-48 bg-gray-300 rounded-md mb-4 animate-pulse flex items-center justify-center text-gray-500">
+                                 <i class="fas fa-question-circle text-4xl"></i>
+                            </div>
+                             <p class="text-sm text-gray-500 mb-1">17 de Abril, 2025</p>
+                            <h3 class="text-xl font-bold mb-2 text-brand-blue">Guía Rápida: 5 Preguntas Socráticas para Desbloquear a tu Equipo</h3>
+                            <p class="text-gray-600 mb-4">Ejemplos concretos de preguntas que puedes usar hoy mismo para fomentar el pensamiento crítico sin dar respuestas.</p>
+                        </div>
+                         <a href="#" class="btn btn-blue w-full card-button">Descubrir Preguntas &rarr;</a>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 h-full-card">
+                        <div class="card-content">
+                           <div class="w-full h-48 bg-gray-300 rounded-md mb-4 animate-pulse flex items-center justify-center text-gray-500">
+                                <i class="fas fa-compass text-4xl"></i>
+                            </div>
+                             <p class="text-sm text-gray-500 mb-1">10 de Abril, 2025</p>
+                            <h3 class="text-xl font-bold mb-2 text-brand-blue">Reflexión: "SER... siendo" ante una Conversación Difícil</h3>
+                            <p class="text-gray-600 mb-4">Cómo aplicar la filosofía de estar presente y auténtico al enfrentar esas conversaciones que preferirías evitar.</p>
+                        </div>
+                         <a href="#" class="btn btn-blue w-full card-button">Explorar la Reflexión &rarr;</a>
+                    </div>
+                </div>
+                 <div class="text-center mt-12">
+                     <a href="#" class="btn btn-gold">Ver Todas las Entradas</a>
+                 </div>
+            </div>
+        </section>
+
+        <section id="preguntas" class="py-16 md:py-24 bg-brand-blue text-gray-200">
+             <div class="container mx-auto px-6 text-center">
+                <i class="far fa-comments text-5xl text-brand-gold mb-6"></i>
+                <h2 class="text-3xl md:text-4xl font-bold mb-6 text-brand-gold">¿Tienes Preguntas?</h2>
+                <p class="text-lg mb-8 max-w-2xl mx-auto">Este es un espacio para la curiosidad y el aprendizaje mutuo. Si tienes alguna duda, inquietud o situación relacionada con ser jefe que te gustaría explorar, compártela.</p>
+                <a href="#contacto" class="btn btn-outline-gold">Haz tu Pregunta Aquí</a>
+            </div>
+        </section>
+
+         <section id="servicios" class="py-16 md:py-24 bg-gray-50">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-brand-blue">Servicios y Colaboración</h2>
+                <p class="text-center text-lg text-gray-600 mb-12 max-w-3xl mx-auto">Profundicemos juntos. Espacios para aplicar estos principios y potenciar tu rol.</p>
+                <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <div class="bg-white p-8 rounded-lg shadow-lg border-t-4 border-brand-gold text-center h-full-card hover:shadow-xl transition-shadow duration-300">
+                        <div class="card-content">
+                             <i class="fas fa-user-friends text-4xl text-brand-blue mb-4"></i>
+                            <h3 class="text-2xl font-bold mb-4 text-brand-blue">Asesorías Personales 1:1</h3>
+                            <p class="text-gray-600 mb-6">Un espacio confidencial para abordar tus desafíos específicos, desarrollar habilidades clave y encontrar tu propia forma auténtica de SER.JEFE con SENTIDO.</p>
+                        </div>
+                        <a href="#contacto" class="btn btn-blue w-full md:w-auto card-button">Solicitar Información</a>
+                    </div>
+                    <div class="bg-white p-8 rounded-lg shadow-lg border-t-4 border-brand-gold text-center h-full-card hover:shadow-xl transition-shadow duration-300">
+                         <div class="card-content">
+                            <i class="fas fa-microphone-alt text-4xl text-brand-blue mb-4"></i>
+                            <h3 class="text-2xl font-bold mb-4 text-brand-blue">Preguntas para el Podcast</h3>
+                            <p class="text-gray-600 mb-6">¿Tienes alguna pregunta, dilema o situación sobre tu rol como jefe que te gustaría que exploráramos juntos en un futuro episodio del podcast? ¡Compártela!</p>
+                        </div>
+                        <a href="#contacto" class="btn btn-blue w-full md:w-auto card-button">Enviar Pregunta</a>
+                    </div>
+                </div>
+            </div>
+         </section>
+
+        <section id="app-teaser" class="py-16 md:py-24 bg-brand-blue text-gray-200">
+            <div class="container mx-auto px-6 text-center">
+                <i class="fas fa-mobile-alt text-5xl text-brand-gold mb-6"></i>
+                <h2 class="text-3xl md:text-4xl font-bold mb-6 text-brand-gold">Próximamente: Tu Guía Diaria</h2>
+                <p class="text-lg mb-8 max-w-2xl mx-auto">Estoy desarrollando una aplicación para llevar estos principios y herramientas directamente a tu día a día. Una guía práctica en tu bolsillo para ser un jefe más consciente y efectivo.</p>
+                <p class="text-brand-gold font-semibold">¡Mantente atento a las novedades!</p>
+            </div>
+        </section>
+
+         <section id="contacto" class="py-16 md:py-24 bg-gray-800 text-gray-300">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-8 text-brand-gold">Conectemos</h2>
+                <p class="text-lg mb-6 max-w-2xl mx-auto">¿Interesado en una asesoría, enviar una pregunta (para el podcast o para responder aquí), compartir una experiencia o explorar una colaboración? Utiliza el correo electrónico para contactarme:</p>
+                 <a href="mailto:sebastian.sanchez.docente@gmail.com" class="btn btn-gold mb-8">
+                    <i class="far fa-envelope mr-2"></i> Envíame un Correo
+                 </a>
+                 <p class="text-sm mb-8 text-gray-400">
+                     O copia la dirección: <strong class="text-brand-gold" id="contact-email">sebastian.sanchez.docente@gmail.com</strong>
+                 </p>
+
+                <p class="text-lg mb-4">También puedes encontrarme en:</p>
+                <div class="flex justify-center space-x-6">
+                    <a href="https://instagram.com/ser.jefe" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="text-brand-gold hover:text-white social-icon text-3xl">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" target="_blank" rel="noopener noreferrer" aria-label="TikTok" class="text-brand-gold hover:text-white social-icon text-3xl"> <i class="fab fa-tiktok"></i>
+                    </a>
+                    <a href="https://www.youtube.com/@SER.JEFExSEBASTIANSANCHEZ" target="_blank" rel="noopener noreferrer" aria-label="YouTube" class="text-brand-gold hover:text-white social-icon text-3xl"> <i class="fab fa-youtube"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-900 text-gray-400 py-8">
+        <div class="container mx-auto px-6 text-center">
+             <div class="flex justify-center space-x-4 mb-4">
+                <a href="https://instagram.com/ser.jefe" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="hover:text-brand-gold social-icon text-xl transition duration-300">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" target="_blank" rel="noopener noreferrer" aria-label="TikTok" class="hover:text-brand-gold social-icon text-xl transition duration-300"> <i class="fab fa-tiktok"></i>
+                </a>
+                 <a href="https://www.youtube.com/@SER.JEFExSEBASTIANSANCHEZ" target="_blank" rel="noopener noreferrer" aria-label="YouTube" class="hover:text-brand-gold social-icon text-xl transition duration-300"> <i class="fab fa-youtube"></i>
+                </a>
+            </div>
+            <p>&copy; 2024 Sebastián Sánchez Acevedo. Todos los derechos reservados.</p>
+            <p class="text-sm mt-2">Una nueva mirada a la jefatura: SER... siendo.</p>
+        </div>
+    </footer>
+
+    <script>
+        const menuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close menu when a link is clicked
+        const allLinks = document.querySelectorAll('header a'); // Includes nav and mobile menu links
+        allLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                // Only close if it's a link to a section on the same page
+                if(link.getAttribute('href').startsWith('#')) {
+                    // Check if mobile menu is open before closing
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
+            });
+         });
+
+         // Note: The email update function is removed as the email is now hardcoded.
+         // If you need dynamic updates later, it can be re-added.
+
+    </script>
+
+</body>
+</html>
