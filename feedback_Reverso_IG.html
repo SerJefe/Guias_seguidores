@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía de Preparación y Bitácora de Feedback - SER.JEFE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-blue: #003f6b;
+            --brand-gold: #e0c05a;
+            --attention-red: #d7263d;
+            --light-gray: #f9fafb;
+        }
+
+        html {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #333;
+            background-color: var(--light-gray);
+            display: flex;
+            flex-direction: column;
+            min-height: 100%;
+        }
+        
+        main {
+            flex-grow: 1;
+        }
+
+        .font-montserrat-bold { font-family: 'Montserrat', sans-serif; font-weight: 700; }
+        .font-poppins-semibold { font-family: 'Poppins', sans-serif; font-weight: 600; }
+
+        .page-header {
+            background-color: var(--brand-blue);
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+            border-bottom: 6px solid var(--brand-gold);
+        }
+        .page-header .main-title {
+            font-size: 3.5rem; /* Agrandado */
+            line-height: 1;
+        }
+        .page-header .author-title {
+            font-size: 1.5rem; /* Agrandado */
+            color: var(--brand-gold);
+            margin-top: 0.5rem;
+        }
+
+        .info-block {
+            max-width: 700px;
+            margin: 2rem auto -1rem;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+        }
+        .info-block h3 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+        }
+        .info-block ul { list-style-position: inside; padding-left: 0.5rem; margin-top: 1rem; }
+
+        .attention-block {
+            background-color: #fffbeb;
+            border-left: 5px solid var(--attention-red);
+        }
+        .attention-block h3 { color: var(--attention-red); }
+
+        .rules-block {
+            background-color: #f0f9ff;
+            border-left: 5px solid var(--brand-gold);
+        }
+        .rules-block h3 { color: var(--brand-blue); }
+
+        .form-container {
+            max-width: 700px;
+            margin: 2rem auto;
+            background-color: white;
+            padding: 2.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .form-section { margin-bottom: 2.5rem; }
+        .form-section h4 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: var(--brand-blue);
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--brand-gold);
+            padding-bottom: 0.5rem;
+        }
+        .log-label { font-weight: 600; color: #444; margin-bottom: 0.5rem; display: block; }
+        .form-section textarea, .form-section input[type="number"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 0.375rem;
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .form-section textarea { resize: vertical; min-height: 100px; }
+        .form-section textarea:focus, .form-section input[type="number"]:focus {
+            outline: none;
+            border-color: var(--brand-gold);
+            box-shadow: 0 0 0 3px rgba(224, 192, 90, 0.3);
+        }
+        
+        .quantitative-section {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            padding: 1rem;
+            border-radius: 0.375rem;
+            margin-top: 1.5rem;
+        }
+        .quantitative-scale { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+        .quantitative-scale label { font-weight: 600; }
+        .quantitative-scale input[type="number"] { width: 70px; text-align: center; }
+        .quantitative-scale textarea { min-height: 60px; flex-grow: 1; }
+
+        .action-btn {
+            display: block; width: 100%; padding: 1rem; background-color: var(--attention-red);
+            color: white; border: none; border-radius: 0.375rem; font-family: 'Poppins', sans-serif;
+            font-weight: 700; font-size: 1.1rem; cursor: pointer; transition: background-color 0.3s;
+        }
+        .action-btn:hover { background-color: #b91c1c; }
+        
+        .site-footer {
+            background-color: #111827;
+            color: #9ca3af;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+        .site-footer .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .site-footer .social-links a {
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+            color: #9ca3af;
+            text-decoration: none;
+        }
+        .site-footer .social-links a:hover {
+            color: var(--brand-gold);
+        }
+        .site-footer .copyright {
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <header class="page-header">
+            <h1 class="font-montserrat-bold main-title">SER.JEFE</h1>
+            <h2 class="font-poppins-semibold author-title">x Sebastián Sánchez Acevedo</h2>
+        </header>
+
+        <div class="info-block attention-block">
+            <h3><i class="fas fa-exclamation-triangle mr-3"></i>¡Atención, JEFE! El Riesgo de Preguntar</h3>
+            <p>Al pedir feedback, la otra persona evaluará si es seguro ser honesta. Tu reacción al primer comentario crítico definirá si habrá una segunda vez. Si reaccionas a la defensiva, no volverán a confiar. Tu único objetivo es escuchar para comprender.</p>
+        </div>
+
+        <div class="info-block rules-block">
+            <h3><i class="fas fa-handshake mr-3"></i>Estableciendo las Reglas del Juego</h3>
+            <p>Al iniciar, sé claro. Puedes decir algo como:</p>
+            <ul class="list-decimal">
+                <li>"Gracias por tu tiempo. Mi objetivo es escuchar tu perspectiva para <strong>potenciar mi rol</strong>. No se trata de cumplir caprichos, sino de recolectar datos para ser más efectivo."</li>
+                <li>"Las opiniones son valiosas, pero son más poderosas con <strong>ejemplos concretos</strong>. Si dices 'eres X', te pediré que me describas situaciones donde viste ese 'X' en acción. Esto nos ayuda a basarnos en hechos."</li>
+            </ul>
+        </div>
+
+        <div class="form-container">
+            <form id="feedback-log-form">
+                
+                <div class="form-section">
+                    <h4 class="font-poppins-bold">Pregunta Clave 1: "¿Cuáles 3 cosas, que son mi responsabilidad, consideras que debería hacer más?"</h4>
+                    <label for="start_log" class="log-label">Bitácora de las 3 Cosas Mencionadas:</label>
+                    <textarea id="start_log" name="start_log" placeholder="Anota aquí las 3 cosas que la persona mencionó..."></textarea>
+                    
+                    <div class="mt-4">
+                        <label for="start_validation1" class="log-label">Validación 1: ¿Cómo sabes que son mi responsabilidad?</label>
+                        <textarea id="start_validation1" name="start_validation1" placeholder="Registra la explicación de la persona sobre por qué considera que esas tareas te corresponden."></textarea>
+                    </div>
+                    <div class="mt-4">
+                        <label for="start_validation2" class="log-label">Validación 2: Describe momentos específicos donde hacerlas habría potenciado el trabajo y cómo.</label>
+                        <textarea id="start_validation2" name="start_validation2" placeholder="Pide y anota los ejemplos concretos. Esto es clave para descartar que sean caprichos."></textarea>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h4 class="font-poppins-bold">Pregunta Clave 2: "¿Qué comportamiento mío debería DEJAR de hacer que pueda estar dificultando tu trabajo?"</h4>
+                    <label for="stop_log" class="log-label">Bitácora de la Respuesta:</label>
+                    <textarea id="stop_log" name="stop_log" placeholder="Registra la respuesta. Escucha sin interrumpir ni justificar. Tu único objetivo es comprender su perspectiva."></textarea>
+                    
+                    <div class="quantitative-section">
+                        <div class="quantitative-scale">
+                            <label for="stop_rating">En una escala de 1 a 10, ¿qué tanto impacto negativo tiene esto? (1=poco, 10=mucho)</label>
+                            <input type="number" id="stop_rating" name="stop_rating" min="1" max="10">
+                        </div>
+                        <div class="mt-2">
+                            <label for="stop_rating_reason" class="log-label text-sm">¿Qué te lleva a dar ese valor y no otro?</label>
+                            <textarea id="stop_rating_reason" name="stop_rating_reason" placeholder="Anota la justificación del valor asignado."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h4 class="font-poppins-bold">Pregunta Clave 3: "¿Qué de lo que hago hoy es lo más útil y debería CONTINUAR haciendo?"</h4>
+                    <label for="continue_log" class="log-label">Bitácora de la Respuesta:</label>
+                    <textarea id="continue_log" name="continue_log" placeholder="Anota los puntos fuertes. Es tan importante saber qué funciona como qué no."></textarea>
+
+                    <div class="quantitative-section">
+                        <div class="quantitative-scale">
+                            <label for="continue_rating">En una escala de 1 a 10, ¿qué tan valioso es esto para ti? (1=poco, 10=mucho)</label>
+                            <input type="number" id="continue_rating" name="continue_rating" min="1" max="10">
+                        </div>
+                        <div class="mt-2">
+                            <label for="continue_rating_reason" class="log-label text-sm">¿Qué te lleva a dar ese valor y no otro?</label>
+                            <textarea id="continue_rating_reason" name="continue_rating_reason" placeholder="Anota la justificación del valor asignado."></textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <p class="text-center text-sm text-gray-500 mb-6">Recuerda guardar tus notas en un lugar seguro. Este formulario es tu plantilla de trabajo.</p>
+
+                <button type="button" id="clear-btn" class="action-btn">
+                    <i class="fas fa-sync-alt mr-2"></i> Limpiar Bitácora para Nueva Sesión
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="social-links">
+            <a href="https://instagram.com/ser.jefe" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+            <a href="#" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+        </div>
+        <p class="copyright">&copy; <span id="currentYear"></span> <strong>SER.JEFE x Sebastián Sánchez Acevedo.</strong> Todos los derechos reservados.</p>
+        <p class="copyright text-sm mt-2">Una nueva mirada a la jefatura: SER... siendo.</p>
+        <p class="copyright text-xs mt-4 opacity-75">Herramienta desarrollada por HTML JEFE.</p>
+    </footer>
+
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        document.getElementById('clear-btn').addEventListener('click', () => {
+            const confirmation = confirm('¿Estás seguro de que quieres limpiar todos los campos de la bitácora? Esta acción no se puede deshacer.');
+            if (confirmation) {
+                document.querySelectorAll('#feedback-log-form textarea, #feedback-log-form input[type="number"]').forEach(field => {
+                    field.value = '';
+                });
+            }
+        });
+    </script>
+</body>
+</html>
