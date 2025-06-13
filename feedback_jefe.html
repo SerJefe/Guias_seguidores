@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía del Jefe para Afrontar el Feedback - SER.JEFE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-blue: #003f6b;
+            --brand-gold: #e0c05a;
+            --light-gray: #f9fafb;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #333;
+            background-color: var(--light-gray);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        main { flex-grow: 1; }
+
+        .font-montserrat-bold { font-family: 'Montserrat', sans-serif; font-weight: 700; }
+        .font-poppins-semibold { font-family: 'Poppins', sans-serif; font-weight: 600; }
+
+        .page-header {
+            background-color: var(--brand-blue);
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+            border-bottom: 6px solid var(--brand-gold);
+        }
+
+        .content-section {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .section-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 2rem;
+            color: var(--brand-blue);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .intro-text {
+            font-size: 1.1rem;
+            text-align: center;
+            color: #555;
+            line-height: 1.7;
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            border-left: 5px solid var(--brand-blue);
+            margin-bottom: 3rem;
+        }
+
+        .step-card {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+            margin-bottom: 2rem;
+            border-top: 4px solid var(--brand-blue);
+        }
+        .step-card h3 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--brand-blue);
+            margin-bottom: 1rem;
+        }
+        .step-card ul {
+            list-style: none;
+            padding-left: 0;
+            space-y-2;
+        }
+        .step-card ul li {
+            padding-left: 1.75rem;
+            position: relative;
+            margin-bottom: 0.75rem; /* Aumentado para más espacio */
+        }
+        .step-card ul li::before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: var(--brand-gold);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .script-block {
+            background-color: #f0f9ff;
+            border-left: 5px solid var(--brand-gold);
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border-radius: 0.5rem;
+        }
+        .script-block p { font-style: italic; }
+
+        .cta-block {
+            background-color: var(--brand-blue);
+            color: white;
+            text-align: center;
+            padding: 3rem 1.5rem;
+            margin-top: 3rem;
+        }
+        .cta-block h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.25rem;
+            color: var(--brand-gold);
+            margin-bottom: 1.5rem;
+        }
+        .cta-block .cta-button {
+            display: inline-block; background-color: var(--brand-gold); color: var(--brand-blue);
+            padding: 0.75rem 2rem; border-radius: 0.5rem; text-decoration: none;
+            font-weight: 700; font-size: 1.1rem; transition: transform 0.2s;
+        }
+        .cta-block .cta-button:hover { transform: scale(1.05); }
+        
+        .site-footer {
+            background-color: #111827; color: #9ca3af; padding: 2rem 1rem; text-align: center;
+        }
+        .site-footer .social-links {
+            display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 1rem;
+        }
+        .site-footer .social-links a { font-size: 1.5rem; transition: color 0.3s ease; color: #9ca3af; text-decoration: none;}
+        .site-footer .social-links a:hover { color: var(--brand-gold); }
+        .site-footer .copyright { font-size: 0.875rem; margin-top: 0.5rem; }
+    </style>
+</head>
+<body>
+    <main>
+        <header class="page-header">
+            <h1 class="font-montserrat-bold text-4xl">Cómo Afrontar el Feedback</h1>
+            <p class="font-poppins-semibold mt-2 text-lg">La Guía del Jefe para Construir un Contexto de Confianza.</p>
+        </header>
+
+        <div class="content-section">
+            <p class="intro-text">
+                Tu responsabilidad como jefe no es esperar a que el feedback llegue, es <strong>construir activamente un contexto donde darte feedback sea importante, necesario y, sobre todo, seguro.</strong> Esta guía te muestra qué hacer.
+            </p>
+
+            <h2 class="section-title">Los 3 Pasos Clave</h2>
+
+            <div class="step-card">
+                <h3><i class="fas fa-user-shield mr-2 text-brand-gold"></i>Paso 1: Prepara tu Mentalidad</h3>
+                <p class="mb-4">Antes de pedir nada, debes prepararte para escuchar.</p>
+                <ul>
+                    <li><strong>Tu objetivo: comprender, no debatir.</strong> Escucha para entender la perspectiva de la otra persona, no para defenderte. Su percepción es el dato valioso.</li>
+                    <li><strong>No es personal.</strong> El feedback es sobre lo que HACES y su impacto, no sobre quién ERES. Analiza la acción, no tu identidad.</li>
+                    <li><strong>Recuerda tu propósito.</strong> Lo haces para ser un mejor facilitador y potenciar a tu gente. Es un acto estratégico.</li>
+                </ul>
+            </div>
+
+            <div class="step-card">
+                <h3><i class="fas fa-comments mr-2 text-brand-gold"></i>Paso 2: Modela la Confianza</h3>
+                <p class="mb-4">Aquí es donde creas activamente el espacio seguro. Tu forma de invitar y reaccionar es crucial.</p>
+                <ul>
+                    <li><strong>Establece las reglas del juego.</strong> Para evitar malentendidos, sé claro al iniciar la conversación.</li>
+                </ul>
+                <div class="script-block">
+                    <p><strong>Puedes decir:</strong> "Gracias por tu tiempo. Mi meta es escuchar para potenciar mi rol, no para cumplir caprichos. Por eso, te pido que bases tus opiniones en ejemplos concretos. Si dices que soy 'X', ayúdame a entender describiendo situaciones donde viste ese 'X'. Así nos enfocamos en hechos."</p>
+                </div>
+                <ul class="mt-4">
+                    <li><strong>Tu reacción es TODO.</strong> La fórmula para reaccionar ante un comentario difícil es: <strong>Agradecer -> Escuchar sin interrumpir -> Preguntar para clarificar (no para defenderte) -> Comprometerte a reflexionar.</strong></li>
+                </ul>
+            </div>
+            
+            <div class="step-card">
+                <h3><i class="fas fa-sync-alt mr-2 text-brand-gold"></i>Paso 3: Conviértelo en un Hábito</h3>
+                <p class="mb-4">Una sola conversación no crea una cultura. La consistencia sí.</p>
+                <ul>
+                    <li><strong>Intégralo en tu rutina.</strong> Haz que sea una parte normal de tus reuniones 1 a 1. Normaliza el proceso.</li>
+                    <li><strong>Usa una herramienta de registro.</strong> Apóyate en tu "Bitácora de Feedback" para registrar y procesar la información de manera ordenada.</li>
+                    <li><strong>Cierra el círculo.</strong> Comunica las acciones que has tomado gracias al feedback recibido. Esto demuestra que la escucha fue genuina y que sus voces tienen un impacto real.</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <div class="cta-block">
+        <h2>Un jefe que sabe escuchar es un jefe que puede potenciar.</h2>
+        <p class="mb-8 max-w-xl mx-auto">Este es el camino para transformar tu liderazgo.</p>
+        <a href="https://instagram.com/ser.jefe" target="_blank" rel="noopener noreferrer" class="cta-button">
+            <i class="fab fa-instagram mr-2"></i> Sígueme si quieres ver más
+        </a>
+    </div>
+
+    <footer class="site-footer">
+        <div class="social-links">
+            <a href="https://instagram.com/ser.jefe" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+            <a href="#" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+        </div>
+        <p class="copyright">&copy; <span class="footer-year">2025</span> <strong>SER.JEFE x Sebastián Sánchez Acevedo.</strong> Todos los derechos reservados.</p>
+        <p class="copyright text-sm mt-2">Una nueva mirada a la jefatura: SER... siendo.</p>
+        <p class="copyright text-xs mt-4 opacity-75">Guía desarrollada por HTML JEFE.</p>
+    </footer>
+
+    <script>
+        document.querySelectorAll('.footer-year').forEach(span => {
+            span.textContent = new Date().getFullYear();
+        });
+    </script>
+</body>
+</html>
