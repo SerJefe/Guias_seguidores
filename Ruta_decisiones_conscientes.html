@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SER JEFE: La Senda del Estratega</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <meta name="theme-color" content="#0D3D6F">
+    <style>
+        :root {
+            --brand-blue: #0D3D6F;
+            --brand-gold: #D4AF37;
+            --brand-light: #f8f9fa;
+            --brand-dark-text: #1a202c;
+            --brand-gray-text: #4a5568;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: #f7fafc; color: var(--brand-dark-text); }
+        .brand-bg-blue { background-color: var(--brand-blue); }
+        .brand-text-gold { color: var(--brand-gold); }
+        .brand-border-gold { border-color: var(--brand-gold); }
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            transform: translateY(0);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 14px rgba(0,0,0,0.1);
+        }
+        .btn-primary { background-color: var(--brand-blue); color: white; }
+        .btn-primary:hover { background-color: #0b2d52; }
+        .btn-secondary { background-color: var(--brand-gold); color: var(--brand-blue); }
+        .btn-secondary:hover { background-color: #c5a033; }
+        .card {
+            background-color: white;
+            border-radius: 1rem;
+            padding: 2.5rem;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05), 0 10px 10px -5px rgba(0,0,0,0.02);
+            border-top: 4px solid var(--brand-gold);
+        }
+        .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(5px); align-items: center; justify-content: center; }
+        .modal-content { background-color: #fefefe; padding: 2rem; border-radius: 1rem; width: 90%; max-width: 600px; animation: zoomIn 0.3s; }
+        @keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .fade-in { animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        .impact-tag {
+            cursor: pointer;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            border: 1px solid #d1d5db;
+            transition: all 0.2s ease;
+            font-size: 0.8rem;
+        }
+        .impact-tag.selected { color: white; border-color: transparent; }
+        .tag-mejora.selected { background-color: #27ae60; }
+        .tag-consecuencia.selected { background-color: #c0392b; }
+        input[type="text"], textarea, select { padding: 0.75rem; border-radius: 0.5rem; border: 1px solid #cbd5e0; width: 100%; transition: all 0.2s ease; }
+        input[type="text"]:focus, textarea:focus, select:focus { border-color: var(--brand-gold); box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.3); outline: none;}
+        .step-indicator {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            background-color: #edf2f7;
+            border: 1px solid #cbd5e0;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .step-indicator.active {
+            background-color: var(--brand-blue);
+            color: white;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+    <div class="container mx-auto p-4 md:p-8">
+        <div id="breadcrumbs" class="text-sm text-gray-600 font-semibold flex justify-center flex-wrap gap-3 mt-4 mb-8 hidden">
+            <span id="step-0" class="step-indicator">⚪ Nivel 0</span>
+            <span id="step-1" class="step-indicator">⚪ Nivel 1</span>
+            <span id="step-2" class="step-indicator">⚪ Nivel 2</span>
+            <span id="step-3" class="step-indicator">⚪ Nivel 3</span>
+        </div>
+
+        <section id="screen-home" class="text-center py-16">
+            <h1 class="text-5xl font-bold text-gray-800 mb-2">SER JEFE</h1>
+            <h2 class="text-4xl font-semibold brand-text-gold mb-4">La Senda del Estratega</h2>
+            <p class="text-xl text-gray-600 mb-10 max-w-3xl mx-auto">Una herramienta para visualizar el impacto de tus decisiones y forjar una jefatura consciente.</p>
+            <div class="space-y-4 md:space-y-0 md:space-x-4">
+                <button id="start-btn" class="btn btn-primary text-lg">Forjar Nueva Decisión</button>
+                <button id="history-btn" class="btn btn-secondary text-lg">Ver Historial</button>
+            </div>
+             <div id="user-info" class="mt-8 text-xs text-gray-500"></div>
+        </section>
+
+        <section id="screen-history" class="hidden">
+             <div class="card max-w-7xl mx-auto">
+                 <div class="flex justify-between items-center mb-6">
+                     <h2 class="text-3xl font-bold text-gray-800">Historial de Decisiones</h2>
+                     <div>
+                         <button id="download-history-btn" class="btn btn-primary bg-green-700 hover:bg-green-800 text-sm">Descargar Historial (Excel)</button>
+                     </div>
+                 </div>
+                 <div class="overflow-x-auto">
+                     <table class="min-w-full divide-y divide-gray-200">
+                         <thead class="bg-gray-50">
+                             <tr>
+                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Responsable</th>
+                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Decisión</th>
+                                  <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                             </tr>
+                         </thead>
+                         <tbody id="history-table-body" class="bg-white divide-y divide-gray-200">
+                         </tbody>
+                     </table>
+                 </div>
+                 <div class="text-center mt-8">
+                    <button id="back-to-home-btn" class="btn btn-primary">Volver al Inicio</button>
+                 </div>
+             </div>
+        </section>
+
+        <section id="screen-data" class="hidden">
+            <div class="card max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Nivel 0: El Origen de la Decisión</h2>
+                <form id="initial-data-form" class="space-y-6">
+                    <div>
+                        <label for="responsable" class="block text-sm font-medium text-gray-700">Responsable de la Decisión</label>
+                        <input type="text" id="responsable" required>
+                    </div>
+                    <div>
+                          <label for="rol" class="block text-sm font-medium text-gray-700">Rol del Responsable</label>
+                          <input type="text" id="rol" required>
+                    </div>
+                    <div>
+                        <label for="decision" class="block text-sm font-medium text-gray-700">Decisión a Forjar (Describe la situación y la acción que propones)</label>
+                        <textarea id="decision" rows="3" required></textarea>
+                    </div>
+                    <div class="text-right pt-4">
+                        <button type="submit" class="btn btn-primary">Siguiente: Mapa de Impacto</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <section id="screen-impact" class="hidden">
+             <div class="card max-w-6xl mx-auto">
+                 <h2 class="text-3xl font-bold text-gray-800 mb-2 text-center">Nivel 1: El Mapa de Impacto Sistémico</h2>
+                 <p class="text-center text-gray-600 mb-8">Para cada proceso, selecciona las mejoras y consecuencias que tu decisión podría generar. Múltiples selecciones son posibles.</p>
+                 <div id="process-impact-container" class="space-y-8"></div>
+                 <div class="text-right pt-8">
+                     <button id="impact-to-objectives-btn" class="btn btn-primary">Siguiente: Brújula Estratégica</button>
+                 </div>
+            </div>
+        </section>
+
+        <section id="screen-objectives" class="hidden">
+            <div class="card max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2 text-center">Nivel 2: La Brújula Estratégica</h2>
+                <p class="text-center text-gray-600 mb-8">¿Con cuáles Macro-Objetivos se alinea tu decisión? Selecciona los que apliquen.</p>
+                <div id="objectives-container" class="space-y-4"></div>
+                <div class="text-right pt-8">
+                    <button id="objectives-to-reflection-btn" class="btn btn-primary">Siguiente: Forja de Conciencia</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="screen-reflection" class="hidden">
+            <div class="card max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2 text-center">Nivel 3: Forja de Conciencia</h2>
+                <p class="text-center text-gray-600 mb-6">Reflexiona sobre las implicaciones más profundas de tu decisión. Tus respuestas alimentarán el análisis final.</p>
+                <div class="space-y-6">
+                    <div>
+                        <label for="reflection-answer" class="block text-lg font-medium text-gray-700 mb-2">Análisis de Conciencia</label>
+                        <p class="text-sm text-gray-500 mb-3">Considera: ¿Qué podría salir mal (consecuencias de 2do y 3er orden)? ¿Qué supuestos estás haciendo? ¿Cómo afecta esto a la cultura y la energía del equipo? ¿Es coherente con los valores? ¿Cómo se medirá el éxito y se ajustará el rumbo?</p>
+                        <textarea id="reflection-answer" rows="8" class="text-lg" placeholder="Escribe tu reflexión aquí..."></textarea>
+                    </div>
+                     <div>
+                        <label for="insight-input" class="block text-lg font-medium text-gray-700 mb-2">¿De qué caíste en cuenta en este proceso?</label>
+                        <textarea id="insight-input" rows="3" class="text-lg" placeholder="Describe tu principal aprendizaje o 'insight'..."></textarea>
+                    </div>
+                </div>
+                <div class="text-right mt-8">
+                    <button id="generate-report-btn" class="btn btn-primary">Generar Manifiesto de Decisión</button>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="screen-summary" class="hidden">
+             <div id="report-content" class="card max-w-7xl mx-auto">
+                <div class="text-center mb-8">
+                     <h2 class="text-3xl font-bold text-gray-800">Manifiesto de Decisión</h2>
+                     <p id="report-date" class="text-sm text-gray-500"></p>
+                </div>
+
+                <!-- AI Analysis -->
+                <div id="ai-analysis-container" class="mb-8 p-6 rounded-lg bg-blue-50 border-l-4 border-brand-blue shadow-inner">
+                     <h3 class="text-xl font-bold text-gray-800 mb-3">Resumen de Pensamiento Sistémico (Análisis IA)</h3>
+                     <div id="ai-analysis-spinner" class="flex items-center justify-center space-x-2">
+                        <div class="w-4 h-4 rounded-full animate-pulse bg-brand-blue"></div>
+                        <div class="w-4 h-4 rounded-full animate-pulse bg-brand-blue" style="animation-delay: 0.2s;"></div>
+                        <div class="w-4 h-4 rounded-full animate-pulse bg-brand-blue" style="animation-delay: 0.4s;"></div>
+                        <span class="text-gray-600">Analizando reflexiones...</span>
+                     </div>
+                     <p id="ai-analysis-content" class="text-gray-700 whitespace-pre-wrap" style="display: none;"></p>
+                </div>
+                
+                <!-- Charts -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 my-10">
+                    <div class="p-4 border rounded-lg shadow-sm">
+                        <h3 class="text-lg font-bold text-center mb-4">Gráfico 1: Foco de Impacto vs. Rol</h3>
+                        <canvas id="impact-chart"></canvas>
+                    </div>
+                    <div class="p-4 border rounded-lg shadow-sm">
+                        <h3 class="text-lg font-bold text-center mb-4">Gráfico 2: Alineación Estratégica</h3>
+                        <canvas id="objectives-chart"></canvas>
+                    </div>
+                </div>
+
+                 <!-- Summary Table -->
+                <div id="summary-table-container" class="overflow-x-auto mt-8"></div>
+                
+            </div>
+            <div class="text-center mt-8 space-x-4">
+                 <button id="export-excel" class="btn btn-primary bg-green-700 hover:bg-green-800">Exportar a Excel</button>
+                 <button id="export-pdf" class="btn btn-primary bg-red-700 hover:bg-red-800">Exportar a PDF</button>
+                 <button id="restart-btn" class="btn btn-secondary">Forjar Otra Decisión</button>
+             </div>
+        </section>
+        
+        <div id="loading-modal" class="modal">
+            <div class="modal-content text-center">
+                <p id="loading-text" class="text-lg font-semibold">Cargando...</p>
+                <div class="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-brand-blue mx-auto mt-4"></div>
+            </div>
+        </div>
+
+        <div id="alert-modal" class="modal">
+            <div class="modal-content text-center">
+                <p id="alert-text" class="text-lg"></p>
+                <button id="close-alert-btn" class="btn btn-primary mt-4">Entendido</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script type="module">
+        // --- Firebase Imports ---
+        import { initializeApp, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, getDocs, doc, getDoc, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        
+        document.addEventListener("DOMContentLoaded", () => {
+            // --- DATA & CONFIG ---
+            const screens = { home: document.getElementById('screen-home'), data: document.getElementById('screen-data'), impact: document.getElementById('screen-impact'), objectives: document.getElementById('screen-objectives'), reflection: document.getElementById('screen-reflection'), summary: document.getElementById('screen-summary'), history: document.getElementById('screen-history') };
+            const loadingModal = document.getElementById('loading-modal');
+            const alertModal = document.getElementById('alert-modal');
+            const alertText = document.getElementById('alert-text');
+            const closeAlertBtn = document.getElementById('close-alert-btn');
+            
+            let decisionData = {};
+            let db, auth, userId, isAuthReady = false;
+            let impactChartInstance, objectivesChartInstance;
+
+            const processAreas = ["Finanzas", "Operaciones", "Comercial", "Talento Humano", "Tecnología", "Legal", "Logística", "Estrategia", "Calidad (SIG)"];
+            const strategicObjectives = ["Rentabilidad Sostenible", "Excelencia Operativa", "Crecimiento y Expansión", "Cultura y Talento", "Innovación y Liderazgo"];
+            
+            const mejorasOptions = ["Optimiza tiempo/recursos", "Simplifica procesos", "Incrementa calidad/valor", "Reduce costos/desperdicio", "Mejora captura/uso de datos", "Aumenta la satisfacción del cliente", "Mejora la colaboración", "Incrementa la seguridad (HSEQ)", "Genera nueva capacidad"];
+            const consecuenciasOptions = ["Requiere inversión/costo inicial", "Aumenta carga de trabajo temporal", "Requiere capacitación/desarrollo", "Genera resistencia al cambio", "Crea dependencia tecnológica", "Impacta negativamente a otro proceso", "Introduce nuevos riesgos (legales, op.)", "Requiere nuevos controles/burocracia", "Consume recursos de gestión"];
+
+            // --- UI Functions ---
+            const showAlert = (message) => {
+                alertText.innerText = message;
+                alertModal.style.display = 'flex';
+            };
+            closeAlertBtn.addEventListener('click', () => {
+                alertModal.style.display = 'none';
+            });
+
+            // --- FIREBASE SETUP ---
+            async function setupFirebase() {
+                try {
+                    const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+                    if (Object.keys(firebaseConfig).length === 0) throw new Error("Configuración de Firebase no encontrada.");
+                    
+                    const app = initializeApp(firebaseConfig);
+                    db = getFirestore(app);
+                    auth = getAuth(app);
+                    setLogLevel('debug');
+
+                    onAuthStateChanged(auth, async (user) => {
+                        if (user) {
+                            userId = user.uid;
+                            document.getElementById('user-info').innerText = `ID de Sesión: ${userId}`;
+                        } else {
+                             if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                                await signInWithCustomToken(auth, __initial_auth_token);
+                            } else {
+                                await signInAnonymously(auth);
+                            }
+                        }
+                        isAuthReady = true;
+                    });
+                } catch(e) {
+                    console.error("Firebase initialization failed:", e);
+                    document.getElementById('user-info').innerText = "Error de conexión con el historial. El progreso no se guardará.";
+                }
+            }
+
+            // --- BREADCRUMB ---
+            function updateBreadcrumb(level) {
+                const steps = ['step-0', 'step-1', 'step-2', 'step-3'];
+                const breadcrumbsContainer = document.getElementById('breadcrumbs');
+                if (level === null || level === undefined) {
+                    breadcrumbsContainer.classList.add('hidden');
+                    return;
+                }
+                breadcrumbsContainer.classList.remove('hidden');
+                steps.forEach((id, idx) => {
+                    const el = document.getElementById(id);
+                    if (idx <= level) {
+                        el.classList.add('active');
+                        el.textContent = `🔵 Nivel ${idx}`;
+                    } else {
+                        el.classList.remove('active');
+                        el.textContent = `⚪ Nivel ${idx}`;
+                    }
+                });
+            }
+
+            // --- NAVIGATION & STATE ---
+            const showScreen = (screenName) => {
+                Object.values(screens).forEach(s => s.classList.add('hidden'));
+                const screenToShow = screens[screenName];
+                screenToShow.classList.remove('hidden');
+                screenToShow.classList.add('fade-in');
+                window.scrollTo(0, 0);
+
+                const screenToLevelMap = {
+                    'data': 0,
+                    'impact': 1,
+                    'objectives': 2,
+                    'reflection': 3,
+                    'summary': 3, // Summary is also part of the last step
+                    'home': null,
+                    'history': null
+                };
+
+                const currentLevel = screenToLevelMap[screenName];
+                updateBreadcrumb(currentLevel);
+            };
+
+            const showLoading = (text = "Cargando...") => {
+                document.getElementById('loading-text').innerText = text;
+                loadingModal.style.display = 'flex';
+            };
+            const hideLoading = () => {
+                loadingModal.style.display = 'none';
+            };
+
+            const clearState = () => {
+                decisionData = {};
+                if (impactChartInstance) impactChartInstance.destroy();
+                if (objectivesChartInstance) objectivesChartInstance.destroy();
+                document.getElementById('initial-data-form').reset();
+                document.getElementById('reflection-answer').value = '';
+                document.getElementById('insight-input').value = '';
+            };
+
+            // --- EVENT LISTENERS ---
+            document.getElementById('start-btn').addEventListener('click', () => { clearState(); showScreen('data'); });
+            document.getElementById('restart-btn').addEventListener('click', () => { clearState(); showScreen('home'); });
+            document.getElementById('history-btn').addEventListener('click', () => showHistory());
+            document.getElementById('back-to-home-btn').addEventListener('click', () => showScreen('home'));
+            document.getElementById('download-history-btn').addEventListener('click', downloadFullHistory);
+
+            // --- LEVEL 0: INITIAL DATA ---
+            document.getElementById('initial-data-form').addEventListener('submit', e => {
+                e.preventDefault();
+                decisionData.id = `decision_${Date.now()}`;
+                decisionData.info = {
+                    responsable: document.getElementById('responsable').value,
+                    rol: document.getElementById('rol').value,
+                    decision: document.getElementById('decision').value,
+                };
+                decisionData.impactos = {};
+                decisionData.objetivos = {};
+                decisionData.reflexion = {};
+                renderImpactScreen();
+                showScreen('impact');
+            });
+            
+            // --- LEVEL 1: IMPACT ---
+            function renderImpactScreen() {
+                const container = document.getElementById('process-impact-container');
+                container.innerHTML = '';
+                processAreas.forEach(area => {
+                    const areaId = area.replace(/\s+/g, '-');
+                    const card = document.createElement('div');
+                    card.className = 'p-5 border rounded-lg shadow-sm bg-gray-50';
+                    let mejorasHtml = mejorasOptions.map(m => `<span class="impact-tag tag-mejora" data-area="${area}" data-type="mejoras" data-value="${m}">${m}</span>`).join('');
+                    let consecuenciasHtml = consecuenciasOptions.map(c => `<span class="impact-tag tag-consecuencia" data-area="${area}" data-type="consecuencias" data-value="${c}">${c}</span>`).join('');
+
+                    card.innerHTML = `
+                        <h4 class="font-bold text-lg text-gray-800">${area}</h4>
+                        <div class="mt-4">
+                            <h5 class="text-sm font-semibold text-green-700 mb-2">Mejoras Potenciales</h5>
+                            <div class="flex flex-wrap gap-2">${mejorasHtml}</div>
+                        </div>
+                        <div class="mt-4">
+                             <h5 class="text-sm font-semibold text-red-700 mb-2">Consecuencias Potenciales</h5>
+                            <div class="flex flex-wrap gap-2">${consecuenciasHtml}</div>
+                        </div>`;
+                    container.appendChild(card);
+                });
+
+                container.querySelectorAll('.impact-tag').forEach(tag => {
+                    tag.addEventListener('click', () => tag.classList.toggle('selected'));
+                });
+            }
+
+            document.getElementById('impact-to-objectives-btn').addEventListener('click', () => {
+                decisionData.impactos = {};
+                processAreas.forEach(area => {
+                    const mejoras = Array.from(document.querySelectorAll(`.tag-mejora[data-area="${area}"].selected`)).map(t => t.dataset.value);
+                    const consecuencias = Array.from(document.querySelectorAll(`.tag-consecuencia[data-area="${area}"].selected`)).map(t => t.dataset.value);
+                    if (mejoras.length > 0 || consecuencias.length > 0) {
+                        decisionData.impactos[area] = { mejoras, consecuencias };
+                    }
+                });
+                renderObjectivesScreen();
+                showScreen('objectives');
+            });
+
+            // --- LEVEL 2: OBJECTIVES ---
+            function renderObjectivesScreen() {
+                const container = document.getElementById('objectives-container');
+                container.innerHTML = '';
+                strategicObjectives.forEach(obj => {
+                    const objId = obj.replace(/\s+/g, '-');
+                    const objContainer = document.createElement('div');
+                    objContainer.className = 'p-4 border rounded-lg hover:bg-gray-50 transition-colors';
+                    objContainer.innerHTML = `
+                        <label class="flex items-center cursor-pointer">
+                            <input type="checkbox" id="obj-${objId}" data-value="${obj}" class="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                            <span class="ml-3 text-gray-700 text-lg">${obj}</span>
+                        </label>`;
+                    container.appendChild(objContainer);
+                });
+            }
+
+            document.getElementById('objectives-to-reflection-btn').addEventListener('click', () => {
+                decisionData.objetivos = Array.from(document.querySelectorAll('#objectives-container input[type="checkbox"]:checked'))
+                    .map(cb => cb.dataset.value);
+                showScreen('reflection');
+            });
+
+            // --- LEVEL 3 & REPORT GENERATION ---
+            document.getElementById('generate-report-btn').addEventListener('click', async () => {
+                decisionData.reflexion.analisis = document.getElementById('reflection-answer').value;
+                decisionData.reflexion.insight = document.getElementById('insight-input').value;
+                
+                showScreen('summary');
+                await generateFinalReport();
+            });
+
+            async function generateFinalReport(retrievedData = null) {
+                const dataToProcess = retrievedData || decisionData;
+                
+                populateSummaryTable(dataToProcess);
+                renderRadarCharts(dataToProcess);
+
+                if (retrievedData && retrievedData.aiAnalysis) {
+                    document.getElementById('ai-analysis-spinner').style.display = 'none';
+                    const contentP = document.getElementById('ai-analysis-content');
+                    contentP.innerText = retrievedData.aiAnalysis;
+                    contentP.style.display = 'block';
+                } else {
+                    document.getElementById('ai-analysis-spinner').style.display = 'flex';
+                    document.getElementById('ai-analysis-content').style.display = 'none';
+
+                    const prompt = `Analiza la siguiente decisión estratégica y la reflexión del líder. Genera un "Resumen de Pensamiento Sistémico" conciso y profesional. En tu análisis, aborda sutilmente los siguientes puntos sin usar una lista: posibles consecuencias no intencionadas (segundo y tercer orden), implicaciones en la cultura y energía del equipo, supuestos subyacentes, y consideraciones sobre sostenibilidad, legalidad, costos ocultos y HSEQ. El resumen debe ser un párrafo fluido que ofrezca una perspectiva externa y constructiva.
+                    ---
+                    DECISIÓN: "${dataToProcess.info.decision}"
+                    REFLEXIÓN DEL LÍDER: "${dataToProcess.reflexion.analisis}"
+                    ---`;
+                    
+                    try {
+                        let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+                        const payload = { contents: chatHistory };
+                        const apiKey = "";
+                        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                        const response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+                        const result = await response.json();
+                        
+                        let aiText = "El análisis de IA no pudo ser completado en este momento.";
+                        if (result.candidates && result.candidates[0].content.parts[0].text) {
+                            aiText = result.candidates[0].content.parts[0].text;
+                        }
+                        
+                        decisionData.aiAnalysis = aiText;
+                        document.getElementById('ai-analysis-spinner').style.display = 'none';
+                        const contentP = document.getElementById('ai-analysis-content');
+                        contentP.innerText = aiText;
+                        contentP.style.display = 'block';
+
+                        // Save to Firestore after getting AI analysis
+                        await saveDecisionToFirestore();
+
+                    } catch (error) {
+                        console.error("Error calling Gemini API:", error);
+                        document.getElementById('ai-analysis-spinner').style.display = 'none';
+                        const contentP = document.getElementById('ai-analysis-content');
+                        contentP.innerText = "No se pudo generar el análisis de IA debido a un error de conexión.";
+                        contentP.style.display = 'block';
+                        decisionData.aiAnalysis = contentP.innerText;
+                        await saveDecisionToFirestore();
+                    }
+                }
+            }
+
+
+            async function saveDecisionToFirestore() {
+                 if (!isAuthReady || !db || !userId) {
+                    console.warn("Firestore not ready, skipping save.");
+                    return;
+                }
+                try {
+                    showLoading("Guardando en el historial...");
+                    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+                    const docRef = doc(db, `/artifacts/${appId}/public/data/decisions`, decisionData.id);
+                    const dataToSave = {
+                        ...decisionData,
+                        userId: userId,
+                        createdAt: serverTimestamp()
+                    };
+                    await setDoc(docRef, dataToSave);
+                } catch (e) {
+                    console.error("Error writing to Firestore: ", e);
+                    showAlert("No se pudo guardar el registro en el historial. Revisa la consola.");
+                } finally {
+                    hideLoading();
+                }
+            }
+            
+            // --- CHARTS ---
+            function renderRadarCharts(data) {
+                // Destroy existing charts if they exist
+                if (impactChartInstance) impactChartInstance.destroy();
+                if (objectivesChartInstance) objectivesChartInstance.destroy();
+
+                const impactLabels = processAreas;
+                const impactData = impactLabels.map(area => {
+                    const impact = data.impactos[area];
+                    return impact ? impact.mejoras.length + impact.consecuencias.length : 0;
+                });
+
+                const objectivesLabels = strategicObjectives;
+                const objectivesData = objectivesLabels.map(obj => data.objetivos.includes(obj) ? 1 : 0);
+
+                const chartOptions = {
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(0, 0, 0, 0.1)' },
+                            grid: { color: 'rgba(0, 0, 0, 0.1)' },
+                            pointLabels: { font: { size: 12 } },
+                            ticks: { backdropColor: 'white', stepSize: 1 }
+                        }
+                    },
+                    plugins: { legend: { display: false } }
+                };
+
+                impactChartInstance = new Chart(document.getElementById('impact-chart'), {
+                    type: 'radar',
+                    data: {
+                        labels: impactLabels,
+                        datasets: [{
+                            label: 'Nivel de Impacto',
+                            data: impactData,
+                            backgroundColor: 'rgba(13, 61, 111, 0.2)',
+                            borderColor: 'rgba(13, 61, 111, 1)',
+                            borderWidth: 2,
+                            pointBackgroundColor: 'rgba(13, 61, 111, 1)'
+                        }]
+                    },
+                    options: chartOptions
+                });
+
+                objectivesChartInstance = new Chart(document.getElementById('objectives-chart'), {
+                    type: 'radar',
+                    data: {
+                        labels: objectivesLabels,
+                        datasets: [{
+                            label: 'Alineación',
+                            data: objectivesData,
+                            backgroundColor: 'rgba(212, 175, 55, 0.2)',
+                            borderColor: 'rgba(212, 175, 55, 1)',
+                            borderWidth: 2,
+                            pointBackgroundColor: 'rgba(212, 175, 55, 1)'
+                        }]
+                    },
+                    options: chartOptions
+                });
+            }
+
+            // --- SUMMARY & EXPORT ---
+             function populateSummaryTable(data) {
+                document.getElementById('report-date').innerText = `Generado el ${new Date().toLocaleString('es-CO')}`;
+                const {info, impactos, objetivos, reflexion} = data;
+                const container = document.getElementById('summary-table-container');
+
+                let tableHtml = `<table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50"><tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Categoría</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Detalle</th>
+                    </tr></thead><tbody class="bg-white divide-y divide-gray-200">`;
+                
+                tableHtml += `<tr><td class="px-6 py-4 font-bold bg-gray-50" colspan="2">Información General</td></tr>`;
+                tableHtml += `<tr><td class="px-6 py-4 font-semibold">Responsable</td><td class="px-6 py-4">${info.responsable} (${info.rol})</td></tr>`;
+                tableHtml += `<tr><td class="px-6 py-4 font-semibold">Decisión</td><td class="px-6 py-4 whitespace-pre-wrap">${info.decision}</td></tr>`;
+                
+                tableHtml += `<tr><td class="px-6 py-4 font-bold bg-gray-50" colspan="2">Análisis de Impacto Sistémico</td></tr>`;
+                if(Object.keys(impactos).length > 0) {
+                    for(const [area, data] of Object.entries(impactos)){
+                        const mejoras = data.mejoras.length > 0 ? `<span class="font-semibold text-green-700">Mejoras:</span> ${data.mejoras.join(', ')}` : '';
+                        const consecuencias = data.consecuencias.length > 0 ? `<span class="font-semibold text-red-700">Consecuencias:</span> ${data.consecuencias.join(', ')}` : '';
+                        tableHtml += `<tr><td class="px-6 py-4 font-semibold">${area}</td><td class="px-6 py-4">${[mejoras, consecuencias].filter(Boolean).join('<br>')}</td></tr>`;
+                    }
+                } else {
+                     tableHtml += `<tr><td class="px-6 py-4 font-semibold" colspan="2">No se identificaron impactos directos en los procesos.</td></tr>`;
+                }
+                
+                tableHtml += `<tr><td class="px-6 py-4 font-bold bg-gray-50" colspan="2">Alineación Estratégica</td></tr>`;
+                if(objetivos.length > 0) {
+                    tableHtml += `<tr><td class="px-6 py-4" colspan="2">${objetivos.join(', ')}</td></tr>`;
+                } else {
+                    tableHtml += `<tr><td class="px-6 py-4" colspan="2">No se seleccionó alineación con macro-objetivos.</td></tr>`;
+                }
+                
+                tableHtml += `<tr><td class="px-6 py-4 font-bold bg-gray-50" colspan="2">Reflexión y Conciencia</td></tr>`;
+                tableHtml += `<tr><td class="px-6 py-4 font-semibold">Análisis de Conciencia</td><td class="whitespace-pre-wrap px-6 py-4">${reflexion.analisis || 'N/A'}</td></tr>`;
+                tableHtml += `<tr><td class="px-6 py-4 font-semibold">Insight Final</td><td class="whitespace-pre-wrap px-6 py-4">${reflexion.insight || 'N/A'}</td></tr>`;
+
+                tableHtml += `</tbody></table>`;
+                container.innerHTML = tableHtml;
+            }
+
+            document.getElementById('export-pdf').addEventListener('click', () => {
+                const element = document.getElementById('report-content');
+                const decisionId = `${decisionData.info.responsable.replace(/\s/g, '_')}_${Date.now()}`;
+                const opt = {
+                    margin:       0.5,
+                    filename:     `manifiesto_${decisionId}.pdf`,
+                    image:        { type: 'jpeg', quality: 0.98 },
+                    html2canvas:  { scale: 2, useCORS: true },
+                    jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+                };
+                html2pdf().from(element).set(opt).save();
+            });
+
+            document.getElementById('export-excel').addEventListener('click', () => {
+                const { info, impactos, objetivos, reflexion, aiAnalysis } = decisionData;
+                const flattenedData = {
+                    "Fecha": new Date().toISOString(),
+                    "Responsable": info.responsable,
+                    "Rol": info.rol,
+                    "Decision": info.decision,
+                    "Insight_Final": reflexion.insight,
+                    "Analisis_Conciencia": reflexion.analisis,
+                    "Analisis_IA": aiAnalysis,
+                    "Alineacion_Estrategica": objetivos.join(', '),
+                };
+                processAreas.forEach(area => {
+                    flattenedData[`Mejoras_${area}`] = impactos[area]?.mejoras.join(', ') || '';
+                    flattenedData[`Consecuencias_${area}`] = impactos[area]?.consecuencias.join(', ') || '';
+                });
+
+                const worksheet = XLSX.utils.json_to_sheet([flattenedData]);
+                const workbook = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(workbook, worksheet, "Manifiesto");
+                const decisionId = `${info.responsable.replace(/\s/g, '_')}_${Date.now()}`;
+                XLSX.writeFile(workbook, `manifiesto_${decisionId}.xlsx`);
+            });
+
+            // --- HISTORY ---
+            async function showHistory() {
+                if (!isAuthReady || !db) {
+                    showAlert("El servicio de historial no está listo. Por favor, espera un momento.");
+                    return;
+                }
+                showLoading("Cargando historial...");
+                const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+                const historyCollection = collection(db, `/artifacts/${appId}/public/data/decisions`);
+                const historySnapshot = await getDocs(historyCollection);
+                const historyList = historySnapshot.docs.map(d => ({...d.data(), firestoreId: d.id}));
+                
+                const tableBody = document.getElementById('history-table-body');
+                tableBody.innerHTML = '';
+                if (historyList.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="4" class="text-center py-4">Aún no hay decisiones registradas.</td></tr>';
+                } else {
+                     historyList.sort((a,b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
+                     historyList.forEach(item => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td class="px-6 py-4 whitespace-nowrap">${item.createdAt?.toDate().toLocaleDateString('es-CO') || 'N/A'}</td>
+                            <td class="px-6 py-4">${item.info.responsable}</td>
+                            <td class="px-6 py-4">${item.info.decision.substring(0, 70)}...</td>
+                            <td class="px-6 py-4 text-center">
+                                <button data-id="${item.firestoreId}" class="view-history-btn text-sm btn btn-primary py-1 px-3">Ver Manifiesto</button>
+                            </td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                }
+
+                tableBody.querySelectorAll('.view-history-btn').forEach(btn => {
+                    btn.addEventListener('click', async (e) => {
+                        const docId = e.target.dataset.id;
+                        await viewHistoryDetail(docId);
+                    });
+                });
+                
+                hideLoading();
+                showScreen('history');
+            }
+
+             async function viewHistoryDetail(docId) {
+                if (!db) return;
+                showLoading("Cargando manifiesto...");
+                try {
+                    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+                    const docRef = doc(db, `/artifacts/${appId}/public/data/decisions`, docId);
+                    const docSnap = await getDoc(docRef);
+                    if (docSnap.exists()) {
+                        decisionData = docSnap.data(); // Load the data into the global state
+                        showScreen('summary');
+                        await generateFinalReport(decisionData);
+                    } else {
+                        showAlert("No se encontró el documento.");
+                    }
+                } catch (error) {
+                    console.error("Error fetching document:", error);
+                    showAlert("Error al cargar el detalle del historial.");
+                } finally {
+                    hideLoading();
+                }
+            }
+
+
+            async function downloadFullHistory() {
+                 if (!isAuthReady || !db) {
+                    showAlert("El servicio de historial no está listo.");
+                    return;
+                }
+                showLoading("Preparando descarga...");
+                const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+                const historyCollection = collection(db, `/artifacts/${appId}/public/data/decisions`);
+                const historySnapshot = await getDocs(historyCollection);
+                const historyList = historySnapshot.docs.map(d => ({...d.data(), firestoreId: d.id}));
+
+                if (historyList.length === 0) {
+                    showAlert("No hay decisiones en el historial para descargar.");
+                    hideLoading();
+                    return;
+                }
+
+                 const exportData = historyList.map(item => {
+                    const { info, impactos, objetivos, reflexion, aiAnalysis, createdAt } = item;
+                    const flattenedData = {
+                        "ID_Decision": item.firestoreId,
+                        "Fecha": createdAt?.toDate().toISOString() || '',
+                        "Responsable": info.responsable,
+                        "Rol": info.rol,
+                        "Decision": info.decision,
+                        "Insight_Final": reflexion.insight,
+                        "Analisis_Conciencia": reflexion.analisis,
+                        "Analisis_IA": aiAnalysis,
+                        "Alineacion_Estrategica": objetivos.join(', '),
+                    };
+                    processAreas.forEach(area => {
+                        flattenedData[`Mejoras_${area}`] = impactos[area]?.mejoras.join(', ') || '';
+                        flattenedData[`Consecuencias_${area}`] = impactos[area]?.consecuencias.join(', ') || '';
+                    });
+                    return flattenedData;
+                });
+                
+                const worksheet = XLSX.utils.json_to_sheet(exportData);
+                const workbook = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(workbook, worksheet, "Historial Decisiones");
+                XLSX.writeFile(workbook, `Historial_Senda_Estratega.xlsx`);
+                hideLoading();
+            }
+
+            // --- INITIAL LOAD ---
+            setupFirebase();
+            showScreen('home');
+        });
+    </script>
+</body>
+</html>
