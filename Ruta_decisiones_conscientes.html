@@ -708,7 +708,7 @@
                     return;
                 }
                 showLoading("Cargando historial...");
-                const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+               const appId = 'senda-del-estratega';
                 const historyCollection = collection(db, `/artifacts/${appId}/public/data/decisions`);
                 const historySnapshot = await getDocs(historyCollection);
                 const historyList = historySnapshot.docs.map(d => ({...d.data(), firestoreId: d.id}));
