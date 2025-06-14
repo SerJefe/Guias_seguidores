@@ -288,7 +288,14 @@
             // --- FIREBASE SETUP ---
             async function setupFirebase() {
                 try {
-                    const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+                    const firebaseConfig = {
+  apiKey: "AIzaSyAg5_SdOtorllSsrGwHpHUPrUhKxZ3fbhI",
+  authDomain: "senda-del-estratega.firebaseapp.com",
+  projectId: "senda-del-estratega",
+  storageBucket: "senda-del-estratega.firebasestorage.app",
+  messagingSenderId: "353125847127",
+  appId: "1:353125847127:web:c04922a319b5742cb61312"
+};
                     if (Object.keys(firebaseConfig).length === 0) throw new Error("Configuración de Firebase no encontrada.");
                     
                     const app = initializeApp(firebaseConfig);
