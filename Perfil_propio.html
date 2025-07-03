@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Herramienta Avanzada de Perfilamiento para Jefes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* bg-gray-900 */
+            color: #f9fafb; /* text-gray-50 */
+        }
+        .question-card {
+            transition: opacity 0.5s ease-in-out;
+        }
+        .progress-bar-fill {
+            transition: width 0.5s ease-in-out;
+        }
+        .result-card {
+            animation: fadeIn 0.5s ease-in-out forwards;
+            opacity: 0;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+        }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 250px;
+            background-color: #374151; /* bg-gray-700 */
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 10;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -125px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.875rem;
+            font-weight: 400;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        .points-left-counter {
+            transition: color 0.3s ease;
+        }
+        /* Estilos para el test de inteligencia */
+        .puzzle-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            width: 240px;
+            margin: 0 auto 20px;
+        }
+        .puzzle-cell {
+            width: 70px;
+            height: 70px;
+            background-color: #374151;
+            border: 2px solid #4b5563;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .puzzle-cell.question-mark {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #10b981;
+        }
+        .puzzle-options {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .puzzle-option {
+            cursor: pointer;
+            border: 3px solid transparent;
+            border-radius: 8px;
+            transition: border-color 0.2s;
+        }
+        .puzzle-option.selected {
+            border-color: #3b82f6; /* blue-500 */
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app" class="container mx-auto p-4 md:p-8">
+
+        <!-- Pantalla de Bienvenida -->
+        <div id="welcome-screen" class="text-center max-w-3xl mx-auto">
+            <h1 class="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-teal-400 to-green-500 mb-4">Herramienta Avanzada de Perfilamiento</h1>
+            <p class="text-lg text-gray-300 mb-6">Un enfoque integral para la gestión de personas y el desarrollo de jefes.</p>
+            <p class="text-gray-400 mb-8">Esta herramienta va más allá de las evaluaciones tradicionales para revelar el estilo de trabajo, los impulsores y el potencial de una persona. El objetivo es proporcionar una base sólida para conversaciones de desarrollo y decisiones de gestión estratégicas.</p>
+            <div class="bg-gray-800 p-6 rounded-lg border border-gray-700">
+                <h2 class="text-2xl font-semibold text-white mb-4">Iniciar Perfilamiento</h2>
+                <p class="text-gray-400 mb-6">Ingresa el nombre de la persona a evaluar para comenzar.</p>
+                <input id="person-name" type="text" placeholder="Nombre completo" class="w-full max-w-md bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-teal-500 mb-4">
+                <button onclick="startQuestionnaire()" class="bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 text-white font-bold py-3 px-8 rounded-lg text-lg transition-transform transform hover:scale-105">
+                    Comenzar Evaluación
+                </button>
+            </div>
+        </div>
+
+        <!-- Pantalla del Cuestionario -->
+        <div id="questionnaire-screen" class="hidden">
+            <h2 id="questionnaire-title" class="text-2xl md:text-3xl font-bold text-center mb-2">Evaluación en Progreso</h2>
+            <p id="person-name-display" class="text-center text-teal-400 font-semibold text-xl mb-6"></p>
+            <div class="w-full bg-gray-700 rounded-full h-4 mb-8 max-w-4xl mx-auto">
+                <div id="progress-bar" class="bg-gradient-to-r from-teal-500 to-blue-600 h-4 rounded-full progress-bar-fill" style="width: 0%"></div>
+            </div>
+            <div id="questions-container">
+                <!-- Las preguntas se insertarán aquí dinámicamente -->
+            </div>
+            <div class="flex justify-center mt-8">
+                <button id="next-button" onclick="nextSection()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-12 rounded-lg text-lg transition-transform transform hover:scale-105">Siguiente</button>
+            </div>
+        </div>
+        
+        <!-- Pantalla de Carga -->
+        <div id="loading-screen" class="hidden text-center py-16">
+            <h2 class="text-3xl font-bold mb-4">Analizando Perfil...</h2>
+            <p class="text-gray-400 mb-8">Integrando respuestas para construir un perfil de gestión detallado.</p>
+            <div class="flex justify-center items-center">
+                <svg class="animate-spin h-16 w-16 text-teal-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Pantalla de Resultados -->
+        <div id="results-screen" class="hidden">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-teal-400 to-green-500 mb-2">Informe de Perfil de Gestión</h1>
+                <p id="result-person-name" class="text-2xl text-gray-300"></p>
+            </div>
+
+            <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 mb-8 result-card">
+                <h2 id="archetype-title" class="text-2xl font-bold text-teal-400 mb-2"></h2>
+                <p id="archetype-description" class="text-gray-400"></p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Columna Izquierda: Gráficos -->
+                <div class="lg:col-span-1 space-y-8">
+                    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 result-card" style="animation-delay: 0.1s;">
+                        <h3 class="text-xl font-bold mb-4">Impulsores Motivacionales</h3>
+                        <canvas id="motivation-chart"></canvas>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 result-card" style="animation-delay: 0.2s;">
+                        <h3 class="text-xl font-bold mb-4">Potencial de Resolución</h3>
+                        <canvas id="potential-chart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Análisis y Recomendaciones -->
+                <div class="lg:col-span-2 space-y-8">
+                     <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 result-card" style="animation-delay: 0.3s;">
+                        <h3 class="text-xl font-bold mb-4">Contribución al Equipo</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                            <div>
+                                <h4 class="font-semibold text-green-400 mb-2">Roles Naturales</h4>
+                                <ul id="preferred-roles" class="text-gray-300 space-y-1"></ul>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-yellow-400 mb-2">Roles Situacionales</h4>
+                                <ul id="manageable-roles" class="text-gray-300 space-y-1"></ul>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-red-400 mb-2">Roles Menos Afines</h4>
+                                <ul id="least-preferred-roles" class="text-gray-300 space-y-1"></ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 result-card" style="animation-delay: 0.4s;">
+                        <h3 class="text-xl font-bold mb-4">Puntos para la Conversación</h3>
+                        <div id="coherence-analysis" class="text-gray-400 space-y-4"></div>
+                    </div>
+                    
+                    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 result-card" style="animation-delay: 0.5s;">
+                         <h3 class="text-xl font-bold mb-4">Sugerencias de Rol y Entorno</h3>
+                         <div id="role-suggestions" class="text-gray-400"></div>
+                    </div>
+                </div>
+            </div>
+             <div class="text-center mt-12 space-x-4">
+                <button onclick="exportToCSV()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg text-lg transition-colors">Exportar a Excel (CSV)</button>
+                <button onclick="restart()" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-8 rounded-lg text-lg transition-colors">Evaluar a otra persona</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- DATABASE DE PREGUNTAS, DATOS Y TEXTOS ---
+        
+        const questionsDB = {
+            motivation: {
+                title: 'Sección 1: Situaciones Laborales',
+                instruction: 'Piensa en tu día a día en el trabajo. Indica tu grado de acuerdo con cada afirmación.',
+                items: [
+                    // Supervivencia
+                    { q: 'Lo que más valoro de mi trabajo es la estabilidad y seguridad que me ofrece.', factor: 'supervivencia' },
+                    { q: 'El reconocimiento público de mis jefes es un gran motor para mí.', factor: 'supervivencia' },
+                    { q: 'Me esfuerzo para cumplir con los estándares y evitar cualquier tipo de crítica negativa.', factor: 'supervivencia' },
+                    { q: 'La competencia por un ascenso o un bono me impulsa a dar lo mejor de mí.', factor: 'supervivencia' },
+                    { q: 'Siento una fuerte necesidad de demostrar constantemente mi competencia a los demás.', factor: 'supervivencia' },
+                    { q: 'Una estructura de trabajo clara y predecible me ayuda a rendir al máximo.', factor: 'supervivencia' },
+                    // Control
+                    { q: 'Para mí es crucial tener la libertad de decidir cómo abordar mis tareas.', factor: 'control' },
+                    { q: 'Me siento más comprometido cuando mi trabajo se alinea con mis valores personales.', factor: 'control' },
+                    { q: 'Busco activamente que mis opiniones sean consideradas en las decisiones importantes.', factor: 'control' },
+                    { q: 'La sensación de ser el arquitecto de mi propia trayectoria profesional me motiva profundamente.', factor: 'control' },
+                    { q: 'Prefiero tener la responsabilidad final sobre mis proyectos, aunque eso implique más presión.', factor: 'control' },
+                    { q: 'Invierto tiempo en tareas que, aunque no son urgentes, son importantes para mis metas a largo plazo.', factor: 'control' },
+                    // Disfrute
+                    { q: 'Me atraen los problemas complejos por el simple placer de encontrar una solución elegante.', factor: 'disfrute' },
+                    { q: 'A menudo me encuentro tan absorto en una tarea interesante que el tiempo vuela.', factor: 'disfrute' },
+                    { q: 'La oportunidad de aprender y dominar algo nuevo es mi mayor recompensa.', factor: 'disfrute' },
+                    { q: 'Disfruto experimentando con nuevos métodos, incluso si existe el riesgo de fallar.', factor: 'disfrute' },
+                    { q: 'Me siento con más energía cuando trabajo en algo que genuinamente me apasiona.', factor: 'disfrute' },
+                    { q: 'La sensación de progreso y crecimiento en mis habilidades es más importante que un título.', factor: 'disfrute' },
+                ]
+            },
+            team_contribution: {
+                title: 'Sección 2: Colaboración en Proyectos',
+                instruction: 'En cada una de las siguientes situaciones, distribuye 10 puntos entre las opciones según cómo sueles actuar.',
+                sections: [
+                    {
+                        title: 'Al iniciar un proyecto nuevo, mi principal contribución es:',
+                        items: [
+                            { q: 'Aclarar los objetivos y asegurarme de que todos entiendan su papel.', role: 'CO' },
+                            { q: 'Generar ideas y enfoques originales que nadie más ha considerado.', role: 'PL' },
+                            { q: 'Investigar qué están haciendo otros y traer contactos o recursos externos.', role: 'RI' },
+                            { q: 'Presionar para que empecemos a actuar y tomar decisiones rápidas.', role: 'SH' },
+                            { q: 'Analizar la situación con calma para evaluar todas las posibles ventajas y desventajas.', role: 'ME' },
+                        ]
+                    },
+                    {
+                        title: 'Cuando el equipo enfrenta un obstáculo, yo tiendo a:',
+                        items: [
+                            { q: 'Diseñar un plan de acción práctico y organizado para superarlo.', role: 'IMP' },
+                            { q: 'Escuchar a todos, mediar en los conflictos y mantener la moral alta.', role: 'TW' },
+                            { q: 'Revisar meticulosamente todos los detalles para encontrar dónde está el error.', role: 'CF' },
+                            { q: 'Desafiar el status quo y empujar al equipo a no rendirse.', role: 'SH' },
+                            { q: 'Ofrecer mi conocimiento técnico específico para resolver el problema de raíz.', role: 'SP' },
+                        ]
+                    },
+                    {
+                        title: 'Mi estilo de trabajo se caracteriza por:',
+                        items: [
+                            { q: 'Ser disciplinado y metódico, convierto las ideas en tareas concretas.', role: 'IMP' },
+                            { q: 'Ser diplomático y perceptivo, fomento un ambiente de colaboración.', role: 'TW' },
+                            { q: 'Ser imaginativo y poco ortodoxo, aporto una perspectiva diferente.', role: 'PL' },
+                            { q: 'Ser extrovertido y comunicativo, construyo puentes con el exterior.', role: 'RI' },
+                            { q: 'Ser sereno y juicioso, aporto un análisis objetivo y desapasionado.', role: 'ME' },
+                        ]
+                    }
+                ]
+            },
+            problem_solving: {
+                title: 'Sección 3: Resolución de Problemas',
+                instruction: 'Analiza cada patrón y elige la opción que completa la secuencia lógica.',
+                items: [
+                    // Puzzle 1: Simple progression
+                    { type: 'matrix', answer: 5, grid: ['circle', 'circle', 'square', 'square', 'triangle', 'triangle', 'diamond', 'diamond', 'q'], options: ['circle', 'square', 'line', 'star', 'diamond', 'plus'] },
+                    // Puzzle 2: Rotation
+                    { type: 'matrix', answer: 2, grid: ['arrow-up', 'arrow-right', 'arrow-down', 'arrow-left', 'arrow-up', 'arrow-right', 'arrow-down', 'arrow-left', 'q'], options: ['arrow-right', 'arrow-down', 'arrow-up', 'arrow-left', 'circle', 'square'] },
+                    // Puzzle 3: Combination
+                    { type: 'matrix', answer: 3, grid: ['circle', 'square', 'circle-in-square', 'triangle', 'diamond', 'triangle-in-diamond', 'plus', 'line', 'q'], options: ['circle', 'plus-in-line', 'line', 'plus-in-line', 'diamond', 'square'] },
+                    // Puzzle 4: Subtraction
+                    { type: 'matrix', answer: 1, grid: ['3-circles', '2-circles', '1-circle', '3-squares', '2-squares', '1-square', '3-triangles', '2-triangles', 'q'], options: ['1-triangle', '2-triangles', '3-triangles', '1-square', 'circle', 'diamond'] },
+                    // Puzzle 5: Position change
+                    { type: 'matrix', answer: 4, grid: ['dot-tl', 'dot-tc', 'dot-tr', 'dot-ml', 'dot-mc', 'dot-mr', 'dot-bl', 'dot-bc', 'q'], options: ['dot-tc', 'dot-mc', 'dot-bl', 'dot-br', 'dot-tr', 'dot-ml'] }
+                ]
+            },
+            learning_style: {
+                title: 'Sección 4: Preferencias de Trabajo y Aprendizaje',
+                instruction: 'Responde a las siguientes preguntas sobre cómo prefieres abordar nuevas tareas y situaciones.',
+                items: [
+                    { 
+                        q: 'Cuando te presentan un informe complejo, ¿qué haces primero?',
+                        type: 'vark',
+                        options: [
+                            { text: 'Busco los gráficos y diagramas para tener una visión general.', value: 'V' },
+                            { text: 'Pido a alguien que me resuma los puntos clave verbalmente.', value: 'A' },
+                            { text: 'Me sumerjo en la lectura del texto de principio a fin.', value: 'R' },
+                            { text: 'Intento aplicar sus conclusiones a un caso práctico que conozco.', value: 'K' },
+                        ]
+                    },
+                    {
+                        q: 'Un jefe te asigna un proyecto en un área totalmente nueva para ti. Tu reacción es:',
+                        type: 'kolb',
+                        options: [
+                            { text: 'Emocionarme con el desafío y empezar a experimentar de inmediato.', value: 'Acomodador' },
+                            { text: 'Buscar toda la información disponible (libros, expertos) para crear un modelo mental completo antes de actuar.', value: 'Asimilador' },
+                            { text: 'Preguntar: ¿Cuál es el objetivo final? Y enfocarme en encontrar la forma más rápida y eficiente de llegar a él.', value: 'Convergente' },
+                            { text: 'Hablar con muchas personas para entender sus perspectivas y generar un abanico de posibles ideas iniciales.', value: 'Divergente' },
+                        ]
+                    },
+                    {
+                        q: 'Evalúa tus fortalezas intelectuales al enfrentar un problema (distribuye 10 puntos):',
+                        type: 'potential',
+                        options: [ 'Analítica', 'Creativa', 'Práctica' ]
+                    }
+                ]
+            }
+        };
+
+        const roleNames = { PL: 'Cerebro', SH: 'Impulsor', CO: 'Coordinador', RI: 'Invest. Recursos', ME: 'Monitor Evaluador', TW: 'Cohesionador', IMP: 'Implementador', CF: 'Finalizador', SP: 'Especialista' };
+        const roleInfo = {
+            PL: 'Aporta ideas originales y creativas. Resuelve problemas complejos.',
+            SH: 'Proporciona impulso y dinamismo para superar obstáculos.',
+            CO: 'Aclara metas, promueve la toma de decisiones y delega eficazmente.',
+            RI: 'Explora oportunidades y desarrolla contactos fuera del equipo.',
+            ME: 'Analiza ideas de forma objetiva y evalúa su viabilidad.',
+            TW: 'Fomenta la cooperación y la armonía dentro del equipo.',
+            IMP: 'Convierte las ideas en planes prácticos y ejecutables.',
+            CF: 'Se asegura de que el trabajo se complete sin errores y con alta calidad.',
+            SP: 'Aporta conocimientos y habilidades técnicas especializadas.'
+        };
+        const archetypeDB = {
+            'El Jefe Ejecutor': {
+                title: 'Arquetipo: El Jefe Ejecutor',
+                description: 'Tu perfil sugiere un estilo de gestión pragmático y orientado a la acción. Eres una persona que valora la estructura, la eficiencia y la consecución de resultados tangibles. Tu principal fortaleza radica en tu capacidad para traducir la estrategia en planes concretos y asegurar que el trabajo se haga de manera correcta y puntual. Prosperas en entornos donde los objetivos son claros y se valora la fiabilidad.'
+            },
+            'El Jefe Estratega': {
+                title: 'Arquetipo: El Jefe Estratega',
+                description: 'Tu perfil indica un estilo de gestión basado en el análisis, la autonomía y la visión a largo plazo. Tu mayor contribución es tu capacidad para pensar críticamente, planificar con antelación y tomar decisiones basadas en la lógica y los valores. Te sientes motivado cuando tienes el control de tu dominio y puedes alinear las acciones del equipo con un propósito significativo. La microgestión y la falta de un porqué claro son tus mayores desmotivadores.'
+            },
+            'El Jefe Conector': {
+                title: 'Arquetipo: El Jefe Conector',
+                description: 'Tu perfil dibuja un estilo de gestión social, colaborativo e inspirador. Tu principal activo es tu habilidad para entender a las personas, fomentar el espíritu de equipo y facilitar la comunicación. Te mueves por la pasión, el crecimiento y el placer de ver al equipo prosperar junto. Eres ideal para crear culturas de trabajo positivas y para roles que dependen de la construcción de relaciones sólidas, tanto internas como externas.'
+            },
+            'El Jefe Híbrido': {
+                title: 'Arquetipo: El Jefe Híbrido',
+                description: 'Tu perfil muestra un equilibrio notable entre diferentes estilos de gestión, lo que te convierte en una figura versátil y adaptable. Tienes la capacidad de cambiar tu enfoque según las necesidades de la situación, ya sea planificando estratégicamente, ejecutando planes con precisión o conectando con tu equipo. Tu reto y tu fortaleza radican en saber qué faceta de tu gestión utilizar en cada momento.'
+            }
+        };
+
+
+        // --- ESTADO DE LA APLICACIÓN ---
+        let currentState = {
+            personName: '',
+            currentSectionIndex: 0,
+            sections: Object.keys(questionsDB),
+            answers: {}
+        };
+        let finalProfile = {};
+        
+        // --- LÓGICA DE LA INTERFAZ ---
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const questionnaireScreen = document.getElementById('questionnaire-screen');
+        const loadingScreen = document.getElementById('loading-screen');
+        const resultsScreen = document.getElementById('results-screen');
+        const questionsContainer = document.getElementById('questions-container');
+        const progressBar = document.getElementById('progress-bar');
+        const questionnaireTitle = document.getElementById('questionnaire-title');
+
+        function showScreen(screenId) {
+            [welcomeScreen, questionnaireScreen, loadingScreen, resultsScreen].forEach(screen => screen.classList.add('hidden'));
+            document.getElementById(screenId).classList.remove('hidden');
+        }
+
+        function startQuestionnaire() {
+            const nameInput = document.getElementById('person-name');
+            if (nameInput.value.trim() === '') {
+                // Usar un modal custom en vez de alert
+                alert('Por favor, ingresa un nombre.');
+                return;
+            }
+            currentState.personName = nameInput.value.trim();
+            document.getElementById('person-name-display').textContent = currentState.personName;
+            currentState.currentSectionIndex = 0;
+            currentState.answers = {};
+            showScreen('questionnaire-screen');
+            renderCurrentSection();
+        }
+        
+        function restart() {
+            showScreen('welcome-screen');
+            document.getElementById('person-name').value = '';
+        }
+
+        function renderCurrentSection() {
+            questionsContainer.innerHTML = '';
+            const sectionKey = currentState.sections[currentState.currentSectionIndex];
+            const sectionData = questionsDB[sectionKey];
+            const totalSections = currentState.sections.length;
+            const progress = ((currentState.currentSectionIndex) / totalSections) * 100;
+            
+            progressBar.style.width = `${progress}%`;
+            questionnaireTitle.textContent = sectionData.title;
+
+            const card = document.createElement('div');
+            card.className = 'question-card bg-gray-800 p-6 md:p-8 rounded-lg border border-gray-700 max-w-4xl mx-auto';
+            
+            let content = `<p class="text-gray-400 mb-6 text-center text-lg">${sectionData.instruction}</p>`;
+
+            if (sectionKey === 'motivation') {
+                sectionData.items.forEach((item, index) => {
+                    content += `<div class="mb-4 p-4 bg-gray-700/50 rounded-lg">
+                        <p class="mb-3 text-center">${item.q}</p>
+                        <div class="flex justify-between items-center max-w-md mx-auto">
+                            <span class="text-sm text-gray-400">En desacuerdo</span>
+                            <div class="flex space-x-2 md:space-x-4">
+                            ${[1, 2, 3, 4, 5].map(val => `<label class="flex flex-col items-center cursor-pointer"><input type="radio" name="motivation-${index}" value="${val}" class="h-5 w-5 text-teal-500 bg-gray-600 border-gray-500 focus:ring-teal-500" required><span class="text-xs mt-1 text-gray-400">${val}</span></label>`).join('')}
+                            </div>
+                            <span class="text-sm text-gray-400">De acuerdo</span>
+                        </div></div>`;
+                });
+            } else if (sectionKey === 'team_contribution') {
+                sectionData.sections.forEach((subSection, subIndex) => {
+                    content += `<div class="mb-8 p-4 bg-gray-700/50 rounded-lg"><h4 class="font-semibold text-center mb-4">${subSection.title}</h4>
+                                <div class="mb-4 text-center"><span id="points-left-${subIndex}" class="font-bold text-2xl text-green-400 points-left-counter">10</span><p class="text-gray-400">puntos restantes</p></div>`;
+                    subSection.items.forEach((item, itemIndex) => {
+                        content += `<div class="mb-3 p-3 bg-gray-900/40 rounded-lg flex items-center justify-between flex-wrap gap-2">
+                            <label for="belbin-${subIndex}-${itemIndex}" class="flex-grow">${item.q}</label>
+                            <input type="number" id="belbin-${subIndex}-${itemIndex}" name="belbin-${subIndex}" min="0" max="10" value="0" class="w-20 bg-gray-600 border border-gray-500 rounded-md p-2 text-center" oninput="updatePoints('points-left-${subIndex}', 'belbin-${subIndex}')">
+                        </div>`;
+                    });
+                    content += `</div>`;
+                });
+            } else if (sectionKey === 'problem_solving') {
+                sectionData.items.forEach((item, index) => {
+                    content += `<div class="mb-8 p-4 bg-gray-700/50 rounded-lg">
+                        <h4 class="font-semibold text-center mb-4">Puzzle ${index + 1}</h4>
+                        <div class="puzzle-grid">${item.grid.map((cell, cellIndex) => `<div class="puzzle-cell ${cell === 'q' ? 'question-mark' : ''}">${cell === 'q' ? '?' : renderPuzzleIcon(cell)}</div>`).join('')}</div>
+                        <div class="puzzle-options" id="puzzle-options-${index}">
+                            ${item.options.map((opt, optIndex) => `<div class="puzzle-option" onclick="selectPuzzleOption(${index}, ${optIndex})">${renderPuzzleIcon(opt, 60)}</div>`).join('')}
+                        </div>
+                        <input type="hidden" id="puzzle-answer-${index}" name="puzzle-answer-${index}" value="">
+                    </div>`;
+                });
+            } else if (sectionKey === 'learning_style') {
+                sectionData.items.forEach((item, index) => {
+                    content += `<div class="mb-6 p-4 bg-gray-700/50 rounded-lg"><p class="mb-4 font-semibold text-center">${item.q}</p>`;
+                    if (item.type === 'vark' || item.type === 'kolb') {
+                        item.options.forEach((opt, optIndex) => {
+                            content += `<label class="block mb-2 p-3 rounded-md hover:bg-gray-600 cursor-pointer border border-gray-600">
+                                <input type="radio" name="${item.type}" value="${opt.value}" class="h-4 w-4 text-teal-500 bg-gray-600 border-gray-500 focus:ring-teal-500" required>
+                                <span class="ml-3">${opt.text}</span></label>`;
+                        });
+                    } else if (item.type === 'potential') {
+                        content += `<div class="mb-4 text-center"><span id="points-left-potential" class="font-bold text-2xl text-green-400 points-left-counter">10</span><p class="text-gray-400">puntos restantes</p></div>
+                        <div class="flex justify-around flex-wrap gap-4">`;
+                        item.options.forEach(opt => {
+                            content += `<div class="text-center">
+                                <label for="potential-${opt}" class="font-semibold">${opt}</label>
+                                <input type="number" id="potential-${opt}" name="potential" min="0" max="10" value="0" class="w-24 bg-gray-600 border border-gray-500 rounded-md p-2 text-center mt-1" oninput="updatePoints('points-left-potential', 'potential')">
+                            </div>`;
+                        });
+                        content += `</div>`;
+                    }
+                    content += `</div>`;
+                });
+            }
+
+            card.innerHTML = content;
+            questionsContainer.appendChild(card);
+        }
+
+        function renderPuzzleIcon(type, size = 40) {
+            const svgAttrs = `width="${size}" height="${size}" viewbox="0 0 100 100" fill="none" stroke="#9ca3af" stroke-width="8"`;
+            switch(type) {
+                case 'circle': return `<svg ${svgAttrs}><circle cx="50" cy="50" r="40"/></svg>`;
+                case 'square': return `<svg ${svgAttrs}><rect x="10" y="10" width="80" height="80" rx="5"/></svg>`;
+                case 'triangle': return `<svg ${svgAttrs}><path d="M50 10 L90 90 L10 90 Z"/></svg>`;
+                case 'diamond': return `<svg ${svgAttrs}><path d="M50 5 L95 50 L50 95 L5 50 Z"/></svg>`;
+                case 'line': return `<svg ${svgAttrs}><line x1="10" y1="50" x2="90" y2="50"/></svg>`;
+                case 'plus': return `<svg ${svgAttrs}><path d="M50 10 V 90 M 10 50 H 90"/></svg>`;
+                case 'star': return `<svg ${svgAttrs}><path d="M50 5 L61 40 L98 40 L68 62 L79 98 L50 75 L21 98 L32 62 L2 40 L39 40 Z"/></svg>`;
+                case 'arrow-up': return `<svg ${svgAttrs}><path d="M50 10 L50 90 M50 10 L30 30 M50 10 L70 30"/></svg>`;
+                case 'arrow-right': return `<svg ${svgAttrs}><path d="M10 50 L90 50 M90 50 L70 30 M90 50 L70 70"/></svg>`;
+                case 'arrow-down': return `<svg ${svgAttrs}><path d="M50 10 L50 90 M50 90 L30 70 M50 90 L70 70"/></svg>`;
+                case 'arrow-left': return `<svg ${svgAttrs}><path d="M10 50 L90 50 M10 50 L30 30 M10 50 L30 70"/></svg>`;
+                case 'circle-in-square': return `<svg ${svgAttrs}><rect x="10" y="10" width="80" height="80" rx="5"/><circle cx="50" cy="50" r="25"/></svg>`;
+                case 'triangle-in-diamond': return `<svg ${svgAttrs}><path d="M50 5 L95 50 L50 95 L5 50 Z"/><path d="M50 30 L70 70 L30 70 Z"/></svg>`;
+                case 'plus-in-line': return `<svg ${svgAttrs}><line x1="10" y1="50" x2="90" y2="50"/><path d="M50 30 V 70 M 30 50 H 70"/></svg>`;
+                case '3-circles': return `<svg ${svgAttrs}><circle cx="25" cy="50" r="15"/><circle cx="50" cy="50" r="15"/><circle cx="75" cy="50" r="15"/></svg>`;
+                case '2-circles': return `<svg ${svgAttrs}><circle cx="35" cy="50" r="15"/><circle cx="65" cy="50" r="15"/></svg>`;
+                case '1-circle': return `<svg ${svgAttrs}><circle cx="50" cy="50" r="15"/></svg>`;
+                case '3-squares': return `<svg ${svgAttrs}><rect x="10" y="35" width="20" height="30"/><rect x="40" y="35" width="20" height="30"/><rect x="70" y="35" width="20" height="30"/></svg>`;
+                case '2-squares': return `<svg ${svgAttrs}><rect x="25" y="35" width="20" height="30"/><rect x="55" y="35" width="20" height="30"/></svg>`;
+                case '1-square': return `<svg ${svgAttrs}><rect x="40" y="35" width="20" height="30"/></svg>`;
+                case '3-triangles': return `<svg ${svgAttrs}><path d="M15 70 L25 50 L35 70Z"/><path d="M40 70 L50 50 L60 70Z"/><path d="M65 70 L75 50 L85 70Z"/></svg>`;
+                case '2-triangles': return `<svg ${svgAttrs}><path d="M25 70 L35 50 L45 70Z"/><path d="M55 70 L65 50 L75 70Z"/></svg>`;
+                case '1-triangle': return `<svg ${svgAttrs}><path d="M40 70 L50 50 L60 70Z"/></svg>`;
+                case 'dot-tl': return `<svg ${svgAttrs}><circle cx="20" cy="20" r="10" fill="#9ca3af"/></svg>`;
+                case 'dot-tc': return `<svg ${svgAttrs}><circle cx="50" cy="20" r="10" fill="#9ca3af"/></svg>`;
+                case 'dot-tr': return `<svg ${svgAttrs}><circle cx="80" cy="20" r="10" fill="#9ca3af"/></svg>`;
+                case 'dot-ml': return `<svg ${svgAttrs}><circle cx="20" cy="50" r="10" fill="#9ca3af"/></svg>`;
+                case 'dot-mc': return `<svg ${svgAttrs}><circle cx="50" cy="50" r="10" fill="#9ca3af"/></svg>`;
+                case 'dot-mr': return `<svg ${svgAttrs}><circle cx="80" cy="50" r="10" fill="#9ca3af"/></svg>`;
+                case 'dot-bl': return `<svg ${svgAttrs}><circle cx="20" cy="80" r="10" fill="#9ca3af"/></svg>`;
+                case 'dot-bc': return `<svg ${svgAttrs}><circle cx="50" cy="80" r="10" fill="#9ca3af"/></svg>`;
+                case 'dot-br': return `<svg ${svgAttrs}><circle cx="80" cy="80" r="10" fill="#9ca3af"/></svg>`;
+                default: return '';
+            }
+        }
+        
+        function selectPuzzleOption(puzzleIndex, optionIndex) {
+            const optionsContainer = document.getElementById(`puzzle-options-${puzzleIndex}`);
+            Array.from(optionsContainer.children).forEach(child => child.classList.remove('selected'));
+            optionsContainer.children[optionIndex].classList.add('selected');
+            document.getElementById(`puzzle-answer-${puzzleIndex}`).value = optionIndex;
+        }
+
+        function updatePoints(displayId, inputName) {
+            const inputs = document.querySelectorAll(`input[name="${inputName}"]`);
+            let total = 0;
+            inputs.forEach(input => { total += parseInt(input.value) || 0; });
+            const pointsLeft = 10 - total;
+            const pointsDisplay = document.getElementById(displayId);
+            pointsDisplay.textContent = pointsLeft;
+            pointsDisplay.classList.toggle('text-red-400', pointsLeft < 0);
+            pointsDisplay.classList.toggle('text-yellow-400', pointsLeft >= 0 && pointsLeft < 4);
+            pointsDisplay.classList.toggle('text-green-400', pointsLeft >= 4);
+        }
+
+        function collectAnswers() {
+            const sectionKey = currentState.sections[currentState.currentSectionIndex];
+            const sectionData = questionsDB[sectionKey];
+            const answers = {};
+            let isValid = true;
+
+            if (sectionKey === 'motivation') {
+                const answered = Array.from(document.querySelectorAll('input[name^="motivation-"]')).filter(i => i.checked).length;
+                if (answered < sectionData.items.length) isValid = false;
+                else sectionData.items.forEach((item, index) => {
+                    answers[`motivation-${index}`] = { factor: item.factor, value: parseInt(document.querySelector(`input[name="motivation-${index}"]:checked`).value) };
+                });
+            } else if (sectionKey === 'team_contribution') {
+                sectionData.sections.forEach((subSection, subIndex) => {
+                    const inputs = document.querySelectorAll(`input[name="belbin-${subIndex}"]`);
+                    let total = 0;
+                    inputs.forEach((input, itemIndex) => {
+                        const value = parseInt(input.value) || 0;
+                        total += value;
+                        answers[`belbin-${subIndex}-${itemIndex}`] = { role: subSection.items[itemIndex].role, value: value };
+                    });
+                    if (total !== 10) {
+                        isValid = false;
+                        alert(`Debes distribuir exactamente 10 puntos en la situación: "${subSection.title}"`);
+                    }
+                });
+            } else if (sectionKey === 'problem_solving') {
+                const answered = Array.from(document.querySelectorAll('input[name^="puzzle-answer-"]')).filter(i => i.value !== '').length;
+                if (answered < sectionData.items.length) isValid = false;
+                else sectionData.items.forEach((item, index) => {
+                    answers[`puzzle-${index}`] = { correct: item.answer, user: parseInt(document.getElementById(`puzzle-answer-${index}`).value) };
+                });
+            } else if (sectionKey === 'learning_style') {
+                const varkAnswer = document.querySelector('input[name="vark"]:checked');
+                const kolbAnswer = document.querySelector('input[name="kolb"]:checked');
+                if (!varkAnswer || !kolbAnswer) isValid = false;
+                else {
+                    answers['vark'] = varkAnswer.value;
+                    answers['kolb'] = kolbAnswer.value;
+                }
+                
+                const potentialInputs = document.querySelectorAll('input[name="potential"]');
+                let potentialTotal = 0;
+                const potentialAnswers = {};
+                potentialInputs.forEach(input => {
+                    const value = parseInt(input.value) || 0;
+                    potentialTotal += value;
+                    potentialAnswers[input.id.split('-')[1]] = value;
+                });
+                if (potentialTotal !== 10) {
+                    isValid = false;
+                    alert('Debes distribuir exactamente 10 puntos en tus fortalezas intelectuales.');
+                } else {
+                    answers['potential'] = potentialAnswers;
+                }
+            }
+            
+            if (!isValid) {
+                if(sectionKey !== 'team_contribution' && sectionKey !== 'learning_style') alert('Por favor, completa todas las preguntas de esta sección.');
+                return null;
+            }
+            return answers;
+        }
+
+        function nextSection() {
+            const newAnswers = collectAnswers();
+            if (newAnswers === null) return;
+            
+            Object.assign(currentState.answers, newAnswers);
+            currentState.currentSectionIndex++;
+
+            if (currentState.currentSectionIndex < currentState.sections.length) {
+                renderCurrentSection();
+            } else {
+                progressBar.style.width = '100%';
+                showScreen('loading-screen');
+                setTimeout(calculateAndShowResults, 2000);
+            }
+        }
+        
+        // --- LÓGICA DE CÁLCULO Y RESULTADOS ---
+        let charts = {};
+
+        function destroyCharts() {
+            Object.values(charts).forEach(chart => { if (chart) chart.destroy(); });
+            charts = {};
+        }
+
+        function calculateAndShowResults() {
+            destroyCharts();
+            const profile = {};
+
+            // 1. Motivación
+            profile.motivation = { supervivencia: 0, control: 0, disfrute: 0 };
+            const icdAnswers = Object.values(currentState.answers).filter(a => a && a.factor);
+            const itemsPerFactor = icdAnswers.length / 3;
+            icdAnswers.forEach(ans => { profile.motivation[ans.factor] += ans.value; });
+            const maxScoreICD = itemsPerFactor * 5;
+            Object.keys(profile.motivation).forEach(key => {
+                profile.motivation[key] = Math.round((profile.motivation[key] / maxScoreICD) * 100);
+            });
+
+            // 2. Roles de Equipo
+            profile.belbin = {};
+            const belbinAnswers = Object.values(currentState.answers).filter(a => a && a.role);
+            belbinAnswers.forEach(ans => {
+                if (!profile.belbin[ans.role]) profile.belbin[ans.role] = 0;
+                profile.belbin[ans.role] += ans.value;
+            });
+            profile.sortedRoles = Object.entries(profile.belbin).sort(([,a],[,b]) => b-a).map(r => ({ role: r[0], name: roleNames[r[0]], score: r[1] }));
+            
+            // 3. Resolución de Problemas
+            const puzzleAnswers = Object.values(currentState.answers).filter(a => a && a.hasOwnProperty('correct'));
+            profile.problemSolving = {
+                score: puzzleAnswers.reduce((acc, ans) => acc + (ans.correct === ans.user ? 1 : 0), 0),
+                total: puzzleAnswers.length
+            };
+
+            // 4. Estilo de Aprendizaje y Potencial
+            profile.learning = { vark: currentState.answers.vark, kolb: currentState.answers.kolb };
+            profile.potential = currentState.answers.potential;
+            
+            // 5. Generar Análisis y Recomendaciones
+            generateAnalysis(profile);
+            finalProfile = profile; // Guardar para exportar
+
+            // 6. Renderizar resultados
+            renderResults(profile);
+            showScreen('results-screen');
+        }
+
+        function generateAnalysis(profile) {
+            // Determinar arquetipo
+            const dominantMotivation = Object.keys(profile.motivation).reduce((a, b) => profile.motivation[a] > profile.motivation[b] ? a : b);
+            const primaryRoleCategory = {
+                'rojo': ['SH', 'IMP', 'CF'], 'azul': ['PL', 'ME', 'SP'], 'verde': ['CO', 'RI', 'TW']
+            };
+            const primaryRole = profile.sortedRoles[0].role;
+            let archetypeKey = 'El Jefe Híbrido';
+            if (dominantMotivation === 'supervivencia' && primaryRoleCategory.rojo.includes(primaryRole)) archetypeKey = 'El Jefe Ejecutor';
+            if (dominantMotivation === 'control' && primaryRoleCategory.azul.includes(primaryRole)) archetypeKey = 'El Jefe Estratega';
+            if (dominantMotivation === 'disfrute' && primaryRoleCategory.verde.includes(primaryRole)) archetypeKey = 'El Jefe Conector';
+            profile.archetype = archetypeDB[archetypeKey];
+
+            // Generar puntos de conversación
+            let analysisText = [];
+            const primaryRoleData = profile.sortedRoles[0];
+            const dominantPotential = Object.keys(profile.potential).reduce((a, b) => profile.potential[a] > profile.potential[b] ? a : b);
+
+            analysisText.push(`Tu rol natural parece ser el de **${primaryRoleData.name}**, y tu principal impulsor es la búsqueda de **${dominantMotivation}**. ¿Cómo crees que esta combinación se manifiesta en tu estilo de gestión diario?`);
+            analysisText.push(`Has mostrado una fortaleza en la inteligencia **${dominantPotential}**. ¿Sientes que tu rol actual te permite capitalizar esta habilidad? ¿En qué tipo de tareas te sientes más "en tu elemento"?`);
+            if (profile.motivation.control > 60 && primaryRoleData.role === 'IMP') {
+                analysisText.push(`Muestras una alta necesidad de autonomía (Control) y una fortaleza en la implementación de planes. ¿Cómo equilibras la necesidad de seguir un plan establecido con tu deseo de tomar tus propias decisiones en el proceso?`);
+            }
+            if (profile.motivation.supervivencia > 60 && primaryRoleData.role === 'PL') {
+                analysisText.push(`Tu perfil sugiere una interesante combinación: una motivación por la seguridad y una habilidad para la creatividad (Cerebro). ¿En qué condiciones te sientes más seguro para proponer ideas innovadoras que podrían implicar un riesgo?`);
+            }
+            analysisText.push(`Tu estilo de aprendizaje preferido es **${profile.learning.kolb}**. ¿De qué manera podrías estructurar el desarrollo de tu equipo para que se beneficie de este enfoque, ya sea a través de la experimentación, el análisis, la reflexión o la conceptualización?`);
+            profile.analysis = analysisText;
+
+            // Generar sugerencias de rol
+            profile.roleSuggestions = `Basado en tu perfil, podrías prosperar en roles como **Jefe de Proyectos** donde se requiere un ${primaryRoleData.role === 'IMP' ? 'fuerte seguimiento y organización' : 'enfoque claro en los objetivos'}, o como **Gerente de Desarrollo de Negocios** si tu fortaleza es la de ${primaryRoleData.role === 'RI' ? 'crear redes y explorar oportunidades' : 'analizar nuevos mercados'}. Un entorno que valore la **${dominantMotivation}** (ya sea seguridad, autonomía o crecimiento) y te permita usar tu rol de **${primaryRoleData.name}** será donde probablemente encuentres mayor satisfacción y efectividad.`;
+        }
+
+        function renderResults(profile) {
+            document.getElementById('result-person-name').textContent = currentState.personName;
+            document.getElementById('archetype-title').textContent = profile.archetype.title;
+            document.getElementById('archetype-description').textContent = profile.archetype.description;
+            
+            // Motivación
+            charts.motivation = new Chart(document.getElementById('motivation-chart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: ['Supervivencia', 'Control', 'Disfrute'],
+                    datasets: [{
+                        data: [profile.motivation.supervivencia, profile.motivation.control, profile.motivation.disfrute],
+                        backgroundColor: ['rgba(239, 68, 68, 0.7)', 'rgba(59, 130, 246, 0.7)', 'rgba(16, 185, 129, 0.7)'],
+                    }]
+                },
+                options: { indexAxis: 'y', responsive: true, scales: { x: { ticks: { color: '#d1d5db' }, grid: { color: '#4b5563' }, max: 100 }, y: { ticks: { color: '#d1d5db' } } }, plugins: { legend: { display: false }, title: { display: false } } }
+            });
+            
+            // Potencial
+            charts.potential = new Chart(document.getElementById('potential-chart').getContext('2d'), {
+                type: 'radar',
+                data: {
+                    labels: ['Analítica', 'Creativa', 'Práctica'],
+                    datasets: [{
+                        data: [profile.potential.Analítica, profile.potential.Creativa, profile.potential.Práctica],
+                        backgroundColor: 'rgba(59, 130, 246, 0.4)', borderColor: '#3b82f6', pointBackgroundColor: '#3b82f6'
+                    }]
+                },
+                options: { responsive: true, scales: { r: { beginAtZero: true, max: 10, ticks: { display: false }, pointLabels: { color: '#d1d5db', font: { size: 14 } }, grid: { color: '#4b5563' }, angleLines: { color: '#4b5563' } } }, plugins: { legend: { display: false } } }
+            });
+            
+            // Roles de Equipo
+            const preferred = document.getElementById('preferred-roles');
+            const manageable = document.getElementById('manageable-roles');
+            const least = document.getElementById('least-preferred-roles');
+            [preferred, manageable, least].forEach(el => el.innerHTML = '');
+            profile.sortedRoles.slice(0, 2).forEach(r => preferred.innerHTML += `<li><div class="tooltip">${r.name}<span class="tooltiptext">${roleInfo[r.role]}</span></div></li>`);
+            profile.sortedRoles.slice(2, 5).forEach(r => manageable.innerHTML += `<li><div class="tooltip">${r.name}<span class="tooltiptext">${roleInfo[r.role]}</span></div></li>`);
+            profile.sortedRoles.slice(5).forEach(r => least.innerHTML += `<li><div class="tooltip">${r.name}<span class="tooltiptext">${roleInfo[r.role]}</span></div></li>`);
+
+            // Análisis y Sugerencias
+            const analysisContainer = document.getElementById('coherence-analysis');
+            analysisContainer.innerHTML = profile.analysis.map(p => `<p class="p-3 bg-gray-900/50 rounded-lg border border-gray-700">${p.replace(/\*\*(.*?)\*\*/g, '<strong class="text-teal-400">$1</strong>')}</p>`).join('');
+            document.getElementById('role-suggestions').innerHTML = profile.roleSuggestions.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white">$1</strong>');
+        }
+
+        function exportToCSV() {
+            let csvContent = "data:text/csv;charset=utf-8,";
+            const p = finalProfile;
+            const headers = [
+                "Nombre", "Arquetipo", "Descripcion Arquetipo",
+                "Motivacion_Supervivencia", "Motivacion_Control", "Motivacion_Disfrute",
+                "Potencial_Analitico", "Potencial_Creativo", "Potencial_Practico",
+                "Resolucion_Problemas_Puntaje", "Resolucion_Problemas_Total",
+                "Estilo_Aprendizaje_Kolb", "Estilo_Aprendizaje_VARK",
+                "Rol_Natural_1", "Rol_Natural_2",
+                "Analisis_1", "Analisis_2", "Analisis_3",
+                "Sugerencias_Rol"
+            ];
+            csvContent += headers.join(",") + "\r\n";
+
+            const row = [
+                currentState.personName,
+                p.archetype.title,
+                `"${p.archetype.description.replace(/"/g, '""')}"`,
+                p.motivation.supervivencia, p.motivation.control, p.motivation.disfrute,
+                p.potential.Analítica, p.potential.Creativa, p.potential.Práctica,
+                p.problemSolving.score, p.problemSolving.total,
+                p.learning.kolb, p.learning.vark,
+                p.sortedRoles[0].name, p.sortedRoles[1].name,
+                `"${p.analysis[0].replace(/"/g, '""')}"`,
+                `"${p.analysis[1].replace(/"/g, '""')}"`,
+                `"${p.analysis[2].replace(/"/g, '""')}"`,
+                `"${p.roleSuggestions.replace(/"/g, '""')}"`
+            ];
+            csvContent += row.join(",") + "\r\n";
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `perfil_${currentState.personName.replace(/ /g, '_')}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+    </script>
+
+</body>
+</html>
