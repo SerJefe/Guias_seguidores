@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infografía: El Modelo SER.SIENDO y la Jefatura Holística</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; 
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #3A86FF, #0A2240);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .flow-arrow::after {
+            content: '→';
+            font-size: 2rem;
+            color: #3A86FF;
+            position: absolute;
+            right: -25px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .flow-arrow-down::after {
+            content: '↓';
+            font-size: 2rem;
+            color: #3A86FF;
+            position: absolute;
+            bottom: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    </style>
+</head>
+<body class="text-gray-700">
+
+    <header class="bg-white shadow-md p-6 text-center">
+        <h1 class="text-4xl md:text-5xl font-black gradient-text">El Modelo SER.SIENDO</h1>
+        <p class="text-lg text-gray-600 mt-2">Un Paradigma Integrado para la Jefatura y el Desarrollo Organizacional</p>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <section id="articulo1" class="mb-16">
+            <div class="bg-white rounded-2xl shadow-lg p-6 md:p-10">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">1. La Organización como Cuerpo Humano: Una Anatomía del Ser</h2>
+                <p class="mb-8 text-gray-600">El modelo SER.SIENDO concibe la organización no como una máquina, sino como un sistema vivo y holístico. Para comprender su funcionamiento, podemos usar una analogía directa con el cuerpo humano, donde cada parte es vital y está interconectada, y el "Ser" es la conciencia que lo anima todo.</p>
+                <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+                    <div class="flex flex-col items-end text-right space-y-8">
+                        <div class="w-full">
+                            <h3 class="text-xl font-bold text-[#003f5c]">🧠 El Cerebro: El Jefe</h3>
+                            <p>Centro de visión, estrategia e integración. Asegura la coherencia del sistema.</p>
+                        </div>
+                        <div class="w-full">
+                            <h3 class="text-xl font-bold text-[#003f5c]">⚡ Sistema Nervioso: Comunicación</h3>
+                            <p>Red de flujo de información y coordinación que conecta todas las partes.</p>
+                        </div>
+                    </div>
+                    <div class="flex justify-center items-center">
+                         <div class="w-48 h-48 md:w-64 md:h-64 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 flex justify-center items-center text-center p-4 shadow-xl">
+                            <span class="text-2xl font-bold text-[#0A2240]">Organismo<br>SER.SIENDO</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-start text-left space-y-8">
+                       <div class="w-full">
+                            <h3 class="text-xl font-bold text-[#003f5c]">❤️ El Corazón: Propósito y Cultura</h3>
+                            <p>Motor que da vida, valores y dirección a todas las acciones.</p>
+                        </div>
+                        <div class="w-full">
+                            <h3 class="text-xl font-bold text-[#003f5c]">💪 Músculos: Equipos</h3>
+                            <p>El brazo ejecutor que traduce la estrategia en acción y resultados.</p>
+                        </div>
+                    </div>
+                    <div class="md:col-span-3 text-center mt-8">
+                         <div class="inline-block">
+                            <h3 class="text-xl font-bold text-[#003f5c]">🛡️ Sistema Inmune: Adaptabilidad</h3>
+                            <p>Capacidad de defensa, aprendizaje y resiliencia ante los cambios.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-12 pt-8 border-t border-gray-200">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">1.1. Flujos Vitales y Componentes Esenciales</h3>
+                    <p class="mb-8 text-gray-600 text-center">Profundizando en la analogía, la organización también depende de flujos y elementos que son vitales para su subsistencia y crecimiento, tal como el cuerpo humano.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="bg-blue-50 p-6 rounded-lg shadow-sm text-center">
+                            <h4 class="font-bold text-xl text-[#003f5c]">💰 El Dinero: Oxígeno</h4>
+                            <p class="text-sm mt-2">Es el flujo vital, necesario y urgente, que permite la vida y operación del organismo. Sin él, el sistema se asfixia.</p>
+                        </div>
+                        <div class="bg-blue-50 p-6 rounded-lg shadow-sm text-center">
+                            <h4 class="font-bold text-xl text-[#003f5c]">🍎 Nutrientes: Productos, Servicios, Insumos</h4>
+                            <p class="text-sm mt-2">Todo lo que entra al sistema para ser procesado y transformado en valor. La "comida" que alimenta la operación.</p>
+                        </div>
+                        <div class="bg-blue-50 p-6 rounded-lg shadow-sm text-center">
+                            <h4 class="font-bold text-xl text-[#003f5c]">🩸 Las Personas: Células y Neuronas Transmisoras</h4>
+                            <p class="text-sm mt-2">Son las unidades móviles que transportan capacidades, aprendizajes y energía. Las neuronas son los transmisores de información y acción.</p>
+                        </div>
+                        <div class="bg-blue-50 p-6 rounded-lg shadow-sm text-center md:col-span-2 lg:col-span-1">
+                            <h4 class="font-bold text-xl text-[#003f5c]">🗑️ Residuos: Lo que no se Aprovecha</h4>
+                            <p class="text-sm mt-2">Todo aquello que no se transforma en valor y debe ser eliminado para evitar la intoxicación del sistema.</p>
+                        </div>
+                        <div class="bg-blue-50 p-6 rounded-lg shadow-sm text-center md:col-span-2 lg:col-span-1">
+                            <h4 class="font-bold text-xl text-[#003f5c]">💀 Lo que no se Mueve: Necrosis</h4>
+                            <p class="text-sm mt-2">La inmovilidad, la rigidez o el estancamiento llevan a la muerte del tejido organizacional. El flujo constante es vital.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="articulo2" class="mb-16">
+            <div class="bg-white rounded-2xl shadow-lg p-6 md:p-10">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">2. El Rol Definitivo del Jefe: Arquitecto de Logros</h2>
+                <p class="mb-8 text-gray-600">El jefe es el "cerebro" y el integrador principal del sistema. Su rol no es mandar, sino "lograr que otros logren". Su efectividad depende de un conjunto de competencias interconectadas que le permiten diseñar un entorno donde la autonomía, la responsabilidad y el florecimiento humano convergen.</p>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h3 class="text-xl font-bold text-center mb-4 text-[#003f5c]">Las 10 Competencias del Jefe de Negocio</h3>
+                        <p class="text-sm text-center mb-4 text-gray-500">Un jefe de negocio ideal posee un balance en estas 10 áreas clave, actuando como un gestor sistémico que entiende todas las partes del negocio.</p>
+                        <div class="chart-container">
+                            <canvas id="competenciasChart"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-center mb-4 text-[#003f5c]">Perfil del Colaborador Ideal</h3>
+                        <div class="space-y-4">
+                            <div class="bg-blue-50 p-4 rounded-lg shadow-sm">
+                                <h4 class="font-bold">1. Responsabilidad Propia (Ownership)</h4>
+                                <p class="text-sm">Asume el objetivo como propio y actúa con autonomía.</p>
+                            </div>
+                            <div class="bg-blue-50 p-4 rounded-lg shadow-sm">
+                                <h4 class="font-bold">2. Iniciativa y Autogestión</h4>
+                                <p class="text-sm">Busca el "cómo" y propone soluciones proactivamente.</p>
+                            </div>
+                            <div class="bg-blue-50 p-4 rounded-lg shadow-sm">
+                                <h4 class="font-bold">3. Curiosidad por el Negocio</h4>
+                                <p class="text-sm">Interés genuino en el impacto de su trabajo en el todo.</p>
+                            </div>
+                            <div class="bg-blue-50 p-4 rounded-lg shadow-sm">
+                                <h4 class="font-bold">4. Mentalidad de Aprendizaje</h4>
+                                <p class="text-sm">Acoge el feedback y ve los errores como datos para mejorar.</p>
+                            </div>
+                             <div class="bg-blue-50 p-4 rounded-lg shadow-sm">
+                                <h4 class="font-bold">5. Fiabilidad e Integridad</h4>
+                                <p class="text-sm">Cumple lo prometido, generando la confianza para delegar.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="articulo3" class="mb-16">
+            <div class="bg-white rounded-2xl shadow-lg p-6 md:p-10">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">3. Ampliar la Conciencia: El Poder Transformador del SER.SIENDO</h2>
+                <p class="mb-8 text-gray-600">Comprender el "Ser" (nuestra esencia, valores y propósito) es una herramienta transformadora. Permite ampliar la conciencia más allá de las reacciones automáticas, facilitando decisiones más sabias, estratégicas y alineadas. El nivel de conciencia desde el que operamos define la calidad de nuestros resultados.</p>
+                <div class="flex flex-col items-center">
+                     <h3 class="text-xl font-bold text-center mb-6 text-[#003f5c]">Niveles de Conciencia en la Toma de Decisiones</h3>
+                    <div class="w-full max-w-md space-y-1">
+                        <div class="bg-gradient-to-r from-[#3A86FF] to-[#8cb2d9] text-white p-4 rounded-t-lg shadow-lg text-center">
+                            <h4 class="font-bold text-lg">Consciente / Integrado</h4>
+                            <p class="text-sm">Decisiones holísticas, éticas y auténticas que buscan el bien común.</p>
+                        </div>
+                        <div class="bg-[#4d6f8d] text-white p-4 shadow-md text-center">
+                            <h4 class="font-bold">Alineado con Propósito</h4>
+                            <p class="text-sm">Decisiones guiadas por valores y visión a largo plazo.</p>
+                        </div>
+                        <div class="bg-gray-500 text-white p-4 shadow-sm text-center">
+                            <h4 class="font-bold">Impulsado por el Ego</h4>
+                            <p class="text-sm">Decisiones para beneficio personal, poder o validación.</p>
+                        </div>
+                        <div class="bg-gray-700 text-white p-4 rounded-b-lg shadow-inner text-center">
+                            <h4 class="font-bold">Reactivo / Basado en Miedo</h4>
+                            <p class="text-sm">Decisiones defensivas, a corto plazo, para evitar el dolor.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="articulo4" class="mb-16">
+             <div class="bg-white rounded-2xl shadow-lg p-6 md:p-10">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">4. Del Origen a la Acción: Decisiones Alineadas con lo Esencial</h2>
+                <p class="mb-8 text-gray-600">Reconocer *desde dónde* tomamos las decisiones es clave para acercarnos a los objetivos. Una decisión desde el miedo produce un resultado muy distinto a una desde el propósito. El "Ciclo Motivacional" nos muestra cómo la intención se convierte en acción, y cómo podemos guiar ese proceso conscientemente.</p>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h3 class="text-xl font-bold text-center mb-4 text-[#003f5c]">Origen Común de las Decisiones</h3>
+                        <p class="text-sm text-center mb-4 text-gray-500">Un análisis de las decisiones en entornos no conscientes revela una distribución que favorece la reacción sobre la intención.</p>
+                        <div class="chart-container">
+                            <canvas id="origenDecisionChart"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                         <h3 class="text-xl font-bold text-center mb-4 text-[#003f5c]">El Ciclo Motivacional Consciente</h3>
+                        <div class="relative flex flex-col items-center space-y-8 md:space-y-0">
+                            <div class="relative w-full md:w-3/4 text-center bg-blue-100 p-4 rounded-lg shadow-md md:flow-arrow">
+                                <h4 class="font-bold">1. Deliberación</h4>
+                                <p class="text-sm">Se forma la intención. ¿Qué necesidad o deseo surge? ¿Cuál es el valor?</p>
+                            </div>
+                            <div class="hidden md:block h-16 w-px"></div>
+                            <div class="relative w-full md:w-3/4 text-center bg-blue-100 p-4 rounded-lg shadow-md md:flow-arrow">
+                                <h4 class="font-bold">2. Pre-Acción</h4>
+                                <p class="text-sm">Se planifica. ¿Cómo, cuándo y dónde se actuará? (Planes "Si...Entonces").</p>
+                            </div>
+                            <div class="hidden md:block h-16 w-px"></div>
+                             <div class="relative w-full md:w-3/4 text-center bg-blue-100 p-4 rounded-lg shadow-md md:flow-arrow">
+                                <h4 class="font-bold">3. Acción</h4>
+                                <p class="text-sm">Se ejecuta el plan con autorregulación y control.</p>
+                            </div>
+                            <div class="hidden md:block h-16 w-px"></div>
+                             <div class="relative w-full md:w-3/4 text-center bg-blue-100 p-4 rounded-lg shadow-md">
+                                <h4 class="font-bold">4. Post-Acción</h4>
+                                <p class="text-sm">Se evalúa el resultado y se atribuye causalidad (habilidad, esfuerzo, suerte).</p>
+                            </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <section class="container mx-auto p-4 md:p-8 mt-12 mb-16">
+        <div class="bg-white rounded-2xl shadow-lg p-6 md:p-10 text-center">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">Decisiones: Conscientes, Inconscientes y su Propósito Fundamental</h2>
+            <p class="mb-6 text-gray-600">En el Modelo SER.SIENDO, cada decisión, sea consciente o inconsciente, se origina desde una de tres intenciones primarias, fundamentales para la existencia y evolución del organismo organizacional:</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-[#8cb2d9] text-white p-6 rounded-lg shadow-md flex flex-col items-center justify-center">
+                    <span class="text-5xl mb-3">&#x1F6E1;&#xFE0F;</span>
+                    <h3 class="font-bold text-xl mb-2">Sobrevivir</h3>
+                    <p class="text-sm">Asegurar la continuidad básica del sistema.</p>
+                </div>
+                <div class="bg-[#4d6f8d] text-white p-6 rounded-lg shadow-md flex flex-col items-center justify-center">
+                    <span class="text-5xl mb-3">&#x2699;&#xFE0F;</span>
+                    <h3 class="font-bold text-xl mb-2">Recuperar Control</h3>
+                    <p class="text-sm">Restablecer el equilibrio y la dirección ante el desorden.</p>
+                </div>
+                <div class="bg-[#0A2240] text-white p-6 rounded-lg shadow-md flex flex-col items-center justify-center">
+                    <span class="text-5xl mb-3">&#x1F331;</span>
+                    <h3 class="font-bold text-xl mb-2">Desarrollarse</h3>
+                    <p class="text-sm">Evolucionar, innovar y alcanzar un potencial superior.</p>
+                </div>
+            </div>
+            <p class="mt-8 text-gray-600">Comprender esta clasificación nos permite discernir la verdadera intención detrás de nuestras acciones y guiar el organismo hacia un florecimiento consciente y sostenido.</p>
+        </div>
+    </section>
+
+    <footer class="text-center p-6 mt-12 text-sm text-gray-500">
+        <p>Infografía generada basada en el modelo "SER.SIENDO".</p>
+        <p>Visualizaciones creadas con Chart.js y Tailwind CSS. Sin SVG ni Mermaid JS.</p>
+    </footer>
+
+    <script>
+        function wrapText(text, maxLength) {
+            if (text.length <= maxLength) {
+                return text;
+            }
+            const words = text.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + ' ' + word).trim().length > maxLength) {
+                    lines.push(currentLine.trim());
+                    currentLine = word;
+                } else {
+                    currentLine = (currentLine + ' ' + word).trim();
+                }
+            }
+            if (currentLine) {
+                lines.push(currentLine.trim());
+            }
+            return lines;
+        }
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            } else {
+                return label;
+            }
+        };
+
+        const chartColors = {
+            blue: '#3A86FF',
+            darkBlue: '#0A2240',
+            lightBlue: '#8cb2d9',
+            grey: '#4A5568',
+            lightGrey: '#cfe1f2'
+        };
+
+        const competenciasLabels = [
+            'Responsabilización Estratégica',
+            'Traducción Contextual',
+            'Diseño de Objetivos',
+            'Facilitación Socrática',
+            'Comunicación y Escucha',
+            'Negociación de Valor',
+            'Diagnóstico Sistémico',
+            'Cultivo del Talento',
+            'Valoración de Contribución',
+            'Gestión de Riesgos'
+        ].map(label => wrapText(label, 16));
+
+        const competenciasData = {
+            labels: competenciasLabels,
+            datasets: [{
+                label: 'Jefe de Negocio Ideal',
+                data: [9, 8, 9, 8, 10, 8, 9, 10, 9, 8],
+                fill: true,
+                backgroundColor: 'rgba(58, 134, 255, 0.2)',
+                borderColor: chartColors.blue,
+                pointBackgroundColor: chartColors.blue,
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: chartColors.blue
+            }]
+        };
+
+        const competenciasConfig = {
+            type: 'radar',
+            data: competenciasData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: { color: 'rgba(0, 0, 0, 0.1)' },
+                        grid: { color: 'rgba(0, 0, 0, 0.1)' },
+                        pointLabels: {
+                             font: {
+                                size: 10
+                            }
+                        },
+                        ticks: {
+                            backdropColor: 'transparent',
+                            stepSize: 2
+                        },
+                        min: 0,
+                        max: 10
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback
+                        }
+                    }
+                }
+            }
+        };
+
+        const origenDecisionData = {
+            labels: ['Miedo / Reacción', 'Ego / Beneficio Personal', 'Hábito / Inercia', 'Propósito / Ser Auténtico'],
+            datasets: [{
+                label: 'Origen de la Decisión',
+                data: [45, 25, 20, 10],
+                backgroundColor: [
+                    chartColors.grey,
+                    chartColors.lightGrey,
+                    chartColors.lightBlue,
+                    chartColors.blue,
+                ],
+                borderColor: '#f0f4f8',
+                borderWidth: 4,
+                hoverOffset: 8
+            }]
+        };
+
+        const origenDecisionConfig = {
+            type: 'doughnut',
+            data: origenDecisionData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '60%',
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                         labels: {
+                            padding: 20
+                        }
+                    },
+                     tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback
+                        }
+                    }
+                }
+            }
+        };
+
+        window.onload = function() {
+            const ctxCompetencias = document.getElementById('competenciasChart');
+            if(ctxCompetencias) new Chart(ctxCompetencias, competenciasConfig);
+
+            const ctxOrigen = document.getElementById('origenDecisionChart');
+            if(ctxOrigen) new Chart(ctxOrigen, origenDecisionConfig);
+        };
+    </script>
+</body>
+</html>
