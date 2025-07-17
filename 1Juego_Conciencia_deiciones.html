@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SER JEFE: La Senda del Estratega</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background: #eef2f5; }
+        .theme-blue-dark { background-color: #2c3e50; }
+        .text-theme-blue-dark { color: #2c3e50; }
+        .btn { padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 700; transition: all 0.3s ease; cursor: pointer; }
+        .btn-primary { background-color: #2c3e50; color: white; box-shadow: 0 4px 14px 0 rgba(44, 62, 80, 0.3); }
+        .btn-primary:hover { background-color: #34495e; }
+        .card { background-color: white; border-radius: 1rem; padding: 2.5rem; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); }
+        .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(5px); align-items: center; justify-content: center;}
+        .modal-content { background-color: #fefefe; padding: 2rem; border-radius: 1rem; width: 90%; max-width: 500px; animation: zoomIn 0.3s; }
+        @keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .star-rating { font-size: 2.5rem; color: #f39c12; }
+        #consciousness-figure .piece { transition: opacity 0.8s ease-in-out; opacity: 0.15; }
+        #consciousness-figure .piece.active { opacity: 1; }
+        input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 8px; background: #d1d5db; border-radius: 5px; outline: none; opacity: 0.7; transition: opacity .2s; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; background: #2c3e50; cursor: pointer; border-radius: 50%; }
+        input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; background: #2c3e50; cursor: pointer; border-radius: 50%; }
+    </style>
+</head>
+<body class="text-gray-800">
+    <div class="container mx-auto p-4 md:p-8">
+        <section id="screen-home" class="text-center py-16">
+            <h1 class="text-5xl font-bold text-theme-blue-dark mb-4">La Senda del Estratega</h1>
+            <p class="text-xl text-gray-600 mb-10 max-w-3xl mx-auto">Un juego para forjar decisiones conscientes. Nivela tu conciencia, construye tu visión, lidera con maestría.</p>
+            <div class="space-x-4">
+                <button id="start-btn" class="btn btn-primary text-lg">Empezar a Construir</button>
+                <button id="history-btn" class="btn btn-primary bg-gray-600 hover:bg-gray-700 text-lg">Ver Historial</button>
+            </div>
+             <div id="user-info" class="mt-8 text-xs text-gray-500"></div>
+        </section>
+        
+        <section id="screen-history" class="hidden">
+             <div class="card max-w-7xl mx-auto">
+                 <h2 class="text-3xl font-bold text-theme-blue-dark mb-6 text-center">Historial de Decisiones</h2>
+                 <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Responsable</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Decisión</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nivel de Conciencia</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estrellas</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-table-body" class="bg-white divide-y divide-gray-200">
+                            <!-- History rows will be injected here -->
+                        </tbody>
+                    </table>
+                 </div>
+                 <div class="text-center mt-8">
+                     <button id="back-to-home-btn" class="btn btn-primary">Volver al Inicio</button>
+                 </div>
+            </div>
+        </section>
+
+        <section id="screen-data" class="hidden">
+            <div class="card max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-theme-blue-dark mb-8 text-center">Nivel 0: El Origen</h2>
+                <form id="initial-data-form" class="space-y-6">
+                    <div>
+                        <label for="responsable" class="block text-sm font-medium text-gray-700">Responsable de la Decisión</label>
+                        <input type="text" id="responsable" class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm" required>
+                    </div>
+                    <div>
+                         <label for="rol" class="block text-sm font-medium text-gray-700">Rol del Responsable</label>
+                         <input type="text" id="rol" class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm" required>
+                    </div>
+                    <div>
+                        <label for="decision" class="block text-sm font-medium text-gray-700">Decisión a Forjar</label>
+                        <textarea id="decision" rows="3" class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm" required></textarea>
+                    </div>
+                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                         <div>
+                            <label for="tipo-decision" class="block text-sm font-medium text-gray-700">Tipo de Decisión</label>
+                            <select id="tipo-decision" class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm">
+                                <option value="Desarrollo">Desarrollo (Crecer, innovar)</option>
+                                <option value="Recuperar Control">Recuperar Control (Optimizar, corregir)</option>
+                                <option value="Sobrevivir">Sobrevivir (Crisis, urgencia)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="origen-decision" class="block text-sm font-medium text-gray-700">Origen de la Necesidad</label>
+                            <select id="origen-decision" class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm">
+                                <option value="Externo">Externo (Mercado, cliente)</option>
+                                <option value="Interno">Interno (Causado por el sistema)</option>
+                            </select>
+                        </div>
+                    </div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SER JEFE: La Senda del Estratega</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#2c3e50">
+    <style>
+        body { font-family: 'Inter', sans-serif; background: #eef2f5; }
+        .theme-blue-dark { background-color: #2c3e50; }
+        .text-theme-blue-dark { color: #2c3e50; }
+        .btn { 
+            padding: 0.75rem 1.5rem; 
+            border-radius: 0.5rem; 
+            font-weight: 700; 
+            transition: all 0.3s ease-in-out; 
+            cursor: pointer;
+            transform: scale(1);
+        }
+        .btn:hover {
+            transform: scale(1.03);
+        }
+        .btn-primary { background-color: #2c3e50; color: white; box-shadow: 0 4px 14px 0 rgba(44, 62, 80, 0.3); }
+        .btn-primary:hover { background-color: #34495e; }
+        .card { 
+            background-color: white; 
+            border-radius: 1rem; 
+            padding: 2.5rem; 
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+            transition: all 0.4s ease;
+            will-change: transform;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+        }
+        .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(5px); align-items: center; justify-content: center;}
+        .modal-content { background-color: #fefefe; padding: 2rem; border-radius: 1rem; width: 90%; max-width: 500px; animation: zoomIn 0.3s; }
+        @keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .star-rating { font-size: 2.5rem; color: #f39c12; }
+        #consciousness-figure .piece { transition: opacity 0.8s ease-in-out; opacity: 0.15; }
+        #consciousness-figure .piece.active { opacity: 1; }
+        .fade-in {
+          animation: fadeIn 0.5s ease-out;
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(12px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .impact-tag {
+            cursor: pointer;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            border: 1px solid #d1d5db;
+            transition: all 0.2s ease;
+            font-size: 0.8rem;
+        }
+        .impact-tag.selected {
+            color: white;
+            border-color: transparent;
+        }
+        .tag-mejora.selected { background-color: #27ae60; }
+        .tag-consecuencia.selected { background-color: #c0392b; }
+    </style>
+</head>
+<body class="text-gray-800">
+    <div class="container mx-auto p-4 md:p-8">
+        <section id="screen-home" class="text-center py-16">
+            <h1 class="text-5xl font-bold text-theme-blue-dark mb-4">La Senda del Estratega</h1>
+            <p class="text-xl text-gray-600 mb-10 max-w-3xl mx-auto">Un juego para forjar decisiones conscientes. Nivela tu conciencia, construye tu visión, lidera con maestría.</p>
+            <div class="space-x-4">
+                <button id="start-btn" class="btn btn-primary text-lg">Empezar a Construir</button>
+                <button id="history-btn" class="btn btn-primary bg-gray-600 hover:bg-gray-700 text-lg">Ver Historial</button>
+            </div>
+             <div id="user-info" class="mt-8 text-xs text-gray-500"></div>
+        </section>
+        
+        <section id="screen-history" class="hidden">
+             <div class="card max-w-7xl mx-auto">
+                 <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-3xl font-bold text-theme-blue-dark">Historial de Decisiones</h2>
+                    <div>
+                        <button id="download-history-btn" class="btn btn-primary bg-green-700 hover:bg-green-800 text-sm">Descargar Historial Completo (Excel)</button>
+                        <button id="levels-info-btn" class="ml-2 rounded-full bg-gray-200 text-gray-600 h-8 w-8 flex items-center justify-center font-bold text-lg hover:bg-gray-300">?</button>
+                    </div>
+                </div>
+                 <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Responsable</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Decisión</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nivel de Conciencia</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estrellas</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-table-body" class="bg-white divide-y divide-gray-200">
+                        </tbody>
+                    </table>
+                </div>
+                 <div class="text-center mt-8">
+                    <button id="back-to-home-btn" class="btn btn-primary">Volver al Inicio</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="screen-data" class="hidden">
+            <div class="card max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-theme-blue-dark mb-8 text-center">Nivel 0: El Origen</h2>
+                <form id="initial-data-form" class="space-y-6">
+                    <div>
+                        <label for="responsable" class="block text-sm font-medium text-gray-700">Responsable de la Decisión</label>
+                        <input type="text" id="responsable" class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm" required>
+                    </div>
+                    <div>
+                         <label for="rol" class="block text-sm font-medium text-gray-700">Rol del Responsable</label>
+                         <input type="text" id="rol" class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm" required>
+                    </div>
+                    <div>
+                        <label for="decision" class="block text-sm font-medium text-gray-700">Decisión a Forjar</label>
+                        <textarea id="decision" rows="3" class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm" required></textarea>
+                    </div>
+                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                         <div>
+                            <label for="tipo-decision" class="block text-sm font-medium text-gray-700">Tipo de Decisión</label>
+                            <select id="tipo-decision" class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm">
+                                <option value="Desarrollo">Desarrollo (Crecer, innovar)</option>
+                                <option value="Recuperar Control">Recuperar Control (Optimizar, corregir)</option>
+                                <option value="Sobrevivir">Sobrevivir (Crisis, urgencia)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="origen-decision" class="block text-sm font-medium text-gray-700">Origen de la Necesidad</label>
+                            <select id="origen-decision" class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm">
+                                <option value="Externo">Externo (Mercado, cliente)</option>
+                                <option value="Interno">Interno (Causado por el sistema)</option>
+                            </select>
+                        </div>
+                    </div>
+                     <div>
+                        <label class="block text-sm font-medium text-gray-700">¿Es una decisión delegable?</label>
+                        <div class="mt-2 space-x-4">
+                            <label><input type="radio" name="delegable" value="No" checked> No</label>
+                            <label><input type="radio" name="delegable" value="Sí"> Sí</label>
+                        </div>
+                    </div>
+                    <div id="delegable-details" class="hidden space-y-4">
+                        <div>
+                            <label for="delegadoA" class="block text-sm font-medium text-gray-700">¿A quién se delega?</label>
+                            <input type="text" id="delegadoA" class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm">
+                        </div>
+                        <div>
+                            <label for="justificacion-delegacion" class="block text-sm font-medium text-gray-700">Justificación (¿Por qué sí o por qué no se delega?)</label>
+                            <textarea id="justificacion-delegacion" rows="2" class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm"></textarea>
+                        </div>
+                    </div>
+                    <div class="text-right pt-4">
+                        <button type="submit" class="btn btn-primary">Siguiente Nivel: Mapa del Sistema</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <section id="screen-impact" class="hidden">
+             <div class="card max-w-6xl mx-auto">
+                 <h2 class="text-3xl font-bold text-theme-blue-dark mb-8 text-center">Nivel 1: El Mapa del Sistema</h2>
+                 <p class="text-center text-gray-600 mb-6">Selecciona las mejoras y consecuencias que tu decisión generará en cada proceso clave.</p>
+                 <div id="process-impact-container" class="space-y-8"></div>
+                 <div class="text-right pt-8">
+                      <button id="impact-to-objectives-btn" class="btn btn-primary">Siguiente Nivel: Brújula Estratégica</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="screen-objectives" class="hidden">
+            <div class="card max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-theme-blue-dark mb-8 text-center">Nivel 2: La Brújula Estratégica</h2>
+                <p class="text-center text-gray-600 mb-6">Alinea tu decisión con la visión a largo plazo. ¿Hacia qué estrella polar de la empresa apunta tu acción?</p>
+                <div id="objectives-container" class="space-y-4"></div>
+                <div class="text-right pt-8">
+                    <button id="objectives-to-journey-btn" class="btn btn-primary">Siguiente Nivel: Forja de Conciencia</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="screen-journey" class="hidden">
+             <div class="card max-w-6xl mx-auto">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-2">
+                        <h2 id="journey-level-title" class="text-3xl font-bold text-theme-blue-dark mb-2"></h2>
+                        <div class="bg-gray-100 p-4 rounded-lg mb-4">
+                            <p id="journey-question" class="text-xl text-gray-700 font-semibold"></p>
+                            <p id="journey-criteria" class="text-sm text-gray-600 mt-2"></p>
+                        </div>
+                        <div class="relative">
+                            <textarea id="journey-answer" rows="8" class="w-full p-3 border border-gray-300 rounded-md shadow-sm text-lg" placeholder="Reflexiona aquí..."></textarea>
+                        </div>
+                        <div class="text-right mt-4">
+                           <button id="next-level-btn" class="btn btn-primary">Sellar Conciencia y Avanzar</button>
+                        </div>
+                    </div>
+                    <div class="text-center flex flex-col items-center justify-center">
+                        <h3 class="font-bold text-lg text-theme-blue-dark">Conciencia en Construcción</h3>
+                        <svg id="consciousness-figure" viewBox="0 0 100 100" class="w-full h-auto max-w-xs">
+                            <circle cx="50" cy="50" r="45" fill="#f0f0f0" />
+                            <path id="piece-1" class="piece" d="M50 5 L90 25 V75 L50 95 Z" fill="#3498db" />
+                            <path id="piece-2" class="piece" d="M50 5 L10 25 V75 L50 95 Z" fill="#e67e22" />
+                            <path id="piece-3" class="piece" d="M10 25 L50 50 L10 75 Z" fill="#e74c3c" />
+                            <path id="piece-4" class="piece" d="M90 25 L50 50 L90 75 Z" fill="#9b59b6" />
+                            <path id="piece-5" class="piece" d="M50 50 L25 37.5 L50 25 L75 37.5 Z" fill="#f1c40f" />
+                            <path id="piece-6" class="piece" d="M50 50 L25 62.5 L50 75 L75 62.5 Z" fill="#1abc9c" />
+                        </svg>
+                        <p class="text-sm text-gray-500 mt-2">Cada reflexión profunda ilumina una faceta de tu visión.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="screen-summary" class="hidden">
+             <div class="card max-w-7xl mx-auto">
+                 <h2 class="text-3xl font-bold text-theme-blue-dark mb-6 text-center">Manifiesto de Decisión</h2>
+                 <div id="consciousness-analysis-container" class="mb-8 p-6 rounded-lg bg-gray-50 shadow-inner"></div>
+                 <div class="my-6">
+                    <label for="insight-input" class="block text-lg font-medium text-gray-700 mb-2">¿De qué caíste en cuenta en este proceso?</label>
+                    <textarea id="insight-input" rows="3" class="w-full p-3 border border-gray-300 rounded-md shadow-sm text-lg" placeholder="Describe tu principal aprendizaje o 'insight'..."></textarea>
+                </div>
+                 <div class="flex justify-end space-x-2 mb-4">
+                    <button id="export-excel" class="btn btn-primary bg-green-700 hover:bg-green-800">Exportar a Excel</button>
+                    <button id="export-pdf" class="btn btn-primary bg-red-700 hover:bg-red-800">Exportar a PDF</button>
+                </div>
+                 <div id="summary-table-container" class="overflow-x-auto"></div>
+                 <div class="text-center mt-8">
+                    <button id="restart-btn" class="btn btn-primary">Forjar una Nueva Decisión</button>
+                </div>
+            </div>
+        </section>
+
+        <div id="feedback-modal" class="modal">
+            <div class="modal-content text-center">
+                <p id="feedback-text" class="text-lg"></p>
+                <button id="close-feedback-btn" class="btn btn-primary mt-4">Continuar</button>
+            </div>
+        </div>
+
+        <div id="levels-info-modal" class="modal">
+            <div class="modal-content">
+                <h3 class="text-xl font-bold text-theme-blue-dark mb-4">Niveles de Conciencia</h3>
+                <ul class="space-y-2 text-sm">
+                    <li><b>★☆☆☆☆ - Analista Emergente:</b> Inicia la ruta. El análisis es superficial, enfocado en lo inmediato.</li>
+                    <li><b>★★☆☆☆ - Planificador Funcional:</b> Muestra buena capacidad de análisis, pero le falta conectar con la estrategia y cultura.</li>
+                    <li><b>★★★☆☆ - Pensador Sistémico:</b> Comienza a ver las conexiones del sistema y los impactos a mediano plazo.</li>
+                    <li><b>★★★★☆ - Estratega Consciente:</b> Visión amplia y conectada. Integra múltiples dimensiones de forma coherente.</li>
+                    <li><b>★★★★★ - Arquitecto de Futuro:</b> Nivel de maestría. No solo decide, diseña el futuro y fortalece el sistema.</li>
+                </ul>
+                 <div class="text-right mt-6">
+                    <button id="close-levels-info-btn" class="btn btn-primary">Entendido</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // --- Firebase Imports ---
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, serverTimestamp, setLogLevel, query } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+        document.addEventListener("DOMContentLoaded", () => {
+            // --- DATA & CONFIG ---
+            const screens = { home: document.getElementById('screen-home'), data: document.getElementById('screen-data'), impact: document.getElementById('screen-impact'), objectives: document.getElementById('screen-objectives'), journey: document.getElementById('screen-journey'), summary: document.getElementById('screen-summary'), history: document.getElementById('screen-history') };
+            const feedbackModal = document.getElementById('feedback-modal');
+            let decisionData = {};
+            let currentJourneyLevel = 0;
+            let db, auth, userId, isAuthReady = false;
+
+            const processAreas = ["Finanzas", "Operaciones", "Comercial y Marketing", "Talento Humano", "Tecnología (TI)", "Legal y Cumplimiento", "Logística y Cadena de Suministro", "Estrategia", "SIG (Sistema Integrado de Gestión)"];
+            const strategicObjectives = ["MO1: Incrementar la Rentabilidad Sostenible", "MO2: Lograr la Excelencia Operativa", "MO3: Impulsar el Crecimiento y la Expansión", "MO4: Fortalecer la Cultura y el Talento", "MO5: Innovar y Liderar el Mercado"];
+            const journeyData = [
+                { question: "¿Qué elementos del sistema se verán afectados directa o indirectamente?", criteria: "Identifica áreas, equipos, procesos, clientes y proveedores. Considera retroalimentaciones.", dimension: "Impacto Sistémico" },
+                { question: "¿Estamos atacando una causa estructural o un síntoma superficial?", criteria: "Señala si la raíz ha sido identificada. Distingue entre urgencia y relevancia.", dimension: "Naturaleza del Problema" },
+                { question: "¿Esta decisión es funcional hoy y coherente con las tendencias del mañana?", criteria: "Evalúa su coherencia con proyecciones, transformaciones sociales y tecnológicas.", dimension: "Temporalidad Teleológica" },
+                { question: "¿Esta acción nos acerca a nuestra visión y propósito organizacional?", criteria: "Relación directa con la razón de ser, no solo si 'funciona' hoy.", dimension: "Propósito Claro (Telos)" },
+                { question: "¿Se ha dialogado con los dueños de procesos afectados?", criteria: "Registro de conversaciones, acuerdos, resistencias. El silencio no es aprobación.", dimension: "Consulta de Procesos" },
+                { question: "¿Qué supuestos o paradigmas están guiando esta decisión?", criteria: "Explora creencias tácitas sobre personas, clientes, tecnología, autoridad, etc.", dimension: "Creencias Subyacentes" },
+                { question: "¿Esta decisión es consistente con los valores declarados de nuestra cultura?", criteria: "Señala si fortalece, contradice o neutraliza la cultura deseada.", dimension: "Coherencia Cultural" },
+                { question: "¿Cómo afectará esta decisión el nivel de energía y compromiso del equipo?", criteria: "Identifica riesgos de desmotivación o, por el contrario, oportunidades de empoderamiento.", dimension: "Impacto en la Motivación" },
+                { question: "¿Qué podría salir mal aunque la intención sea buena?", criteria: "Imagina escenarios colaterales, tanto técnicos como sociales o culturales.", dimension: "Riesgos No Intencionados" },
+                { question: "¿Se ha definido un momento de evaluación posterior para aprender y ajustar?", criteria: "Anota cuándo y cómo se medirá el impacto real. Pensamiento iterativo.", dimension: "Revisión Cíclica" }
+            ];
+            const mejorasOptions = ["Optimización de tiempo", "Simplificación de proceso", "Incremento de calidad", "Reducción de costo", "Mejora de datos"];
+            const consecuenciasOptions = ["Mayor trabajo", "Ajuste al proceso", "Reorganización", "Sobrecosto", "Nuevo elemento de control"];
+            
+            // --- Firebase Initialization ---
+            async function setupFirebase() {
+                try {
+                    const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+                    const app = initializeApp(firebaseConfig);
+                    db = getFirestore(app);
+                    auth = getAuth(app);
+                    setLogLevel('debug');
+
+                    onAuthStateChanged(auth, async (user) => {
+                        if (user) {
+                            userId = user.uid;
+                            document.getElementById('user-info').innerText = `ID de Sesión: ${userId}`;
+                        } else {
+                             if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                                await signInWithCustomToken(auth, __initial_auth_token);
+                             } else {
+                                await signInAnonymously(auth);
+                             }
+                        }
+                        isAuthReady = true;
+                        console.log("Firebase Auth ready. User ID:", userId);
+                    });
+                } catch(e) {
+                    console.error("Firebase initialization failed:", e);
+                    document.getElementById('user-info').innerText = "Error de conexión con el historial. El progreso no se guardará.";
+                }
+            }
+            
+            // --- UI & NAVIGATION ---
+            const showScreen = (screenName) => { 
+                Object.values(screens).forEach(s => s.classList.add('hidden')); 
+                const screenToShow = screens[screenName];
+                screenToShow.classList.remove('hidden');
+                screenToShow.classList.add('fade-in');
+            };
+            const showMessage = (text) => {
+                document.getElementById('feedback-text').innerText = text;
+                feedbackModal.style.display = 'flex';
+            };
+            const clearState = () => { 
+                decisionData = { fase3_reflexion: {} }; 
+                currentJourneyLevel = 0; 
+                document.querySelectorAll('#consciousness-figure .piece').forEach(p => p.classList.remove('active'));
+            };
+            
+            document.getElementById('start-btn').addEventListener('click', () => { clearState(); showScreen('data'); });
+            document.getElementById('restart-btn').addEventListener('click', () => { clearState(); document.getElementById('initial-data-form').reset(); showScreen('home'); });
+            document.getElementById('history-btn').addEventListener('click', () => { showHistory(); });
+            document.getElementById('back-to-home-btn').addEventListener('click', () => { showScreen('home'); });
+
+            // --- LEVEL 0: INITIAL DATA ---
+            document.getElementById('initial-data-form').addEventListener('submit', e => {
+                e.preventDefault();
+                decisionData.fase0 = {
+                    responsable: document.getElementById('responsable').value,
+                    rol: document.getElementById('rol').value,
+                    decision: document.getElementById('decision').value,
+                    tipoDecision: document.getElementById('tipo-decision').value,
+                    origenDecision: document.getElementById('origen-decision').value,
+                    delegable: document.querySelector('input[name="delegable"]:checked').value,
+                    delegadoA: document.getElementById('delegadoA').value,
+                    justificacionDelegacion: document.getElementById('justificacion-delegacion').value,
+                };
+                renderImpactScreen();
+                showScreen('impact');
+            });
+            document.querySelectorAll('input[name="delegable"]').forEach(radio => radio.addEventListener('change', e => {
+                document.getElementById('delegable-details').classList.toggle('hidden', e.target.value !== 'Sí');
+            }));
+
+            // --- LEVEL 1: IMPACT ON PROCESSES ---
+            function renderImpactScreen() {
+                const container = document.getElementById('process-impact-container');
+                container.innerHTML = '';
+                processAreas.forEach(area => {
+                    const card = document.createElement('div');
+                    card.className = 'p-4 border rounded-lg shadow-sm';
+                    let mejorasHtml = mejorasOptions.map(m => `<span class="impact-tag tag-mejora" data-area="${area}" data-type="mejoras" data-value="${m}">${m}</span>`).join('');
+                    let consecuenciasHtml = consecuenciasOptions.map(c => `<span class="impact-tag tag-consecuencia" data-area="${area}" data-type="consecuencias" data-value="${c}">${c}</span>`).join('');
+                    
+                    card.innerHTML = `
+                        <h4 class="font-bold">${area}</h4>
+                        <div class="mt-3">
+                            <h5 class="text-sm font-semibold text-green-600">Mejoras Generadas</h5>
+                            <div class="flex flex-wrap gap-2 mt-1">${mejorasHtml}</div>
+                        </div>
+                        <div class="mt-3">
+                             <h5 class="text-sm font-semibold text-red-600">Consecuencias Potenciales</h5>
+                            <div class="flex flex-wrap gap-2 mt-1">${consecuenciasHtml}</div>
+                        </div>`;
+                    container.appendChild(card);
+                });
+
+                container.querySelectorAll('.impact-tag').forEach(tag => {
+                    tag.addEventListener('click', () => tag.classList.toggle('selected'));
+                });
+            }
+            document.getElementById('impact-to-objectives-btn').addEventListener('click', () => {
+                decisionData.fase1_impactos = {};
+                processAreas.forEach(area => {
+                    const mejoras = Array.from(document.querySelectorAll(`.tag-mejora[data-area="${area}"].selected`)).map(t => t.dataset.value);
+                    const consecuencias = Array.from(document.querySelectorAll(`.tag-consecuencia[data-area="${area}"].selected`)).map(t => t.dataset.value);
+                    if (mejoras.length > 0 || consecuencias.length > 0) {
+                        decisionData.fase1_impactos[area] = { mejoras, consecuencias };
+                    }
+                });
+                renderObjectivesScreen();
+                showScreen('objectives');
+            });
+
+            // --- LEVEL 2: STRATEGIC OBJECTIVES ---
+            function renderObjectivesScreen() {
+                const container = document.getElementById('objectives-container');
+                container.innerHTML = '';
+                strategicObjectives.forEach(obj => {
+                     const objId = obj.split(':')[0];
+                     const objContainer = document.createElement('div');
+                     objContainer.className = 'p-3 border rounded-lg hover:bg-gray-50';
+                     objContainer.innerHTML = `
+                        <label class="flex items-center cursor-pointer">
+                            <input type="checkbox" id="obj-${objId}" class="h-5 w-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                            <span class="ml-3 text-gray-700">${obj}</span>
+                        </label>
+                        <div id="conn-container-${objId}" class="mt-2 hidden pl-8">
+                            <label class="text-sm font-medium text-gray-600">¿Cómo se conecta?</label>
+                            <select id="conn-${objId}" class="w-full mt-1 p-2 border border-gray-300 rounded-md text-sm">
+                                <option value="">Seleccione una conexión...</option>
+                                <option>Incrementa directamente el resultado</option>
+                                <option>Reduce costos asociados</option>
+                                <option>Abre una nueva línea de ingresos/oportunidad</option>
+                                <option>Mejora la eficiencia del proceso relacionado</option>
+                                <option>Mitiga un riesgo clave para el objetivo</option>
+                            </select>
+                        </div>`;
+                    container.appendChild(objContainer);
+                    document.getElementById(`obj-${objId}`).addEventListener('change', (e) => {
+                         document.getElementById(`conn-container-${objId}`).classList.toggle('hidden', !e.target.checked);
+                    });
+                });
+            }
+            document.getElementById('objectives-to-journey-btn').addEventListener('click', () => {
+                decisionData.fase2_objetivos = {};
+                strategicObjectives.forEach(obj => {
+                    const objId = obj.split(':')[0];
+                    const isChecked = document.getElementById(`obj-${objId}`).checked;
+                    if (isChecked) {
+                        decisionData.fase2_objetivos[obj] = {
+                            checked: true,
+                            connection: document.getElementById(`conn-${objId}`).value
+                        };
+                    }
+                });
+                renderJourneyLevel(currentJourneyLevel);
+                showScreen('journey');
+            });
+
+            // --- LEVEL 3: JOURNEY OF CONSCIOUSNESS ---
+            function renderJourneyLevel(level) {
+                const levelData = journeyData[level];
+                document.getElementById('journey-level-title').innerText = `Nivel ${level + 3}: ${levelData.dimension}`;
+                document.getElementById('journey-question').innerText = levelData.question;
+                document.getElementById('journey-criteria').innerText = `Criterio: ${levelData.criteria}`;
+                document.getElementById('journey-answer').value = decisionData.fase3_reflexion[levelData.dimension] || '';
+            }
+            document.getElementById('next-level-btn').addEventListener('click', () => {
+                const answer = document.getElementById('journey-answer').value;
+                if (answer.trim().length === 0) {
+                    showMessage("La reflexión es la clave para forjar la conciencia. Por favor, escribe tu análisis antes de continuar.");
+                    return;
+                }
+                const levelData = journeyData[currentJourneyLevel];
+                decisionData.fase3_reflexion[levelData.dimension] = answer;
+                document.getElementById(`piece-${(currentJourneyLevel % 6) + 1}`).classList.add('active');
+                handleNextStep();
+            });
+            function handleNextStep() {
+                if (currentJourneyLevel < journeyData.length - 1) { 
+                    currentJourneyLevel++; 
+                    renderJourneyLevel(currentJourneyLevel); 
+                } else { 
+                    finalizeJourney(); 
+                }
+            }
+            document.getElementById('close-feedback-btn').addEventListener('click', () => { feedbackModal.style.display = 'none'; });
+
+            // --- FINALIZATION & SUMMARY ---
+            function generateManagerialAnalysis() {
+                const { fase0, fase1_impactos, fase2_objetivos, fase3_reflexion } = decisionData;
+                let score = 0;
+                let analysisText = "";
+                let contradictions = [];
+                const keywordRegex = new RegExp(Object.keys(fase1_impactos || {}).concat(Object.keys(fase2_objetivos || {}).map(o => o.split(':')[1])).join('|'), 'gi');
+                const deepThinkRegex = /causa raíz|largo plazo|interconexi|supuesto|paradigma|cultura|modelo mental|segundo orden/gi;
+
+                // 1. Systemic Scope (Impact)
+                const impactedAreasCount = Object.keys(fase1_impactos || {}).length;
+                if (impactedAreasCount > 4) { score += 15; analysisText += "Se evidencia una excelente conciencia sobre la amplitud del impacto sistémico. "; }
+                else if (impactedAreasCount > 2) { score += 8; analysisText += "Se reconoce un impacto en múltiples áreas. "; }
+                else { score += 2; analysisText += "El análisis de impacto es focalizado. "; }
+                
+                // 2. Strategic Alignment
+                const alignedObjectivesCount = Object.keys(fase2_objetivos || {}).length;
+                if (alignedObjectivesCount >= 2 && Object.values(fase2_objetivos || {}).every(o => o.connection)) { score += 15; analysisText += "Hay una clara y justificada alineación con la estrategia. "; }
+                else if (alignedObjectivesCount > 0) { score += 7; analysisText += "La decisión se conecta con la estrategia. "; }
+                else { contradictions.push("La decisión parece tácticamente aislada, sin conexión explícita a los macro-objetivos."); }
+                
+                // 3. Reflection Depth
+                let reflectionScore = 0;
+                let reflectionKeywords = 0;
+                let deepKeywords = 0;
+                Object.values(fase3_reflexion).forEach(text => {
+                    reflectionKeywords += (text.match(keywordRegex) || []).length;
+                    deepKeywords += (text.match(deepThinkRegex) || []).length;
+                });
+                reflectionScore += reflectionKeywords * 1;
+                reflectionScore += deepKeywords * 3;
+                if (reflectionScore > 15) { score += 20; analysisText += "Las reflexiones demuestran una profunda interconexión de conceptos. "; }
+                else if (reflectionScore > 5) { score += 10; analysisText += "El análisis reflexivo es sólido. "; }
+                else { score += 2; }
+                
+                // 4. Contradiction check
+                if (impactedAreasCount > 3 && (!fase3_reflexion['Impacto Sistémico'] || fase3_reflexion['Impacto Sistémico'].length < 20)) {
+                    contradictions.push("Se marcaron múltiples áreas de impacto, pero la reflexión sobre el 'Impacto Sistémico' es superficial o inexistente.");
+                    score -= 5;
+                }
+                if (fase0.origenDecision === "Interno" && (!fase3_reflexion['Naturaleza del Problema'] || !fase3_reflexion['Naturaleza del Problema'].match(/causa raíz/gi))) {
+                    contradictions.push("La decisión ataca un problema 'Interno', pero en la reflexión no se profundiza sobre la 'causa raíz' del mismo.");
+                     score -= 5;
+                }
+
+                // Final Score to Stars
+                let stars = 1;
+                if (score >= 45) stars = 5; else if (score >= 35) stars = 4; else if (score >= 25) stars = 3; else if (score >= 15) stars = 2;
+                const levels = { 1: "Analista Emergente", 2: "Planificador Funcional", 3: "Pensador Sistémico", 4: "Estratega Consciente", 5: "Arquitecto de Futuro" };
+                
+                return { score, stars, levelName: levels[stars], managerialAnalysis: analysisText || "Análisis inicial completado.", contradictions };
+            }
+
+            function generateRecommendation(currentAnalysis){
+                const { fase0, fase1_impactos } = decisionData;
+                if (currentAnalysis.contradictions.length > 0) return "RECOMENDACIÓN: Se han detectado inconsistencias significativas. Antes de proceder, revisa los puntos de contradicción para asegurar una decisión coherente y robusta.";
+                if(fase0.tipoDecision === "Sobrevivir" && currentAnalysis.stars < 3) return "RECOMENDACIÓN: La situación es crítica y el nivel de análisis es bajo. Es imperativo escalar esta decisión o convocar a un comité de crisis para una evaluación más profunda.";
+                if(fase0.origenDecision === "Interno" && currentAnalysis.stars > 3) return "RECOMENDACIÓN: Tu análisis revela un problema sistémico. La decisión está bien fundamentada. Prioriza la comunicación y un plan de acción que no solo implemente la solución, sino que también aborde la causa raíz identificada.";
+                if(Object.values(fase1_impactos || {}).some(p => p.consecuencias.includes("Reorganización") || p.consecuencias.includes("Sobrecosto"))) return "RECOMENDACIÓN: Has identificado consecuencias de alto impacto (costo/personas). Asegúrate de tener un plan de gestión del cambio, comunicación y mitigación de riesgos antes de la ejecución.";
+                return "RECOMENDACIÓN: Tu análisis es sólido y coherente. Procede con la ejecución, pero no olvides el plan de 'Revisión Cíclica' para medir, aprender y ajustar sobre la marcha. La conciencia es un proceso continuo.";
+            }
+            
+            async function finalizeJourney() {
+                const analysisResult = generateManagerialAnalysis();
+                const recommendation = generateRecommendation(analysisResult);
+                decisionData.finalAnalysis = { ...analysisResult, recommendation: recommendation };
+                decisionData.insight = document.getElementById('insight-input').value;
+                
+                if (db && userId) {
+                    try {
+                        console.log("Attempting to save to Firestore...");
+                        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+                        const docData = { ...decisionData, userId: userId, createdAt: serverTimestamp() };
+                        const docRef = await addDoc(collection(db, `/artifacts/${appId}/public/data/decisions`), docData);
+                        console.log("Document written with ID: ", docRef.id);
+                        decisionData.id = docRef.id; // Save new ID for exports
+                    } catch(e) {
+                        console.error("Error writing to Firestore: ", e);
+                        showMessage("No se pudo guardar el registro en el historial. Revisa la consola para más detalles.");
+                    }
+                }
+                populateSummary();
+                showScreen('summary');
+            }
+
+            function populateSummary() {
+                const {fase0, fase1_impactos, fase2_objetivos, fase3_reflexion, finalAnalysis} = decisionData;
+                const analysisContainer = document.getElementById('consciousness-analysis-container');
+                let contradictionsHtml = '';
+                if (finalAnalysis.contradictions && finalAnalysis.contradictions.length > 0) {
+                    contradictionsHtml = `<div class="mt-4 pt-4 border-t border-red-300">
+                        <h4 class="font-bold text-red-600">Puntos de Contradicción a Revisar</h4>
+                        <ul class="list-disc list-inside text-left text-sm text-red-700 mt-2">
+                            ${finalAnalysis.contradictions.map(c => `<li>${c}</li>`).join('')}
+                        </ul>
+                    </div>`;
+                }
+                analysisContainer.innerHTML = `
+                    <h3 class="text-xl font-bold text-theme-blue-dark text-center">Nivel de Conciencia Forjado</h3>
+                    <p class="text-3xl font-bold text-yellow-500 my-2 text-center">${finalAnalysis.levelName}</p>
+                    <div class="star-rating text-center">${'★'.repeat(finalAnalysis.stars)}${'☆'.repeat(5 - finalAnalysis.stars)}</div>
+                    <div class="mt-4 pt-4 border-t">
+                         <h4 class="font-bold text-theme-blue-dark">Análisis Gerencial</h4>
+                         <p class="text-gray-600 mt-2 text-sm italic">"${finalAnalysis.managerialAnalysis}"</p>
+                    </div>
+                    ${contradictionsHtml}
+                    <div class="mt-4 pt-4 border-t">
+                        <h4 class="font-bold text-theme-blue-dark">Recomendación Estratégica</h4>
+                        <p class="text-gray-700 mt-2">${finalAnalysis.recommendation}</p>
+                    </div>`;
+                
+                const summaryTableContainer = document.getElementById('summary-table-container');
+                let tableHtml = `<table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50"><tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Categoría</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Detalle</th>
+                    </tr></thead><tbody class="bg-white divide-y divide-gray-200">`;
+                tableHtml += `<tr><td class="px-6 py-4 font-bold bg-gray-50" colspan="2">Información General</td></tr>`;
+                tableHtml += `<tr><td class="px-6 py-4">Responsable</td><td>${fase0.responsable} (${fase0.rol})</td></tr>`;
+                tableHtml += `<tr><td class="px-6 py-4">Decisión</td><td>${fase0.decision}</td></tr>`;
+                tableHtml += `<tr><td class="px-6 py-4">Delegabilidad</td><td>${fase0.delegable}. ${fase0.justificacionDelegacion || ''}</td></tr>`;
+                if(Object.keys(fase1_impactos || {}).length > 0) {
+                    tableHtml += `<tr><td class="px-6 py-4 font-bold bg-gray-50" colspan="2">Análisis de Impacto Sistémico</td></tr>`;
+                    for(const [area, data] of Object.entries(fase1_impactos)){
+                        const mejoras = data.mejoras.length > 0 ? `Mejoras: ${data.mejoras.join(', ')}` : '';
+                        const consecuencias = data.consecuencias.length > 0 ? `Consecuencias: ${data.consecuencias.join(', ')}` : '';
+                        if(mejoras || consecuencias) tableHtml += `<tr><td class="px-6 py-4">${area}</td><td>${[mejoras, consecuencias].filter(Boolean).join(' | ')}</td></tr>`;
+                    }
+                }
+                if(Object.keys(fase2_objetivos || {}).length > 0) {
+                    tableHtml += `<tr><td class="px-6 py-4 font-bold bg-gray-50" colspan="2">Alineación Estratégica</td></tr>`;
+                    for(const [obj, data] of Object.entries(fase2_objetivos)){
+                        if(data.checked) tableHtml += `<tr><td class="px-6 py-4">${obj}</td><td>Conexión: ${data.connection || 'No especificada'}</td></tr>`;
+                    }
+                }
+                tableHtml += `<tr><td class="px-6 py-4 font-bold bg-gray-50" colspan="2">Reflexión Profunda</td></tr>`;
+                journeyData.forEach((item) => {
+                    tableHtml += `<tr><td class="px-6 py-4">${item.dimension}</td><td class="whitespace-pre-wrap px-6 py-4">${fase3_reflexion[item.dimension] || 'N/A'}</td></tr>`;
+                });
+                tableHtml += `<tr><td class="px-6 py-4 font-bold">Insight Final</td><td class="whitespace-pre-wrap px-6 py-4">${decisionData.insight || ''}</td></tr>`;
+                tableHtml += `</tbody></table>`;
+                summaryTableContainer.innerHTML = tableHtml;
+            }
+
+            async function showHistory() {
+                if(!isAuthReady || !db) {
+                    showMessage("El servicio de historial no está listo. Por favor, espera un momento y vuelve a intentarlo.");
+                    return;
+                }
+                const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+                const historyCollection = collection(db, `/artifacts/${appId}/public/data/decisions`);
+                const q = query(historyCollection);
+                const historySnapshot = await getDocs(q);
+                let historyList = historySnapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
+                
+                // Sort by date client-side to avoid Firestore index requirement
+                historyList.sort((a,b) => (b.createdAt?.toDate()?.getTime() || 0) - (a.createdAt?.toDate()?.getTime() || 0));
+
+                const tableBody = document.getElementById('history-table-body');
+                tableBody.innerHTML = '';
+                if (historyList.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="5" class="text-center py-4">Aún no hay decisiones registradas.</td></tr>';
+                } else {
+                     historyList.forEach(item => {
+                        const row = `<tr>
+                            <td class="px-6 py-4 whitespace-nowrap">${item.createdAt?.toDate().toLocaleDateString('es-CO') || 'N/A'}</td>
+                            <td class="px-6 py-4">${item.fase0?.responsable || 'N/A'}</td>
+                            <td class="px-6 py-4">${(item.fase0?.decision || 'N/A').substring(0, 50)}...</td>
+                            <td class="px-6 py-4">${item.finalAnalysis?.levelName || 'N/A'}</td>
+                            <td class="px-6 py-4 text-yellow-500 text-lg">${'★'.repeat(item.finalAnalysis?.stars || 0)}</td>
+                        </tr>`;
+                        tableBody.innerHTML += row;
+                     });
+                }
+                showScreen('history');
+            }
+
+            // --- EXPORT HELPERS ---
+            function flattenDecisionData(item) {
+                const { fase0, fase1_impactos, fase2_objetivos, fase3_reflexion, finalAnalysis, insight, id, createdAt } = item;
+                let flatData = {
+                    "ID_Decision": id,
+                    "Fecha": createdAt?.toDate()?.toISOString() || new Date().toISOString(),
+                    "Responsable": fase0.responsable, "Rol": fase0.rol, "Decision": fase0.decision,
+                    "Tipo_Decision": fase0.tipoDecision, "Origen_Decision": fase0.origenDecision,
+                    "Delegable": fase0.delegable, "Delegado_A": fase0.delegadoA, "Justificacion_Delegacion": fase0.justificacionDelegacion,
+                    "Insight_Final": insight, "Nivel_Conciencia": finalAnalysis.levelName, "Estrellas": finalAnalysis.stars,
+                    "Analisis_Gerencial": finalAnalysis.managerialAnalysis, "Contradicciones": finalAnalysis.contradictions.join('; '),
+                    "Recomendacion": finalAnalysis.recommendation
+                };
+
+                processAreas.forEach(area => {
+                    const impacto = fase1_impactos ? fase1_impactos[area] : null;
+                    flatData[`Impacto_Mejoras_${area.replace(/[^a-zA-Z0-9]/g, '_')}`] = impacto?.mejoras.join(', ') || 'N/A';
+                    flatData[`Impacto_Consecuencias_${area.replace(/[^a-zA-Z0-9]/g, '_')}`] = impacto?.consecuencias.join(', ') || 'N/A';
+                });
+                
+                strategicObjectives.forEach(obj => {
+                    const objetivo = fase2_objetivos ? fase2_objetivos[obj] : null;
+                    flatData[`Objetivo_${obj.replace(/[^a-zA-Z0-9]/g, '_')}`] = objetivo ? `Sí - ${objetivo.connection}` : 'No';
+                });
+
+                journeyData.forEach((journeyItem) => {
+                    flatData[`Dim_${journeyItem.dimension.replace(/[^a-zA-Z0-9]/g, '_')}`] = fase3_reflexion[journeyItem.dimension] || 'N/A';
+                });
+
+                return flatData;
+            }
+            
+            async function downloadFullHistory() {
+                 if(!isAuthReady || !db) {
+                    showMessage("El servicio de historial no está listo. Por favor, espera un momento.");
+                    return;
+                }
+                const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+                const historyCollection = collection(db, `/artifacts/${appId}/public/data/decisions`);
+                const historySnapshot = await getDocs(historyCollection);
+                const historyList = historySnapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
+                
+                if (historyList.length === 0) {
+                    showMessage("No hay decisiones en el historial para descargar.");
+                    return;
+                }
+                const exportData = historyList.map(item => flattenDecisionData(item));
+                const worksheet = XLSX.utils.json_to_sheet(exportData);
+                const workbook = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(workbook, worksheet, "Historial de Decisiones");
+                XLSX.writeFile(workbook, `Historial_Completo_Decisiones.xlsx`);
+            }
+
+            document.getElementById('export-excel').addEventListener('click', () => {
+                const flatData = flattenDecisionData(decisionData);
+                const worksheet = XLSX.utils.json_to_sheet([flatData]); // Must be an array
+                const workbook = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(workbook, worksheet, "Analisis de Decision");
+                const decisionId = `${decisionData.fase0.responsable.replace(/\s/g, '_')}_${Date.now()}`;
+                XLSX.writeFile(workbook, `BD_Decision_${decisionId}.xlsx`);
+            });
+            
+            document.getElementById('export-pdf').addEventListener('click', () => {
+                const element = document.getElementById('screen-summary').querySelector('.card');
+                const buttons = element.querySelectorAll('button');
+                buttons.forEach(b => b.style.display = 'none');
+                
+                const decisionId = `${decisionData.fase0.responsable.replace(/\s/g, '_')}_${Date.now()}`;
+                html2pdf().from(element).set({margin: 0.5, filename: `manifiesto_${decisionId}.pdf`, jsPDF: {unit: 'in', format: 'letter', orientation: 'portrait'}}).save().then(() => {
+                    buttons.forEach(b => b.style.display = '');
+                });
+            });
+            
+            // --- MODAL INFO ---
+            const levelsInfoModal = document.getElementById('levels-info-modal');
+            document.getElementById('levels-info-btn').addEventListener('click', () => levelsInfoModal.style.display = 'flex');
+            document.getElementById('close-levels-info-btn').addEventListener('click', () => levelsInfoModal.style.display = 'none');
+            document.getElementById('download-history-btn').addEventListener('click', downloadFullHistory);
+            
+            // --- INITIAL LOAD ---
+            setupFirebase();
+            showScreen('home');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualización Matriz RACI - Condugas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        #raciNetwork {
+            width: 100%;
+            height: 85vh;
+            border: 1px solid #e2e8f0; /* Tailwind gray-200 */
+            border-radius: 0.5rem; /* Tailwind rounded-lg */
+            background-color: #f8fafc; /* Tailwind slate-50 */
+            position: relative;
+            overflow: hidden;
+        }
+        canvas { display: block; width: 100%; height: 100%; }
+
+        .vis-tooltip {
+            position: absolute;
+            visibility: hidden;
+            padding: 10px;
+            white-space: normal; /* Allow text wrapping */
+            max-width: 350px; /* Max width for tooltip */
+            font-family: Inter, sans-serif;
+            font-size: 13px;
+            color: #1f2937; /* Tailwind gray-800 */
+            background-color: rgba(255, 255, 255, 0.97);
+            border: 1px solid #d1d5db; /* Tailwind gray-300 */
+            border-radius: 0.375rem; /* rounded-md */
+            z-index: 1000;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            pointer-events: none; /* Tooltip should not interfere with mouse events */
+        }
+        .vis-tooltip hr {
+            border-top: 1px solid #e5e7eb; /* Tailwind gray-200 */
+            margin-top: 4px;
+            margin-bottom: 4px;
+        }
+        .vis-tooltip strong {
+            font-weight: 700; /* font-bold */
+        }
+        .raci-role-label {
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        .raci-A { color: #D32F2F; } /* Red for Accountable */
+        .raci-R { color: #1976D2; } /* Blue for Responsible */
+        .raci-C { color: #388E3C; } /* Green for Consulted */
+        .raci-I { color: #F57C00; } /* Orange for Informed */
+
+        /* Navigation Links Styling (consistent with other pages) */
+        .nav-links a {
+            margin: 0 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            transition: background-color 0.3s ease;
+            font-weight: 500;
+            text-decoration: none;
+        }
+        .nav-links a.active {
+            background-color: #292d63; /* Condugas Dark Blue */
+            color: white;
+        }
+        .nav-links a:not(.active) {
+            background-color: #e0e7ff; /* Indigo-100 */
+            color: #3730a3; /* Indigo-800 */
+        }
+        .nav-links a:not(.active):hover {
+            background-color: #c7d2fe; /* Indigo-200 */
+        }
+        .legend-item span {
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            margin-right: 0.5rem;
+            vertical-align: middle;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-4 md:p-8">
+
+    <header class="text-center mb-6">
+        <h1 class="text-3xl md:text-4xl font-bold text-[#292d63]">Visualización Interactiva de Matriz RACI</h1>
+        <p class="text-lg text-gray-600 mt-2">Conexiones entre Decisiones, Roles y Responsabilidades en Condugas</p>
+    </header>
+
+    <nav class="nav-links flex flex-wrap justify-center mb-8 text-sm md:text-base">
+        <a href="dashboard_principal.html">Dashboard Principal</a>
+        <a href="objetivos_interactivos_detalle.html">Visualización de Objetivos</a>
+        <a href="decisiones_estrategicas.html">Decisiones Estratégicas</a>
+        <a href="#" class="active">Matriz RACI</a>
+    </nav>
+
+    <div class="mb-6 p-4 bg-[#e0f2fe] border border-[#7dd3fc] text-[#075985] rounded-lg text-sm shadow">
+        <p class="font-bold mb-2">Leyenda y Uso:</p>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+            <div class="legend-item"><span style="background-color: #f8b133; border-radius: 50%;"></span><strong>Cat: Desarrollarse</strong></div>
+            <div class="legend-item"><span style="background-color: #1d70b7; border-radius: 50%;"></span><strong>Cat: Recuperar Control</strong></div>
+            <div class="legend-item"><span style="background-color: #ef4444; border-radius: 50%;"></span><strong>Cat: Sobrevivir</strong></div>
+            <div class="legend-item"><span style="background-color: #A5B4FC; border-radius: 50%;"></span><strong>Decisión Específica</strong></div>
+            <div class="legend-item"><span style="background-color: #292d63; border-radius: 0.25rem;"></span><strong class="text-[#292d63]">Rol/Área</strong></div>
+        </div>
+        <p class="mt-3">
+            <strong>Interactividad:</strong> Mueva el diagrama o haga zoom.
+            Pase el cursor sobre un nodo de <strong class="text-indigo-500">Decisión Específica</strong> para ver el detalle RACI (Responsable, Accountable, Consultado, Informado).
+            Pase el cursor sobre un <strong class="text-[#292d63]">Rol/Área</strong> para ver su nombre completo.
+        </p>
+    </div>
+
+    <main class="relative">
+        <div id="raciNetwork" class="shadow-lg rounded-lg"></div>
+        <div id="tooltip" class="vis-tooltip" style="visibility: hidden;"></div>
+    </main>
+
+    <footer class="text-center mt-8 text-sm text-gray-500">
+        Matriz RACI - Generado para Condugas
+    </footer>
+
+    <script type="text/javascript">
+        // --- Data Definition ---
+        const raciMatrixData = {
+            // Decisiones para DESARROLLARSE
+            "D1": { name: "D1: Definición Estrategia Global y Objetivos a Largo Plazo", category: "CAT_DESARROLLARSE", R: ["EST"], A: ["DIR"], C: ["NN", "OPER", "GP/ODP", "FIN/CNT", "TI", "GH", "LGL/REG", "COM/MKT", "ESG/CAL"], I: ["JEF/COORD"] },
+            "D2": { name: "D2: Grandes Proyectos de Transformación (ej: Odoo)", category: "CAT_DESARROLLARSE", R: ["OPER", "GP/ODP", "TI"], A: ["DIR"], C: ["EST", "FIN/CNT", "GH", "LGL/REG", "COM/MKT", "ESG/CAL", "JEF/COORD"], I: ["NN"] }, // Simplified C for brevity in example
+            "D3": { name: "D3: Desarrollo y Lanzamiento de Nuevos Productos/Servicios", category: "CAT_DESARROLLARSE", R: ["NN", "OPER", "GP/ODP", "COM/MKT"], A: ["NN", "DIR"], C: ["EST", "FIN/CNT", "TI", "GH", "LGL/REG", "ESG/CAL"], I: ["JEF/COORD"] },
+            "D4": { name: "D4: Planificación Táctica y Asignación de Recursos Proyectos Dept.", category: "CAT_DESARROLLARSE", R: ["OPER", "GP/ODP", "FIN/CNT", "TI", "GH", "COM/MKT", "ESG/CAL", "JEF/COORD"], A: ["OPER", "GP/ODP", "JEF/COORD"], C: ["EST", "NN", "LGL/REG"], I: ["DIR"] },
+            "D5": { name: "D5: Estrategias de Optimización y Eficiencia de Procesos Clave", category: "CAT_DESARROLLARSE", R: ["EST", "OPER", "GP/ODP", "ESG/CAL", "JEF/COORD"], A: ["OPER", "JEF/COORD"], C: ["FIN/CNT", "TI", "GH"], I: ["DIR", "NN", "LGL/REG", "COM/MKT"] },
+            // Decisiones para RECUPERAR EL CONTROL
+            "RC1": { name: "RC1: Gestión Desempeño Operativo Diario y Cumplimiento Metas", category: "CAT_RECUPERAR", R: ["OPER", "ESG/CAL", "JEF/COORD"], A: ["OPER", "JEF/COORD"], C: ["TI"], I: ["DIR", "EST", "NN", "GP/ODP", "FIN/CNT", "GH", "LGL/REG", "COM/MKT"] },
+            "RC2": { name: "RC2: Resolución de Problemas Operativos y Desviaciones", category: "CAT_RECUPERAR", R: ["FIN/CNT", "TI", "GH", "ESG/CAL", "JEF/COORD"], A: ["OPER", "JEF/COORD"], C: ["GP/ODP", "LGL/REG"], I: ["DIR", "EST", "NN", "COM/MKT"] },
+            "RC3": { name: "RC3: Implementación Mejoras Continuas y Ajustes Procesos", category: "CAT_RECUPERAR", R: ["OPER", "GP/ODP", "TI", "ESG/CAL", "JEF/COORD"], A: ["OPER", "JEF/COORD"], C: ["EST", "FIN/CNT", "GH"], I: ["DIR", "NN", "LGL/REG", "COM/MKT"] },
+            // Decisiones para SOBREVIVIR
+            "S1": { name: "S1: Respuesta a Incidentes Críticos y Emergencias", category: "CAT_SOBREVIVIR", R: ["OPER", "TI", "CRISIS", "ESG/CAL", "JEF/COORD"], A: ["DIR", "OPER", "TI", "CRISIS", "JEF/COORD"], C: ["EST", "GP/ODP", "FIN/CNT", "GH", "LGL/REG", "COM/MKT"], I: ["NN"] },
+            "S2": { name: "S2: Gestión Crisis por Incumplimientos Regulatorios Mayores", category: "CAT_SOBREVIVIR", R: ["LGL/REG", "CRISIS"], A: ["DIR", "LGL/REG", "CRISIS"], C: ["EST", "OPER", "FIN/CNT", "TI", "GH", "ESG/CAL"], I: ["NN", "GP/ODP", "COM/MKT", "JEF/COORD"] },
+            "S3": { name: "S3: Activación y Ejecución Planes de Continuidad / Recuperación", category: "CAT_SOBREVIVIR", R: ["OPER", "GP/ODP", "TI", "GH", "CRISIS", "ESG/CAL", "JEF/COORD"], A: ["DIR", "OPER", "TI", "CRISIS", "JEF/COORD"], C: ["EST", "FIN/CNT", "LGL/REG", "COM/MKT"], I: ["NN"] }
+        };
+
+        const rolesAreas = {
+            "DIR": "Comité de Dirección", "EST": "Estrategia / Planificación", "NN": "Nuevos Negocios",
+            "OPER": "Operaciones (incl. Logística, Mant.)", "GP/ODP": "Gerencia Proyectos / ODP",
+            "FIN/CNT": "Finanzas / Contabilidad", "TI": "Tecnología de la Información",
+            "GH": "Gestión Humana", "LGL/REG": "Legal / Regulatorio",
+            "COM/MKT": "Comercial / Marketing", "CRISIS": "Comité de Crisis",
+            "ESG/CAL": "Gestión Social, Ambiental, Calidad, SST", "JEF/COORD": "Jefes de Área / Coordinadores"
+        };
+
+        const condugasColors = {
+            desarrollarse: '#f8b133', // Orange
+            recuperar: '#1d70b7',     // Light Blue
+            sobrevivir: '#ef4444',    // Red
+            decisionDefault: '#A5B4FC', // Light Indigo for specific decisions
+            role: '#292d63',          // Dark Blue
+            roleText: '#FFFFFF'
+        };
+
+        // --- Vis.js Network Setup ---
+        const container = document.getElementById('raciNetwork');
+        const tooltip = document.getElementById('tooltip');
+        const nodes = new vis.DataSet();
+        const edges = new vis.DataSet();
+
+        // 1. Add Decision Category Nodes
+        nodes.add([
+            { id: 'CAT_DESARROLLARSE', label: 'DESARROLLARSE', shape: 'ellipse', color: condugasColors.desarrollarse, font: {size: 18, color: 'white', bold:true}, mass: 3, size: 40, title: "Decisiones para Crecer y Evolucionar" },
+            { id: 'CAT_RECUPERAR', label: 'RECUPERAR CONTROL', shape: 'ellipse', color: condugasColors.recuperar, font: {size: 18, color: 'white', bold:true}, mass: 3, size: 40, title: "Decisiones para Estabilizar y Optimizar" },
+            { id: 'CAT_SOBREVIVIR', label: 'SOBREVIVIR', shape: 'ellipse', color: condugasColors.sobrevivir, font: {size: 18, color: 'white', bold:true}, mass: 3, size: 40, title: "Decisiones para Asegurar Continuidad y Mitigar Crisis" }
+        ]);
+
+        // 2. Add Role/Area Nodes
+        for (const id in rolesAreas) {
+            nodes.add({
+                id: id,
+                label: rolesAreas[id].replace('/', '/\n'), // Allow line break
+                shape: 'box',
+                color: { background: condugasColors.role, border: '#1a202c' },
+                font: { color: condugasColors.roleText, size: 11, multi: true, bold: {size: 12} },
+                margin: 10,
+                title: rolesAreas[id], // Tooltip for role name
+                group: 'role',
+                mass: 1.5
+            });
+        }
+
+        // 3. Add Specific Decision Nodes and Edges
+        for (const decId in raciMatrixData) {
+            const decision = raciMatrixData[decId];
+            let decisionColor = condugasColors.decisionDefault; // Default color for decisions
+            
+            // Assign specific color based on category for better visual grouping if desired
+            if (decision.category === 'CAT_DESARROLLARSE') decisionColor = '#FED7AA'; // Lighter orange
+            else if (decision.category === 'CAT_RECUPERAR') decisionColor = '#BFDBFE'; // Lighter blue
+            else if (decision.category === 'CAT_SOBREVIVIR') decisionColor = '#FECACA'; // Lighter red
+
+
+            nodes.add({
+                id: decId,
+                label: decId, // Short label for the node
+                title: formatRaciTooltip(decId, decision, rolesAreas), // Rich HTML tooltip
+                shape: 'dot',
+                color: decisionColor,
+                borderWidth: 2,
+                borderColor: condugasColors[decision.category.split('_')[1].toLowerCase()] || '#6b7280',
+                size: 20,
+                group: 'decision',
+                mass: 2,
+                raciData: decision // Store RACI data directly for tooltip
+            });
+
+            // Edge from Category to Decision
+            edges.add({
+                from: decision.category,
+                to: decId,
+                length: 150, // Shorter length for category connections
+                arrows: 'to',
+                color: { color: condugasColors[decision.category.split('_')[1].toLowerCase()] || '#cbd5e1', opacity: 0.7 }
+            });
+
+            // Edges from Decision to involved Roles
+            const involvedRoles = new Set([...(decision.A || []), ...(decision.R || []), ...(decision.C || []), ...(decision.I || [])]);
+            involvedRoles.forEach(roleId => {
+                if (rolesAreas[roleId]) { // Check if role exists
+                    edges.add({
+                        from: decId,
+                        to: roleId,
+                        length: 200, // Standard length
+                        color: { color: '#94a3b8', opacity: 0.5 } // Neutral color for these connections
+                    });
+                }
+            });
+        }
+
+        function formatRaciTooltip(decisionId, decisionData, rolesMap) {
+            let tooltipHtml = `<strong>${decisionData.name}</strong><hr>`;
+            const raciOrder = ['A', 'R', 'C', 'I'];
+            const raciLabels = { A: 'Accountable', R: 'Responsible', C: 'Consulted', I: 'Informed' };
+
+            raciOrder.forEach(roleKey => {
+                if (decisionData[roleKey] && decisionData[roleKey].length > 0) {
+                    const roles = decisionData[roleKey].map(rId => rolesMap[rId] || rId).join(', ');
+                    tooltipHtml += `<span class="raci-role-label raci-${roleKey}">${roleKey}:</span> ${roles}<br>`;
+                }
+            });
+            return tooltipHtml;
+        }
+
+        const data = { nodes: nodes, edges: edges };
+        const options = {
+            nodes: {
+                borderWidth: 2,
+                borderWidthSelected: 4,
+                font: { face: 'Inter, sans-serif' }
+            },
+            edges: {
+                smooth: { type: 'cubicBezier', forceDirection: 'vertical', roundness: 0.4 },
+                width: 1.5,
+                hoverWidth: 0.5 // Do not increase edge width on hover for clarity
+            },
+            physics: {
+                enabled: true,
+                solver: 'forceAtlas2Based',
+                forceAtlas2Based: {
+                    gravitationalConstant: -100, // Adjusted for better spread
+                    centralGravity: 0.015,
+                    springLength: 220,        // Increased spring length
+                    springConstant: 0.05,
+                    damping: 0.5,
+                    avoidOverlap: 0.7          // Increased avoid overlap
+                },
+                stabilization: { iterations: 1500, fit: true }
+            },
+            interaction: {
+                hover: true,
+                tooltipDelay: 200,
+                navigationButtons: true,
+                keyboard: true,
+                dragNodes: true,
+                dragView: true,
+                zoomView: true,
+                hoverConnectedEdges: false // Keep edges static on hover for less clutter
+            },
+            layout: {
+                hierarchical: false // Keep it organic for this type of network
+            }
+        };
+
+        const network = new vis.Network(container, data, options);
+
+        network.on("hoverNode", function (params) {
+            const nodeId = params.node;
+            const nodeData = nodes.get(nodeId);
+            if (nodeData && nodeData.title) { // All nodes should have a title now
+                tooltip.innerHTML = nodeData.title; // Title is pre-formatted HTML for decisions
+                tooltip.style.visibility = 'visible';
+                // Position tooltip relative to the pointer
+                // Add a small offset to avoid direct overlap with the cursor
+                tooltip.style.left = (params.pointer.DOM.x + 15) + 'px';
+                tooltip.style.top = (params.pointer.DOM.y + 15) + 'px';
+            }
+        });
+
+        network.on("blurNode", function () {
+            tooltip.style.visibility = 'hidden';
+        });
+         network.on("dragStart", function () {
+            tooltip.style.visibility = 'hidden'; // Hide tooltip when dragging starts
+        });
+
+        network.once('stabilizationIterationsDone', function() {
+            network.setOptions({ physics: false }); // Turn off physics after initial layout
+             network.fit(); // Fit the network to the view
+        });
+
+        window.addEventListener('resize', function() {
+            network.fit();
+        });
+
+    </script>
+
+</body>
+</html>

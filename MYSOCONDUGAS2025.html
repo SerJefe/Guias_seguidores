@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagrama Interactivo de Objetivos Estratégicos - Condugas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <style>
+        /* Basic styling for the network container */
+        #objectiveNetwork {
+            width: 100%;
+            height: 85vh; /* Maintain height */
+            border: 1px solid #e2e8f0; /* Tailwind gray-300 */
+            border-radius: 0.5rem; /* Tailwind rounded-lg */
+            background-color: #f8fafc; /* Slightly off-white background */
+            position: relative; /* Needed for absolute positioning of detail panel */
+            overflow: hidden; /* Hide overflow */
+        }
+        canvas { display: block; width: 100%; height: 100%; }
+        .vis-tooltip {
+            position: absolute; visibility: hidden; padding: 8px; white-space: nowrap;
+            font-family: Inter, sans-serif; font-size: 13px; color: #1f2937;
+            background-color: rgba(255, 255, 255, 0.95); border: 1px solid #d1d5db;
+            border-radius: 0.375rem; z-index: 10;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            pointer-events: none;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .vis-navigation .vis-button {
+            background-color: #292d63; color: white; border: none; border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2); transition: background-color 0.3s ease;
+        }
+        .vis-navigation .vis-button:hover { background-color: #1d70b7; }
+
+        /* Detail Panel Styling */
+        #detailPanel {
+            position: absolute; top: 1rem; right: -450px; width: 400px; max-width: 90%;
+            height: calc(100% - 2rem); background-color: white; border-radius: 0.5rem;
+            box-shadow: -5px 0px 15px rgba(0, 0, 0, 0.1); transition: right 0.4s ease-in-out;
+            z-index: 20; overflow-y: auto; display: flex; flex-direction: column;
+        }
+        #detailPanel.show { right: 1rem; }
+        #detailPanelContent { padding: 1.5rem; flex-grow: 1; }
+        #detailPanelHeader {
+            padding: 1rem 1.5rem; border-bottom: 1px solid #e2e8f0; display: flex;
+            justify-content: space-between; align-items: center;
+        }
+         #closeDetailPanel {
+            background: none; border: none; font-size: 1.5rem; line-height: 1;
+            cursor: pointer; color: #6b7280;
+         }
+         #closeDetailPanel:hover { color: #1f2937; }
+         #detailSubObjectives ul { list-style-type: decimal; list-style-position: inside; margin-left: 0.5rem; }
+         #detailSubObjectives li { margin-bottom: 0.5rem; padding-left: 0.5rem; }
+         #detailDataStatus {
+             margin-top: auto; padding-top: 1rem; border-top: 1px dashed #e2e8f0;
+             font-size: 0.75rem; color: #6b7280; font-style: italic;
+         }
+         /* Opacity for fading effect */
+         .vis-node.faded { opacity: 0.2; }
+         .vis-edge.faded { opacity: 0.1; }
+         /* Ensure highlighted nodes are fully opaque */
+         .vis-node:not(.faded) { opacity: 1; }
+         .vis-edge:not(.faded) { opacity: 0.7; } /* Default edge opacity */
+
+    </style>
+</head>
+<body class="bg-gray-100 p-4 md:p-8">
+
+    <header class="text-center mb-8">
+        <h1 class="text-3xl md:text-4xl font-bold text-[#292d63]">Diagrama Interactivo de Objetivos y Procesos</h1>
+        <p class="text-lg text-gray-600 mt-2">Visualización de Interdependencias Estratégicas, Tácticas y Operativas 2025</p>
+    </header>
+
+    <div class="mb-6 p-4 bg-[#e0f2fe] border border-[#7dd3fc] text-[#075985] rounded-lg text-sm shadow">
+        <p class="font-bold mb-2">Leyenda y Uso:</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+            <div><p><span class="inline-block w-4 h-4 rounded-md bg-[#292d63] mr-2 align-middle"></span> <strong class="text-[#292d63]">Áreas/Procesos Clave</strong></p></div>
+            <div>
+                <p><span class="inline-block w-4 h-4 rounded-full bg-[#f8b133] mr-2 align-middle"></span> <strong class="text-[#f8b133]">Obj. Estratégico</strong></p>
+                <p><span class="inline-block w-4 h-4 rounded-full bg-[#1d70b7] mr-2 align-middle"></span> <strong class="text-[#1d70b7]">Obj. Táctico</strong></p>
+            </div>
+             <div><p><span class="inline-block w-4 h-4 rounded-full bg-[#ffda05] mr-2 align-middle"></span> <strong class="text-[#ca8a04]">Obj. Operativo</strong></p></div>
+        </div>
+        <p class="mt-3"><strong>Interactividad:</strong> Mueve/zoom el diagrama. <strong class="text-red-600">Clic en círculo (Objetivo):</strong> Muestra detalles (declaración/sub-objetivos). <strong class="text-blue-600">Clic en cuadrado (Área/Proceso):</strong> Enfoca en ese proceso y sus objetivos conectados. <strong class="text-green-600">Clic en fondo:</strong> Restaura vista completa.</p>
+        <p class="text-xs italic mt-1">Nota: La declaración y sub-objetivos detallados solo están presentes para los nodos de ejemplo (FIN-01, LOG-01, GP-01, NN-01). Los demás muestran texto genérico.</p>
+    </div>
+
+    <main class="relative">
+        <div id="objectiveNetwork">
+            <div id="detailPanel">
+                <div id="detailPanelHeader">
+                    <h3 id="detailTitle" class="text-xl font-bold text-[#292d63]">Detalles del Objetivo</h3>
+                    <button id="closeDetailPanel" title="Cerrar">&times;</button>
+                </div>
+                <div id="detailPanelContent" class="text-gray-700 text-sm">
+                    <div class="mb-4">
+                        <strong class="text-gray-900">Declaración:</strong>
+                        <p id="detailDeclaration" class="mt-1"></p>
+                    </div>
+                    <div class="mb-4">
+                        <strong class="text-gray-900">Sub-Objetivos:</strong>
+                        <div id="detailSubObjectives" class="mt-1"></div>
+                    </div>
+                    <div class="mb-4">
+                        <strong class="text-gray-900">Áreas/Procesos Conectados:</strong>
+                        <p id="detailConnections" class="mt-1"></p>
+                    </div>
+                    <div id="detailDataStatus">
+                         Nota: Datos completos de sub-objetivos solo disponibles para nodos de ejemplo.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="tooltip" class="vis-tooltip"></div>
+    </main>
+
+    <footer class="text-center mt-8 text-sm text-gray-500">
+        Generado para Condugas - Plan Estratégico 2025
+    </footer>
+
+    <script type="text/javascript">
+        // --- Data Preparation ---
+        // Added 'declaration' and 'subObjectives' fields with placeholders for non-examples.
+        const objectivesData = [
+            // Financiero
+            { id: 'FIN-01', label: 'FIN-01', title: 'FIN-01 (Táctico)', category: 'Tactical', declaration: "Asegurar una ejecución presupuestal del 95% o más por proyecto...", subObjectives: ["Implementar revisiones presupuestales...", "Desarrollar alertas tempranas...", "Capacitar trimestralmente..."], connections: ['GP', 'CNT', 'LOG'], isExample: true },
+            { id: 'FIN-02', label: 'FIN-02', title: 'FIN-02 (Operativo)', category: 'Operational', declaration: "Reducir el ciclo de cuentas por cobrar a menos de 60 días...", subObjectives: ["Implementar sistema de facturación electrónica...", "Establecer política de descuentos...", "Asignar gestor de cobro específico..."], connections: ['COM', 'GP', 'CNT', 'LGL'], isExample: false }, // Added placeholder declaration/subs
+            { id: 'FIN-03', label: 'FIN-03', title: 'FIN-03 (Táctico)', category: 'Tactical', declaration: "Controlar el endeudamiento financiero total por debajo del 30%...", subObjectives: ["Realizar análisis trimestral...", "Evaluar alternativas de financiación...", "Establecer covenants financieros..."], connections: ['EST', 'CNT', 'NN'], isExample: false },
+            // ... (Add placeholder declaration and subObjectives for ALL other objectives) ...
+            // Example for FIN-04 (placeholder)
+            { id: 'FIN-04', label: 'FIN-04', title: 'FIN-04 (Táctico)', category: 'Tactical', declaration: "Optimizar el flujo de caja operativo mensual en al menos un 10%...", subObjectives: ["Implementar modelo de proyección...", "Negociar plazos de pago...", "Optimizar gestión de inventarios..."], connections: ['CNT', 'COM', 'LOG', 'GP'], isExample: false },
+            { id: 'FIN-05', label: 'FIN-05', title: 'FIN-05 (Táctico)', category: 'Tactical', declaration: "Garantizar una rentabilidad neta por proyecto mínima del 7%...", subObjectives: ["Implementar sistema de costeo...", "Realizar análisis de rentabilidad...", "Establecer comité de revisión..."], connections: ['GP', 'CNT', 'COM', 'NN'], isExample: false },
+            { id: 'FIN-06', label: 'FIN-06', title: 'FIN-06 (Estratégico)', category: 'Strategic', declaration: "Implementar modelo de gestión de riesgos financieros...", subObjectives: ["Desarrollar matriz de riesgos...", "Establecer políticas de cobertura...", "Realizar análisis de sensibilidad..."], connections: ['NN', 'LGL', 'EST', 'GP'], isExample: false },
+            { id: 'FIN-07', label: 'FIN-07', title: 'FIN-07 (Estratégico)', category: 'Strategic', declaration: "Optimizar la estructura de costos de capital...", subObjectives: ["Evaluar mezcla óptima...", "Renegociar condiciones de créditos...", "Explorar fuentes alternativas..."], connections: ['EST', 'CNT'], isExample: false },
+            { id: 'FIN-08', label: 'FIN-08', title: 'FIN-08 (Táctico)', category: 'Tactical', declaration: "Desarrollar e implementar un tablero de control financiero...", subObjectives: ["Definir KPIs financieros...", "Seleccionar herramienta BI...", "Capacitar en uso del tablero..."], connections: ['EST', 'CNT', 'TI'], isExample: false },
+            { id: 'FIN-09', label: 'FIN-09', title: 'FIN-09 (Táctico)', category: 'Tactical', declaration: "Establecer proceso formal de evaluación financiera...", subObjectives: ["Definir metodología estándar...", "Establecer comité de inversiones...", "Realizar seguimiento post-inversión..."], connections: ['EST', 'GP', 'NN', 'AREAS_SOLIC'], isExample: false },
+            { id: 'FIN-10', label: 'FIN-10', title: 'FIN-10 (Operativo)', category: 'Operational', declaration: "Reducir costos asociados a procesos financieros...", subObjectives: ["Mapear procesos financieros...", "Implementar herramienta automatización...", "Rediseñar proceso conciliación..."], connections: ['CNT', 'ADM', 'TI'], isExample: false },
+            { id: 'FIN-11', label: 'FIN-11', title: 'FIN-11 (Estratégico)', category: 'Strategic', declaration: "Asegurar que propuestas cumplan criterios de rentabilidad...", subObjectives: ["Integrar equipo financiero...", "Establecer check-list financiero...", "Realizar análisis de sensibilidad..."], connections: ['NN', 'GP', 'LGL'], isExample: false },
+            { id: 'FIN-12', label: 'FIN-12', title: 'FIN-12 (Estratégico)', category: 'Strategic', declaration: "Gestionar activamente relaciones con entidades financieras...", subObjectives: ["Realizar reuniones trimestrales...", "Presentar proyecciones financieras...", "Mantener documentación actualizada..."], connections: ['EST', 'CNT'], isExample: false },
+            { id: 'FIN-13', label: 'FIN-13', title: 'FIN-13 (Táctico)', category: 'Tactical', declaration: "Implementar sistema de costeo ABC...", subObjectives: ["Identificar actividades clave...", "Definir drivers de costo...", "Implementar piloto..."], connections: ['CNT', 'ADM', 'TI', 'GH', 'EST'], isExample: false },
+            { id: 'FIN-14', label: 'FIN-14', title: 'FIN-14 (Táctico)', category: 'Tactical', declaration: "Reducir tiempo ciclo capital de trabajo...", subObjectives: ["Analizar componentes CCC...", "Implementar acciones coordinadas...", "Negociar plazos proveedores..."], connections: ['LOG', 'COM', 'CNT'], isExample: false },
+            { id: 'FIN-15', label: 'FIN-15', title: 'FIN-15 (Operativo)', category: 'Operational', declaration: "Garantizar presentación informes regulatorios...", subObjectives: ["Establecer calendario anual...", "Implementar doble revisión...", "Mantenerse actualizado normativamente..."], connections: ['CNT', 'LGL'], isExample: false },
+
+            // Logistico
+            { id: 'LOG-01', label: 'LOG-01', title: 'LOG-01 (Táctico)', category: 'Tactical', declaration: "Reducir el costo logístico total por proyecto en un 8%...", subObjectives: ["Implementar software optimización rutas...", "Consolidar cargas y renegociar tarifas...", "Realizar análisis trimestral costos..."], connections: ['GP', 'LOG', 'FIN', 'CNT'], isExample: true },
+            { id: 'LOG-02', label: 'LOG-02', title: 'LOG-02 (Operativo)', category: 'Operational', declaration: "Aumentar la disponibilidad operativa de equipos críticos al 90%...", subObjectives: ["Implementar programa mantenimiento preventivo...", "Asegurar stock mínimo repuestos...", "Reducir tiempo medio reparación..."], connections: ['GP', 'MANT', 'LOG'], isExample: false },
+            // ... (Continue adding placeholders for LOG-03 to LOG-15) ...
+             { id: 'LOG-15', label: 'LOG-15', title: 'LOG-15 (Operativo)', category: 'Operational', declaration: "Reducir en un 15% los errores en despachos...", subObjectives: ["Implementar sistema verificación...", "Mejorar capacitación personal...", "Realizar auditorías aleatorias..."], connections: ['GP', 'CNT', 'GH'], isExample: false },
+
+             // Administrativo
+            { id: 'ADM-01', label: 'ADM-01', title: 'ADM-01 (Operativo)', category: 'Operational', declaration: "Reducir tiempos respuesta promedio solicitudes internas...", subObjectives: ["Implementar sistema ticketing...", "Definir SLAs...", "Analizar mensualmente tiempos..."], connections: ['TI', 'GH', 'TODAS'], isExample: false },
+            // ... (Continue adding placeholders for ADM-02 to ADM-14) ...
+            { id: 'ADM-15', label: 'ADM-15', title: 'ADM-15 (Táctico)', category: 'Tactical', declaration: "Asegurar que pólizas de seguro estén vigentes...", subObjectives: ["Mantener inventario pólizas...", "Realizar análisis anual riesgos...", "Gestionar proceso renovación..."], connections: ['LGL', 'FIN', 'GP', 'LOG'], isExample: false },
+
+            // Gestion Humana
+            { id: 'GH-01', label: 'GH-01', title: 'GH-01 (Estratégico)', category: 'Strategic', declaration: "Reducir la rotación de personal operativo a menos del 10%...", subObjectives: ["Implementar encuestas salida...", "Desarrollar planes carrera...", "Revisar paquete compensación..."], connections: ['AREAS_PERS_OP', 'FIN'], isExample: false },
+            // ... (Continue adding placeholders for GH-02 to GH-14) ...
+            { id: 'GH-15', label: 'GH-15', title: 'GH-15 (Estratégico)', category: 'Strategic', declaration: "Realizar estudio equidad salarial interna y externa...", subObjectives: ["Definir roles clave...", "Realizar análisis estadístico...", "Desarrollar plan acción..."], connections: ['FIN', 'LGL', 'DIR'], isExample: false },
+
+            // Legal
+            { id: 'LGL-01', label: 'LGL-01', title: 'LGL-01 (Estratégico)', category: 'Strategic', declaration: "Mantener 100% cumplimiento requisitos legales y contractuales...", subObjectives: ["Implementar check-list verificación...", "Realizar revisión legal obligatoria...", "Mantener base datos requisitos..."], connections: ['NN', 'COM', 'GP', 'LOG'], isExample: false },
+            // ... (Continue adding placeholders for LGL-02 to LGL-14) ...
+            { id: 'LGL-15', label: 'LGL-15', title: 'LGL-15 (Táctico)', category: 'Tactical', declaration: "Establecer repositorio digital centralizado contratos...", subObjectives: ["Seleccionar herramienta tecnológica...", "Migrar contratos vigentes...", "Configurar alertas automáticas..."], connections: ['TI', 'AREAS_CONT_CONTR'], isExample: false },
+
+             // Gerencia de Proyectos
+            { id: 'GP-01', label: 'GP-01', title: 'GP-01 (Táctico)', category: 'Tactical', declaration: "Cumplir al menos el 95% del cronograma de ejecución...", subObjectives: ["Implementar metodología ruta crítica...", "Realizar seguimiento semanal...", "Establecer planes acción inmediatos..."], connections: ['LOG', 'GH', 'FIN', 'CLIENTE'], isExample: true },
+            // ... (Continue adding placeholders for GP-02 to GP-14) ...
+             { id: 'GP-15', label: 'GP-15', title: 'GP-15 (Estratégico)', category: 'Strategic', declaration: "Implementar metodología BIM o equivalentes digitales...", subObjectives: ["Seleccionar proyectos piloto...", "Definir alcance uso BIM...", "Evaluar resultados..."], connections: ['ING', 'TI', 'NN'], isExample: false },
+
+            // Nuevos Negocios
+            { id: 'NN-01', label: 'NN-01', title: 'NN-01 (Estratégico)', category: 'Strategic', declaration: "Captar nuevos contratos firmados por valor mínimo...", subObjectives: ["Desarrollar pipeline oportunidades...", "Priorizar esfuerzos comerciales...", "Realizar seguimiento semanal pipeline..."], connections: ['COM', 'FIN', 'LGL', 'GP', 'EST'], isExample: true },
+            // ... (Continue adding placeholders for NN-02 to NN-14) ...
+            { id: 'NN-15', label: 'NN-15', title: 'NN-15 (Estratégico)', category: 'Strategic', declaration: "Explorar oportunidades negocio servicios valor agregado...", subObjectives: ["Investigar tendencias tecnológicas...", "Identificar oportunidades sinergia...", "Desarrollar caso negocio preliminar..."], connections: ['EST', 'GP', 'ING'], isExample: false },
+
+            // Contabilidad
+            { id: 'CNT-01', label: 'CNT-01', title: 'CNT-01 (Operativo)', category: 'Operational', declaration: "Realizar cierre contable mensual completo en máximo 5 días...", subObjectives: ["Optimizar cronograma cierre...", "Automatizar tareas recurrentes...", "Asegurar entrega puntual info..."], connections: ['FIN', 'TI', 'AREAS_PROV_INFO'], isExample: false },
+            // ... (Continue adding placeholders for CNT-02 to CNT-14) ...
+            { id: 'CNT-15', label: 'CNT-15', title: 'CNT-15 (Táctico)', category: 'Tactical', declaration: "Establecer proceso claro cálculo provisiones complejas...", subObjectives: ["Documentar metodología cálculo...", "Establecer roles y responsabilidades...", "Asegurar revisión periódica..."], connections: ['FIN', 'LGL', 'GP'], isExample: false },
+
+            // Comercial
+            { id: 'COM-01', label: 'COM-01', title: 'COM-01 (Operativo)', category: 'Operational', declaration: "Asegurar cumplimiento 100% plan facturación mensual...", subObjectives: ["Validar mensualmente hitos...", "Emitir 100% facturas...", "Realizar seguimiento semanal..."], connections: ['FIN', 'GP', 'CNT'], isExample: false },
+            // ... (Continue adding placeholders for COM-02 to COM-14) ...
+            { id: 'COM-15', label: 'COM-15', title: 'COM-15 (Operativo)', category: 'Operational', declaration: "Asegurar 100% información relevante cliente actualizada CRM...", subObjectives: ["Establecer política obligatoriedad...", "Realizar auditorías periódicas...", "Utilizar información CRM..."], connections: ['NN', 'TI', 'MKT'], isExample: false },
+
+            // Estrategia
+            { id: 'EST-01', label: 'EST-01', title: 'EST-01 (Estratégico)', category: 'Strategic', declaration: "Asegurar cumplimiento 90% objetivos estratégicos plan...", subObjectives: ["Establecer sistema seguimiento...", "Identificar desviaciones y riesgos...", "Reportar trimestralmente Dirección..."], connections: ['TODAS', 'DIR'], isExample: false },
+            // ... (Continue adding placeholders for EST-02 to EST-14) ...
+            { id: 'EST-15', label: 'EST-15', title: 'EST-15 (Estratégico)', category: 'Strategic', declaration: "Realizar seguimiento trimestral específico iniciativas transformación...", subObjectives: ["Identificar iniciativas MO2...", "Establecer KPIs específicos...", "Reportar trimestralmente avance..."], connections: ['TI', 'ADM', 'FIN', 'AREAS_IMPLEM'], isExample: false },
+        ];
+
+
+        // Define main process areas/departments and other connected entities
+        const processAreas = [
+            { id: 'FIN', label: 'Financiero' }, { id: 'LOG', label: 'Logístico/\nCompras' }, { id: 'ADM', label: 'Administrativo' },
+            { id: 'GH', label: 'Gestión Humana' }, { id: 'LGL', label: 'Legal' }, { id: 'GP', label: 'Gerencia Proy.' },
+            { id: 'NN', label: 'Nuevos Negocios' }, { id: 'CNT', label: 'Contabilidad' }, { id: 'COM', label: 'Comercial' },
+            { id: 'EST', label: 'Estrategia' }, { id: 'TI', label: 'TI' }, { id: 'MANT', label: 'Mantenimiento' },
+            { id: 'SST', label: 'SST/Méd/Amb' }, { id: 'AUD_INT', label: 'Auditoría Int.' }, { id: 'AUD_EXT', label: 'Auditoría Ext.' },
+            { id: 'CALIDAD', label: 'Calidad' }, { id: 'OPER', label: 'Operaciones' }, { id: 'DIR', label: 'Dirección' },
+            { id: 'MKT', label: 'Marketing/\nComms' }, { id: 'ING', label: 'Ingeniería/\nTécnica' }, { id: 'REL_COM', label: 'Rel. Comunitarias' },
+            { id: 'REL_INST', label: 'Rel. Institucionales' }, { id: 'SEGURIDAD', label: 'Seguridad' }, { id: 'CLIENTE', label: 'Cliente' },
+            { id: 'PROV', label: 'Proveedores' }, { id: 'TODAS', label: 'Todas las Áreas\n(Genérico)' }, { id: 'AREAS_SOLIC', label: 'Áreas Solicitantes' },
+            { id: 'AREAS_AFECT', label: 'Áreas Afectadas' }, { id: 'AREAS_AUDIT', label: 'Áreas Auditadas' }, { id: 'AREAS_IMPLEM', label: 'Áreas Implement.' },
+            { id: 'AREAS_PROV_INFO', label: 'Áreas Prov. Info' }, { id: 'AREAS_ORIG_TRANS', label: 'Áreas Orig. Trans.' }, { id: 'AREAS_CONT_CONTR', label: 'Áreas Usuarias Cont.' },
+            { id: 'AREAS_PERS_OP', label: 'Áreas Pers. Oper.' }, { id: 'AREAS_GEREN', label: 'Gerencias Área' }, { id: 'AREAS_GEREN_RIESGO', label: 'Gerencias Riesgo' },
+            { id: 'AREAS_INV', label: 'Áreas Involucradas' }, { id: 'AREAS_UNIDAD', label: 'Gerencias Unidad' }, { id: 'AREAS_TALLER', label: 'Áreas Taller' },
+            { id: 'AREAS_PROP', label: 'Áreas Proponentes' },
+        ];
+
+        // Define Condugas colors
+        const condugasColors = {
+            strategic: '#f8b133', tactical: '#1d70b7', operational: '#ffda05',
+            process: '#292d63', defaultObjective: '#9ca3af'
+        };
+
+        // --- Create Nodes ---
+        const nodes = new vis.DataSet();
+        const addedProcessNodes = new Set();
+        const objectiveDetailsMap = new Map(); // Store full objective details by ID
+
+        processAreas.forEach(area => {
+            if (!addedProcessNodes.has(area.id)) {
+                nodes.add({
+                    id: area.id, label: area.label.replace('\n', '\n'), shape: 'box',
+                    color: { background: condugasColors.process, border: '#1e293b' },
+                    font: { color: 'white', size: 11, face: 'Inter', bold: { size: 12 } },
+                    margin: { top: 8, right: 12, bottom: 8, left: 12 },
+                    title: `Área/Proceso: ${area.label.replace('\n', ' ')}`, group: 'process',
+                    fixed: false, mass: 2.5
+                });
+                addedProcessNodes.add(area.id);
+            }
+        });
+
+        objectivesData.forEach(obj => {
+            let color, borderColor;
+            switch (obj.category) {
+                case 'Strategic': color = condugasColors.strategic; borderColor = '#b45309'; break;
+                case 'Tactical': color = condugasColors.tactical; borderColor = '#1e3a8a'; break;
+                case 'Operational': color = condugasColors.operational; borderColor = '#a16207'; break;
+                default: color = condugasColors.defaultObjective; borderColor = '#4b5563';
+            }
+            // Add placeholder data if missing
+            const declarationText = obj.declaration || `Declaración del objetivo ${obj.id} (placeholder).`;
+            const subObjectivesList = obj.subObjectives || [
+                `Sub-objetivo 1 para ${obj.id} (placeholder).`,
+                `Sub-objetivo 2 para ${obj.id} (placeholder).`,
+                `Sub-objetivo 3 para ${obj.id} (placeholder).`
+            ];
+
+            nodes.add({
+                id: obj.id, shape: 'dot', size: 12,
+                color: { background: color, border: borderColor, highlight: { background: color, border: '#000000' }, hover: { background: color, border: '#000000' } },
+                title: obj.title, group: obj.category, mass: 1
+            });
+            // Store potentially modified details (with placeholders)
+            objectiveDetailsMap.set(obj.id, { ...obj, declaration: declarationText, subObjectives: subObjectivesList });
+        });
+
+        // --- Create Edges ---
+        const edges = new vis.DataSet();
+        objectivesData.forEach(obj => {
+            (obj.connections || []).forEach(connId => { // Ensure connections array exists
+                if (addedProcessNodes.has(connId)) {
+                    edges.add({
+                        from: obj.id, to: connId,
+                        arrows: { to: { enabled: true, scaleFactor: 0.6, type: 'arrow' } },
+                        length: 200,
+                        color: { color: '#d1d5db', highlight: condugasColors.process, hover: condugasColors.process, inherit: false },
+                        width: 0.7, hoverWidth: 1.5,
+                    });
+                } else {
+                    console.warn(`Connection target node "${connId}" not found for objective ${obj.id}. Edge not created.`);
+                }
+            });
+        });
+
+        // --- Network Configuration ---
+        const container = document.getElementById('objectiveNetwork');
+        const data = { nodes: nodes, edges: edges };
+        const options = {
+            nodes: {
+                borderWidth: 1.5, borderWidthSelected: 3,
+                font: { size: 11, face: 'Inter, sans-serif', color: '#374151' },
+                shapeProperties: { borderRadius: 4 }
+            },
+            edges: {
+                 smooth: { enabled: true, type: "cubicBezier", forceDirection: 'vertical', roundness: 0.4 },
+                 width: 0.7,
+                 color: { color: '#d1d5db', opacity: 0.7, highlight: '#1d70b7', hover: '#1d70b7' }
+            },
+            physics: {
+                enabled: true, solver: 'forceAtlas2Based',
+                forceAtlas2Based: { gravitationalConstant: -60, centralGravity: 0.015, springLength: 150, springConstant: 0.08, damping: 0.7, avoidOverlap: 0.8 },
+                 stabilization: { enabled: true, iterations: 2000, updateInterval: 25, onlyDynamicEdges: false, fit: true }
+            },
+            interaction: {
+                hover: true, tooltipDelay: 150, navigationButtons: true, keyboard: true,
+                dragNodes: true, dragView: true, zoomView: true, hoverConnectedEdges: true
+            },
+             layout: { improvedLayout: true }
+        };
+
+        // --- Initialize Network ---
+        const network = new vis.Network(container, data, options);
+
+        // --- Detail Panel Elements ---
+        const detailPanel = document.getElementById('detailPanel');
+        const detailTitle = document.getElementById('detailTitle');
+        const detailDeclaration = document.getElementById('detailDeclaration');
+        const detailSubObjectives = document.getElementById('detailSubObjectives');
+        const detailConnections = document.getElementById('detailConnections');
+        const detailDataStatus = document.getElementById('detailDataStatus');
+        const closeDetailPanelButton = document.getElementById('closeDetailPanel');
+
+        // --- Helper function to reset focus/highlight ---
+        function resetFocus() {
+            detailPanel.classList.remove('show');
+            network.unselectAll();
+
+            // Reset node and edge styles (remove fading)
+            const allNodes = nodes.getIds();
+            const allEdges = edges.getIds();
+            const updatesNodes = allNodes.map(id => ({ id: id, opacity: 1 })); // Reset opacity
+            const updatesEdges = allEdges.map(id => ({ id: id, color: { opacity: 0.7 } })); // Reset opacity
+
+            nodes.update(updatesNodes);
+            edges.update(updatesEdges);
+        }
+
+        // --- Event Listeners ---
+        network.on('click', function(params) {
+            const clickedNodeId = params.nodes.length > 0 ? params.nodes[0] : null;
+            const clickedEdgeId = params.edges.length > 0 ? params.edges[0] : null;
+
+            resetFocus(); // Reset previous focus/selection first
+
+            if (clickedNodeId) {
+                const nodeData = objectiveDetailsMap.get(clickedNodeId); // Check our map first
+                const visNodeData = nodes.get(clickedNodeId); // Get data from vis dataset
+
+                if (nodeData && visNodeData.group !== 'process') { // It's an objective node
+                    network.selectNodes([clickedNodeId]);
+
+                    // Populate Panel using data from objectiveDetailsMap (which includes placeholders)
+                    detailTitle.textContent = `${nodeData.id} (${nodeData.category})`;
+                    detailDeclaration.textContent = nodeData.declaration; // Will show placeholder if not example
+
+                    // Populate Sub-objectives
+                    if (nodeData.subObjectives && nodeData.subObjectives.length > 0) {
+                        let subObjectivesHtml = '<ul>';
+                        nodeData.subObjectives.forEach(sub => {
+                            subObjectivesHtml += `<li class="text-gray-600">${sub}</li>`;
+                        });
+                        subObjectivesHtml += '</ul>';
+                        detailSubObjectives.innerHTML = subObjectivesHtml; // Will show placeholders if not example
+                    } else {
+                        detailSubObjectives.innerHTML = '<p class="text-gray-500 italic">Sub-objetivos no disponibles.</p>';
+                    }
+
+                    // Populate Connections
+                    const connectionLabels = (nodeData.connections || [])
+                        .map(connId => nodes.get(connId)?.label?.replace(/\n/g, ' ') || connId)
+                        .join(', ');
+                    detailConnections.textContent = connectionLabels || 'Ninguna';
+
+                    // Update Data Status Indicator
+                    if (nodeData.isExample) {
+                         detailDataStatus.textContent = 'Datos completos mostrados (nodo de ejemplo).';
+                         detailDataStatus.style.color = '#15803d';
+                    } else {
+                         detailDataStatus.textContent = 'Nota: Datos completos solo disponibles para nodos de ejemplo.';
+                         detailDataStatus.style.color = '#6b7280';
+                    }
+
+                    setTimeout(() => { detailPanel.classList.add('show'); }, 50);
+
+                } else if (visNodeData && visNodeData.group === 'process') { // It's a process node
+                    // Focus on the process node
+                    const connectedNodes = network.getConnectedNodes(clickedNodeId);
+                    const allNodes = nodes.getIds();
+                    const allEdges = edges.getIds();
+
+                    // Prepare updates for fading
+                    const nodeUpdates = [];
+                    const edgeUpdates = [];
+                    const highlightNodes = new Set([clickedNodeId, ...connectedNodes]);
+
+                    allNodes.forEach(id => {
+                        nodeUpdates.push({ id: id, opacity: highlightNodes.has(id) ? 1 : 0.2 });
+                    });
+
+                    allEdges.forEach(edgeId => {
+                        const edge = edges.get(edgeId);
+                         // Highlight edges connected to the selected process node
+                        if (edge.from === clickedNodeId || edge.to === clickedNodeId) {
+                           edgeUpdates.push({ id: edgeId, color: { opacity: 0.9 } }); // Make connected edges more visible
+                        } else {
+                           edgeUpdates.push({ id: edgeId, color: { opacity: 0.1 } }); // Fade others
+                        }
+                    });
+
+                    nodes.update(nodeUpdates);
+                    edges.update(edgeUpdates);
+                }
+            }
+            // If clicked on background (no nodes/edges), resetFocus() was already called.
+        });
+
+        // Close button for detail panel
+        closeDetailPanelButton.addEventListener('click', function() {
+            resetFocus(); // Also reset focus when closing panel manually
+        });
+
+        // Tooltip Handling
+        const tooltip = document.getElementById('tooltip');
+        network.on("hoverNode", function (params) {
+             const nodeId = params.node;
+             const nodeData = nodes.get(nodeId);
+             if (nodeData && nodeData.title) {
+                 tooltip.innerHTML = nodeData.title;
+                 tooltip.style.visibility = 'visible';
+                 const pointer = params.pointer.DOM;
+                 tooltip.style.left = pointer.x + 10 + 'px';
+                 tooltip.style.top = pointer.y + 10 + 'px';
+             }
+        });
+         network.on("blurNode", function (params) {
+             tooltip.style.visibility = 'hidden';
+         });
+
+        // Stabilize layout
+        network.once('stabilizationIterationsDone', function() {
+            console.log("Network stabilization complete.");
+            network.setOptions({ physics: { enabled: true, stabilization: false } });
+        });
+
+        // Refit on resize
+        window.addEventListener('resize', function() { network.fit(); });
+
+    </script>
+
+</body>
+</html>

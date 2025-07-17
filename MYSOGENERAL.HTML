@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visión General de Procesos - Condugas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <style>
+        #processNetwork {
+            width: 100%;
+            height: 80vh;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            background-color: #f8fafc;
+        }
+        canvas { display: block; width: 100%; height: 100%; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .vis-navigation .vis-button {
+            background-color: #292d63; color: white; border: none; border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2); transition: background-color 0.3s ease;
+        }
+        .vis-navigation .vis-button:hover { background-color: #1d70b7; }
+        /* Tooltip for process nodes */
+        .vis-tooltip {
+            position: absolute; visibility: hidden; padding: 8px; white-space: nowrap;
+            font-family: Inter, sans-serif; font-size: 13px; color: #1f2937;
+            background-color: rgba(255, 255, 255, 0.95); border: 1px solid #d1d5db;
+            border-radius: 0.375rem; z-index: 10;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-4 md:p-8">
+
+    <header class="text-center mb-8">
+        <h1 class="text-3xl md:text-4xl font-bold text-[#292d63]">Visión General de Interconexión de Procesos</h1>
+        <p class="text-lg text-gray-600 mt-2">Plan Estratégico Condugas 2025</p>
+    </header>
+
+    <div class="mb-6 p-4 bg-[#e0f2fe] border border-[#7dd3fc] text-[#075985] rounded-lg text-sm shadow">
+        <p class="font-bold mb-2">Uso:</p>
+        <p>Este diagrama muestra las principales áreas/procesos y las interconexiones generales entre ellos. <strong class="text-blue-600">Haz clic en un área</strong> para explorar sus objetivos específicos y conexiones detalladas en una nueva vista.</p>
+    </div>
+
+    <main>
+        <div id="processNetwork" class="shadow-xl rounded-lg"></div>
+        <div id="tooltip" class="vis-tooltip"></div>
+    </main>
+
+    <footer class="text-center mt-8 text-sm text-gray-500">
+        Generado para Condugas
+    </footer>
+
+    <script type="text/javascript">
+        // Define process areas and their corresponding detail page filenames
+        const processAreas = [
+            // Main Departments with detail pages
+            { id: 'FIN', label: 'Financiero', page: 'MYSOFIN2025.html' },
+            { id: 'LOG', label: 'Logístico/\nCompras', page: 'proceso_logistico.html' }, // Example filename
+            { id: 'ADM', label: 'Administrativo', page: 'proceso_administrativo.html' },
+            { id: 'GH', label: 'Gestión Humana', page: 'proceso_gh.html' },
+            { id: 'LGL', label: 'Legal', page: 'proceso_legal.html' },
+            { id: 'GP', label: 'Gerencia Proy.', page: 'proceso_gp.html' },
+            { id: 'NN', label: 'Nuevos Negocios', page: 'proceso_nn.html' },
+            { id: 'CNT', label: 'Contabilidad', page: 'proceso_contabilidad.html' },
+            { id: 'COM', label: 'Comercial', page: 'proceso_comercial.html' },
+            { id: 'EST', label: 'Estrategia', page: 'proceso_estrategia.html' },
+            // Support/Other Key Areas (might not need separate pages, or link differently)
+            { id: 'TI', label: 'TI', page: null }, // No separate page for TI example
+            { id: 'MANT', label: 'Mantenimiento', page: null },
+            { id: 'SST', label: 'SST/Méd/Amb', page: null },
+            { id: 'AUD_INT', label: 'Auditoría Int.', page: null },
+            { id: 'AUD_EXT', label: 'Auditoría Ext.', page: null },
+            { id: 'CALIDAD', label: 'Calidad', page: null },
+            { id: 'OPER', label: 'Operaciones', page: null },
+            { id: 'DIR', label: 'Dirección', page: null },
+            { id: 'MKT', label: 'Marketing/\nComms', page: null },
+            { id: 'ING', label: 'Ingeniería/\nTécnica', page: null },
+            { id: 'REL_COM', label: 'Rel. Comunitarias', page: null },
+            { id: 'REL_INST', label: 'Rel. Institucionales', page: null },
+            { id: 'SEGURIDAD', label: 'Seguridad', page: null },
+            { id: 'CLIENTE', label: 'Cliente', page: null },
+            { id: 'PROV', label: 'Proveedores', page: null },
+            // Generic groups probably don't need pages
+            { id: 'TODAS', label: 'Todas las Áreas\n(Genérico)', page: null }
+            // ... (Removed other generic area groups for simplicity in overview)
+        ];
+
+        // Define general interdependencies (simplified based on document matrix or objective connections)
+        // H = High, M = Medium (represented by edge width/value)
+        // This is an interpretation and simplification for visual clarity.
+        const interdependencies = [
+            { from: 'GP', to: 'FIN', value: 5 }, { from: 'GP', to: 'LOG', value: 5 }, { from: 'GP', to: 'GH', value: 4 }, { from: 'GP', to: 'LGL', value: 4 }, { from: 'GP', to: 'COM', value: 4 }, { from: 'GP', to: 'NN', value: 4 }, { from: 'GP', to: 'TI', value: 3 }, { from: 'GP', to: 'EST', value: 3 },
+            { from: 'NN', to: 'FIN', value: 5 }, { from: 'NN', to: 'LGL', value: 5 }, { from: 'NN', to: 'EST', value: 4 }, { from: 'NN', to: 'COM', value: 4 }, { from: 'NN', to: 'GP', value: 4 }, { from: 'NN', to: 'ING', value: 3 },
+            { from: 'FIN', to: 'CNT', value: 5 }, { from: 'FIN', to: 'EST', value: 4 }, { from: 'FIN', to: 'LGL', value: 3 }, { from: 'FIN', to: 'ADM', value: 3 }, { from: 'FIN', to: 'COM', value: 3 }, { from: 'FIN', to: 'LOG', value: 3 },
+            { from: 'LOG', to: 'GP', value: 5 }, { from: 'LOG', to: 'FIN', value: 4 }, { from: 'LOG', to: 'MANT', value: 3 }, { from: 'LOG', to: 'ADM', value: 3 }, { from: 'LOG', to: 'TI', value: 3 },
+            { from: 'ADM', to: 'TI', value: 5 }, { from: 'ADM', to: 'FIN', value: 4 }, { from: 'ADM', to: 'CNT', value: 4 }, { from: 'ADM', to: 'GH', value: 3 }, { from: 'ADM', to: 'LOG', value: 3 },
+            { from: 'GH', to: 'GP', value: 4 }, { from: 'GH', to: 'LGL', value: 3 }, { from: 'GH', to: 'ADM', value: 3 }, { from: 'GH', to: 'DIR', value: 3 }, { from: 'GH', to: 'EST', value: 3 },
+            { from: 'LGL', to: 'FIN', value: 4 }, { from: 'LGL', to: 'GP', value: 4 }, { from: 'LGL', to: 'NN', value: 4 }, { from: 'LGL', to: 'GH', value: 3 }, { from: 'LGL', to: 'COM', value: 3 },
+            { from: 'CNT', to: 'FIN', value: 5 }, { from: 'CNT', to: 'ADM', value: 4 }, { from: 'CNT', to: 'TI', value: 3 },
+            { from: 'COM', to: 'GP', value: 4 }, { from: 'COM', to: 'FIN', value: 4 }, { from: 'COM', to: 'NN', value: 4 }, { from: 'COM', to: 'LGL', value: 3 }, { from: 'COM', to: 'MKT', value: 3 },
+            { from: 'EST', to: 'DIR', value: 5 }, { from: 'EST', to: 'FIN', value: 4 }, { from: 'EST', to: 'NN', value: 4 }, { from: 'EST', to: 'GP', value: 3 }, { from: 'EST', to: 'GH', value: 3 }, { from: 'EST', to: 'TI', value: 3 },
+            { from: 'TI', to: 'ADM', value: 5 }, { from: 'TI', to: 'GP', value: 4 }, { from: 'TI', to: 'EST', value: 3 }, { from: 'TI', to: 'FIN', value: 3 }, { from: 'TI', to: 'CNT', value: 3 }, { from: 'TI', to: 'LOG', value: 3 },
+            // Add connections to external/other if needed
+            { from: 'GP', to: 'CLIENTE', value: 3 },
+            { from: 'LOG', to: 'PROV', value: 3 },
+        ];
+
+        // --- Create Nodes ---
+        const nodes = new vis.DataSet();
+        processAreas.forEach(area => {
+             // Only add nodes that are part of the interdependencies or have a page link
+             const isInEdges = interdependencies.some(edge => edge.from === area.id || edge.to === area.id);
+             if (area.page || isInEdges) {
+                 nodes.add({
+                    id: area.id,
+                    label: area.label.replace('\n', '\n'),
+                    shape: 'box',
+                    color: { background: '#292d63', border: '#1e293b' },
+                    font: { color: 'white', size: 12, face: 'Inter', bold: { size: 13 } },
+                    margin: { top: 10, right: 15, bottom: 10, left: 15 },
+                    title: `Clic para ver detalle de ${area.label.replace('\n', ' ')}` + (area.page ? '' : ' (Vista Detallada No Disponible)'),
+                    pageLink: area.page, // Store the link here
+                    mass: 2.5 // Make core processes heavier
+                 });
+             }
+        });
+
+        // --- Create Edges ---
+        const edges = new vis.DataSet();
+        interdependencies.forEach(dep => {
+            // Ensure both nodes exist before adding edge
+            if (nodes.get(dep.from) && nodes.get(dep.to)) {
+                edges.add({
+                    from: dep.from,
+                    to: dep.to,
+                    value: dep.value, // Use value for width scaling
+                    color: { color: '#94a3b8', opacity: 0.6, highlight: '#1d70b7', hover: '#1d70b7' },
+                    arrows: { to: { enabled: false } } // No arrows for general overview
+                });
+            }
+        });
+
+        // --- Network Configuration ---
+        const container = document.getElementById('processNetwork');
+        const data = { nodes: nodes, edges: edges };
+        const options = {
+            nodes: {
+                borderWidth: 1.5, borderWidthSelected: 3,
+                shapeProperties: { borderRadius: 6 }
+            },
+            edges: {
+                smooth: { enabled: true, type: "continuous" },
+                width: 1, // Base width
+                scaling: { // Scale width based on 'value'
+                  min: 1,
+                  max: 6,
+                  label: false
+                }
+            },
+            physics: {
+                enabled: true,
+                solver: 'barnesHut', // Good for overview networks
+                barnesHut: {
+                    gravitationalConstant: -15000, // Strong repulsion
+                    centralGravity: 0.1,
+                    springLength: 200,
+                    springConstant: 0.05,
+                    damping: 0.3,
+                    avoidOverlap: 0.5
+                },
+                stabilization: { iterations: 1000 }
+            },
+            interaction: {
+                hover: true,
+                tooltipDelay: 200,
+                navigationButtons: true,
+                keyboard: true,
+                dragNodes: true,
+                dragView: true,
+                zoomView: true
+            },
+            layout: { improvedLayout: true }
+        };
+
+        // --- Initialize Network ---
+        const network = new vis.Network(container, data, options);
+
+        // --- Click Event for Navigation ---
+        network.on('click', function(params) {
+            if (params.nodes.length > 0) {
+                const nodeId = params.nodes[0];
+                const nodeData = nodes.get(nodeId);
+                if (nodeData && nodeData.pageLink) {
+                    // Navigate to the specific process page
+                    window.location.href = nodeData.pageLink;
+                    // Or use window.open(nodeData.pageLink, '_blank'); to open in new tab
+                }
+            }
+        });
+
+         // --- Tooltip Handling ---
+        const tooltip = document.getElementById('tooltip');
+        network.on("hoverNode", function (params) {
+             const nodeId = params.node;
+             const nodeData = nodes.get(nodeId);
+             if (nodeData && nodeData.title) {
+                 tooltip.innerHTML = nodeData.title;
+                 tooltip.style.visibility = 'visible';
+                 const pointer = params.pointer.DOM;
+                 tooltip.style.left = pointer.x + 10 + 'px';
+                 tooltip.style.top = pointer.y + 10 + 'px';
+             }
+        });
+         network.on("blurNode", function (params) {
+             tooltip.style.visibility = 'hidden';
+         });
+
+        // Stabilize layout
+        network.once('stabilizationIterationsDone', function() {
+            network.setOptions({ physics: false }); // Turn off physics after layout
+        });
+
+    </script>
+
+</body>
+</html>
