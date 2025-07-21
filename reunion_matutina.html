@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infografía: Comité Matutino de Directivos (15 Minutos)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Custom styles for Inter font and general body styling */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Light background */
+            color: #334155; /* Dark text */
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e2e8f0;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+        /* Specific styles for the minute markers in the timeline */
+        .timeline-minute-marker {
+            position: absolute;
+            top: -10px; /* Adjust as needed */
+            font-size: 0.75rem;
+            color: #6b7280;
+            transform: translateX(-50%);
+        }
+        .timeline-minute-marker.m0 { left: 0%; }
+        .timeline-minute-marker.m1 { left: calc(1/15 * 100%); }
+        .timeline-minute-marker.m12 { left: calc(12/15 * 100%); }
+        .timeline-minute-marker.m14 { left: calc(14/15 * 100%); }
+        .timeline-minute-marker.m15 { left: 100%; }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+    <div class="max-w-4xl mx-auto bg-white shadow-xl rounded-2xl overflow-hidden">
+        <!-- Header Section -->
+        <header class="bg-gradient-to-r from-teal-600 to-cyan-500 p-6 sm:p-8 text-white text-center rounded-t-2xl">
+            <h1 class="text-3xl sm:text-4xl font-extrabold mb-2">Comité Matutino de Directivos</h1>
+            <p class="text-lg sm:text-xl font-light">15 Minutos de Revisión Estratégica y Acción Inmediata</p>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="p-6 sm:p-8 space-y-8">
+
+            <!-- Objective & Participants -->
+            <section class="grid grid-cols-1 md:grid-cols-2 gap-6 text-center mb-8">
+                <div class="bg-blue-50 p-6 rounded-xl shadow-md">
+                    <div class="text-blue-600 text-4xl mb-3"><i class="fas fa-bullseye"></i></div>
+                    <h2 class="text-xl font-bold text-gray-800 mb-2">Objetivo</h2>
+                    <p class="text-gray-700 leading-relaxed text-sm">
+                        Revisión rápida y estratégica de la situación de caja y costos de producción para identificar acciones inmediatas.
+                    </p>
+                </div>
+                <div class="bg-green-50 p-6 rounded-xl shadow-md">
+                    <div class="text-green-600 text-4xl mb-3"><i class="fas fa-users"></i></div>
+                    <h2 class="text-xl font-bold text-gray-800 mb-2">Participantes y Duración</h2>
+                    <p class="text-gray-700 leading-relaxed text-sm">
+                        <span class="font-bold">7 Directivos + Gerente</span><br>
+                        Duración: <span class="font-bold text-lg text-green-700">Estrictamente 15 minutos</span>
+                    </p>
+                </div>
+            </section>
+
+            <!-- Key Rules -->
+            <section class="mb-8">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 text-center mb-6">Reglas Clave para la Eficiencia</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="flex items-center bg-gray-50 p-4 rounded-lg shadow-sm">
+                        <i class="fas fa-clock text-orange-500 text-2xl mr-3"></i>
+                        <p class="text-gray-700 font-medium">Puntualidad inquebrantable</p>
+                    </div>
+                    <div class="flex items-center bg-gray-50 p-4 rounded-lg shadow-sm">
+                        <i class="fas fa-standing-up text-purple-500 text-2xl mr-3"></i>
+                        <p class="text-gray-700 font-medium">De pie (recomendado)</p>
+                    </div>
+                    <div class="flex items-center bg-gray-50 p-4 rounded-lg shadow-sm">
+                        <i class="fas fa-user-tag text-red-500 text-2xl mr-3"></i>
+                        <p class="text-gray-700 font-medium">Un tema por persona</p>
+                    </div>
+                    <div class="flex items-center bg-gray-50 p-4 rounded-lg shadow-sm">
+                        <i class="fas fa-arrow-right text-blue-500 text-2xl mr-3"></i>
+                        <p class="text-gray-700 font-medium">No divagar: directo al grano</p>
+                    </div>
+                    <div class="flex items-center bg-gray-50 p-4 rounded-lg shadow-sm">
+                        <i class="fas fa-check-circle text-green-500 text-2xl mr-3"></i>
+                        <p class="text-gray-700 font-medium">Acciones concretas</p>
+                    </div>
+                    <div class="flex items-center bg-gray-50 p-4 rounded-lg shadow-sm">
+                        <i class="fas fa-calendar-alt text-yellow-500 text-2xl mr-3"></i>
+                        <p class="text-gray-700 font-medium">Foco en el futuro (hoy/semana)</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Agenda Breakdown -->
+            <section class="mb-8">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 text-center mb-6">Agenda Detallada (15 Minutos)</h2>
+                <div class="space-y-6">
+                    <!-- Min 0-1 -->
+                    <div class="flex items-start bg-indigo-50 p-4 rounded-xl shadow-md">
+                        <div class="text-indigo-600 text-3xl mr-4 mt-1"><i class="fas fa-hourglass-start"></i></div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800">Minuto 0-1: Apertura (Gerente)</h3>
+                            <p class="text-gray-700 text-sm leading-relaxed">
+                                "Buenos días a todos. En estos 15 minutos, vamos a revisar rápidamente nuestra situación de caja y costos para identificar cualquier acción urgente que debamos tomar hoy."
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Min 1-12 -->
+                    <div class="flex items-start bg-pink-50 p-4 rounded-xl shadow-md">
+                        <div class="text-pink-600 text-3xl mr-4 mt-1"><i class="fas fa-users-line"></i></div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800">Minuto 1-12: Ronda Rápida (1-2 min por directivo)</h3>
+                            <p class="text-gray-700 text-sm leading-relaxed">Cada directivo presenta:</p>
+                            <ul class="list-disc list-inside text-gray-700 text-sm mt-2 space-y-1">
+                                <li><span class="font-bold">Situación Actual:</span> Estado de caja/costos en su área</li>
+                                <li><span class="font-bold">Principal Desafío/Oportunidad:</span> Problema más crítico u oportunidad más relevante</li>
+                                <li><span class="font-bold">Propuesta de Acción Inmediata:</span> Acción concreta para hoy o corto plazo</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Min 12-14 -->
+                    <div class="flex items-start bg-purple-50 p-4 rounded-xl shadow-md">
+                        <div class="text-purple-600 text-3xl mr-4 mt-1"><i class="fas fa-clipboard-check"></i></div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800">Minuto 12-14: Resumen y Asignación (Gerente)</h3>
+                            <ul class="list-disc list-inside text-gray-700 text-sm mt-2 space-y-1">
+                                <li>Sintetizar acciones clave propuestas</li>
+                                <li>Asignar responsables si es necesario</li>
+                                <li>Asegurar claridad sobre próximos pasos</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Min 14-15 -->
+                    <div class="flex items-start bg-orange-50 p-4 rounded-xl shadow-md">
+                        <div class="text-orange-600 text-3xl mr-4 mt-1"><i class="fas fa-hand-peace"></i></div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800">Minuto 14-15: Cierre (Gerente)</h3>
+                            <p class="text-gray-700 text-sm leading-relaxed">
+                                "Gracias a todos por su enfoque y sus aportes. Nos vemos mañana a la misma hora para revisar el progreso."
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 15-Minute Timeline Visual -->
+            <section class="mt-12 text-center">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-4">Visualización: Los 15 Minutos Clave</h2>
+                <div class="relative w-full max-w-2xl mx-auto h-24 bg-gray-200 rounded-full flex items-center justify-between px-4">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-[calc(1/15*100%)] h-4 bg-indigo-400 rounded-l-full"></div>
+                        <div class="w-[calc(11/15*100%)] h-4 bg-pink-400"></div>
+                        <div class="w-[calc(2/15*100%)] h-4 bg-purple-400"></div>
+                        <div class="w-[calc(1/15*100%)] h-4 bg-orange-400 rounded-r-full"></div>
+                    </div>
+                    <div class="relative w-full h-full flex items-center justify-between">
+                        <div class="timeline-minute-marker m0">0 min</div>
+                        <div class="timeline-minute-marker m1">1 min</div>
+                        <div class="timeline-minute-marker m12">12 min</div>
+                        <div class="timeline-minute-marker m14">14 min</div>
+                        <div class="timeline-minute-marker m15">15 min</div>
+                    </div>
+                </div>
+                <div class="flex flex-wrap justify-center mt-6 space-x-2 sm:space-x-4 text-xs sm:text-sm font-medium">
+                    <div class="flex items-center mb-2 sm:mb-0">
+                        <span class="block w-4 h-4 bg-indigo-400 rounded-full mr-2"></span>
+                        <span>Apertura</span>
+                    </div>
+                    <div class="flex items-center mb-2 sm:mb-0">
+                        <span class="block w-4 h-4 bg-pink-400 rounded-full mr-2"></span>
+                        <span>Ronda Rápida</span>
+                    </div>
+                    <div class="flex items-center mb-2 sm:mb-0">
+                        <span class="block w-4 h-4 bg-purple-400 rounded-full mr-2"></span>
+                        <span>Resumen y Asignación</span>
+                    </div>
+                    <div class="flex items-center mb-2 sm:mb-0">
+                        <span class="block w-4 h-4 bg-orange-400 rounded-full mr-2"></span>
+                        <span>Cierre</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- General Topics & Reminders -->
+            <section class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+                <div class="bg-gray-100 p-6 rounded-xl shadow-md">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center"><i class="fas fa-list-ul text-blue-500 mr-3"></i>Temas Generales a Discutir</h2>
+                    <ul class="list-disc list-inside text-gray-700 text-sm space-y-2">
+                        <li>Estado de liquidez disponible y proyecciones 24-48 horas</li>
+                        <li>Entradas y salidas de efectivo inesperadas</li>
+                        <li>Costos operativos que excedieron expectativas</li>
+                        <li>Decisiones sobre pagos a proveedores o cobros a clientes</li>
+                        <li>Ajustes en asignación de recursos para proyectos rentables</li>
+                        <li>Impacto financiero de emergencias o eventos imprevistos</li>
+                    </ul>
+                </div>
+                <div class="bg-gray-100 p-6 rounded-xl shadow-md">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center"><i class="fas fa-exclamation-triangle text-red-500 mr-3"></i>Recordatorios Clave</h2>
+                    <ul class="list-disc list-inside text-gray-700 text-sm space-y-2">
+                        <li>Cualquier tema que requiera discusión profunda debe agendarse por separado.</li>
+                        <li>Cada intervención debe culminar en una acción con responsable y fecha límite.</li>
+                        <li>Mantener el enfoque en la situación de caja y costos de producción.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Integration with previous concept -->
+            <section class="text-center mt-12 p-6 bg-yellow-50 rounded-xl shadow-md">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-4">La Base de Datos: Información de Valor</h2>
+                <p class="text-gray-700 leading-relaxed">
+                    La <span class="font-bold text-blue-700">recopilación de datos a través de llamadas de alineación</span> (como la infografía anterior) alimenta directamente este comité. Los insights obtenidos de esas conversaciones son cruciales para las decisiones rápidas y estratégicas que se toman aquí. ¡Cada dato cuenta!
+                </p>
+            </section>
+
+            <!-- Conclusion -->
+            <section class="text-center mt-12 p-6 bg-teal-50 rounded-xl">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-4">¡15 Minutos para Impulsar el Negocio!</h2>
+                <p class="text-gray-700 leading-relaxed">
+                    Este comité es una herramienta poderosa para la toma de decisiones ágiles y el mantenimiento del control financiero. La disciplina y el enfoque son la clave de su éxito.
+                </p>
+            </section>
+
+        </main>
+
+        <!-- Footer Section -->
+        <footer class="bg-gray-800 p-4 text-white text-center text-sm rounded-b-2xl">
+            <p>&copy; 2025 Infografía de Comité Matutino. Todos los derechos reservados.</p>
+        </footer>
+    </div>
+</body>
+</html>
