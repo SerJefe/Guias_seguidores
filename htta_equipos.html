@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Herramienta de Diagnóstico de Equipos v2 | SER.SIENDO</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #111827; --bg-light: #1F2937; --primary: #0ea5e9; --primary-hover: #0284c7; --secondary: #10b981; --text-light: #F9FAFB; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-dark); color: var(--text-light); }
+        .card { background-color: var(--bg-light); border-radius: 1rem; padding: 1.5rem; border: 1px solid #374151; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2); }
+        .btn { padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; transition: all 0.2s ease-in-out; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; }
+        .btn-primary { background-color: var(--primary); color: white; }
+        .btn-primary:hover { background-color: var(--primary-hover); }
+        .btn:disabled { background-color: #374151; cursor: not-allowed; }
+        .screen { display: none; animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        input, textarea, select { background-color: #374151; color: var(--text-light); padding: 0.75rem; border-radius: 0.5rem; border: 1px solid #4B5563; width: 100%; }
+        input:focus, textarea:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.4); outline: none; }
+        dialog { background-color: var(--bg-light); color: var(--text-light); border: 1px solid #4B5563; border-radius: 1rem; padding: 2rem; max-width: 90vw; width: 640px; }
+        dialog::backdrop { background-color: rgba(17, 24, 39, 0.8); backdrop-filter: blur(5px); }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto p-4 md:p-8 max-w-7xl">
+
+        <section id="screen-dashboard" class="screen">
+            <div class="text-center mb-10">
+                <h1 class="text-5xl font-bold text-white mb-2">SER.SIENDO</h1>
+                <h2 class="text-3xl font-semibold text-sky-400">Panel de Diagnóstico de Equipos</h2>
+            </div>
+            <div class="card">
+                <div class="flex flex-wrap justify-between items-center mb-6 gap-4">
+                    <h3 class="text-2xl font-bold">Miembros del Equipo</h3>
+                    <div class="flex gap-2">
+                        <button id="compare-members-btn" class="btn bg-teal-600 hover:bg-teal-700" disabled>Comparar Perfiles</button>
+                        <button id="add-member-btn" class="btn btn-primary">Añadir Miembro</button>
+                    </div>
+                </div>
+                <div id="team-list-container" class="space-y-4"></div>
+                 <div class="mt-8 pt-6 border-t border-gray-700 text-center">
+                    <h3 class="text-2xl font-bold mb-4">Sinergia del Equipo</h3>
+                    <button id="view-team-synergy-btn" class="btn btn-primary bg-emerald-600 hover:bg-emerald-700 text-lg" disabled>Ver Sinergia de Equipo</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="screen-report" class="screen">
+            <div class="flex justify-between items-start mb-6">
+                <div>
+                    <h2 id="report-title" class="text-4xl font-bold text-white"></h2>
+                    <p id="report-subtitle" class="text-lg text-sky-400">Reporte de Diagnóstico SER.SIENDO</p>
+                </div>
+                <button id="back-to-dashboard-btn" class="btn bg-gray-600 hover:bg-gray-500">Volver al Panel</button>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                <div id="radar-chart-container" class="lg:col-span-3 card">
+                    <h3 class="text-xl font-bold mb-4 text-center">Perfil de Diagnóstico Integral</h3>
+                    <canvas id="main-radar-chart"></canvas>
+                </div>
+                
+                <div id="gap-analysis-container" class="lg:col-span-2 space-y-8">
+                    <div class="card">
+                        <h3 class="text-xl font-bold mb-4">Análisis de Brechas</h3>
+                        <canvas id="gap-analysis-chart"></canvas>
+                        <div id="gap-analysis-text" class="text-sm mt-4 space-y-2 text-gray-300"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="screen-synergy" class="screen">
+             <div class="flex justify-between items-start mb-6">
+                <div>
+                    <h2 class="text-4xl font-bold text-white">Sinergia del Equipo</h2>
+                    <p class="text-lg text-sky-400">Análisis de complementariedad y estrategias de cobertura</p>
+                </div>
+                <button id="back-to-dashboard-from-synergy-btn" class="btn bg-gray-600 hover:bg-gray-500">Volver al Panel</button>
+            </div>
+            <div class="card">
+                <h3 class="text-xl font-bold mb-4">Matriz de Fortalezas y Brechas del Equipo</h3>
+                <div class="overflow-x-auto">
+                    <table id="synergy-table" class="w-full text-left"></table>
+                </div>
+            </div>
+            <div class="card mt-8">
+                <h3 class="text-xl font-bold mb-4">Estrategias de Cobertura de Brechas</h3>
+                <textarea id="gap-coverage-strategies" rows="6" placeholder="Define aquí estrategias para que el equipo se complemente..."></textarea>
+            </div>
+        </section>
+
+    </div>
+
+    <dialog id="evaluation-modal">
+        <h2 id="modal-title" class="text-3xl font-bold mb-6"></h2>
+        <form id="evaluation-form" class="space-y-8">
+            <input type="hidden" id="member-id">
+            
+            <fieldset class="p-4 border border-gray-600 rounded-lg">
+                <legend class="px-2 font-semibold text-lg text-sky-400">1. Desempeño y Potencial</legend>
+                <div>
+                    <label class="block font-medium">Nivel de Exigencia del Rol (1-10)</label>
+                    <input type="range" id="role-demand" min="1" max="10" value="5" class="w-full mt-1">
+                </div>
+                <div class="mt-4">
+                    <label class="block font-medium">Resultado Actual (1-10)</label>
+                    <input type="range" id="current-result" min="1" max="10" value="5" class="w-full mt-1">
+                </div>
+                 <div class="mt-4">
+                    <label class="block font-medium">Potencial Estimado (1-10)</label>
+                    <input type="range" id="potential" min="1" max="10" value="5" class="w-full mt-1">
+                </div>
+            </fieldset>
+
+            <fieldset class="p-4 border border-gray-600 rounded-lg">
+                <legend class="px-2 font-semibold text-lg text-sky-400">2. Perfil Individual</legend>
+                <div>
+                    <label class="block font-medium mb-1">Estilo de Aprendizaje (Kolb)</label>
+                    <select id="learning-style">
+                        <option value="Divergente">Divergente (Siente y Observa - Genera ideas)</option>
+                        <option value="Asimilador">Asimilador (Piensa y Observa - Crea modelos)</option>
+                        <option value="Convergente">Convergente (Piensa y Hace - Resuelve problemas)</option>
+                        <option value="Acomodador">Acomodador (Siente y Hace - Ejecuta planes)</option>
+                    </select>
+                </div>
+                <div class="mt-4">
+                    <label class="block font-medium">Inteligencia Lógica (1-10)</label>
+                    <input type="range" id="logical-intelligence" min="1" max="10" value="5" class="w-full mt-1">
+                </div>
+                 <div class="mt-4">
+                    <label class="block font-medium mb-1">Motivador de Acción Principal</label>
+                    <select id="action-motivator">
+                        <option value="Sobrevivir">Sobrevivir (Busca seguridad, estabilidad)</option>
+                        <option value="Controlar">Controlar (Busca autonomía, influencia)</option>
+                        <option value="Desarrollar">Desarrollar (Busca crecimiento, maestría)</option>
+                    </select>
+                </div>
+                 <div class="mt-4">
+                    <label class="block font-medium mb-1">Fortalezas Principales (Máx. 3)</label>
+                    <div id="strengths-container" class="flex flex-wrap gap-2"></div>
+                </div>
+            </fieldset>
+            
+            <div class="text-right mt-8 space-x-4">
+                <button type="button" id="cancel-btn" class="btn bg-gray-600 hover:bg-gray-500">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Guardar Evaluación</button>
+            </div>
+        </form>
+    </dialog>
+<script type="module">
+// =================================================================================
+// --- CONFIGURACIÓN Y DATOS ESTÁTICOS ---
+// =================================================================================
+const ALL_STRENGTHS = [ "Liderazgo", "Pensamiento Creativo", "Pensamiento Estratégico", "Dominio Técnico", "Gestión de Proyectos", "Negociación", "Comunicación Efectiva", "Orientación al Cliente", "Resolución de Problemas", "Adaptabilidad", "Trabajo en Equipo", "Inteligencia Emocional" ];
+const RADAR_CHART_LABELS = [ "Exigencia Rol", "Resultado Actual", "Potencial", "Fortalezas", "Motivador Acción", "Inteligencia Lógica", "Estilo Aprendizaje (Kolb)"];
+const KOLB_STYLE_MAP = { "Divergente": 2, "Asimilador": 5, "Convergente": 8, "Acomodador": 10 };
+const MOTIVATOR_MAP = { "Sobrevivir": 3, "Controlar": 7, "Desarrollar": 10 };
+const PROFILE_COLORS = ['#0ea5e9', '#10b981', '#f97316', '#8b5cf6', '#ef4444'];
+
+// =================================================================================
+// --- ESTADO DE LA APLICACIÓN ---
+// =================================================================================
+let teamData = [];
+let charts = {};
+
+// =================================================================================
+// --- ELEMENTOS DEL DOM Y NAVEGACIÓN ---
+// =================================================================================
+const screens = { dashboard: document.getElementById('screen-dashboard'), report: document.getElementById('screen-report'), synergy: document.getElementById('screen-synergy')};
+const evaluationModal = document.getElementById('evaluation-modal');
+const teamListContainer = document.getElementById('team-list-container');
+
+const showScreen = (screenName) => {
+    Object.values(screens).forEach(s => s.style.display = 'none');
+    screens[screenName].style.display = 'block';
+    window.scrollTo(0, 0);
+};
+
+const renderTeamDashboard = () => {
+    teamListContainer.innerHTML = '';
+    if (teamData.length === 0) {
+        teamListContainer.innerHTML = `<div class="text-center py-8 px-4 bg-gray-800 rounded-lg"><p class="text-gray-400">Añade miembros para comenzar.</p></div>`;
+    } else {
+        teamData.forEach(member => {
+            const memberCard = document.createElement('div');
+            memberCard.className = 'card flex justify-between items-center bg-gray-800';
+            const evaluationStatus = member.evaluation ? `<span class="text-xs font-medium text-green-400 bg-green-900/50 py-1 px-2 rounded-full">Evaluado</span>` : `<span class="text-xs font-medium text-yellow-400 bg-yellow-900/50 py-1 px-2 rounded-full">Pendiente</span>`;
+            memberCard.innerHTML = `
+                <div class="flex items-center gap-4">
+                    <input type="checkbox" class="member-checkbox h-5 w-5 rounded bg-gray-700 border-gray-500 text-sky-500 focus:ring-sky-600" data-id="${member.id}" ${!member.evaluation ? 'disabled' : ''}>
+                    <div>
+                        <h4 class="text-xl font-bold">${member.name}</h4>
+                        <p class="text-sm text-gray-400">${member.role}</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    ${evaluationStatus}
+                    <button class="btn btn-sm bg-sky-600 hover:bg-sky-700 edit-btn" data-id="${member.id}">Evaluar</button>
+                    <button class="btn btn-sm bg-red-600 hover:bg-red-700 delete-btn" data-id="${member.id}">Eliminar</button>
+                </div>`;
+            teamListContainer.appendChild(memberCard);
+        });
+    }
+    updateCompareButtonState();
+    document.getElementById('view-team-synergy-btn').disabled = teamData.filter(m => m.evaluation).length < 1;
+    showScreen('dashboard');
+};
+
+const updateCompareButtonState = () => {
+    const selectedCount = document.querySelectorAll('.member-checkbox:checked').length;
+    document.getElementById('compare-members-btn').disabled = selectedCount === 0;
+};
+
+// =================================================================================
+// --- LÓGICA DE LA EVALUACIÓN (MODAL) ---
+// =================================================================================
+const openEvaluationModal = (memberId = null) => {
+    const form = document.getElementById('evaluation-form');
+    form.reset();
+    document.getElementById('member-id').value = memberId || '';
+    const strengthsContainer = document.getElementById('strengths-container');
+    strengthsContainer.innerHTML = ALL_STRENGTHS.map(s => `<button type="button" class="px-3 py-1 text-sm rounded-full border border-gray-500 hover:bg-gray-600 transition-colors" data-strength="${s}">${s}</button>`).join('');
+
+    const member = teamData.find(m => m.id === memberId);
+    if (!member) { alert("Error: No se encontró el miembro."); return; }
+    
+    document.getElementById('modal-title').textContent = `Evaluar a ${member.name}`;
+    if (member.evaluation) {
+        const { gaps, profile } = member.evaluation;
+        document.getElementById('role-demand').value = gaps.demand;
+        document.getElementById('current-result').value = gaps.result;
+        document.getElementById('potential').value = gaps.potential;
+        document.getElementById('learning-style').value = profile.learningStyle;
+        document.getElementById('logical-intelligence').value = profile.logicalIntelligence;
+        document.getElementById('action-motivator').value = profile.motivator;
+        profile.strengths.forEach(s => strengthsContainer.querySelector(`[data-strength="${s}"]`)?.classList.add('bg-sky-600', 'border-sky-500'));
+    }
+    evaluationModal.showModal();
+};
+
+const handleEvaluationSubmit = (e) => {
+    e.preventDefault();
+    const memberId = document.getElementById('member-id').value;
+    const member = teamData.find(m => m.id === memberId);
+    const selectedStrengths = Array.from(document.querySelectorAll('#strengths-container .bg-sky-600')).map(btn => btn.dataset.strength);
+    if (selectedStrengths.length > 3) { alert("Por favor, selecciona un máximo de 3 fortalezas."); return; }
+
+    member.evaluation = {
+        gaps: {
+            demand: parseInt(document.getElementById('role-demand').value),
+            result: parseInt(document.getElementById('current-result').value),
+            potential: parseInt(document.getElementById('potential').value),
+        },
+        profile: {
+            learningStyle: document.getElementById('learning-style').value,
+            logicalIntelligence: parseInt(document.getElementById('logical-intelligence').value),
+            motivator: document.getElementById('action-motivator').value,
+            strengths: selectedStrengths,
+        }
+    };
+    
+    saveData();
+    evaluationModal.close();
+    renderTeamDashboard();
+};
+
+// =================================================================================
+// --- LÓGICA DE REPORTES Y GRÁFICOS ---
+// =================================================================================
+const destroyCharts = () => { Object.values(charts).forEach(chart => chart?.destroy()); charts = {}; };
+
+const getRadarDataForMember = (member) => {
+    const { gaps, profile } = member.evaluation;
+    return [
+        gaps.demand,
+        gaps.result,
+        gaps.potential,
+        1 + (profile.strengths.length * 3),
+        MOTIVATOR_MAP[profile.motivator],
+        profile.logicalIntelligence,
+        KOLB_STYLE_MAP[profile.learningStyle],
+    ];
+};
+
+const renderComparisonReport = (memberIds) => {
+    destroyCharts();
+    const members = memberIds.map(id => teamData.find(m => m.id === id));
+    
+    const datasets = members.map((member, index) => ({
+        label: member.name,
+        data: getRadarDataForMember(member),
+        backgroundColor: `${PROFILE_COLORS[index % PROFILE_COLORS.length]}33`, // Add alpha transparency
+        borderColor: PROFILE_COLORS[index % PROFILE_COLORS.length],
+        pointBackgroundColor: PROFILE_COLORS[index % PROFILE_COLORS.length],
+    }));
+
+    const radarCtx = document.getElementById('main-radar-chart').getContext('2d');
+    charts.radar = new Chart(radarCtx, {
+        type: 'radar',
+        data: { labels: RADAR_CHART_LABELS, datasets: datasets },
+        options: {
+            scales: { r: { suggestedMin: 0, suggestedMax: 10, pointLabels: { font: { size: 13 } } } },
+            plugins: { legend: { position: 'top' } }
+        }
+    });
+
+    if (members.length === 1) {
+        const member = members[0];
+        document.getElementById('report-title').textContent = member.name;
+        document.getElementById('report-subtitle').textContent = "Reporte de Diagnóstico Individual";
+        document.getElementById('gap-analysis-container').style.display = 'block';
+        document.getElementById('radar-chart-container').className = 'lg:col-span-3 card';
+        
+        const { gaps } = member.evaluation;
+        const gapCtx = document.getElementById('gap-analysis-chart').getContext('2d');
+        charts.gap = new Chart(gapCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Análisis de Brechas'],
+                datasets: [
+                    { label: 'Exigencia del Rol', data: [gaps.demand], backgroundColor: '#4b5563' },
+                    { label: 'Resultado Actual', data: [gaps.result], backgroundColor: '#0ea5e9' },
+                    { label: 'Potencial', data: [gaps.potential], backgroundColor: '#10b981' },
+                ]
+            },
+            options: { indexAxis: 'y', scales: { x: { beginAtZero: true, max: 10 } }, plugins: { legend: { position: 'bottom' } } }
+        });
+        
+        let gapHtml = '';
+        if (gaps.result < gaps.demand) gapHtml += `<p>🔴 **Brecha de Desempeño:** Resultado (${gaps.result}) vs. Exigencia (${gaps.demand}).</p>`;
+        else gapHtml += `<p>🟢 **Cumplimiento de Rol:** Resultado (${gaps.result}) cumple o supera la exigencia (${gaps.demand}).</p>`;
+        if (gaps.potential > gaps.result) gapHtml += `<p>🟡 **Potencial sin explotar:** Potencial (${gaps.potential}) es mayor que el resultado actual (${gaps.result}).</p>`;
+        document.getElementById('gap-analysis-text').innerHTML = gapHtml;
+
+    } else {
+        document.getElementById('report-title').textContent = "Comparación de Perfiles";
+        document.getElementById('report-subtitle').textContent = `${members.length} miembros del equipo seleccionados`;
+        document.getElementById('gap-analysis-container').style.display = 'none';
+        document.getElementById('radar-chart-container').className = 'lg:col-span-5 card';
+    }
+    
+    showScreen('report');
+};
+
+const renderTeamSynergy = () => {
+    const evaluatedMembers = teamData.filter(m => m.evaluation);
+    const table = document.getElementById('synergy-table');
+    const thead = `<thead><tr class="border-b border-gray-600"><th class="p-2">Miembro</th><th class="p-2">Fortalezas</th><th class="p-2">Brecha (Res/Exig)</th><th class="p-2">Potencial</th><th class="p-2">Estilo (Kolb)</th></tr></thead>`;
+    const tbody = evaluatedMembers.map(member => {
+        const { gaps, profile } = member.evaluation;
+        const gap = gaps.result - gaps.demand;
+        return `<tr class="border-b border-gray-700">
+            <td class="p-2 font-bold">${member.name}</td>
+            <td class="p-2 text-sm">${profile.strengths.join(', ') || 'N/A'}</td>
+            <td class="p-2 font-semibold ${gap >= 0 ? 'text-green-400' : 'text-red-400'}">${gap > 0 ? '+' : ''}${gap}</td>
+            <td class="p-2 font-semibold text-sky-400">${gaps.potential}</td>
+            <td class="p-2 text-sm">${profile.learningStyle}</td>
+        </tr>`;
+    }).join('');
+    table.innerHTML = `${thead}<tbody>${tbody}</tbody>`;
+    showScreen('synergy');
+};
+
+// =================================================================================
+// --- MANEJO DE DATOS (CRUD & LocalStorage) ---
+// =================================================================================
+const saveData = () => localStorage.setItem('serSiendoTeamData_v2', JSON.stringify(teamData));
+const loadData = () => { teamData = JSON.parse(localStorage.getItem('serSiendoTeamData_v2') || '[]'); };
+
+const addMember = () => {
+    const name = prompt("Nombre del nuevo miembro:"); if (!name) return;
+    const role = prompt(`Puesto de ${name}:`); if (!role) return;
+    teamData.push({ id: `member-${Date.now()}`, name: name.trim(), role: role.trim(), evaluation: null });
+    saveData();
+    renderTeamDashboard();
+};
+
+const deleteMember = (memberId) => {
+    if (confirm("¿Seguro que quieres eliminar a este miembro?")) {
+        teamData = teamData.filter(m => m.id !== memberId);
+        saveData();
+        renderTeamDashboard();
+    }
+};
+
+// =================================================================================
+// --- EVENT LISTENERS ---
+// =================================================================================
+document.addEventListener('DOMContentLoaded', () => {
+    loadData();
+    renderTeamDashboard();
+
+    document.getElementById('add-member-btn').addEventListener('click', addMember);
+    document.getElementById('compare-members-btn').addEventListener('click', () => {
+        const selectedIds = Array.from(document.querySelectorAll('.member-checkbox:checked')).map(cb => cb.dataset.id);
+        if (selectedIds.length > 0) renderComparisonReport(selectedIds);
+    });
+    document.getElementById('view-team-synergy-btn').addEventListener('click', renderTeamSynergy);
+    document.getElementById('evaluation-form').addEventListener('submit', handleEvaluationSubmit);
+    document.getElementById('cancel-btn').addEventListener('click', () => evaluationModal.close());
+    document.getElementById('back-to-dashboard-btn').addEventListener('click', renderTeamDashboard);
+    document.getElementById('back-to-dashboard-from-synergy-btn').addEventListener('click', renderTeamDashboard);
+    
+    teamListContainer.addEventListener('click', (e) => {
+        if (e.target.classList.contains('member-checkbox')) {
+            updateCompareButtonState();
+            return;
+        }
+        const button = e.target.closest('button');
+        if (button) {
+            const memberId = button.dataset.id;
+            if (button.classList.contains('edit-btn')) openEvaluationModal(memberId);
+            else if (button.classList.contains('delete-btn')) deleteMember(memberId);
+        }
+    });
+
+    evaluationModal.addEventListener('click', e => {
+        if (e.target.dataset.strength) {
+            const btn = e.target;
+            const selectedCount = document.querySelectorAll('#strengths-container .bg-sky-600').length;
+            if (btn.classList.contains('bg-sky-600')) {
+                btn.classList.remove('bg-sky-600', 'border-sky-500');
+            } else if (selectedCount < 3) {
+                btn.classList.add('bg-sky-600', 'border-sky-500');
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>
