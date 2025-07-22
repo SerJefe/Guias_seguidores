@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infografía Condugas: Comité Matutino de Directivos</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Custom styles for Inter font and general body styling */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Light background */
+            color: #334155; /* Dark text */
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e2e8f0;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+        /* Specific styles for the minute markers in the timeline */
+        .timeline-minute-marker {
+            position: absolute;
+            top: -10px; /* Adjust as needed */
+            font-size: 0.75rem;
+            color: #6b7280;
+            transform: translateX(-50%);
+        }
+        .timeline-minute-marker.m0 { left: 0%; }
+        .timeline-minute-marker.m1 { left: calc(1/15 * 100%); }
+        .timeline-minute-marker.m12 { left: calc(12/15 * 100%); }
+        .timeline-minute-marker.m14 { left: calc(14/15 * 100%); }
+        .timeline-minute-marker.m15 { left: 100%; }
+
+        /* Custom progress bar for compliance */
+        .progress-bar-container {
+            width: 100%;
+            background-color: #e2e8f0;
+            border-radius: 9999px; /* Full rounded */
+            height: 1rem; /* h-4 */
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            border-radius: 9999px; /* Full rounded */
+            transition: width 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+    <div class="max-w-4xl mx-auto bg-white shadow-xl rounded-2xl overflow-hidden">
+        <!-- Header Section -->
+        <header class="bg-gradient-to-r from-teal-600 to-cyan-500 p-6 sm:p-8 text-white text-center rounded-t-2xl">
+            <h1 class="text-3xl sm:text-4xl font-extrabold mb-2">Infografía Condugas: Comité Matutino de Directivos</h1>
+            <p class="text-lg sm:text-xl font-light">15 Minutos de Revisión Estratégica y Acción Inmediata</p>
+            <p id="report-date" class="text-sm mt-2 opacity-80"></p>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="p-6 sm:p-8 space-y-8">
+
+            <!-- Objective & Participants -->
+            <section class="grid grid-cols-1 md:grid-cols-2 gap-6 text-center mb-8">
+                <div class="bg-blue-50 p-6 rounded-xl shadow-md">
+                    <div class="text-blue-600 text-4xl mb-3"><i class="fas fa-bullseye"></i></div>
+                    <h2 class="text-xl font-bold text-gray-800 mb-2">Objetivo</h2>
+                    <p class="text-gray-700 leading-relaxed text-sm">
+                        Revisión rápida y estratégica de la situación de caja y costos de producción para identificar acciones inmediatas.
+                    </p>
+                </div>
+                <div class="bg-green-50 p-6 rounded-xl shadow-md">
+                    <div class="text-green-600 text-4xl mb-3"><i class="fas fa-users"></i></div>
+                    <h2 class="text-xl font-bold text-gray-800 mb-2">Participantes y Duración</h2>
+                    <p class="text-700 leading-relaxed text-sm">
+                        <span class="font-bold">7 Directivos + Gerente</span><br>
+                        Duración: <span class="font-bold text-lg text-green-700">Estrictamente 15 minutos</span>
+                    </p>
+                </div>
+            </section>
+
+            <!-- Key Rules -->
+            <section class="mb-8">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 text-center mb-6">Reglas Clave para la Eficiencia</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="flex items-center bg-gray-50 p-4 rounded-lg shadow-sm">
+                        <i class="fas fa-clock text-orange-500 text-2xl mr-3"></i>
+                        <p class="text-gray-700 font-medium">Puntualidad inquebrantable</p>
+                    </div>
+                    <div class="flex items-center bg-gray-50 p-4 rounded-lg shadow-sm">
+                        <i class="fas fa-standing-up text-purple-500 text-2xl mr-3"></i>
+                        <p class="text-gray-700 font-medium">De pie (recomendado)</p>
+                    </div>
+                    <div class="flex items-center bg-gray-50 p-4 rounded-lg shadow-sm">
+                        <i class="fas fa-user-tag text-red-500 text-2xl mr-3"></i>
+                        <p class="text-gray-700 font-medium">Un tema por persona</p>
+                    </div>
+                    <div class="flex items-center bg-gray-50 p-4 rounded-lg shadow-sm">
+                        <i class="fas fa-arrow-right text-blue-500 text-2xl mr-3"></i>
+                        <p class="text-gray-700 font-medium">No divagar: directo al grano</p>
+                    </div>
+                    <div class="flex items-center bg-gray-50 p-4 rounded-lg shadow-sm">
+                        <i class="fas fa-check-circle text-green-500 text-2xl mr-3"></i>
+                        <p class="text-gray-700 font-medium">Acciones concretas</p>
+                    </div>
+                    <div class="flex items-center bg-gray-50 p-4 rounded-lg shadow-sm">
+                        <i class="fas fa-calendar-alt text-yellow-500 text-2xl mr-3"></i>
+                        <p class="text-gray-700 font-medium">Foco en el futuro (hoy/semana)</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Operational Status Section (Dynamic) -->
+            <section class="mb-8">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 text-center mb-6">Estado Operacional (Hoy)</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div class="bg-yellow-100 p-6 rounded-xl shadow-md">
+                        <div class="text-yellow-700 text-4xl mb-3"><i class="fas fa-hard-hat"></i></div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Contratos Reportados Hoy</h3>
+                        <p id="contracts-reported-today" class="text-2xl font-extrabold text-yellow-800">0</p>
+                    </div>
+                    <div class="bg-red-100 p-6 rounded-xl shadow-md">
+                        <div class="text-red-700 text-4xl mb-3"><i class="fas fa-exclamation-circle"></i></div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Novedades/Retrasos Hoy</h3>
+                        <p id="delays-today" class="text-2xl font-extrabold text-red-800">0</p>
+                    </div>
+                </div>
+
+                <h3 class="text-xl font-bold text-gray-800 mb-4">Observaciones Recientes de Encargados (Hoy)</h3>
+                <div id="recent-observations-list" class="space-y-3">
+                    <!-- Dynamic content will be loaded here -->
+                    <p class="text-gray-600 text-center">No hay observaciones reportadas para hoy.</p>
+                </div>
+            </section>
+
+            <!-- Interview Analysis and Opportunities (Dynamic) -->
+            <section class="mb-8">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 text-center mb-6">Análisis de Entrevistas y Oportunidades</h2>
+                <p class="text-gray-700 text-center mb-6">Insights clave de las conversaciones con los encargados de obra, destacando áreas de intervención, soluciones rápidas, temas recurrentes y puntos de alto impacto.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-blue-50 p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center"><i class="fas fa-exclamation-circle text-blue-600 mr-3"></i>Necesita Intervención</h3>
+                        <ul id="needs-intervention-list" class="list-disc list-inside text-gray-700 text-sm space-y-2">
+                            <!-- Dynamic content -->
+                        </ul>
+                    </div>
+                    <div class="bg-green-50 p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center"><i class="fas fa-lightbulb text-green-600 mr-3"></i>Fácil Solución</h3>
+                        <ul id="easy-fix-list" class="list-disc list-inside text-gray-700 text-sm space-y-2">
+                            <!-- Dynamic content -->
+                        </ul>
+                    </div>
+                    <div class="bg-purple-50 p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center"><i class="fas fa-redo-alt text-purple-600 mr-3"></i>Temas Recurrentes</h3>
+                        <ul id="repeated-themes-list" class="list-disc list-inside text-gray-700 text-sm space-y-2">
+                            <!-- Dynamic content -->
+                        </ul>
+                    </div>
+                    <div class="bg-red-50 p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center"><i class="fas fa-fire text-red-600 mr-3"></i>Alto Impacto</h3>
+                        <ul id="high-impact-list" class="list-disc list-inside text-gray-700 text-sm space-y-2">
+                            <!-- Dynamic content -->
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="bg-gray-100 p-6 rounded-xl shadow-md mt-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center"><i class="fas fa-comments text-gray-600 mr-3"></i>Análisis del Proceso de Entrevista</h3>
+                    <p id="interview-process-analysis" class="text-gray-700 text-sm leading-relaxed">
+                        <!-- Dynamic content -->
+                    </p>
+                </div>
+            </section>
+
+            <!-- Key Alerts and Actions (Dynamic) -->
+            <section class="mb-8">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 text-center mb-6">Alertas y Acciones Clave (SSa)</h2>
+                <div id="ssa-actions-list" class="space-y-4">
+                    <!-- Dynamic content will be loaded here -->
+                    <p class="text-gray-600 text-center">Cargando alertas y acciones clave...</p>
+                </div>
+            </section>
+
+            <!-- Agenda Breakdown -->
+            <section class="mb-8">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 text-center mb-6">Agenda Detallada (15 Minutos)</h2>
+                <div class="space-y-6">
+                    <!-- Min 0-1 -->
+                    <div class="flex items-start bg-indigo-50 p-4 rounded-xl shadow-md">
+                        <div class="text-indigo-600 text-3xl mr-4 mt-1"><i class="fas fa-hourglass-start"></i></div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800">Minuto 0-1: Apertura (Gerente)</h3>
+                            <p class="text-gray-700 text-sm leading-relaxed">
+                                "Buenos días a todos. En estos 15 minutos, vamos a revisar rápidamente nuestra situación de caja y costos para identificar cualquier acción urgente que debamos tomar hoy."
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Min 1-12 -->
+                    <div class="flex items-start bg-pink-50 p-4 rounded-xl shadow-md">
+                        <div class="text-pink-600 text-3xl mr-4 mt-1"><i class="fas fa-users-line"></i></div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800">Minuto 1-12: Ronda Rápida (1-2 min por directivo)</h3>
+                            <p class="text-gray-700 text-sm leading-relaxed">Cada directivo presenta:</p>
+                            <ul class="list-disc list-inside text-gray-700 text-sm mt-2 space-y-1">
+                                <li><span class="font-bold">Situación Actual:</span> Estado de caja/costos en su área</li>
+                                <li><span class="font-bold">Principal Desafío/Oportunidad:</span> Problema más crítico u oportunidad más relevante</li>
+                                <li><span class="font-bold">Propuesta de Acción Inmediata:</span> Acción concreta para hoy o corto plazo</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Min 12-14 -->
+                    <div class="flex items-start bg-purple-50 p-4 rounded-xl shadow-md">
+                        <div class="text-purple-600 text-3xl mr-4 mt-1"><i class="fas fa-clipboard-check"></i></div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800">Minuto 12-14: Resumen y Asignación (Gerente)</h3>
+                            <ul class="list-disc list-inside text-gray-700 text-sm mt-2 space-y-1">
+                                <li>Sintetizar acciones clave propuestas</li>
+                                <li>Asignar responsables si es necesario</li>
+                                <li>Asegurar claridad sobre próximos pasos</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Min 14-15 -->
+                    <div class="flex items-start bg-orange-50 p-4 rounded-xl shadow-md">
+                        <div class="text-orange-600 text-3xl mr-4 mt-1"><i class="fas fa-hand-peace"></i></div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800">Minuto 14-15: Cierre (Gerente)</h3>
+                            <p class="text-gray-700 text-sm leading-relaxed">
+                                "Gracias a todos por su enfoque y sus aportes. Nos vemos mañana a la misma hora para revisar el progreso."
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 15-Minute Timeline Visual -->
+            <section class="mt-12 text-center">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-4">Visualización: Los 15 Minutos Clave</h2>
+                <div class="relative w-full max-w-2xl mx-auto h-24 bg-gray-200 rounded-full flex items-center justify-between px-4">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-[calc(1/15*100%)] h-4 bg-indigo-400 rounded-l-full"></div>
+                        <div class="w-[calc(11/15*100%)] h-4 bg-pink-400"></div>
+                        <div class="w-[calc(2/15*100%)] h-4 bg-purple-400"></div>
+                        <div class="w-[calc(1/15*100%)] h-4 bg-orange-400 rounded-r-full"></div>
+                    </div>
+                    <div class="relative w-full h-full flex items-center justify-between">
+                        <div class="timeline-minute-marker m0">0 min</div>
+                        <div class="timeline-minute-marker m1">1 min</div>
+                        <div class="timeline-minute-marker m12">12 min</div>
+                        <div class="timeline-minute-marker m14">14 min</div>
+                        <div class="timeline-minute-marker m15">15 min</div>
+                    </div>
+                </div>
+                <div class="flex flex-wrap justify-center mt-6 space-x-2 sm:space-x-4 text-xs sm:text-sm font-medium">
+                    <div class="flex items-center mb-2 sm:mb-0">
+                        <span class="block w-4 h-4 bg-indigo-400 rounded-full mr-2"></span>
+                        <span>Apertura</span>
+                    </div>
+                    <div class="flex items-center mb-2 sm:mb-0">
+                        <span class="block w-4 h-4 bg-pink-400 rounded-full mr-2"></span>
+                        <span>Ronda Rápida</span>
+                    </div>
+                    <div class="flex items-center mb-2 sm:mb-0">
+                        <span class="block w-4 h-4 bg-purple-400 rounded-full mr-2"></span>
+                        <span>Resumen y Asignación</span>
+                    </div>
+                    <div class="flex items-center mb-2 sm:mb-0">
+                        <span class="block w-4 h-4 bg-orange-400 rounded-full mr-2"></span>
+                        <span>Cierre</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- General Topics & Reminders -->
+            <section class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+                <div class="bg-gray-100 p-6 rounded-xl shadow-md">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center"><i class="fas fa-list-ul text-blue-500 mr-3"></i>Temas Generales a Discutir</h2>
+                    <ul class="list-disc list-inside text-gray-700 text-sm space-y-2">
+                        <li>Estado de liquidez disponible y proyecciones 24-48 horas</li>
+                        <li>Entradas y salidas de efectivo inesperadas</li>
+                        <li>Costos operativos que excedieron expectativas</li>
+                        <li>Decisiones sobre pagos a proveedores o cobros a clientes</li>
+                        <li>Ajustes en asignación de recursos para proyectos rentables</li>
+                        <li>Impacto financiero de emergencias o eventos imprevistos</li>
+                    </ul>
+                </div>
+                <div class="bg-gray-100 p-6 rounded-xl shadow-md">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center"><i class="fas fa-exclamation-triangle text-red-500 mr-3"></i>Recordatorios Clave</h2>
+                    <ul class="list-disc list-inside text-gray-700 text-sm space-y-2">
+                        <li>Cualquier tema que requiera discusión profunda debe agendarse por separado.</li>
+                        <li>Cada intervención debe culminar en una acción con responsable y fecha límite.</li>
+                        <li>Mantener el enfoque en la situación de caja y costos de producción.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Integration with previous concept -->
+            <section class="text-center mt-12 p-6 bg-yellow-50 rounded-xl shadow-md">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-4">La Base de Datos: Información de Valor</h2>
+                <p class="text-gray-700 leading-relaxed">
+                    La <span class="font-bold text-blue-700">recopilación de datos a través de llamadas de alineación</span> (como la infografía anterior) alimenta directamente este comité. Los insights obtenidos de esas conversaciones son cruciales para las decisiones rápidas y estratégicas que se toman aquí. ¡Cada dato cuenta!
+                </p>
+            </section>
+
+            <!-- Conclusion -->
+            <section class="text-center mt-12 p-6 bg-teal-50 rounded-xl">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-4">¡15 Minutos para Impulsar el Negocio!</h2>
+                <p class="text-gray-700 leading-relaxed">
+                    Este comité es una herramienta poderosa para la toma de decisiones ágiles y el mantenimiento del control financiero. La disciplina y el enfoque son la clave de su éxito.
+                </p>
+            </section>
+
+        </main>
+
+        <!-- Footer Section -->
+        <footer class="bg-gray-800 p-4 text-white text-center text-sm rounded-b-2xl">
+            <p>&copy; 2025 Infografía de Comité Matutino. Todos los derechos reservados.</p>
+        </footer>
+    </div>
+
+    <script>
+        // --- CSV Data as JavaScript Strings ---
+        // GERENTE DE PROYECTOS.xlsx - Trimestre 1 2025.csv (Data from previous interaction, not re-uploaded)
+        const trimestre12025CSV = `,ENERO,,,FEBRERO,,,MARZO,,,,,TRIMESTRE 2025 -1,,,,,,ENERO,,,FEBRERO,,,MARZO,,
+CONTRATO,FACTURACION,PRESUPUESTO,CUMPLIMIENTO,FACTURACION,PRESUPUESTO,CUMPLIMIENTO,FACTURACION,PRESUPUESTO,CUMPLIMIENTO,,,CONTRATO,FACTURACIÓN TRIMESTRE,PRESUPUESTO TRIMESTRE,CUMPLIMIENTO TRIMESTRE,,CONTRATO,FACTURACION,PERSONAL,VALOR/PERSONA,FACTURACION,PERSONAL,VALOR/PERSONA,FACTURACION,PERSONAL,VALOR/PERSONA
+OYM Z3,223246761,225000000,0.99220782666666663,225735741,240250000,0.93958685119667018,267023228,250350000,1.066599672458558,,,OYM Z3,716005730,715600000,1.0005669787590832,,OYM Z3,223246761,25,8929870.44,225735741,34,6639286.5,267023228,34,7853624.35
+OYM AGUAS R1,1366268904,1358651643,1.0056064856942877,1460563216,1561562994,1.0680962775171912,1521893617,1511364090,1.0069669029915882,,,OYM AGUAS R1,4348725737,4431578727,0.9813083693247076,,OYM AGUAS R1,1366268904,148,9231546.64,1460563216,148,9868670.38,1521893617,148,10283064.98
+VALLE,1405221834,1550000000,0.9065947316129032,1470000000,2075000000,0.708433734939759,1585211820,2374531545,0.6675127041795111,,,VALLE,4460433654,5999531545,0.7434658309328221,,VALLE,1405221834,159,8837873.17,1470000000,159,9245283.02,1585211820,159,9969885.66
+AYURA,129711921,100643645,1.288820697841151,68386069,0,1,53259401,180000000,0.2958855611111111,,,AYURA,251357391,280643645,0.8956557870129742,,AYURA,129711921,27,4804145.22,68386069,27,2532817.37,53259401,27,1972570.41
+FLORIDA BLANCA,233738255,212102994,1.102003780735824,212102994,212102994,1,233738255,212102994,1.102003780735824,,,FLORIDA BLANCA,679579504,636308982,1.0679805903204986,,FLORIDA BLANCA,233738255,31,7539943.71,212102994,31,6842032.06,233738255,31,7539943.71
+TOTALES,3358187675,3446397643,0.9744155106676356,3436788020,4080000000,0.8423500049019608,3661126901,4528346539,0.8085449232320704,,,TOTALES,10456102016,11633567194,0.898782353147619,
+`;
+
+        // GERENTE DE PROYECTOS.xlsx - PILOTO SEGUIMIENTO ENCARGADOS.csv (NEW DATA)
+        const pilotoSeguimientoEncargadosCSV = `Fecha,Nombre Director,Contrato Visitado,Encargado Obra,N° Trabajadores Hoy,Actividades del Día,Retrasos/Novedades,Causa del Retraso,Riesgos o Alertas,Observaciones Finales,
+2025-07-21,Juan Guillermo Soberon,OYM AGUAS R2,Albeiro De jesus Ramirez,,,,,,
+2025-07-21,Juan Guillermo Soberon,OYM AGUAS R2,Luis Echeverry,,,,,,
+2025-07-21,William Lopez,OYM AGUAS R2,Darinel Causil Montes,,,,,,"1. El encargado indiqca que iniciaron con la novedad de que tienen compresor pero no tienen topo, razón por la cual deben dejar 2 cambios de acometida que requerian topo empezadas y volver cuando lo tengan. Este se lo llevaron el viernes a reparar y hoy fueron por él y no estaba listo. 2. Otra novedad es que tenemos una sola bomba para las cuatro cuadrillas y a veces eso afecta y lo ideal es que cada uno tenga sus equipos ya que por la distancia en desplazamientos en Bello es compleja. 3. El personal que tengo a cargo es juicioso. 4. Muy buenos los beneficios que se han implementado aunque el grupo que tengo es juicioso y no tiene que hacer prestamos pero esta disponible para emergencias. 5. Hace poco casi todos salimos a vacaciones y todos esamos descansados. 6. Para mañana ya tengo el listado de obra y dos oficiales programdos y los otros dos vamos a ver como termina la jornada de hoy. 7. Otra novedad es que tengo dos oficiales sin celular, a uno de ellos le dieron uno viejo con el...",
+2025-07-21,Diana Jaramillo,VALLE,Hugo Lopez,,,,,,"Labores ejecutadas dentro de la normalidad, asignacion y ejecucion depende de la contructora",
+2025-07-21,Diana Jaramillo,VALLE,Deibi Rodriguez,,,,,,"Encargado menciona alto volumen de trabajo en la actividad de asociados, indica tener 5 tecnicos par atender 16 zonas y que se requeire la contratacion de otros 2 tecnicos para cubrir las zonas mas alejadas, menciona fatiga del personal debido al exceso de obra, uso de aplicativo tipo FSE que retrasa el rendimiento ya que la meta es ejecutar de 5 a 6 direcciones y algunos tecnivos atienden 9 ordenes diarias pero en ocasiones algunos atienden solo 4 por temas de desplazamientos, tambien menciona competencia por el personal con NC -Nagasco.",
+2025-07-21,Aldemar Bermudez,VALLE,Edgar Arce,5,Reparaciones de la red,Ninguna,Sin novedad en la obra,Ninguna,Buena disposicion para entregar la informacion,
+2025-07-21,Aldemar Bermudez,VALLE,Lodwin Palacios,8,Gasificaciones,Ninguna,Sin novedad en la obra,Ninguna,Ninguna,
+2025-07-20,William Lopez,OYM AGUAS R2,Darinel Causil Montes,,,,,,"Observaciones del día anterior para prueba",
+2025-07-20,Diana Jaramillo,VALLE,Hugo Lopez,,,,,,"Observaciones del día anterior para prueba",
+2025-07-20,Diana Jaramillo,VALLE,Deibi Rodriguez,,,,,,"Observaciones del día anterior para prueba"
+`;
+
+        // GERENTE DE PROYECTOS.xlsx - SSa.csv (NEW DATA)
+        const ssaCSV = `Macrotema / Proceso,Responsable Principal,Responsable Secundario,Acción requerida / Tarea clave,Fecha límite tentativa,Riesgo evidenciado (Operativo),Riesgo evidenciado (Financiero),Riesgo evidenciado (Reputacional),Riesgo evidenciado (Legal),Aprendizaje / Solución aplicada,Recomendación crítica / Siguiente paso,Estado/Fecha,Comentarios/Observaciones
+Solicitud de materiales,Robinson,Anderson/Jonathan/Erley,Optimizar solicitud directa con responsables antes de publicar en grupo WhatsApp (“bypassear” el grupo).,2025-07-22,Demoras por pasos innecesarios,Costos extra por urgencias,Quejas internas por retrasos,N/A,Comunicación directa agiliza entregas; reducción de pasos intermedios.,Formalizar protocolo: cuándo usar canal directo vs grupo; checklist diario de necesidades.,,
+Caja menor en campo,Robinson,Jhon,Proponer ampliación caja menor solo para urgencias reales (PQRs).,2025-07-24,Compras sin control,Descontrol presupuestal,Percepción de desorden,N/A,Caja menor resuelve urgencias pero debe evitarse abuso/falta planeación.,Definir criterios claros para uso caja menor vs proceso regular; monitorear gastos mensuales.,,
+Planeación diaria,Jhon & Robinson,Equipo operativo,Programar actividades con metas “sí o sí”; identificar recursos críticos antes del inicio diario.,Diario,Parálisis parcial si falta material,Reprocesos costosos,Incumplimiento ante cliente/comunidad,N/A,-Compromiso incondicional ayuda a cumplir metas pese a obstáculos (“no puede existir un pero”).,"-Implementar checklist pre-jornada (materiales, equipos, personal).<br>-Establecer sistema reporte rápido anomalías/faltantes para reaccionar en caliente.",,
+Seguimiento diario de costos,Contabilidad/Jhon,Equipo operativo,Compilar y analizar diariamente los costos de producción por obra/contrato para identificar patrones recurrentes/fallos sistémicos.,-Semanal,-Falta visión global sin compilación diaria,-Riesgo repetir errores sin aprendizaje colectivo,-Desgaste equipo si no se ven mejoras concretas,-N/A,-Base datos permite detectar cuellos botella y ajustar procesos rápido.,-Automatizar tabulación diaria (Google Sheets/Notion); revisión semanal comité operativo/estratégico.,,
+Personal especializado asfalto,_Jhon,_Recursos Humanos,Identificar necesidad y gestionar contratación temporal oficial rastrillero/nivelador asfalto para evitar reprocesos.,-23-jul-2025,Reprocesos costosos acabados deficientes,Multas municipales/retrabajos,Reclamos públicos/multas municipales,_N/A,Anticipar necesidades técnicas evita sanciones/retrabajos costosos.,-Checklist previo jornada asfáltica: ¿hay personal idóneo? ¿Está programado?,
+Gestión riesgos climáticos/logísticos,_Robinson/Jhon,_Equipo logístico,Prever lluvias fuertes como único factor externo crítico que puede frenar obra.<br>Programar alternativas ante accidentes viales/retraso maquinaria/asfalto.,-Diario,Parálisis total/parcial obra factores externos,Costos extra reprogramaciones urgentes,Riesgo reputacional ante cliente/comunidad,_N/A,Tener plan B inmediato ante faltantes materiales/clima evita parálisis total.<br>Compromiso “sí o sí” debe estar respaldado por planeación realista/flexible.,-Checklist diario incluye monitoreo clima/logística externa.<br>Revisión semanal impacto cambios metodológicos sobre productividad/costos._,,
+`;
+
+        // --- Helper Functions ---
+
+        /**
+         * Parses a CSV string into an array of objects.
+         * Assumes the first row is the header.
+         * @param {string} csvString - The CSV data as a string.
+         * @returns {Array<Object>} An array of objects, where each object represents a row.
+         */
+        function parseCSV(csvString) {
+            const lines = csvString.trim().split('\n');
+            if (lines.length === 0) return [];
+
+            const headers = lines[0].split(',').map(header => header.trim());
+            const data = [];
+
+            for (let i = 1; i < lines.length; i++) {
+                const values = lines[i].split(',');
+                const row = {};
+                headers.forEach((header, index) => {
+                    // Handle quoted values that might contain commas
+                    let value = values[index] ? values[index].trim() : '';
+                    if (value.startsWith('"') && value.endsWith('"')) {
+                        value = value.substring(1, value.length - 1);
+                    }
+                    row[header] = value;
+                });
+                data.push(row);
+            }
+            return data;
+        }
+
+        /**
+         * Formats a number as currency.
+         * @param {number} amount - The number to format.
+         * @returns {string} The formatted currency string.
+         */
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('es-CO', {
+                style: 'currency',
+                currency: 'COP',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+
+        /**
+         * Formats a number as a percentage.
+         * @param {number} value - The number to format (e.g., 0.95 for 95%).
+         * @returns {string} The formatted percentage string.
+         */
+        function formatPercentage(value) {
+            return new Intl.NumberFormat('es-CO', {
+                style: 'percent',
+                minimumFractionDigits: 1,
+                maximumFractionDigits: 1
+            }).format(value);
+        }
+
+        /**
+         * Gets today's date in 'YYYY-MM-DD' format.
+         * @returns {string} Today's date.
+         */
+        function getTodayDateString() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+            const day = String(today.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        // --- Data Processing and Rendering Functions ---
+
+        // This function is no longer called as the financial summary section has been removed.
+        /*
+        function renderFinancialSummary() {
+            const data = parseCSV(trimestre12025CSV);
+            const financialData = data.find(row => row['CONTRATO'] === 'TOTALES');
+
+            if (financialData) {
+                const totalInvoicing = parseFloat(financialData['FACTURACIÓN TRIMESTRE']);
+                const totalBudget = parseFloat(financialData['PRESUPUESTO TRIMESTRE']);
+                const overallCompliance = parseFloat(financialData['CUMPLIMIENTO TRIMESTRE']);
+
+                document.getElementById('total-invoicing').textContent = formatCurrency(totalInvoicing);
+                document.getElementById('total-budget').textContent = formatCurrency(totalBudget);
+                document.getElementById('overall-compliance').textContent = formatPercentage(overallCompliance);
+
+                const complianceBar = document.getElementById('overall-compliance-bar');
+                complianceBar.style.width = `${(overallCompliance * 100).toFixed(1)}%`;
+                if (overallCompliance < 0.9) {
+                    complianceBar.classList.remove('bg-green-500', 'bg-yellow-500');
+                    complianceBar.classList.add('bg-red-500');
+                } else if (overallCompliance < 1) {
+                    complianceBar.classList.remove('bg-green-500', 'bg-red-500');
+                    complianceBar.classList.add('bg-yellow-500');
+                } else {
+                    complianceBar.classList.remove('bg-yellow-500', 'bg-red-500');
+                    complianceBar.classList.add('bg-green-500');
+                }
+
+
+                const contractComplianceList = document.getElementById('contract-compliance-list');
+                contractComplianceList.innerHTML = ''; // Clear previous content
+
+                // Filter out the 'TOTALES' row for individual contract display
+                const contractData = data.filter(row => row['CONTRATO'] !== 'TOTALES' && row['CONTRATO']);
+
+                contractData.forEach(contract => {
+                    const contractName = contract['CONTRATO'];
+                    const complianceValue = parseFloat(contract['CUMPLIMIENTO TRIMESTRE']);
+
+                    if (contractName && !isNaN(complianceValue)) {
+                        const complianceColorClass = complianceValue < 0.9 ? 'text-red-600' : (complianceValue < 1 ? 'text-yellow-600' : 'text-green-600');
+                        const progressBarColorClass = complianceValue < 0.9 ? 'bg-red-500' : (complianceValue < 1 ? 'bg-yellow-500' : 'bg-green-500');
+
+                        const contractItem = `
+                            <div class="flex items-center bg-gray-50 p-3 rounded-lg shadow-sm">
+                                <span class="font-semibold text-gray-700 w-1/3">${contractName}:</span>
+                                <div class="w-2/3 ml-4">
+                                    <div class="progress-bar-container">
+                                        <div class="progress-bar ${progressBarColorClass}" style="width: ${(complianceValue * 100).toFixed(1)}%;"></div>
+                                    </div>
+                                    <p class="text-xs ${complianceColorClass} font-medium mt-1">${formatPercentage(complianceValue)}</p>
+                                </div>
+                            </div>
+                        `;
+                        contractComplianceList.insertAdjacentHTML('beforeend', contractItem);
+                    }
+                });
+            } else {
+                document.getElementById('contract-compliance-list').innerHTML = '<p class="text-red-500 text-center">No se encontraron datos financieros totales.</p>';
+            }
+        }
+        */
+
+        /**
+         * Processes operational data for today from PILOTO SEGUIMIENTO ENCARGADOS CSV and updates the UI.
+         */
+        function renderOperationalStatus() {
+            const data = parseCSV(pilotoSeguimientoEncargadosCSV);
+            const todayDate = getTodayDateString();
+
+            const todayReports = data.filter(row => row['Fecha'] === todayDate);
+
+            const uniqueContractsReported = new Set();
+            let delaysCount = 0;
+            const observations = [];
+
+            todayReports.forEach(report => {
+                if (report['Contrato Visitado']) {
+                    uniqueContractsReported.add(report['Contrato Visitado']);
+                }
+                if (report['Retrasos/Novedades'] && report['Retrasos/Novedades'].toLowerCase() !== 'ninguna' && report['Retrasos/Novedades'].trim() !== '') {
+                    delaysCount++;
+                }
+                if (report['Observaciones Finales'] && report['Observaciones Finales'].trim() !== '') {
+                    observations.push({
+                        contract: report['Contrato Visitado'],
+                        encargado: report['Encargado Obra'],
+                        observation: report['Observaciones Finales']
+                    });
+                }
+            });
+
+            document.getElementById('contracts-reported-today').textContent = uniqueContractsReported.size;
+            document.getElementById('delays-today').textContent = delaysCount;
+
+            const recentObservationsList = document.getElementById('recent-observations-list');
+            recentObservationsList.innerHTML = ''; // Clear previous content
+
+            if (observations.length > 0) {
+                observations.forEach(obs => {
+                    const obsItem = `
+                        <div class="bg-blue-50 p-3 rounded-lg shadow-sm">
+                            <p class="text-gray-700 text-sm">
+                                <span class="font-bold">${obs.encargado}</span> (${obs.contract}):
+                                <span class="block mt-1 text-xs italic">${obs.observation}</span>
+                            </p>
+                        </div>
+                    `;
+                    recentObservationsList.insertAdjacentHTML('beforeend', obsItem);
+                });
+            } else {
+                recentObservationsList.innerHTML = '<p class="text-gray-600 text-center">No hay observaciones reportadas para hoy.</p>';
+            }
+        }
+
+        /**
+         * Analyzes interview data to identify intervention needs, easy fixes, repeated themes, and high-impact items.
+         * @returns {Object} An object containing categorized observations.
+         */
+        function analyzeInterviewData() {
+            const data = parseCSV(pilotoSeguimientoEncargadosCSV);
+            const todayDate = getTodayDateString();
+            const todayReports = data.filter(row => row['Fecha'] === todayDate);
+
+            const needsIntervention = [];
+            const easyFixes = [];
+            const repeatedThemes = {}; // Use an object to count occurrences
+            const highImpactItems = [];
+
+            // Keywords for categorization (can be expanded)
+            const interventionKeywords = ["requiere", "falta", "sin", "afecta", "problema", "fatiga", "exceso de obra", "competencia", "retraso", "reprocesos", "multas", "parálisis", "no estaba listo"];
+            const easyFixKeywords = ["no tienen topo", "una sola bomba", "sin celular"]; // Specific, actionable items
+            const highImpactKeywords = ["fatiga", "alto volumen de trabajo", "retraso el rendimiento", "competencia", "reprocesos costosos", "multas", "parálisis total/parcial obra", "riesgo reputacional", "costos extra"];
+
+            todayReports.forEach(report => {
+                const encargado = report['Encargado Obra'];
+                const contract = report['Contrato Visitado'];
+                const observations = report['Observaciones Finales'] || '';
+                const delays = report['Retrasos/Novedades'] || '';
+                const risks = report['Riesgos o Alertas'] || '';
+
+                const combinedText = `${observations} ${delays} ${risks}`.toLowerCase();
+                const reportSummary = `${encargado} (${contract}): ${observations || delays || risks || 'Sin observaciones.'}`;
+
+                // Needs Intervention
+                if (interventionKeywords.some(keyword => combinedText.includes(keyword)) ||
+                    (delays.toLowerCase() !== 'ninguna' && delays.trim() !== '') ||
+                    (risks.toLowerCase() !== 'ninguna' && risks.trim() !== '')) {
+                    needsIntervention.push(reportSummary);
+                }
+
+                // Easy Fixes (more specific matching)
+                if (easyFixKeywords.some(keyword => combinedText.includes(keyword))) {
+                    easyFixes.push(reportSummary);
+                }
+
+                // High Impact
+                if (highImpactKeywords.some(keyword => combinedText.includes(keyword))) {
+                    highImpactItems.push(reportSummary);
+                }
+
+                // Repeated Themes (simple keyword counting for now)
+                const words = combinedText.split(/\s+/);
+                words.forEach(word => {
+                    const cleanWord = word.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").trim();
+                    if (cleanWord.length > 3) { // Ignore very short words
+                        repeatedThemes[cleanWord] = (repeatedThemes[cleanWord] || 0) + 1;
+                    }
+                });
+            });
+
+            // Filter repeated themes to show only those appearing multiple times
+            const filteredRepeatedThemes = Object.entries(repeatedThemes)
+                .filter(([word, count]) => count > 1)
+                .sort((a, b) => b[1] - a[1]) // Sort by frequency
+                .map(([word, count]) => `${word} (${count})`);
+
+            // Analysis of the Interviewer/Space
+            let interviewAnalysis = "El proceso de entrevista parece ser efectivo y permite la recopilación de información detallada y honesta. La inclusión de campos como 'Retrasos/Novedades', 'Riesgos o Alertas' y 'Observaciones Finales' facilita que los encargados expresen desafíos específicos y preocupaciones, incluso aquellas que tienen un impacto directo en su rendimiento y bienestar (ej. fatiga, falta de equipos). Esto sugiere un ambiente donde se fomenta la transparencia y se valora el feedback directo del personal en campo. La riqueza de los datos recopilados es un insumo valioso para la toma de decisiones estratégicas en el comité.";
+            if (todayReports.length === 0) {
+                interviewAnalysis = "No se encontraron reportes para hoy, lo que impide un análisis detallado del proceso de entrevista para esta fecha. Asegúrese de que los datos estén actualizados.";
+            } else if (needsIntervention.length === 0 && easyFixes.length === 0 && highImpactItems.length === 0) {
+                interviewAnalysis = "Los reportes de hoy no indican problemas significativos que requieran intervención inmediata, soluciones fáciles o que sean de alto impacto. Esto podría indicar una jornada operativa sin mayores contratiempos o una posible falta de detalle en los reportes.";
+            }
+
+
+            return {
+                needsIntervention,
+                easyFixes,
+                repeatedThemes: filteredRepeatedThemes,
+                highImpactItems,
+                interviewAnalysis
+            };
+        }
+
+        /**
+         * Renders the interview analysis data into the UI.
+         */
+        function renderInterviewAnalysis() {
+            const analysis = analyzeInterviewData();
+
+            const renderList = (elementId, items, defaultMessage) => {
+                const listElement = document.getElementById(elementId);
+                listElement.innerHTML = '';
+                if (items.length > 0) {
+                    items.forEach(item => {
+                        listElement.insertAdjacentHTML('beforeend', `<li>${item}</li>`);
+                    });
+                } else {
+                    listElement.insertAdjacentHTML('beforeend', `<li class="text-gray-600">${defaultMessage}</li>`);
+                }
+            };
+
+            renderList('needs-intervention-list', analysis.needsIntervention, 'No se identificaron necesidades de intervención urgentes hoy.');
+            renderList('easy-fix-list', analysis.easyFixes, 'No se identificaron soluciones fáciles hoy.');
+            renderList('repeated-themes-list', analysis.repeatedThemes, 'No se identificaron temas recurrentes hoy.');
+            renderList('high-impact-list', analysis.highImpactItems, 'No se identificaron elementos de alto impacto hoy.');
+
+            document.getElementById('interview-process-analysis').textContent = analysis.interviewAnalysis;
+        }
+
+        /**
+         * Processes strategic alerts and actions from SSa CSV and updates the UI.
+         */
+        function renderSsaAlerts() {
+            const data = parseCSV(ssaCSV);
+            const ssaActionsList = document.getElementById('ssa-actions-list');
+            ssaActionsList.innerHTML = ''; // Clear previous content
+
+            if (data.length > 0) {
+                data.forEach(item => {
+                    const action = item['Acción requerida / Tarea clave'];
+                    const riskOperative = item['Riesgo evidenciado (Operativo)'];
+                    const riskFinancial = item['Riesgo evidenciado (Financiero)'];
+                    const riskReputational = item['Riesgo evidenciado (Reputacional)'];
+                    const recommendation = item['Recomendación crítica / Siguiente paso'];
+                    const responsible = item['Responsable Principal'];
+
+                    if (action) {
+                        const riskHtml = [riskOperative, riskFinancial, riskReputational]
+                            .filter(r => r && r.toLowerCase() !== 'n/a' && r.trim() !== '')
+                            .map(r => `<span class="inline-block bg-red-200 text-red-800 text-xs px-2 py-1 rounded-full mr-1 mb-1">${r}</span>`)
+                            .join('');
+
+                        const ssaItem = `
+                            <div class="bg-indigo-50 p-4 rounded-xl shadow-md">
+                                <h3 class="text-lg font-semibold text-gray-800 mb-2 flex items-center">
+                                    <i class="fas fa-clipboard-list text-indigo-600 mr-3"></i>
+                                    ${action}
+                                </h3>
+                                ${responsible ? `<p class="text-gray-600 text-sm mb-2"><span class="font-medium">Responsable:</span> ${responsible}</p>` : ''}
+                                ${riskHtml ? `<div class="mb-2"><span class="font-medium text-gray-700">Riesgos:</span> ${riskHtml}</div>` : ''}
+                                ${recommendation ? `<p class="text-gray-700 text-sm"><span class="font-medium">Recomendación:</span> ${recommendation}</p>` : ''}
+                            </div>
+                        `;
+                        ssaActionsList.insertAdjacentHTML('beforeend', ssaItem);
+                    }
+                });
+            } else {
+                ssaActionsList.innerHTML = '<p class="text-gray-600 text-center">No hay alertas o acciones clave disponibles en SSa.</p>';
+            }
+        }
+
+        // --- Main Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set current date in header
+            const today = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('report-date').textContent = `Fecha del Reporte: ${today.toLocaleDateString('es-ES', options)}`;
+
+            // renderFinancialSummary(); // Removed as per user request
+            renderOperationalStatus();
+            renderInterviewAnalysis(); // Call the new analysis function
+            renderSsaAlerts();
+        });
+    </script>
+</body>
+</html>
