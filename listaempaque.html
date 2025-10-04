@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Maestra de Viaje Familiar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Un fondo suave y relajante */
+        }
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+            transition: color 0.3s ease;
+        }
+        .checklist-item input[type="checkbox"] {
+            -webkit-appearance: none;
+            appearance: none;
+            background-color: #fff;
+            margin-right: 12px;
+            font: inherit;
+            color: currentColor;
+            width: 1.15em;
+            height: 1.15em;
+            border: 0.15em solid #cbd5e1;
+            border-radius: 0.25em;
+            transform: translateY(-0.075em);
+            display: grid;
+            place-content: center;
+            cursor: pointer;
+        }
+        .checklist-item input[type="checkbox"]::before {
+            content: "";
+            width: 0.65em;
+            height: 0.65em;
+            transform: scale(0);
+            transition: 120ms transform ease-in-out;
+            box-shadow: inset 1em 1em #2563eb;
+            transform-origin: bottom left;
+            clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+        }
+        .checklist-item input[type="checkbox"]:checked::before {
+            transform: scale(1);
+        }
+        .checklist-item input[type="checkbox"]:checked + label {
+            text-decoration: line-through;
+            color: #64748b;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .accordion-button svg {
+            transition: transform 0.3s ease;
+        }
+        .accordion-button.open svg {
+            transform: rotate(180deg);
+        }
+        .card-shadow {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        /* Style for nested accordions */
+        .sub-accordion-button {
+            background-color: #f8fafc;
+        }
+        .sub-accordion-button:hover {
+            background-color: #f1f5f9;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-4xl">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-900">Guía Maestra de Viaje Familiar</h1>
+            <p class="mt-4 text-lg text-slate-600">De mochileros a padres viajeros. La aventura continúa, ahora con más equipaje y mucho más amor. ❤️</p>
+        </header>
+
+        <main class="space-y-6">
+            <!-- Sección Esencial del Bebé -->
+            <div class="bg-white rounded-xl card-shadow overflow-hidden">
+                <button class="accordion-button w-full p-6 text-left flex justify-between items-center bg-sky-500 text-white">
+                    <h2 class="text-2xl font-bold">🍼 Lo Esencial del Bebé (Siempre)</h2>
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="accordion-content">
+                    <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+                        <div>
+                            <h3 class="font-semibold text-lg mb-2 text-sky-700">Alimentación</h3>
+                            <div id="checklist-alimentacion"></div>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-lg mb-2 text-sky-700">Cambio de Pañal</h3>
+                            <div id="checklist-panal"></div>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-lg mb-2 text-sky-700">Ropa y Abrigo</h3>
+                            <div id="checklist-ropa-bebe"></div>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-lg mb-2 text-sky-700">Salud y Bienestar</h3>
+                            <div id="checklist-salud-bebe"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección Equipamiento Principal -->
+            <div class="bg-white rounded-xl card-shadow overflow-hidden">
+                <button class="accordion-button w-full p-6 text-left flex justify-between items-center bg-teal-500 text-white">
+                    <h2 class="text-2xl font-bold">⚙️ Equipamiento Principal</h2>
+                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="accordion-content">
+                    <div class="p-6">
+                        <div id="checklist-equipamiento"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección Para los Padres -->
+            <div class="bg-white rounded-xl card-shadow overflow-hidden">
+                <button class="accordion-button w-full p-6 text-left flex justify-between items-center bg-indigo-500 text-white">
+                    <h2 class="text-2xl font-bold">🎒 Para los Padres Viajeros</h2>
+                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="accordion-content">
+                     <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+                        <div>
+                            <h3 class="font-semibold text-lg mb-2 text-indigo-700">Documentación y Dinero</h3>
+                            <div id="checklist-documentos"></div>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-lg mb-2 text-indigo-700">Tecnología y Entretenimiento</h3>
+                            <div id="checklist-tech"></div>
+                        </div>
+                        <div class="md:col-span-2">
+                             <div class="bg-white rounded-lg overflow-hidden border border-slate-200">
+                                <button class="accordion-button sub-accordion-button w-full p-4 text-left flex justify-between items-center">
+                                    <h3 class="font-semibold text-lg text-indigo-700">Ropa y Artículos Personales</h3>
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                </button>
+                                <div class="accordion-content">
+                                    <div class="p-4">
+                                        <div id="checklist-ropa-padres"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Módulos de Aventura -->
+             <div class="bg-white rounded-xl card-shadow overflow-hidden">
+                <button class="accordion-button w-full p-6 text-left flex justify-between items-center bg-amber-500 text-white">
+                    <h2 class="text-2xl font-bold">🗺️ Módulos de Aventura (Elige tu Destino)</h2>
+                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="accordion-content">
+                     <div class="p-4 space-y-4">
+                        <!-- Aventura Playa -->
+                        <div class="bg-white rounded-lg border border-slate-200 overflow-hidden">
+                            <button class="accordion-button sub-accordion-button w-full p-4 text-left flex justify-between items-center">
+                                <h3 class="font-bold text-lg text-amber-800">🏖️ Aventura de Playa y Sol</h3>
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-x-8">
+                                    <div>
+                                        <h4 class="font-semibold text-md mb-2 text-amber-700">Para el Bebé</h4>
+                                        <div id="checklist-playa-bebe"></div>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-md mb-2 text-amber-700">Para los Padres</h4>
+                                        <div id="checklist-playa-padres"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Aventura Buceo -->
+                        <div class="bg-white rounded-lg border border-slate-200 overflow-hidden">
+                             <button class="accordion-button sub-accordion-button w-full p-4 text-left flex justify-between items-center">
+                                <h3 class="font-bold text-lg text-amber-800">🐠 Aventura de Buceo</h3>
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="p-4" id="checklist-buceo"></div>
+                            </div>
+                        </div>
+                        <!-- Aventura Naturaleza -->
+                         <div class="bg-white rounded-lg border border-slate-200 overflow-hidden">
+                             <button class="accordion-button sub-accordion-button w-full p-4 text-left flex justify-between items-center">
+                                <h3 class="font-bold text-lg text-amber-800">🌲 Aventura en la Naturaleza</h3>
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="p-4" id="checklist-naturaleza"></div>
+                            </div>
+                        </div>
+                        <!-- Aventura Urbana -->
+                         <div class="bg-white rounded-lg border border-slate-200 overflow-hidden">
+                             <button class="accordion-button sub-accordion-button w-full p-4 text-left flex justify-between items-center">
+                                <h3 class="font-bold text-lg text-amber-800">🏙️ Aventura Urbana</h3>
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="p-4" id="checklist-urbana"></div>
+                            </div>
+                        </div>
+                        <!-- Aventura Clima Frio -->
+                         <div class="bg-white rounded-lg border border-slate-200 overflow-hidden">
+                             <button class="accordion-button sub-accordion-button w-full p-4 text-left flex justify-between items-center">
+                                <h3 class="font-bold text-lg text-amber-800">❄️ Aventura en Clima Frío</h3>
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="p-4" id="checklist-frio"></div>
+                            </div>
+                        </div>
+                     </div>
+                </div>
+            </div>
+
+        </main>
+
+        <footer class="text-center mt-12">
+            <p class="text-slate-500">Creado con ❤️ para una nueva generación de exploradores.</p>
+            <button id="resetButton" class="mt-4 bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition">Limpiar toda la lista</button>
+        </footer>
+
+    </div>
+
+    <script>
+        // --- DATA DE LA LISTA DE VERIFICACIÓN ---
+        const checklistData = {
+            'alimentacion': [
+                'Fórmula / Leche materna extra', 'Biberones', 'Agua esterilizada', 'Termo con agua caliente', 'Sacaleches y accesorios', 'Bolsas de almacenamiento de leche', 'Baberos y paños de eructar'
+            ],
+            'panal': [
+                'Pañales (suficientes + extra)', 'Toallitas húmedas', 'Crema para rozaduras', 'Cambiador portátil', 'Bolsas para pañales sucios'
+            ],
+            'ropa-bebe': [
+                'Bodies (manga corta/larga)', 'Pantalones / Leggings', 'Pijamas', 'Sacos o chaquetas', 'Gorros y guantes (según clima)', 'Calcetines o botitas', 'Manta ligera o muselina'
+            ],
+            'salud-bebe': [
+                'Botiquín (termómetro, analgésico, etc.)', 'Vitaminas (según indicación médica)', 'Aseo (jabón, shampoo, cepillo, loción)', 'Crema hidratante', 'Gafas de sol para bebé', 'Protector solar para bebé', 'Repelente y malla anti-mosquitos', 'Chupetes y mordedor', 'Suero fisiológico y aspirador nasal'
+            ],
+            'equipamiento': [
+                'Cochecito de viaje ligero', 'Silla de auto', 'Portabebé ergonómico / Fular', 'Cuna de viaje', 'Monitor de bebé', 'Máquina de ruido blanco'
+            ],
+            'documentos': [
+                'Pasaportes / IDs', 'Partida de nacimiento del bebé (copia)', 'Póliza de seguro de viaje', 'Tarjetas y efectivo'
+            ],
+            'tech': [
+                'Teléfonos y cargadores', 'Batería externa (Power Bank)', 'Cargadores de memorias', 'Memorias SD/CF', 'Adaptador universal', 'Audífonos y parlante portátil', 'E-reader o libro'
+            ],
+            'ropa-padres': [
+                'Ropa interior (Boxers, etc.)', 'Medias / Calcetines', 'Camisetas / Tops', 'Pantalones / Faldas / Shorts', 'Atuendo para cena especial', 'Chaqueta / Saco ligero', 'Pijama', 'Zapatos cómodos', 'Chanclas / Sandalias', 'Artículos de aseo personal', 'Protector solar', 'Bronceador', 'After-sun / Aloe vera', 'Gafas de sol', 'Gorras / Sombreros'
+            ],
+            'playa-bebe': [
+                'Traje de baño con filtro UV', 'Sombrero de ala ancha', 'Gafas de sol para bebé', 'Pañales de agua', 'Carpa / Tienda de playa con filtro UV', 'Ventilador portátil (para cochecito)', 'Flotador para bebé', 'Juguetes de playa'
+            ],
+            'playa-padres': [
+                'Trajes de baño y toallas', 'Protector solar y after-sun', 'Bolsa de playa', 'Equipo de snorkel'
+            ],
+            'buceo': [
+                'Certificaciones y bitácora', 'Computador de buceo', 'Máscara y aletas', 'Traje de neopreno', 'Guantes y escarpines', 'Boya de seguridad (SMB)', 'Cámara subacuática y carcasa', 'Luces / Focos para cámara', 'Baterías y cargador de cámara'
+            ],
+            'naturaleza': [
+                'Ropa por capas (impermeable)', 'Botas de senderismo', 'Mochila cómoda con agua', 'Snacks energéticos', 'Repelente de insectos', 'Protector para lluvia (cochecito/portabebé)'
+            ],
+            'urbana': [
+                'Zapatos extra cómodos', 'Ropa versátil (día/noche)', 'Bolso o mochila antirrobo', 'Guía de la ciudad / Mapas offline', 'Juguetes pequeños para restaurantes'
+            ],
+            'frio': [
+                'Ropa térmica (bebé y padres)', 'Traje para nieve o chaqueta gruesa', 'Guantes, gorros y bufandas', 'Botas para frío/nieve', 'Calcetines de lana', 'Protector solar y labial', 'Manta extra para el cochecito'
+            ]
+        };
+
+        // --- LÓGICA DE LA APLICACIÓN ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const accordions = document.querySelectorAll('.accordion-button');
+            const mainContainer = document.querySelector('main');
+            let itemCounter = 0;
+
+            // Función para generar los items de la checklist
+            function generateChecklistItems(containerId, items) {
+                const container = document.getElementById(containerId);
+                if (!container) return;
+                items.forEach(itemText => {
+                    const itemId = `item-${itemCounter++}`;
+                    const item = document.createElement('div');
+                    item.className = 'checklist-item';
+                    
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.id = itemId;
+                    
+                    const label = document.createElement('label');
+                    label.htmlFor = itemId;
+                    label.textContent = itemText;
+                    label.className = "cursor-pointer";
+
+                    item.appendChild(checkbox);
+                    item.appendChild(label);
+                    container.appendChild(item);
+                });
+            }
+
+            // Generar todas las listas
+            for (const key in checklistData) {
+                generateChecklistItems(`checklist-${key}`, checklistData[key]);
+            }
+
+            // Lógica de los acordeones
+            accordions.forEach(button => {
+                button.addEventListener('click', () => {
+                    const content = button.nextElementSibling;
+                    const isOpen = button.classList.contains('open');
+
+                    // Función para actualizar la altura de los padres
+                    const updateParentHeight = (element, heightChange) => {
+                        let parentContent = element.parentElement.closest('.accordion-content');
+                        while (parentContent) {
+                            // Solo actualiza si el padre está actualmente abierto
+                            if (parentContent.style.maxHeight && parentContent.style.maxHeight !== '0px') {
+                                const currentMaxHeight = parseInt(parentContent.style.maxHeight, 10);
+                                parentContent.style.maxHeight = `${currentMaxHeight + heightChange}px`;
+                            }
+                            parentContent = parentContent.parentElement.closest('.accordion-content');
+                        }
+                    };
+                    
+                    const scrollHeight = content.scrollHeight;
+                    
+                    if (isOpen) {
+                        // Si se está CERRANDO
+                        updateParentHeight(content, -scrollHeight);
+                        content.style.maxHeight = null;
+                    } else {
+                        // Si se está ABRIENDO
+                        content.style.maxHeight = `${scrollHeight}px`;
+                        updateParentHeight(content, scrollHeight);
+                    }
+                    
+                    button.classList.toggle('open');
+                });
+            });
+
+
+            // Lógica para guardar y cargar el estado
+            function saveState() {
+                const state = {};
+                const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                checkboxes.forEach(checkbox => {
+                    state[checkbox.id] = checkbox.checked;
+                });
+                localStorage.setItem('familyChecklistState', JSON.stringify(state));
+            }
+
+            function loadState() {
+                const state = JSON.parse(localStorage.getItem('familyChecklistState'));
+                if (state) {
+                    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                    checkboxes.forEach(checkbox => {
+                        if (state[checkbox.id]) {
+                            checkbox.checked = true;
+                        }
+                    });
+                }
+            }
+
+            // Event listener para guardar estado al cambiar un checkbox
+            document.body.addEventListener('change', (e) => {
+                if (e.target.matches('input[type="checkbox"]')) {
+                    saveState();
+                }
+            });
+            
+            // Botón de reseteo
+            document.getElementById('resetButton').addEventListener('click', () => {
+                if (confirm('¿Estás seguro de que quieres limpiar toda la lista? Esta acción no se puede deshacer.')) {
+                    localStorage.removeItem('familyChecklistState');
+                    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                    checkboxes.forEach(checkbox => checkbox.checked = false);
+                }
+            });
+
+            // Cargar estado inicial
+            loadState();
+        });
+    </script>
+</body>
+</html>
+
+
+
