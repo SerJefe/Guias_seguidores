@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matriz de Potenciación Sistémica (MPS v3.2)</title>
+    
+    <!-- Librerías Externas -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#1e293b',
+                            primary: '#3b82f6',
+                            accent: '#f59e0b'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background-color: #f3f4f6; }
+        .rubric-text { font-size: 0.9rem; color: #374151; font-style: normal; margin-top: 8px; display: block; min-height: 50px; line-height: 1.4; }
+        .zone-card { transition: all 0.3s ease; }
+        .zone-card:hover { transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        
+        /* Estilos para impresión */
+        @media print {
+            .no-print { display: none !important; }
+            body { background-color: white; }
+            .shadow-md, .shadow-lg { box-shadow: none !important; }
+            .container { max-width: 100% !important; margin: 0 !important; padding: 0 !important; }
+            .print-break { page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body class="pb-12">
+
+    <!-- Header -->
+    <header class="bg-slate-900 text-white shadow-lg sticky top-0 z-50 no-print">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold tracking-wider">MPS v3.2</h1>
+                <p class="text-xs text-slate-400">Matriz de Potenciación Sistémica</p>
+            </div>
+            <div class="text-right flex items-center gap-3">
+                <button onclick="exportToCSV()" class="bg-green-600 hover:bg-green-700 text-white text-xs px-3 py-2 rounded transition flex items-center">
+                    <i class="fas fa-file-excel mr-2"></i> Exportar Datos
+                </button>
+                <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-2 rounded transition flex items-center">
+                    <i class="fas fa-print mr-2"></i> Imprimir Reporte
+                </button>
+                <div class="hidden md:block text-xs font-mono bg-slate-800 px-3 py-2 rounded border border-slate-700">
+                    <i class="fas fa-lock mr-2"></i>Propiedad de Sebastián Sánchez
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Header solo para impresión -->
+    <div class="hidden print:block text-center py-4 border-b mb-4">
+        <h1 class="text-3xl font-bold text-slate-900">Reporte de Diagnóstico MPS</h1>
+        <p class="text-sm text-slate-500">Generado con Herramienta de Potenciación Sistémica - Propiedad de Sebastián Sánchez</p>
+    </div>
+
+    <div class="container mx-auto px-4 mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- COLUMNA IZQUIERDA: Formulario de Diagnóstico -->
+        <div class="lg:col-span-5 space-y-6 no-print">
+            <div class="bg-white rounded-xl shadow-md p-6 border-t-4 border-blue-600">
+                <h2 class="text-xl font-bold text-slate-800 mb-4 border-b pb-2 flex justify-between items-center">
+                    <span><i class="fas fa-stethoscope mr-2 text-blue-600"></i>Nuevo Diagnóstico</span>
+                    <span class="text-xs font-normal text-gray-400">Puntúa del 1 al 5</span>
+                </h2>
+
+                <form id="diagnosisForm" onsubmit="event.preventDefault(); addDynamic();">
+                    
+                    <!-- Datos Básicos -->
+                    <div class="grid grid-cols-1 gap-4 mb-6">
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-1">Nombre de la Dinámica / Problemática</label>
+                            <input type="text" id="dynamicName" required placeholder="Ej. Falta de comunicación entre Ventas y Bodega" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-1">Área de Enfoque</label>
+                            <select id="areaTag" class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white">
+                                <option value="Cultura">Cultura y Liderazgo</option>
+                                <option value="Finanzas">Finanzas y Contabilidad</option>
+                                <option value="Operaciones">Operaciones y Procesos</option>
+                                <option value="Ventas">Ventas y Comercial</option>
+                                <option value="Abastecimiento">Abastecimiento y Logística</option>
+                                <option value="TI">Tecnología (TI)</option>
+                                <option value="Legal">Jurídico / Legal</option>
+                                <option value="SIG">Gestión de Calidad (SIG)</option>
+                                <option value="Estrategia">Estrategia Corporativa</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Pestañas para Ejes -->
+                    <div class="mb-4">
+                        <div class="flex border-b border-gray-200">
+                            <button type="button" onclick="switchTab('y')" id="tab-y" class="w-1/2 py-2 px-4 text-center font-bold text-blue-600 border-b-2 border-blue-600 transition-colors">
+                                EJE Y: Impacto (Resonancia)
+                            </button>
+                            <button type="button" onclick="switchTab('x')" id="tab-x" class="w-1/2 py-2 px-4 text-center font-bold text-gray-500 hover:text-blue-500 transition-colors">
+                                EJE X: Esfuerzo (Fricción)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Contenedor EJE Y -->
+                    <div id="panel-y" class="space-y-4">
+                        <div class="bg-blue-50 p-3 rounded text-sm text-blue-800 mb-2 border border-blue-100">
+                            <i class="fas fa-info-circle mr-1"></i> <strong>Escala de Impacto:</strong><br>
+                            1 = Impacto Nulo (Irrelevante) <i class="fas fa-arrow-right text-xs mx-1"></i> 5 = Impacto Vital (Crisis/Supervivencia)
+                        </div>
+                        <!-- Criterios Y -->
+                        <div id="criteria-y-container"></div>
+                    </div>
+
+                    <!-- Contenedor EJE X -->
+                    <div id="panel-x" class="space-y-4 hidden">
+                        <div class="bg-orange-50 p-3 rounded text-sm text-orange-800 mb-2 border border-orange-100">
+                            <i class="fas fa-info-circle mr-1"></i> <strong>Escala de Fricción:</strong><br>
+                            1 = <span class="text-green-600 font-bold">Positivo</span> (Equipo listo/Fácil) <i class="fas fa-arrow-right text-xs mx-1"></i> 5 = <span class="text-red-600 font-bold">Negativo</span> (Bloqueo Total/Imposible)
+                        </div>
+                        <!-- Criterios X -->
+                        <div id="criteria-x-container"></div>
+                    </div>
+
+                    <!-- Argumentación -->
+                    <div class="mt-6 border-t pt-4">
+                        <h3 class="font-bold text-slate-700 mb-2">Argumentación de Intervención</h3>
+                        <div class="grid grid-cols-1 gap-3">
+                            <div>
+                                <label class="text-xs font-bold text-green-700"><i class="fas fa-plus-circle mr-1"></i>Argumento Positivo (Beneficio si se logra):</label>
+                                <textarea id="argBenefit" rows="2" class="w-full text-sm border rounded p-2 focus:ring-1 focus:ring-green-500 outline-none" placeholder="Ej. Aumentará la rentabilidad en un 15%..."></textarea>
+                            </div>
+                            <div>
+                                <label class="text-xs font-bold text-red-700"><i class="fas fa-minus-circle mr-1"></i>Argumento Negativo (Consecuencia si NO se interviene):</label>
+                                <textarea id="argRisk" rows="2" class="w-full text-sm border rounded p-2 focus:ring-1 focus:ring-red-500 outline-none" placeholder="Ej. Perderemos al cliente principal en 3 meses..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botón Acción -->
+                    <button type="submit" class="mt-6 w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 px-4 rounded-lg shadow transition-colors flex justify-center items-center">
+                        <i class="fas fa-chart-line mr-2"></i> Agregar al Análisis
+                    </button>
+
+                </form>
+            </div>
+        </div>
+
+        <!-- COLUMNA DERECHA: Visualización -->
+        <div class="lg:col-span-7 space-y-6 w-full">
+            
+            <!-- El Mapa de Calor -->
+            <div class="bg-white rounded-xl shadow-md p-4 border border-slate-200 print-break">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-bold text-slate-800">Mapa de Calor MPS</h2>
+                    <div class="flex gap-2 text-xs flex-wrap">
+                        <span class="px-2 py-1 rounded bg-red-100 text-red-800 border border-red-200 font-semibold">Sobrevivencia</span>
+                        <span class="px-2 py-1 rounded bg-green-100 text-green-800 border border-green-200 font-semibold">Desarrollo</span>
+                        <span class="px-2 py-1 rounded bg-blue-100 text-blue-800 border border-blue-200 font-semibold">Quick Wins</span>
+                        <span class="px-2 py-1 rounded bg-gray-100 text-gray-600 border border-gray-200 font-semibold">Descarte</span>
+                    </div>
+                </div>
+                <div class="relative w-full h-[400px]">
+                    <canvas id="mpsChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Listado de Dinámicas -->
+            <div class="bg-white rounded-xl shadow-md p-6 print-break">
+                <div class="flex justify-between items-end mb-4 border-b pb-2">
+                    <h3 class="text-lg font-bold text-slate-800">Análisis Detallado</h3>
+                    <span class="text-xs text-gray-500" id="countDisplay">0 Dinámicas</span>
+                </div>
+                <div id="diagnosticsList" class="space-y-4">
+                    <p class="text-gray-400 text-center italic py-4">Aún no se han agregado dinámicas al reporte.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Script de Lógica -->
+    <script>
+        // --- 1. Definición de la Rúbrica Taxonómica (MPS v3.1) ---
+        const rubric = {
+            axisY: [
+                {
+                    id: 'y1', name: '1. Relación Financiera (Caja y Rentabilidad)',
+                    desc: {
+                        1: '<strong>NULO (Estético):</strong> No toca el dinero de la empresa. Es un tema de orden, limpieza o confort visual, pero no afecta costos ni ingresos.',
+                        2: '<strong>INDIRECTO (Gastos Admin):</strong> Afecta gastos menores (papelería, caja chica) o administrativos. No mueve el margen bruto ni la rentabilidad real.',
+                        3: '<strong>EFICIENCIA (Rentabilidad):</strong> Afecta la operación. Hay desperdicios, retrabajos o tiempos muertos que nos cuestan margen operativo.',
+                        4: '<strong>INGRESO (Ventas):</strong> Impacta directamente la facturación. Si se soluciona, vendemos más. Si falla, perdemos clientes o ventas activas.',
+                        5: '<strong>VITAL (Caja/Liquidez):</strong> Afecta la supervivencia. Toca la caja para pagar nómina o deudas críticas. Si no se arregla hoy, se pierde dinero líquido YA.'
+                    }
+                },
+                {
+                    id: 'y2', name: '2. Relación Administrativa (Alcance)',
+                    desc: {
+                        1: '<strong>Puntual:</strong> Afecta solo a una tarea específica de una persona (Micro-gestión).',
+                        2: '<strong>Local:</strong> Afecta a un solo proceso dentro de un área específica.',
+                        3: '<strong>Departamental:</strong> Afecta el rendimiento de todo un departamento (Ej. Todo Comercial).',
+                        4: '<strong>Inter-área:</strong> Genera fricción, cuellos de botella o peleas entre dos áreas (Ej. Ventas vs Logística).',
+                        5: '<strong>Sistémico:</strong> Atraviesa toda la organización. Toca cultura, estrategia y operación de todos.'
+                    }
+                },
+                {
+                    id: 'y3', name: '3. Riesgo de Continuidad',
+                    desc: {
+                        1: '<strong>Inexistente:</strong> La operación fluye normalmente sin este cambio.',
+                        2: '<strong>Molestia:</strong> Genera ruido y quejas, pero la operación nunca se detiene.',
+                        3: '<strong>Retraso:</strong> Provoca pausas operativas recuperables (retrasos de horas/días).',
+                        4: '<strong>Interrupción:</strong> Provoca paradas críticas que requieren intervención gerencial para reactivar.',
+                        5: '<strong>Colapso:</strong> Si sigue así, la unidad de negocio o empresa dejará de existir en <12 meses.'
+                    }
+                },
+                {
+                    id: 'y4', name: '4. Riesgo de Estancamiento',
+                    desc: {
+                        1: '<strong>Irrelevante:</strong> No influye en los planes de crecimiento futuros.',
+                        2: '<strong>Bajo:</strong> Podríamos crecer aun con este problema, aunque con dificultad.',
+                        3: '<strong>Freno:</strong> Ralentiza la velocidad de crecimiento (crecemos más lento de lo planeado).',
+                        4: '<strong>Techo de Cristal:</strong> Establece un límite máximo de facturación que no se podrá superar.',
+                        5: '<strong>Bloqueo Total:</strong> Hace técnicamente imposible escalar o abrir nuevos mercados.'
+                    }
+                }
+            ],
+            axisX: [
+                {
+                    id: 'x1', name: '1. Equipo (Disposición Humana)',
+                    desc: {
+                        1: '<strong>ALINEADO (Positivo):</strong> El equipo pide el cambio, tiene energía y está listo para ejecutar ya.',
+                        2: '<strong>Neutral:</strong> El equipo obedece, pero no tiene iniciativa propia. Requiere empuje constante.',
+                        3: '<strong>Fatiga:</strong> El equipo está cansado o saturado. El cambio se siente como "más trabajo".',
+                        4: '<strong>Resistencia:</strong> Hay grupos dentro del equipo que se oponen activamente, murmuran o critican.',
+                        5: '<strong>INCAPACIDAD (Negativo):</strong> El equipo actual no tiene las competencias ni la actitud. Requiere despidos/reemplazos.'
+                    }
+                },
+                {
+                    id: 'x2', name: '2. Cultura (Apertura)',
+                    desc: {
+                        1: '<strong>FLEXIBLE (Positivo):</strong> La cultura celebra la experimentación, el aprendizaje y el error.',
+                        2: '<strong>Abierta:</strong> Hay apertura general, aunque persisten algunos viejos hábitos.',
+                        3: '<strong>Inercial:</strong> "Siempre se ha hecho así". Cuesta mucho romper la inercia del pasado.',
+                        4: '<strong>Tóxica:</strong> Hay miedo, búsqueda de culpables o silos que dificultan la colaboración.',
+                        5: '<strong>SABOTAJE (Negativo):</strong> Las creencias fundacionales o el ego de los líderes boicotean el cambio.'
+                    }
+                },
+                {
+                    id: 'x3', name: '3. Costos de Implementación',
+                    desc: {
+                        1: '<strong>CERO (Positivo):</strong> Solo requiere tiempo y voluntad (cambio de actitud/proceso).',
+                        2: '<strong>Bajo:</strong> Gastos menores de caja chica o herramientas gratuitas.',
+                        3: '<strong>Medio:</strong> Requiere presupuesto formal para capacitación o software estándar.',
+                        4: '<strong>Alto:</strong> Inversión considerable que afecta el flujo de caja del mes.',
+                        5: '<strong>CAPEX (Negativo):</strong> Requiere inyección de capital mayor, deuda o reestructuración.'
+                    }
+                },
+                {
+                    id: 'x4', name: '4. Complejidad Técnica',
+                    desc: {
+                        1: '<strong>SIMPLE (Positivo):</strong> Se arregla con una orden, política, checklist o reunión.',
+                        2: '<strong>Técnica:</strong> Requiere aprender una nueva herramienta o habilidad puntual.',
+                        3: '<strong>Procesos:</strong> Requiere rediseñar flujos de trabajo y reasignar tareas.',
+                        4: '<strong>Mixta:</strong> Requiere cambios de procesos + tecnología + movimientos de personas.',
+                        5: '<strong>TRANSFORMACIONAL (Negativo):</strong> Requiere cambiar el modelo de negocio completo.'
+                    }
+                },
+                {
+                    id: 'x5', name: '5. Interesados (Stakeholders)',
+                    desc: {
+                        1: '<strong>APOYO TOTAL (Positivo):</strong> Todos los socios y directivos impulsan el cambio.',
+                        2: '<strong>Consenso:</strong> La mayoría está de acuerdo, nadie se opone firmemente.',
+                        3: '<strong>Duda:</strong> Un actor clave tiene dudas o es escéptico sobre la solución.',
+                        4: '<strong>Conflicto:</strong> Hay intereses contrapuestos entre socios o directivos sobre este tema.',
+                        5: '<strong>PODER DE VETO (Negativo):</strong> Un dueño, sindicato o socio mayoritario se opone radicalmente.'
+                    }
+                }
+            ]
+        };
+
+        let diagnosticsData = [];
+        let mpsChart;
+
+        // --- 2. Inicialización y Renderizado de Formulario ---
+        function initForm() {
+            renderCriteria('criteria-y-container', rubric.axisY, 'bg-blue-600');
+            renderCriteria('criteria-x-container', rubric.axisX, 'bg-orange-500');
+        }
+
+        function renderCriteria(containerId, criteriaList, colorClass) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            criteriaList.forEach(crit => {
+                const div = document.createElement('div');
+                div.className = "border rounded-lg p-3 bg-white hover:bg-gray-50 transition shadow-sm";
+                
+                let optionsHTML = `<div class="flex justify-between items-center gap-1 mb-2">`;
+                for(let i=1; i<=5; i++) {
+                    optionsHTML += `
+                        <label class="cursor-pointer flex-1 group">
+                            <input type="radio" name="${crit.id}" value="${i}" class="peer sr-only" onchange="updateDesc('${crit.id}', ${i})">
+                            <div class="text-center py-2 rounded border border-gray-200 peer-checked:${colorClass} peer-checked:text-white peer-checked:font-bold group-hover:bg-gray-100 transition text-sm font-medium text-gray-500">
+                                ${i}
+                            </div>
+                        </label>
+                    `;
+                }
+                optionsHTML += `</div>`;
+                
+                // Set default description placeholder
+                optionsHTML += `<div id="desc-${crit.id}" class="rubric-text text-sm bg-gray-50 p-2 rounded border border-gray-100"><em>Seleccione un valor para ver la descripción técnica detallada.</em></div>`;
+
+                div.innerHTML = `
+                    <h4 class="font-bold text-sm text-slate-700 mb-1">${crit.name}</h4>
+                    ${optionsHTML}
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function updateDesc(critId, val) {
+            // Find the description in rubric object
+            let desc = "";
+            
+            // Check in Y
+            const critY = rubric.axisY.find(c => c.id === critId);
+            if(critY) desc = critY.desc[val];
+            
+            // Check in X
+            const critX = rubric.axisX.find(c => c.id === critId);
+            if(critX) desc = critX.desc[val];
+
+            const el = document.getElementById(`desc-${critId}`);
+            el.innerHTML = desc;
+            el.className = "rubric-text text-sm bg-white p-2 rounded border-l-4 border-slate-600 shadow-sm animate-pulse-once";
+        }
+
+        function switchTab(axis) {
+            const tabY = document.getElementById('tab-y');
+            const tabX = document.getElementById('tab-x');
+            const panelY = document.getElementById('panel-y');
+            const panelX = document.getElementById('panel-x');
+
+            if (axis === 'y') {
+                tabY.className = "w-1/2 py-2 px-4 text-center font-bold text-blue-600 border-b-2 border-blue-600 transition-colors bg-blue-50 rounded-t";
+                tabX.className = "w-1/2 py-2 px-4 text-center font-bold text-gray-500 hover:text-blue-500 transition-colors";
+                panelY.classList.remove('hidden');
+                panelX.classList.add('hidden');
+            } else {
+                tabX.className = "w-1/2 py-2 px-4 text-center font-bold text-orange-600 border-b-2 border-orange-600 transition-colors bg-orange-50 rounded-t";
+                tabY.className = "w-1/2 py-2 px-4 text-center font-bold text-gray-500 hover:text-orange-500 transition-colors";
+                panelX.classList.remove('hidden');
+                panelY.classList.add('hidden');
+            }
+        }
+
+        // --- 3. Lógica de Negocio y Cálculo ---
+
+        function calculateZone(x, y) {
+            // 1. Zona de Sobrevivencia (Prioridad Absoluta)
+            // Criterio: Eje Y >= 4.0 (Independiente del Eje X)
+            // ACTION: Aquí se necesita expertise fuerte o autoridad.
+            if (y >= 4.0) return { name: "SOBREVIVENCIA", color: '#ef4444', action: 'Experto Técnico / Intervención Directiva', class: 'bg-red-50 border-red-200' };
+
+            // 4. Zona de Descarte (Ruido)
+            // Criterio: Eje Y <= 2.4
+            if (y <= 2.4) return { name: "DESCARTE", color: '#9ca3af', action: 'Delegar / Monitoreo Simple', class: 'bg-gray-50 border-gray-200' };
+
+            // 2. Zona de Consecución de Administrabilidad (Quick Wins)
+            // Criterio: Eje Y entre 2.5 y 3.9 Y Eje X <= 3.0
+            // ACTION: Aquí falta orden o saber cómo. Se arregla con reglas o enseñando.
+            if (y >= 2.5 && y <= 3.9 && x <= 3.0) return { name: "ADMINISTRABILIDAD", color: '#3b82f6', action: 'Definir Reglas / Formación', class: 'bg-blue-50 border-blue-200' };
+
+            // 3. Zona de Desarrollo (Apuestas Estratégicas)
+            // Criterio: Eje Y entre 3.0 y 5.0 Y Eje X >= 3.1
+            // ACTION: Aquí hay roce humano o complejidad. Se necesita mentoría y charla 1a1.
+            if (x >= 3.1) return { name: "DESARROLLO", color: '#10b981', action: 'Mentoría / Conversaciones Individuales', class: 'bg-green-50 border-green-200' };
+
+            // Fallback
+            return { name: "INDEFINIDO", color: '#64748b', action: 'Revisar valoración', class: 'bg-slate-50' };
+        }
+
+        function addDynamic() {
+            // Get Values
+            const name = document.getElementById('dynamicName').value;
+            const area = document.getElementById('areaTag').value;
+            const benefit = document.getElementById('argBenefit').value;
+            const risk = document.getElementById('argRisk').value;
+
+            // Collect Scores
+            let sumY = 0;
+            let countY = 0;
+            let scoresY = {};
+            rubric.axisY.forEach(c => {
+                const el = document.querySelector(`input[name="${c.id}"]:checked`);
+                if(el) { 
+                    const val = parseInt(el.value);
+                    sumY += val; 
+                    countY++;
+                    scoresY[c.name] = val; 
+                }
+            });
+
+            let sumX = 0;
+            let countX = 0;
+            let scoresX = {};
+            rubric.axisX.forEach(c => {
+                const el = document.querySelector(`input[name="${c.id}"]:checked`);
+                if(el) { 
+                    const val = parseInt(el.value);
+                    sumX += val; 
+                    countX++; 
+                    scoresX[c.name] = val;
+                }
+            });
+
+            if(countY < 4 || countX < 5) {
+                alert("Por favor califique todos los criterios según la rúbrica.");
+                return;
+            }
+
+            const avgY = sumY / 4;
+            const avgX = sumX / 5;
+            const zone = calculateZone(avgX, avgY);
+
+            const newDiag = {
+                id: Date.now(),
+                name, area, benefit, risk,
+                x: avgX,
+                y: avgY,
+                zone,
+                scoresY,
+                scoresX
+            };
+
+            diagnosticsData.push(newDiag);
+            renderList();
+            updateChart();
+            document.getElementById('countDisplay').innerText = `${diagnosticsData.length} Dinámicas`;
+            
+            // Reset form
+            document.getElementById('dynamicName').value = '';
+            document.getElementById('argBenefit').value = '';
+            document.getElementById('argRisk').value = '';
+            document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+            document.querySelectorAll('.rubric-text').forEach(t => t.innerHTML = "<em>Seleccione un valor para ver la descripción técnica detallada.</em>");
+            alert("Dinámica agregada correctamente.");
+        }
+
+        // --- 4. Exportación de Datos (CSV) ---
+        function exportToCSV() {
+            if (diagnosticsData.length === 0) {
+                alert("No hay datos para exportar.");
+                return;
+            }
+
+            // Define Headers
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "ID,Dinamica,Area,Zona,Tipo_Intervencion,Puntaje_Impacto_Y,Puntaje_Friccion_X,Beneficio_Esperado,Riesgo_Latente\n";
+
+            // Add Rows
+            diagnosticsData.forEach(row => {
+                let rowString = `${row.id},"${row.name}","${row.area}","${row.zone.name}","${row.zone.action}",${row.y.toFixed(2)},${row.x.toFixed(2)},"${row.benefit.replace(/"/g, '""')}","${row.risk.replace(/"/g, '""')}"`;
+                csvContent += rowString + "\n";
+            });
+
+            // Create Download Link
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "MPS_Reporte_Diagnostico.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // --- 5. Visualización ---
+
+        function renderList() {
+            const container = document.getElementById('diagnosticsList');
+            if(diagnosticsData.length === 0) {
+                container.innerHTML = '<p class="text-gray-400 text-center italic py-4">Aún no se han agregado dinámicas al reporte.</p>';
+                return;
+            }
+            container.innerHTML = '';
+
+            diagnosticsData.slice().reverse().forEach(d => {
+                const item = document.createElement('div');
+                item.className = `zone-card border-l-4 p-4 rounded shadow-sm bg-white mb-4 ${d.zone.class} print-break`;
+                item.style.borderLeftColor = d.zone.color;
+                
+                item.innerHTML = `
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded text-white mb-1 inline-block" style="background-color:${d.zone.color}">${d.zone.name}</span>
+                            <h4 class="font-bold text-slate-800 text-lg">${d.name}</h4>
+                            <span class="text-xs bg-slate-200 text-slate-600 px-2 py-1 rounded-full"><i class="fas fa-tag mr-1"></i>${d.area}</span>
+                        </div>
+                        <div class="text-right text-sm text-slate-600 bg-white p-2 rounded border">
+                            <div class="font-mono">Impacto (Y): <strong>${d.y.toFixed(2)}</strong></div>
+                            <div class="font-mono">Fricción (X): <strong>${d.x.toFixed(2)}</strong></div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3 text-sm">
+                        <div class="bg-green-50 p-3 rounded border border-green-100">
+                            <strong class="text-green-800 block text-xs mb-1"><i class="fas fa-plus mr-1"></i>SI SE LOGRA (Beneficio):</strong> 
+                            <span class="text-slate-700">${d.benefit}</span>
+                        </div>
+                        <div class="bg-red-50 p-3 rounded border border-red-100">
+                            <strong class="text-red-800 block text-xs mb-1"><i class="fas fa-minus mr-1"></i>SI NO SE ACTÚA (Consecuencia):</strong> 
+                            <span class="text-slate-700">${d.risk}</span>
+                        </div>
+                    </div>
+                    <div class="mt-3 text-xs font-bold text-slate-500 border-t pt-2 flex justify-between">
+                        <span><i class="fas fa-user-friends mr-1"></i> Tipo de Intervención: <span class="text-slate-800 text-sm">${d.zone.action}</span></span>
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function updateChart() {
+            if (mpsChart) mpsChart.destroy();
+
+            const ctx = document.getElementById('mpsChart').getContext('2d');
+            
+            mpsChart = new Chart(ctx, {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'Dinámicas',
+                        data: diagnosticsData.map(d => ({ x: d.x, y: d.y, r: d })),
+                        backgroundColor: diagnosticsData.map(d => d.zone.color),
+                        pointRadius: 10,
+                        pointHoverRadius: 12,
+                        borderWidth: 2,
+                        borderColor: '#fff',
+                        pointStyle: 'circle'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            position: 'bottom',
+                            min: 1,
+                            max: 5,
+                            title: { display: true, text: 'EJE X: Fricción / Esfuerzo (1=Fácil, 5=Difícil)', font: { weight: 'bold' } },
+                            grid: { color: '#e2e8f0' }
+                        },
+                        y: {
+                            min: 1,
+                            max: 5,
+                            title: { display: true, text: 'EJE Y: Impacto / Resonancia (1=Bajo, 5=Crítico)', font: { weight: 'bold' } },
+                            grid: { color: '#e2e8f0' }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                            padding: 12,
+                            titleFont: { size: 14, weight: 'bold' },
+                            bodyFont: { size: 12 },
+                            callbacks: {
+                                label: function(context) {
+                                    const d = context.raw.r;
+                                    return `${d.name} (${d.zone.name})`;
+                                },
+                                afterLabel: function(context) {
+                                    const d = context.raw.r;
+                                    return `Impacto: ${d.y.toFixed(1)} | Fricción: ${d.x.toFixed(1)}`;
+                                }
+                            }
+                        },
+                        legend: { display: false }
+                    }
+                },
+                plugins: [{
+                    id: 'customBackground',
+                    beforeDraw: (chart) => {
+                        const {ctx, chartArea: {top, bottom, left, right, width, height}, scales: {x, y}} = chart;
+                        
+                        ctx.save();
+
+                        // 1. SOBREVIVENCIA (Y >= 4) - Rojo
+                        ctx.fillStyle = 'rgba(254, 226, 226, 0.5)'; 
+                        ctx.fillRect(left, top, width, y.getPixelForValue(4) - top);
+                        
+                        // 4. DESCARTE (Y <= 2.4) - Gris
+                        ctx.fillStyle = 'rgba(243, 244, 246, 0.6)';
+                        ctx.fillRect(left, y.getPixelForValue(2.4), width, bottom - y.getPixelForValue(2.4));
+
+                        // 2. ADMINISTRABILIDAD (Y [2.5-3.9] && X <= 3) - Azul
+                        ctx.fillStyle = 'rgba(219, 234, 254, 0.5)';
+                        ctx.fillRect(
+                            left, 
+                            y.getPixelForValue(3.9), 
+                            x.getPixelForValue(3) - left, 
+                            y.getPixelForValue(2.5) - y.getPixelForValue(3.9)
+                        );
+
+                        // 3. DESARROLLO (El resto del cuadro medio) - Verde
+                        ctx.fillStyle = 'rgba(209, 250, 229, 0.5)';
+                        ctx.fillRect(
+                            x.getPixelForValue(3.0),
+                            y.getPixelForValue(3.9),
+                            right - x.getPixelForValue(3.0),
+                            y.getPixelForValue(2.5) - y.getPixelForValue(3.9)
+                        );
+
+                        // Etiquetas de fondo
+                        ctx.font = "bold 12px Arial";
+                        ctx.fillStyle = "rgba(0,0,0,0.3)";
+                        ctx.fillText("SOBREVIVENCIA", left + 10, top + 20);
+                        ctx.fillText("DESCARTE", left + 10, bottom - 10);
+                        ctx.fillText("ADMINISTRABILIDAD", left + 10, y.getPixelForValue(3.9) + 20);
+                        ctx.fillText("DESARROLLO", right - 100, y.getPixelForValue(3.9) + 20);
+
+                        ctx.restore();
+                    }
+                }]
+            });
+        }
+
+        initForm();
+        updateChart();
+
+    </script>
+</body>
+</html>
