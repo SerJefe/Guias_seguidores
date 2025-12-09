@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIO: Herramienta de Acuerdos y Comunicación</title>
+    
+    <!-- Librerías Externas -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        candor: {
+                            green: '#10b981',
+                            red: '#ef4444',
+                            orange: '#f59e0b',
+                            gray: '#6b7280'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background-color: #f0fdfa; }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-3px); box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1); }
+        
+        /* Estilos para impresión */
+        @media print {
+            .no-print { display: none !important; }
+            body { background-color: white; }
+            .shadow-md, .shadow-lg, .shadow-xl { box-shadow: none !important; }
+            .print-break { page-break-inside: avoid; }
+            .container { max-width: 100% !important; margin: 0 !important; padding: 0 !important; }
+        }
+    </style>
+</head>
+<body class="pb-16 text-slate-800">
+
+    <!-- Header -->
+    <header class="bg-slate-900 text-white shadow-xl sticky top-0 z-50 no-print border-b-4 border-teal-500">
+        <div class="container mx-auto px-4 py-3 flex flex-wrap justify-between items-center">
+            <div class="mb-2 md:mb-0">
+                <h1 class="text-xl md:text-2xl font-bold tracking-wider flex items-center">
+                    <i class="fas fa-comments mr-3 text-teal-400"></i> AIO System
+                </h1>
+                <p class="text-xs text-slate-400">Plataforma de Acuerdos y Cultura</p>
+            </div>
+            <div class="flex gap-2 flex-wrap">
+                <button onclick="switchView('matrix')" id="btn-matrix" class="nav-btn bg-slate-700 hover:bg-slate-600 px-3 py-1.5 rounded text-sm font-medium transition text-white border border-slate-600 ring-2 ring-teal-500">
+                    <i class="fas fa-th-large mr-1"></i> Mapa
+                </button>
+                <button onclick="switchView('radar')" id="btn-radar" class="nav-btn bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded text-sm font-medium transition text-gray-300 border border-slate-700">
+                    <i class="fas fa-heartbeat mr-1"></i> Equipo
+                </button>
+                <button onclick="switchView('individual')" id="btn-individual" class="nav-btn bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded text-sm font-medium transition text-gray-300 border border-slate-700">
+                    <i class="fas fa-user-secret mr-1"></i> Voz Individual
+                </button>
+                <button onclick="switchView('free')" id="btn-free" class="nav-btn bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded text-sm font-medium transition text-gray-300 border border-slate-700">
+                    <i class="fas fa-book mr-1"></i> Diccionario
+                </button>
+                <button onclick="window.print()" class="bg-teal-600 hover:bg-teal-700 px-3 py-1.5 rounded text-sm font-medium transition ml-2 text-white" title="Imprimir Reporte">
+                    <i class="fas fa-print"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Título de Impresión -->
+    <div class="hidden print:block text-center py-6 border-b mb-6">
+        <h1 class="text-3xl font-bold text-slate-900">Reporte de Acuerdos y Comunicación</h1>
+        <p class="text-sm text-slate-500">Diagnóstico Integral AIO v3</p>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <div class="container mx-auto px-4 mt-8">
+
+        <!-- VISTA 1: MATRIZ DE INTERACCIÓN (SCATTER) -->
+        <div id="view-matrix" class="view-section grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- Panel Izquierdo: Formulario -->
+            <div class="lg:col-span-4 space-y-6 no-print">
+                <div class="bg-white rounded-xl shadow-md p-6 border-t-4 border-teal-500">
+                    <h2 class="text-xl font-bold text-slate-800 mb-2"><i class="fas fa-comment-dots mr-2 text-teal-600"></i>Analizar una Conversación</h2>
+                    <p class="text-sm text-gray-500 mb-6">Evalúa una reunión, un correo o una charla difícil reciente.</p>
+
+                    <form id="interactionForm" onsubmit="event.preventDefault(); addInteraction();">
+                        <div class="mb-5">
+                            <label class="block text-xs font-bold uppercase text-slate-500 mb-1">¿Qué evento estás evaluando?</label>
+                            <input type="text" id="intName" required placeholder="Ej. Reunión de ventas del Lunes" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 outline-none transition">
+                        </div>
+
+                        <!-- Eje Y Simplificado -->
+                        <div class="mb-5 bg-blue-50 p-4 rounded-lg border border-blue-100">
+                            <label class="block text-sm font-bold text-blue-900 mb-1">1. Calidad Humana (Cuidado)</label>
+                            <p class="text-xs text-blue-700 mb-3">¿Sentiste que al otro le importabas tú como ser humano?</p>
+                            
+                            <div class="flex justify-between text-xs text-gray-500 mb-1 px-1 font-semibold"><span>Me sentí ignorado</span><span>Me sentí valorado</span></div>
+                            <input type="range" id="scoreY" min="1" max="5" step="0.5" value="3" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer accent-blue-600" oninput="updateLabel('lblY', this.value)">
+                            <div class="text-right text-lg font-bold text-blue-700" id="lblY">3.0</div>
+                        </div>
+
+                        <!-- Eje X Simplificado -->
+                        <div class="mb-6 bg-orange-50 p-4 rounded-lg border border-orange-100">
+                            <label class="block text-sm font-bold text-orange-900 mb-1">2. Claridad Directa (Verdad)</label>
+                            <p class="text-xs text-orange-800 mb-3">¿Se dijo la verdad completa y directa?</p>
+                            
+                            <div class="flex justify-between text-xs text-gray-500 mb-1 px-1 font-semibold"><span>Confuso / Indirecto</span><span>Claro / Directo</span></div>
+                            <input type="range" id="scoreX" min="1" max="5" step="0.5" value="3" class="w-full h-2 bg-orange-200 rounded-lg appearance-none cursor-pointer accent-orange-600" oninput="updateLabel('lblX', this.value)">
+                            <div class="text-right text-lg font-bold text-orange-700" id="lblX">3.0</div>
+                        </div>
+
+                        <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transition-all text-sm flex justify-center items-center group">
+                            <i class="fas fa-map-marker-alt mr-2 group-hover:animate-bounce"></i> Ubicar en el Mapa
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Panel Derecho: Visualización -->
+            <div class="lg:col-span-8 space-y-6">
+                <div class="bg-white rounded-xl shadow-md p-4 h-[550px] border border-slate-200 relative print-break">
+                    <h3 class="text-sm font-bold text-slate-500 absolute top-4 left-4 z-10 bg-white px-2 rounded">Mapa de Conversaciones</h3>
+                    <div class="absolute inset-0 p-4">
+                        <canvas id="scatterChart"></canvas>
+                    </div>
+                </div>
+                
+                <div id="interactionList" class="grid grid-cols-1 md:grid-cols-2 gap-4 print-break">
+                    <div class="col-span-full text-center py-8 text-gray-400 italic text-sm border-2 border-dashed border-gray-200 rounded-lg">
+                        Aquí aparecerán tus análisis...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VISTA 2: RADAR SISTÉMICO (EQUIPO) -->
+        <div id="view-radar" class="view-section hidden grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <div class="lg:col-span-4 space-y-6 no-print">
+                <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-indigo-500">
+                    <h2 class="text-xl font-bold text-slate-800 mb-2"><i class="fas fa-users-cog mr-2 text-indigo-600"></i>Termómetro del Equipo</h2>
+                    <p class="text-sm text-gray-500 mb-6">Puntúa del 1 al 5 qué tan ciertas son estas frases.</p>
+
+                    <form id="teamForm" onsubmit="event.preventDefault(); addTeamScore();">
+                        <div class="mb-5">
+                            <label class="block text-xs font-bold text-slate-500 mb-1">Nombre del Equipo</label>
+                            <input type="text" id="teamName" placeholder="Ej. Contabilidad" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                        </div>
+
+                        <!-- Preguntas Simplificadas -->
+                        <div class="space-y-4">
+                            <!-- Seguridad -->
+                            <div class="bg-slate-50 p-3 rounded-lg">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-xs font-bold text-slate-700">1. ¿Podemos hablar sin miedo?</span>
+                                    <span id="val_s" class="text-indigo-600 font-bold bg-white px-2 rounded shadow-sm">3</span>
+                                </div>
+                                <input type="range" id="in_s" min="1" max="5" step="1" value="3" class="w-full h-1 bg-gray-300 rounded cursor-pointer accent-indigo-600" oninput="document.getElementById('val_s').innerText=this.value">
+                            </div>
+
+                            <!-- Claridad -->
+                            <div class="bg-slate-50 p-3 rounded-lg">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-xs font-bold text-slate-700">2. ¿Las palabras son claras?</span>
+                                    <span id="val_c" class="text-indigo-600 font-bold bg-white px-2 rounded shadow-sm">3</span>
+                                </div>
+                                <input type="range" id="in_c" min="1" max="5" step="1" value="3" class="w-full h-1 bg-gray-300 rounded cursor-pointer accent-indigo-600" oninput="document.getElementById('val_c').innerText=this.value">
+                            </div>
+
+                            <!-- Propósito (Updated) -->
+                            <div class="bg-slate-50 p-3 rounded-lg">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-xs font-bold text-slate-700">3. ¿Sabemos el "Para Qué"?</span>
+                                    <span id="val_p" class="text-indigo-600 font-bold bg-white px-2 rounded shadow-sm">3</span>
+                                </div>
+                                <p class="text-[10px] text-gray-500 mb-2 leading-tight">¿Nos movemos hacia un propósito claro o solo por inercia?</p>
+                                <input type="range" id="in_p" min="1" max="5" step="1" value="3" class="w-full h-1 bg-gray-300 rounded cursor-pointer accent-indigo-600" oninput="document.getElementById('val_p').innerText=this.value">
+                            </div>
+
+                            <!-- Reciprocidad -->
+                            <div class="bg-slate-50 p-3 rounded-lg">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-xs font-bold text-slate-700">4. ¿Es un diálogo o monólogo?</span>
+                                    <span id="val_r" class="text-indigo-600 font-bold bg-white px-2 rounded shadow-sm">3</span>
+                                </div>
+                                <input type="range" id="in_r" min="1" max="5" step="1" value="3" class="w-full h-1 bg-gray-300 rounded cursor-pointer accent-indigo-600" oninput="document.getElementById('val_r').innerText=this.value">
+                            </div>
+
+                            <!-- Vulnerabilidad (Updated) -->
+                            <div class="bg-slate-50 p-3 rounded-lg">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-xs font-bold text-slate-700">5. ¿El Jefe admite errores?</span>
+                                    <span id="val_v" class="text-indigo-600 font-bold bg-white px-2 rounded shadow-sm">3</span>
+                                </div>
+                                <p class="text-[10px] text-gray-500 mb-2 leading-tight">¿Puede el jefe decir "no sé" sin parecer débil?</p>
+                                <input type="range" id="in_v" min="1" max="5" step="1" value="3" class="w-full h-1 bg-gray-300 rounded cursor-pointer accent-indigo-600" oninput="document.getElementById('val_v').innerText=this.value">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="mt-4 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg shadow transition-colors text-sm">
+                            <i class="fas fa-plus-circle mr-2"></i> Sumar al Promedio
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="lg:col-span-8 space-y-6">
+                <div class="bg-white rounded-xl shadow-md p-6 flex flex-col items-center justify-center h-[550px] print-break relative">
+                    <h3 class="text-lg font-bold text-slate-700 mb-2">Radiografía del Equipo</h3>
+                    <div class="relative w-full h-full">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                </div>
+                <!-- Tabla oculta para ahorrar espacio, solo visualización Radar -->
+            </div>
+        </div>
+
+        <!-- VISTA 3: INDIVIDUAL ANÓNIMO (NUEVA) -->
+        <div id="view-individual" class="view-section hidden grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- Formulario Individual -->
+            <div class="lg:col-span-5 space-y-6 no-print">
+                <div class="bg-white rounded-xl shadow-md p-6 border-t-4 border-purple-500 max-h-screen overflow-y-auto">
+                    <h2 class="text-xl font-bold text-slate-800 mb-2"><i class="fas fa-user-secret mr-2 text-purple-600"></i>Voz Individual Anónima</h2>
+                    <p class="text-sm text-gray-500 mb-4">Evalúa estas 10 características de la empresa de forma honesta. Tus datos se sumarán al promedio global.</p>
+
+                    <form id="individualForm" onsubmit="event.preventDefault(); addIndividualScore();">
+                        
+                        <div class="space-y-3 mb-6">
+                            <!-- 10 Características -->
+                            <div class="grid grid-cols-1 gap-2">
+                                <script>
+                                    const traits = [
+                                        {id: 'ind_1', label: '1. Claridad de Objetivos', sub: '¿Sé exactamente qué se espera de mí?'},
+                                        {id: 'ind_2', label: '2. Escucha del Jefe', sub: '¿Mi jefe me presta atención genuina?'},
+                                        {id: 'ind_3', label: '3. Seguridad para Hablar', sub: '¿Puedo opinar distinto sin miedo a represalias?'},
+                                        {id: 'ind_4', label: '4. Coherencia', sub: '¿Se hace lo que se dice?'},
+                                        {id: 'ind_5', label: '5. Velocidad de Respuesta', sub: '¿La información fluye rápido o se atasca?'},
+                                        {id: 'ind_6', label: '6. Retroalimentación (Feedback)', sub: '¿Me dicen cómo mejorar frecuentemente?'},
+                                        {id: 'ind_7', label: '7. Sentido del "Para Qué"', sub: '¿Entiendo el propósito mayor de mi tarea?'},
+                                        {id: 'ind_8', label: '8. Colaboración entre Áreas', sub: '¿Nos ayudamos o competimos entre departamentos?'},
+                                        {id: 'ind_9', label: '9. Trato Humano', sub: '¿Me siento respetado como persona?'},
+                                        {id: 'ind_10', label: '10. Apertura al Cambio', sub: '¿Se aceptan nuevas ideas o "siempre se ha hecho así"?'},
+                                    ];
+                                    traits.forEach(t => {
+                                        document.write(`
+                                            <div class="bg-purple-50 p-2 rounded border border-purple-100">
+                                                <div class="flex justify-between items-end">
+                                                    <label class="text-xs font-bold text-purple-900">${t.label}</label>
+                                                    <span id="val_${t.id}" class="text-xs font-bold text-purple-600">3</span>
+                                                </div>
+                                                <p class="text-[10px] text-gray-500 mb-1">${t.sub}</p>
+                                                <input type="range" id="${t.id}" min="1" max="5" step="1" value="3" class="w-full h-1 bg-purple-200 rounded cursor-pointer accent-purple-600" oninput="document.getElementById('val_${t.id}').innerText=this.value">
+                                            </div>
+                                        `);
+                                    });
+                                </script>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block text-xs font-bold text-slate-700 mb-2">Dinámica Comunicacional (Párrafo Corto)</label>
+                            <textarea id="ind_comment" rows="3" class="w-full border border-gray-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-purple-500 outline-none" placeholder="¿Cómo describes la forma en que nos comunicamos aquí?"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 px-4 rounded-lg shadow transition-colors text-sm">
+                            <i class="fas fa-paper-plane mr-2"></i> Enviar Opinión Anónima
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Resultados Individuales -->
+            <div class="lg:col-span-7 space-y-6">
+                <!-- Gráfico de Barras -->
+                <div class="bg-white rounded-xl shadow-md p-4 h-[400px] border border-slate-200 relative print-break">
+                    <h3 class="text-sm font-bold text-slate-500 absolute top-4 left-4 z-10 bg-white px-2 rounded">Promedio de Percepción (10 Puntos)</h3>
+                    <div class="absolute inset-0 p-4 pt-8">
+                        <canvas id="individualChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Muro de Comentarios -->
+                <div class="bg-white rounded-xl shadow-md p-6 border border-slate-200 print-break">
+                    <h3 class="font-bold text-slate-700 mb-4 border-b pb-2">Muro de Perspectivas (Anónimo)</h3>
+                    <div id="commentsList" class="space-y-3 max-h-[400px] overflow-y-auto pr-2">
+                        <div class="text-center text-gray-400 italic text-sm py-4">Aún no hay opiniones registradas.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VISTA 4: DICCIONARIO COMÚN -->
+        <div id="view-free" class="view-section hidden">
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-8 no-print border-t-4 border-emerald-500">
+                <h2 class="text-2xl font-bold text-slate-800"><i class="fas fa-book-open mr-2 text-emerald-500"></i>Diccionario de Acuerdos Comunes</h2>
+                <p class="text-sm text-gray-600 mt-1">Transforma malentendidos en definiciones claras.</p>
+                
+                <form id="freeForm" onsubmit="event.preventDefault(); addAgreement();" class="grid grid-cols-1 md:grid-cols-3 gap-6 items-start bg-slate-50 p-6 rounded-xl border border-slate-200 mt-4">
+                    <div class="relative">
+                        <label class="flex items-center text-xs font-bold text-rose-600 uppercase mb-2">1. El Conflicto (Palabra)</label>
+                        <input type="text" id="phSignifier" placeholder='Ej. "Urgente"' class="w-full border border-gray-300 rounded-lg px-3 py-3 text-sm focus:ring-2 focus:ring-rose-500 outline-none">
+                    </div>
+                    <div class="relative">
+                        <label class="flex items-center text-xs font-bold text-orange-600 uppercase mb-2">2. La Realidad (Sentir)</label>
+                        <input type="text" id="phSignified" placeholder='Ej. "Estrés y desorden"' class="w-full border border-gray-300 rounded-lg px-3 py-3 text-sm focus:ring-2 focus:ring-orange-500 outline-none">
+                    </div>
+                    <div class="relative">
+                        <label class="flex items-center text-xs font-bold text-emerald-600 uppercase mb-2">3. El Nuevo Acuerdo (Para Qué)</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="phAgreement" placeholder='Ej. "Solo para riesgo real de cliente"' class="w-full border-2 border-emerald-100 bg-white rounded-lg px-3 py-3 text-sm focus:ring-2 focus:ring-emerald-500 outline-none font-semibold text-emerald-900">
+                            <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 rounded-lg shadow transition-colors text-xl"><i class="fas fa-check"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div id="agreementsList" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="col-span-full text-center py-12 text-gray-400 italic">No hay acuerdos registrados todavía.</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Script Lógica -->
+    <script>
+        // --- 1. Estado de la Aplicación ---
+        let interactions = []; 
+        let teamScores = [];   
+        let individualScores = []; // Nueva estructura para datos individuales
+        let individualComments = [];
+
+        // --- 2. Configuración de Gráficos ---
+        let scatterChart, radarChart, individualChart;
+
+        function initCharts() {
+            // SCATTER CHART
+            const ctxScatter = document.getElementById('scatterChart').getContext('2d');
+            scatterChart = new Chart(ctxScatter, {
+                type: 'scatter',
+                data: {
+                    datasets: [{ label: 'Interacciones', data: [], backgroundColor: '#1e293b', pointRadius: 8, pointHoverRadius: 10, pointBorderWidth: 2, pointBorderColor: '#fff' }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: {
+                        x: { min: 0.5, max: 5.5, title: { display: true, text: 'CLARIDAD (¿Qué tan directo?)', font: {weight:'bold'} }, grid: { display: false } },
+                        y: { min: 0.5, max: 5.5, title: { display: true, text: 'CUIDADO (¿Qué tan humano?)', font: {weight:'bold'} }, grid: { display: false } }
+                    },
+                    plugins: {
+                        tooltip: { callbacks: { label: (ctx) => `${ctx.raw.obj.name} (${ctx.raw.obj.category})` } },
+                        legend: { display: false },
+                        customBackground: {
+                            id: 'customBackground',
+                            beforeDraw: (chart) => {
+                                const {ctx, chartArea: {top, bottom, left, right}, scales: {x, y}} = chart;
+                                const midX = x.getPixelForValue(3); const midY = y.getPixelForValue(3);
+                                ctx.save();
+                                // Cuadrantes (Simplificados visualmente)
+                                ctx.fillStyle = 'rgba(209, 250, 229, 0.5)'; ctx.fillRect(midX, top, right - midX, midY - top); // Verde
+                                ctx.fillStyle = 'rgba(255, 237, 213, 0.5)'; ctx.fillRect(left, top, midX - left, midY - top); // Naranja
+                                ctx.fillStyle = 'rgba(241, 245, 249, 0.5)'; ctx.fillRect(left, midY, midX - left, bottom - midY); // Gris
+                                ctx.fillStyle = 'rgba(254, 226, 226, 0.5)'; ctx.fillRect(midX, midY, right - midX, bottom - midY); // Rojo
+                                ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(midX, top); ctx.lineTo(midX, bottom); ctx.moveTo(left, midY); ctx.lineTo(right, midY); ctx.stroke();
+                                ctx.restore();
+                            }
+                        }
+                    },
+                    plugins: ['customBackground']
+                }
+            });
+
+            // RADAR CHART
+            const ctxRadar = document.getElementById('radarChart').getContext('2d');
+            radarChart = new Chart(ctxRadar, {
+                type: 'radar',
+                data: {
+                    labels: ['Seguridad (Sin Miedo)', 'Claridad', 'Propósito (Para Qué)', 'Diálogo', 'Humildad (Jefe)'],
+                    datasets: [{ label: 'Promedio Equipo', data: [0,0,0,0,0], fill: true, backgroundColor: 'rgba(79, 70, 229, 0.2)', borderColor: 'rgb(79, 70, 229)', pointRadius: 5 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, scales: { r: { suggestedMin: 0, suggestedMax: 5, ticks: { stepSize: 1 } } } }
+            });
+
+            // INDIVIDUAL CHART (BARS)
+            const ctxInd = document.getElementById('individualChart').getContext('2d');
+            individualChart = new Chart(ctxInd, {
+                type: 'bar',
+                data: {
+                    labels: ['Claridad', 'Escucha', 'Seguridad', 'Coherencia', 'Velocidad', 'Feedback', 'Para Qué', 'Colaboración', 'Trato Humano', 'Apertura'],
+                    datasets: [{
+                        label: 'Promedio Percepción',
+                        data: Array(10).fill(0),
+                        backgroundColor: 'rgba(147, 51, 234, 0.6)',
+                        borderColor: 'rgb(147, 51, 234)',
+                        borderWidth: 1,
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    indexAxis: 'y', // Barras horizontales
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { x: { min: 0, max: 5, ticks: {stepSize: 1} } },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        // --- 3. Lógica Scatter ---
+        function determineCategory(x, y) {
+            if (x >= 3 && y >= 3) return { name: "Sinceridad Constructiva", color: "bg-emerald-50 border-emerald-500", icon: "fa-check-circle" };
+            if (x < 3 && y >= 3) return { name: "Exceso de Amabilidad", color: "bg-orange-50 border-orange-500", icon: "fa-couch" };
+            if (x >= 3 && y < 3) return { name: "Ataque Directo", color: "bg-red-50 border-red-500", icon: "fa-exclamation-triangle" };
+            return { name: "Falsedad / Hipocresía", color: "bg-gray-100 border-gray-500", icon: "fa-mask" };
+        }
+
+        function addInteraction() {
+            const name = document.getElementById('intName').value;
+            const x = parseFloat(document.getElementById('scoreX').value);
+            const y = parseFloat(document.getElementById('scoreY').value);
+            const category = determineCategory(x, y);
+            const obj = { id: Date.now(), name, x, y, category: category.name, catData: category };
+            
+            interactions.push(obj);
+            scatterChart.data.datasets[0].data = interactions.map(i => ({x: i.x, y: i.y, obj: i}));
+            scatterChart.update();
+            renderInteractionList();
+            document.getElementById('interactionForm').reset();
+            updateLabel('lblX', 3); updateLabel('lblY', 3); document.getElementById('scoreX').value=3; document.getElementById('scoreY').value=3;
+        }
+
+        function renderInteractionList() {
+            const container = document.getElementById('interactionList');
+            container.innerHTML = '';
+            if(interactions.length === 0) { container.innerHTML = '<div class="col-span-full text-center py-8 text-gray-400 italic text-sm border-2 border-dashed border-gray-200 rounded-lg">Sin datos...</div>'; return; }
+            interactions.slice().reverse().forEach(item => {
+                const div = document.createElement('div');
+                div.className = `p-4 rounded-lg border-l-4 shadow-sm bg-white card-hover ${item.catData.color} print-break relative overflow-hidden`;
+                div.innerHTML = `<div class="flex justify-between items-start z-10 relative"><div><h4 class="font-bold text-base text-slate-800">${item.name}</h4><span class="text-xs font-bold uppercase tracking-wider mt-1 block opacity-80">${item.category}</span></div><i class="fas ${item.catData.icon} text-2xl opacity-20 absolute top-0 right-0"></i></div><div class="mt-3 flex gap-2 text-xs font-mono"><span class="bg-white bg-opacity-50 px-2 py-1 rounded">Cuidado: ${item.y}</span><span class="bg-white bg-opacity-50 px-2 py-1 rounded">Claridad: ${item.x}</span></div>`;
+                container.appendChild(div);
+            });
+        }
+        function updateLabel(id, val) { document.getElementById(id).innerText = parseFloat(val).toFixed(1); }
+
+        // --- 4. Lógica Radar ---
+        function addTeamScore() {
+            const name = document.getElementById('teamName').value || "Equipo";
+            const vals = ['in_s', 'in_c', 'in_p', 'in_r', 'in_v'].map(id => parseInt(document.getElementById(id).value));
+            teamScores.push({ name, vals });
+            
+            // Promedio
+            let totals = [0,0,0,0,0];
+            teamScores.forEach(sc => sc.vals.forEach((v, i) => totals[i] += v));
+            radarChart.data.datasets[0].data = totals.map(t => (t / teamScores.length).toFixed(2));
+            radarChart.update();
+            
+            document.getElementById('teamForm').reset();
+            ['val_s', 'val_c', 'val_p', 'val_r', 'val_v'].forEach(id => document.getElementById(id).innerText = '3');
+        }
+
+        // --- 5. Lógica Individual (NUEVA) ---
+        function addIndividualScore() {
+            // Recoger valores de los 10 sliders
+            const values = [];
+            for(let i=1; i<=10; i++) {
+                values.push(parseInt(document.getElementById(`ind_${i}`).value));
+            }
+            const comment = document.getElementById('ind_comment').value;
+
+            individualScores.push(values);
+            if(comment.trim()) individualComments.push(comment);
+
+            // Calcular Promedios para el Gráfico
+            const sums = Array(10).fill(0);
+            individualScores.forEach(scoreSet => {
+                scoreSet.forEach((val, idx) => sums[idx] += val);
+            });
+            const avgs = sums.map(s => (s / individualScores.length).toFixed(2));
+            
+            individualChart.data.datasets[0].data = avgs;
+            individualChart.update();
+
+            // Renderizar Comentarios
+            const commList = document.getElementById('commentsList');
+            if(individualComments.length > 0) commList.innerHTML = '';
+            individualComments.slice().reverse().forEach(c => {
+                const d = document.createElement('div');
+                d.className = "bg-slate-50 p-3 rounded-lg border border-slate-100 text-sm text-slate-700 italic";
+                d.innerHTML = `"${c}"`;
+                commList.appendChild(d);
+            });
+
+            // Reset
+            document.getElementById('individualForm').reset();
+            for(let i=1; i<=10; i++) document.getElementById(`val_ind_${i}`).innerText = '3';
+        }
+
+        // --- 6. Lógica Acuerdos ---
+        function addAgreement() {
+            const conflict = document.getElementById('phSignifier').value;
+            const reality = document.getElementById('phSignified').value;
+            const agreement = document.getElementById('phAgreement').value;
+            if(!conflict || !reality || !agreement) return;
+
+            const container = document.getElementById('agreementsList');
+            if(container.querySelector('.text-center')) container.innerHTML = '';
+
+            const card = document.createElement('div');
+            card.className = "bg-white rounded-xl shadow-lg border border-gray-100 card-hover print-break overflow-hidden flex flex-col";
+            card.innerHTML = `<div class="flex-1"><div class="bg-rose-50 p-4 border-b border-rose-100"><span class="text-[10px] font-bold text-rose-600 uppercase tracking-widest block mb-1">Decíamos</span><h3 class="text-lg font-bold text-gray-800 italic">"${conflict}"</h3></div><div class="p-4 bg-white relative"><div class="absolute -top-3 left-6 bg-white border border-rose-100 rounded-full px-2 py-0.5 text-[10px] text-gray-400"><i class="fas fa-arrow-down"></i> Entendíamos...</div><p class="text-sm text-gray-600 mt-2">"${reality}"</p></div></div><div class="bg-emerald-600 p-4 text-white relative mt-auto"><div class="absolute -top-3 left-6 bg-emerald-500 border border-emerald-400 rounded-full px-2 py-0.5 text-[10px] text-white shadow-sm"><i class="fas fa-check"></i> Acordamos (Para Qué)...</div><p class="text-base font-bold mt-1 text-center">"${agreement}"</p></div>`;
+            container.insertBefore(card, container.firstChild);
+            document.getElementById('freeForm').reset();
+        }
+
+        // --- Utilidades UI ---
+        function switchView(viewName) {
+            ['matrix', 'radar', 'individual', 'free'].forEach(v => {
+                document.getElementById(`view-${v}`).classList.add('hidden');
+                document.getElementById(`btn-${v}`).className = "nav-btn bg-slate-800 text-gray-300 hover:bg-slate-700 px-3 py-1.5 rounded text-sm font-medium transition border border-slate-700";
+            });
+            document.getElementById(`view-${viewName}`).classList.remove('hidden');
+            const active = document.getElementById(`btn-${viewName}`);
+            active.className = "nav-btn bg-slate-700 text-white hover:bg-slate-600 px-3 py-1.5 rounded text-sm font-medium transition border border-slate-600 ring-2 ring-teal-500";
+        }
+        
+        window.onload = initCharts;
+    </script>
+</body>
+</html>
