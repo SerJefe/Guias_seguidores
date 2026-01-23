@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plantilla Maestra de Intervención - SER.JEFE V3</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-blue: #003f6b;
+            --brand-gold: #e0c05a;
+            --brand-gold-light: #fdfbf2;
+            --light-gray: #f8fafc;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-gray);
+            color: #334155;
+        }
+
+        h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; }
+
+        /* Branding Utility Classes */
+        .bg-brand-blue { background-color: var(--brand-blue); }
+        .text-brand-blue { color: var(--brand-blue); }
+        .border-brand-blue { border-color: var(--brand-blue); }
+        .bg-brand-gold { background-color: var(--brand-gold); }
+        .text-brand-gold { color: var(--brand-gold); }
+        
+        /* Editable Areas Styling */
+        [contenteditable="true"] {
+            border: 1px dashed transparent;
+            padding: 2px 5px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        [contenteditable="true"]:hover {
+            border-color: #cbd5e1;
+            background-color: rgba(255,255,255,0.5);
+            cursor: text;
+        }
+        [contenteditable="true"]:focus {
+            outline: none;
+            border-color: var(--brand-gold);
+            background-color: white;
+            box-shadow: 0 0 0 2px rgba(224, 192, 90, 0.2);
+        }
+
+        /* Consultant Private Note */
+        .consultant-note {
+            background-color: #fffbeb; 
+            border-left: 4px solid var(--brand-gold);
+            font-style: italic;
+        }
+
+        /* Inputs & Textareas */
+        .clean-textarea {
+            width: 100%;
+            background: rgba(255,255,255,0.6);
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px;
+            transition: all 0.3s;
+        }
+        .clean-textarea:focus {
+            background: white;
+            border-color: var(--brand-blue);
+            outline: none;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .clean-input {
+            width: 100%;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 8px;
+            background: rgba(255,255,255,0.8);
+        }
+
+        /* Tables */
+        .custom-table th {
+            background-color: var(--brand-blue);
+            color: white;
+            font-weight: 600;
+            padding: 12px;
+            text-align: left;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+        }
+        .custom-table td {
+            border: 1px solid #e2e8f0;
+            padding: 8px;
+            background-color: white;
+        }
+        .custom-table select, .custom-table input {
+            width: 100%;
+            border: none;
+            background: transparent;
+            padding: 4px;
+        }
+        .custom-table select:focus, .custom-table input:focus {
+            outline: 2px solid var(--brand-gold);
+            background: white;
+        }
+
+        /* Print Styles */
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white; }
+            .shadow-xl, .shadow-lg { box-shadow: none !important; border: 1px solid #eee; }
+            textarea { border: 1px solid #ccc; resize: none; }
+            select { appearance: none; border: none; }
+            [contenteditable="true"]:hover { border: none; background: none; }
+            .bg-gray-50, .bg-brand-gold-light { background-color: white !important; }
+        }
+    </style>
+</head>
+<body class="pb-20">
+
+    <!-- FORMULARIO PRINCIPAL -->
+    <form id="mainForm" action="https://formsubmit.co/sebastian.sanchez.docente@gmail.com" method="POST" enctype="multipart/form-data">
+        
+        <!-- Configuración FormSubmit -->
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_subject" id="emailSubject" value="Nueva Sesión SER.JEFE">
+        <!-- Inputs ocultos para capturar títulos editables -->
+        <input type="hidden" name="titulo_sesion" id="hidden_titulo_sesion">
+        <input type="hidden" name="objetivo_consultor" id="hidden_objetivo_consultor">
+
+        <!-- BARRA SUPERIOR: Contexto de la Sesión (Editable) -->
+        <header class="bg-brand-blue text-white sticky top-0 z-50 shadow-lg no-print">
+            <div class="container mx-auto px-6 py-4">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-layer-group text-brand-gold text-2xl"></i>
+                        <div>
+                            <h1 class="text-xl font-bold tracking-wider" contenteditable="true" id="editable_titulo_sesion">SESIÓN [X]: [TÍTULO DEL TEMA]</h1>
+                            <p class="text-xs text-brand-gold uppercase tracking-widest">Intervención Consultiva SER.JEFE</p>
+                        </div>
+                    </div>
+                    <!-- Objetivo del Consultor -->
+                    <div class="consultant-note text-gray-800 px-4 py-2 rounded text-sm w-full md:w-1/2 shadow-inner">
+                        <span class="text-brand-blue font-bold text-xs uppercase block mb-1">
+                            <i class="fas fa-user-tie mr-1"></i> Objetivo del Consultor (Interno):
+                        </span>
+                        <div contenteditable="true" id="editable_objetivo_consultor">
+                            [Escribe aquí TU objetivo para esta sesión]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="container mx-auto px-4 py-10 max-w-6xl space-y-12">
+
+            <!-- FASE 1: EL OBJETIVO DEL CLIENTE -->
+            <section class="bg-white rounded-2xl shadow-xl overflow-hidden border-t-8 border-brand-blue">
+                <div class="p-8 md:p-10">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="bg-brand-blue text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg">1</div>
+                        <h2 class="text-2xl md:text-3xl font-bold text-brand-blue w-full" contenteditable="true">
+                            Definición del Objetivo
+                        </h2>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <!-- Columna Izquierda: El Deseo -->
+                        <div class="bg-brand-gold-light p-6 rounded-xl border border-brand-gold/30">
+                            <label class="block text-brand-blue font-bold mb-3 uppercase text-sm" contenteditable="true">
+                                La Meta / El Deseo
+                            </label>
+                            <textarea name="Fase1_Meta_Deseo" class="clean-textarea h-40" placeholder=""></textarea>
+                        </div>
+                        <!-- Columna Derecha: El Indicador -->
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                            <label class="block text-gray-500 font-bold mb-3 uppercase text-sm" contenteditable="true">
+                                ¿Cómo se ve el éxito? (Evidencia)
+                            </label>
+                            <textarea name="Fase1_Evidencia_Exito" class="clean-textarea h-40" placeholder=""></textarea>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FASE 2: DINÁMICA DE SITUACIÓN ACTUAL (Diagnóstico Lista) -->
+            <section class="bg-white rounded-2xl shadow-lg border border-gray-200">
+                <div class="p-8">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="bg-brand-blue text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg">2</div>
+                        <h2 class="text-2xl font-bold text-brand-blue w-full" contenteditable="true">
+                            Análisis de la Situación Actual
+                        </h2>
+                    </div>
+                    
+                    <p class="text-gray-600 mb-8 italic text-sm" contenteditable="true">
+                        <!-- Campo vacío intencional para instrucción libre -->
+                    </p>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full custom-table" id="situationTable">
+                            <thead>
+                                <tr>
+                                    <th class="w-1/4 rounded-tl-lg">Variable a Analizar</th>
+                                    <th class="w-24 text-center">Nivel (1-10)</th>
+                                    <th class="rounded-tr-lg">Observaciones / Hechos</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" name="Fase2_Variable[]" placeholder="Ej: Comunicación interna" class="font-bold text-brand-blue"></td>
+                                    <td><input type="number" name="Fase2_Nivel[]" min="1" max="10" class="text-center font-bold"></td>
+                                    <td><input type="text" name="Fase2_Observacion[]" placeholder="Detalles..."></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" name="Fase2_Variable[]" placeholder="Ej: Cumplimiento KPIs" class="font-bold text-brand-blue"></td>
+                                    <td><input type="number" name="Fase2_Nivel[]" min="1" max="10" class="text-center font-bold"></td>
+                                    <td><input type="text" name="Fase2_Observacion[]" placeholder="Detalles..."></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <button type="button" onclick="addRow('situationTable')" class="mt-2 text-xs text-brand-blue font-bold hover:underline no-print">
+                            <i class="fas fa-plus-circle"></i> Agregar Variable
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FASE 3: MATRIZ DE DIFICULTADES -->
+            <section class="relative">
+                 <div class="bg-white rounded-2xl shadow-lg border-l-8 border-red-400 p-8">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="bg-red-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg">3</div>
+                        <h2 class="text-2xl font-bold text-gray-800 w-full" contenteditable="true">
+                            Matriz de Dificultades y Barreras
+                        </h2>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- 1. Creencias -->
+                        <div class="bg-red-50 p-4 rounded-lg border border-red-100">
+                            <div class="flex items-center gap-2 mb-2 text-red-700">
+                                <i class="fas fa-brain"></i>
+                                <h4 class="font-bold text-sm uppercase">Cosas que creo que van a bloquear</h4>
+                            </div>
+                            <textarea name="Fase3_Creencias" class="w-full bg-white/50 border border-red-200 rounded p-2 text-sm focus:outline-none focus:bg-white h-24"></textarea>
+                        </div>
+                        
+                        <!-- 2. Elementos Externos -->
+                        <div class="bg-red-50 p-4 rounded-lg border border-red-100">
+                            <div class="flex items-center gap-2 mb-2 text-red-700">
+                                <i class="fas fa-globe"></i>
+                                <h4 class="font-bold text-sm uppercase">Elementos externos que bloquean</h4>
+                            </div>
+                            <textarea name="Fase3_Externos" class="w-full bg-white/50 border border-red-200 rounded p-2 text-sm focus:outline-none focus:bg-white h-24"></textarea>
+                        </div>
+
+                         <!-- 3. Estilo Empresa -->
+                         <div class="bg-red-50 p-4 rounded-lg border border-red-100">
+                            <div class="flex items-center gap-2 mb-2 text-red-700">
+                                <i class="fas fa-building"></i>
+                                <h4 class="font-bold text-sm uppercase">Aspectos de la empresa (Cultura)</h4>
+                            </div>
+                            <textarea name="Fase3_Cultura" class="w-full bg-white/50 border border-red-200 rounded p-2 text-sm focus:outline-none focus:bg-white h-24"></textarea>
+                        </div>
+
+                         <!-- 4. Elementos Míos -->
+                         <div class="bg-red-50 p-4 rounded-lg border border-red-100">
+                            <div class="flex items-center gap-2 mb-2 text-red-700">
+                                <i class="fas fa-user-shield"></i>
+                                <h4 class="font-bold text-sm uppercase">Elementos míos (Auto-bloqueo)</h4>
+                            </div>
+                            <textarea name="Fase3_AutoBloqueo" class="w-full bg-white/50 border border-red-200 rounded p-2 text-sm focus:outline-none focus:bg-white h-24"></textarea>
+                        </div>
+
+                         <!-- 5. Otros Bloqueadores -->
+                         <div class="bg-red-50 p-4 rounded-lg border border-red-100 md:col-span-2 lg:col-span-1">
+                            <div class="flex items-center gap-2 mb-2 text-red-700">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <h4 class="font-bold text-sm uppercase">Otros bloqueadores</h4>
+                            </div>
+                            <textarea name="Fase3_Otros" class="w-full bg-white/50 border border-red-200 rounded p-2 text-sm focus:outline-none focus:bg-white h-24"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FASE 4: DISEÑO DE ALTERNATIVAS (Dropdown Ampliado) -->
+            <section class="bg-white rounded-2xl shadow-xl p-8 md:p-10 border-t-4 border-brand-gold">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="bg-brand-gold text-brand-blue w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg">4</div>
+                    <h2 class="text-2xl font-bold text-brand-blue w-full" contenteditable="true">
+                        Diseño de Alternativas
+                    </h2>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full custom-table" id="alternativesTable">
+                        <thead>
+                            <tr>
+                                <th class="w-1/4 rounded-tl-lg">Tipo de Elemento</th>
+                                <th class="rounded-tr-lg">Descripción de la Alternativa</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <select name="Fase4_Tipo[]" class="font-semibold text-brand-blue">
+                                        <option value="" disabled selected>Seleccionar...</option>
+                                        <option value="Innovación">Innovación</option>
+                                        <option value="Tecnología">Tecnología</option>
+                                        <option value="Personas">Personas</option>
+                                        <option value="Roles">Roles</option>
+                                        <option value="Procesos">Procesos</option>
+                                        <option value="Servicios">Servicios</option>
+                                        <option value="Formación">Formación</option>
+                                        <option value="Estructura">Estructura</option>
+                                        <option value="Estrategia">Estrategia</option>
+                                        <option value="Metodos">Métodos</option>
+                                        <option value="Otros">Otros</option>
+                                    </select>
+                                </td>
+                                <td><input type="text" name="Fase4_Descripcion[]" placeholder="Detalle la alternativa..."></td>
+                            </tr>
+                            <!-- Fila 2 por defecto -->
+                            <tr>
+                                <td>
+                                    <select name="Fase4_Tipo[]" class="font-semibold text-brand-blue">
+                                        <option value="" disabled selected>Seleccionar...</option>
+                                        <option value="Innovación">Innovación</option>
+                                        <option value="Tecnología">Tecnología</option>
+                                        <option value="Personas">Personas</option>
+                                        <option value="Roles">Roles</option>
+                                        <option value="Procesos">Procesos</option>
+                                        <option value="Servicios">Servicios</option>
+                                        <option value="Formación">Formación</option>
+                                        <option value="Estructura">Estructura</option>
+                                        <option value="Estrategia">Estrategia</option>
+                                        <option value="Metodos">Métodos</option>
+                                        <option value="Otros">Otros</option>
+                                    </select>
+                                </td>
+                                <td><input type="text" name="Fase4_Descripcion[]" placeholder="Detalle la alternativa..."></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button type="button" onclick="addRow('alternativesTable')" class="mt-2 text-xs text-brand-blue font-bold hover:underline no-print">
+                        <i class="fas fa-plus-circle"></i> Agregar fila
+                    </button>
+                </div>
+            </section>
+
+            <!-- FASE 5: PLAN DE ACCIÓN (Jerárquico por Objetivos) -->
+            <section class="bg-brand-blue text-white rounded-2xl shadow-2xl overflow-hidden relative">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-brand-gold opacity-10 rounded-full -mr-20 -mt-20 pointer-events-none"></div>
+                
+                <div class="p-8 md:p-12 relative z-10">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="bg-brand-gold text-brand-blue w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg">5</div>
+                        <h2 class="text-2xl font-bold text-brand-gold w-full" contenteditable="true">
+                            Plan de Acción (Ejecución)
+                        </h2>
+                    </div>
+
+                    <div id="objectivesContainer" class="space-y-8">
+                        <!-- Objetivo 1 (Plantilla Base) -->
+                        <div class="objective-block bg-white/10 rounded-xl p-6 border border-white/20">
+                            <div class="grid md:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label class="block text-brand-gold text-xs font-bold uppercase mb-1">Objetivo 1</label>
+                                    <input type="text" name="Objetivo1_Titulo" class="w-full bg-white text-brand-blue font-bold rounded p-2" placeholder="Definir el objetivo principal...">
+                                </div>
+                                <div>
+                                    <label class="block text-brand-gold text-xs font-bold uppercase mb-1">Indicador de Logro</label>
+                                    <input type="text" name="Objetivo1_Indicador" class="w-full bg-black/20 text-white rounded p-2 border border-white/30" placeholder="¿Cómo lo medimos?">
+                                </div>
+                            </div>
+
+                            <!-- Tabla de Tareas para este Objetivo -->
+                            <div class="ml-4 pl-4 border-l-2 border-brand-gold">
+                                <div class="overflow-x-auto bg-white rounded-lg p-1 text-gray-800 shadow-lg">
+                                    <table class="w-full custom-table" id="tasksTable_1">
+                                        <thead>
+                                            <tr class="text-brand-blue text-xs">
+                                                <th class="w-1/4">Tareas (Qué)</th>
+                                                <th class="w-1/6">Recursos</th>
+                                                <th class="w-1/6">Tiempo</th>
+                                                <th class="w-1/6">Meta</th>
+                                                <th class="w-1/6">Entregable</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><input type="text" name="Obj1_Tarea[]" placeholder="Acción..."></td>
+                                                <td><input type="text" name="Obj1_Recurso[]" placeholder="..."></td>
+                                                <td><input type="text" name="Obj1_Tiempo[]" placeholder="..."></td>
+                                                <td><input type="text" name="Obj1_Meta[]" placeholder="..."></td>
+                                                <td><input type="text" name="Obj1_Entregable[]" placeholder="..."></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <button type="button" onclick="addRow('tasksTable_1')" class="m-2 text-xs text-brand-blue font-bold hover:underline no-print">
+                                        <i class="fas fa-plus-circle"></i> Agregar tarea
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 text-center">
+                         <button type="button" onclick="addObjectiveBlock()" class="bg-brand-gold/20 hover:bg-brand-gold text-white hover:text-brand-blue border border-brand-gold font-bold py-2 px-6 rounded-full transition no-print">
+                            <i class="fas fa-layer-group mr-2"></i> Agregar Nuevo Objetivo
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tool Bar & Submit -->
+            <div class="fixed bottom-6 right-6 flex flex-col gap-3 no-print z-50">
+                <button type="submit" onclick="prepareSubmission()" class="bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-6 rounded-full shadow-lg transition transform hover:scale-105 flex items-center gap-2" title="Enviar al Correo">
+                    <i class="fas fa-paper-plane"></i> Guardar y Enviar
+                </button>
+                <button type="button" onclick="window.print()" class="bg-brand-gold hover:bg-yellow-400 text-brand-blue font-bold py-3 px-4 rounded-full shadow-lg transition transform hover:scale-105 flex items-center gap-2" title="Imprimir PDF">
+                    <i class="fas fa-print"></i>
+                </button>
+            </div>
+
+        </main>
+    </form>
+
+    <script>
+        let objectiveCount = 1;
+
+        function addRow(tableId) {
+            const table = document.getElementById(tableId).getElementsByTagName('tbody')[0];
+            const newRow = table.rows[0].cloneNode(true);
+            
+            // Limpiar inputs
+            const inputs = newRow.getElementsByTagName('input');
+            for (let i = 0; i < inputs.length; i++) {
+                inputs[i].value = '';
+            }
+            // Resetear selects
+            const selects = newRow.getElementsByTagName('select');
+            for (let i = 0; i < selects.length; i++) {
+                selects[i].selectedIndex = 0;
+            }
+
+            table.appendChild(newRow);
+        }
+
+        function addObjectiveBlock() {
+            objectiveCount++;
+            const container = document.getElementById('objectivesContainer');
+            
+            // Crear el bloque HTML dinámicamente
+            const newBlock = document.createElement('div');
+            newBlock.className = 'objective-block bg-white/10 rounded-xl p-6 border border-white/20 mt-6';
+            newBlock.innerHTML = `
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-brand-gold text-xs font-bold uppercase mb-1">Objetivo ${objectiveCount}</label>
+                        <input type="text" name="Objetivo${objectiveCount}_Titulo" class="w-full bg-white text-brand-blue font-bold rounded p-2" placeholder="Definir objetivo...">
+                    </div>
+                    <div>
+                        <label class="block text-brand-gold text-xs font-bold uppercase mb-1">Indicador de Logro</label>
+                        <input type="text" name="Objetivo${objectiveCount}_Indicador" class="w-full bg-black/20 text-white rounded p-2 border border-white/30" placeholder="KPI...">
+                    </div>
+                </div>
+                <div class="ml-4 pl-4 border-l-2 border-brand-gold">
+                    <div class="overflow-x-auto bg-white rounded-lg p-1 text-gray-800 shadow-lg">
+                        <table class="w-full custom-table" id="tasksTable_${objectiveCount}">
+                            <thead>
+                                <tr class="text-brand-blue text-xs">
+                                    <th class="w-1/4">Tareas (Qué)</th>
+                                    <th class="w-1/6">Recursos</th>
+                                    <th class="w-1/6">Tiempo</th>
+                                    <th class="w-1/6">Meta</th>
+                                    <th class="w-1/6">Entregable</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" name="Obj${objectiveCount}_Tarea[]" placeholder="..."></td>
+                                    <td><input type="text" name="Obj${objectiveCount}_Recurso[]" placeholder="..."></td>
+                                    <td><input type="text" name="Obj${objectiveCount}_Tiempo[]" placeholder="..."></td>
+                                    <td><input type="text" name="Obj${objectiveCount}_Meta[]" placeholder="..."></td>
+                                    <td><input type="text" name="Obj${objectiveCount}_Entregable[]" placeholder="..."></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <button type="button" onclick="addRow('tasksTable_${objectiveCount}')" class="m-2 text-xs text-brand-blue font-bold hover:underline no-print">
+                            <i class="fas fa-plus-circle"></i> Agregar tarea
+                        </button>
+                    </div>
+                </div>
+            `;
+            container.appendChild(newBlock);
+        }
+
+        function prepareSubmission() {
+            // Capturar el texto de los títulos editables y ponerlos en inputs ocultos
+            const tituloSesion = document.getElementById('editable_titulo_sesion').innerText;
+            const objetivoConsultor = document.getElementById('editable_objetivo_consultor').innerText;
+            
+            document.getElementById('hidden_titulo_sesion').value = tituloSesion;
+            document.getElementById('hidden_objetivo_consultor').value = objetivoConsultor;
+            
+            // Actualizar el asunto del correo dinámicamente
+            document.getElementById('emailSubject').value = "Reporte: " + tituloSesion;
+
+            // El formulario se enviará normalmente después de esto
+        }
+    </script>
+</body>
+</html>
