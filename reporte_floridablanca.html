@@ -1,0 +1,322 @@
+import React, { useState } from 'react';
+import { 
+  AlertTriangle, 
+  CheckCircle2, 
+  Mail, 
+  MessageSquare, 
+  FileText, 
+  Users, 
+  Settings, 
+  ShieldAlert,
+  ChevronDown,
+  ChevronUp,
+  Clock,
+  TrendingUp,
+  Hammer,
+  Truck,
+  Ban,
+  UserCheck,
+  ExternalLink
+} from 'lucide-react';
+
+const App = () => {
+  const [activeAccordion, setActiveAccordion] = useState(null);
+
+  const toggleAccordion = (index) => {
+    setActiveAccordion(activeAccordion === index ? null : index);
+  };
+
+  const kpis = [
+    { label: 'Vigencia Contrato', value: 'SEP 2026', trend: '+6 Meses', sub: 'Extensión Cláusula' },
+    { label: 'Rendimiento', value: '10-12m', trend: 'Manual', sub: 'Metros / Día' },
+    { label: 'Proyecto Red', value: '3.5 KM', trend: 'En curso', sub: 'Excavación 2026' },
+    { label: 'Dirección', value: 'TRANSICIÓN', trend: 'Urgente', sub: 'Nuevo Liderazgo' },
+  ];
+
+  const radarData = [
+    { audience: 'Personal Estratégico', send: true, purpose: 'Definir rumbo por extensión', sensitivity: 'Alta', risk: 'Fuga de talento' },
+    { audience: 'Abogados / Legal', send: true, purpose: 'Validar extensión y arriendos', sensitivity: 'Alta', risk: 'Contingencia legal' },
+    { audience: 'Clientes (Metrogas)', send: true, purpose: 'Coordinar ventas y permisos', sensitivity: 'Media', risk: 'Retraso proyecto' },
+    { audience: 'Proveedores clave', send: true, purpose: 'Gestionar anticipos', sensitivity: 'Alta', risk: 'Cese de suministro' },
+    { audience: 'Personal Operativo', send: true, purpose: 'Alineación rendimientos', sensitivity: 'Media', risk: 'Desmotivación' },
+    { audience: 'Bancos / Finanzas', send: false, purpose: 'No se reportan cambios', sensitivity: 'Baja', risk: 'Alertas innecesarias' },
+  ];
+
+  const messages = [
+    {
+      id: 0,
+      target: "Personal Estratégico",
+      type: "Formal - Sesión Privada",
+      status: "Confidencial",
+      subject: "Definición Estratégica: Extensión Florida Blanca y Liderazgo",
+      content: "Se identificó una cláusula de extensión de vigencia por seis (6) meses (Finalización: Septiembre 2026). Dado que la dirección actual no podrá continuar, se requiere definir la nueva estructura directiva de manera urgente.",
+      cta: "Reunión de 15 min para validar transición de mando.",
+      color: "#292D63"
+    },
+    {
+      id: 1,
+      target: "Abogados / Área Legal",
+      type: "Correo Formal",
+      status: "Urgente",
+      subject: "Validación Legal: Cláusula de Extensión y Contratos",
+      content: "Solicitamos apoyo para validar formalmente la extensión de 6 meses (Sept 2026). Se requiere revisión de términos de arriendo y subcontratos vigentes para asegurar alineación con la nueva fecha.",
+      cta: "Confirmar validez de cláusula según acta del 2 de febrero.",
+      color: "#1D70B7"
+    },
+    {
+      id: 2,
+      target: "Personal Operativo",
+      type: "WhatsApp / Charla Técnica",
+      status: "Interna",
+      subject: "Alineación Proyecto 3.5 km: Rendimientos y Materiales",
+      content: "Equipo: Seguimos con excavación manual (10-12m/día) mientras validamos maquinaria. Reportar falta de material (arena/triturado) a Kimberly M. de inmediato. Se habilitó caja menor para compras urgentes.",
+      cta: "Reportar stock de material al cierre de hoy.",
+      color: "#F8B133"
+    },
+    {
+      id: 3,
+      target: "Proveedores (Combustible/Agua)",
+      type: "Llamada / WhatsApp",
+      status: "Gestión Administrativa",
+      subject: "Seguimiento a Gestión de Anticipos",
+      content: "Estamos agilizando las validaciones para normalizar los flujos de pago. Agradecemos su disposición para mantener la continuidad del servicio mientras completamos el trámite administrativo.",
+      cta: "Confirmar recepción de facturas/cotizaciones recientes.",
+      color: "#1D70B7"
+    }
+  ];
+
+  return (
+    <div className="min-h-screen bg-[#f8f9fa] font-sans text-[#333333] p-4 md:p-8">
+      {/* Header */}
+      <div className="max-w-7xl mx-auto mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4 border-b-4 border-[#F8B133] pb-4">
+        <div>
+          <h1 className="text-4xl font-extrabold text-[#292D63] tracking-tighter">CONDUGAS</h1>
+          <p className="text-[#1D70B7] font-semibold text-lg uppercase tracking-wider">Contrato Florida Blanca • Reporte de Actividades</p>
+        </div>
+        <div className="text-right flex flex-col items-end">
+          <span className="bg-[#292D63] text-white px-4 py-1 rounded text-sm font-bold flex items-center gap-2">
+            <TrendingUp size={14} /> FEB 2026
+          </span>
+          <p className="text-[10px] text-gray-400 mt-1 uppercase font-bold tracking-widest">Proyecto 3.5 KM • Red Metrogas</p>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        {/* Main Content Area */}
+        <div className="lg:col-span-2 space-y-8">
+          
+          {/* KPI Dashboard Cards */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {kpis.map((kpi, idx) => (
+              <div key={idx} className="bg-white p-5 rounded-lg shadow-sm border-l-[5px] border-[#1D70B7] hover:shadow-md transition-all">
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{kpi.label}</p>
+                <p className="text-2xl font-black text-[#292D63] my-1">{kpi.value}</p>
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] px-2 py-0.5 rounded-full font-bold bg-[#F8B133] text-[#292D63]">
+                    {kpi.trend}
+                  </span>
+                  <span className="text-[9px] text-gray-500 font-medium italic">{kpi.sub}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Radar Section */}
+          <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+            <div className="p-4 border-b border-[#F8B133] bg-white">
+              <h2 className="text-lg font-bold text-[#292D63] flex items-center gap-2">
+                <Users size={20} className="text-[#1D70B7]" />
+                RADAR ESTRATÉGICO DE COMUNICACIONES
+              </h2>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-sm">
+                <thead className="bg-[#292D63] text-white">
+                  <tr>
+                    <th className="p-4 font-bold uppercase text-[11px] tracking-wider">Audiencia</th>
+                    <th className="p-4 font-bold uppercase text-[11px] tracking-wider text-center">Estado</th>
+                    <th className="p-4 font-bold uppercase text-[11px] tracking-wider">Sensibilidad</th>
+                    <th className="p-4 font-bold uppercase text-[11px] tracking-wider">Riesgo Crítico</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {radarData.map((row, i) => (
+                    <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50/40'}>
+                      <td className="p-4 font-bold text-[#1D70B7]">{row.audience}</td>
+                      <td className="p-4 text-center">
+                        {row.send ? (
+                          <span className="text-[#28a745] font-black text-[10px] border border-[#28a745] px-2 py-0.5 rounded">ENVIAR</span>
+                        ) : (
+                          <span className="text-gray-300 font-black text-[10px] border border-gray-200 px-2 py-0.5 rounded">OMITIR</span>
+                        )}
+                      </td>
+                      <td className="p-4">
+                        <span className={`px-2 py-1 rounded-full text-[10px] font-bold ${
+                          row.sensitivity === 'Alta' ? 'bg-red-100 text-red-700' : 'bg-blue-50 text-blue-700'
+                        }`}>
+                          {row.sensitivity}
+                        </span>
+                      </td>
+                      <td className="p-4">
+                        <div className="flex items-center gap-2 text-[11px] text-red-500 font-semibold italic">
+                          <AlertTriangle size={12} />
+                          {row.risk}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Messaging Accordion */}
+          <div className="space-y-4">
+            <h2 className="text-lg font-bold text-[#292D63] border-b-2 border-[#F8B133] pb-1 w-fit">
+              PROPUESTAS DE MENSAJERÍA
+            </h2>
+            {messages.map((msg, idx) => (
+              <div key={idx} className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                <button 
+                  onClick={() => toggleAccordion(idx)}
+                  className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 transition-colors"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="p-3 rounded-full bg-[#f8f9fa]">
+                      {idx === 2 ? <Hammer size={18} className="text-[#F8B133]" /> : <Mail size={18} style={{color: msg.color}} />}
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <p className="text-[10px] font-black text-[#1D70B7] uppercase tracking-widest">{msg.target}</p>
+                        <span className="text-[9px] bg-gray-100 text-gray-500 px-1 rounded font-bold uppercase">{msg.type}</span>
+                      </div>
+                      <h3 className="font-bold text-[#292D63]">{msg.subject}</h3>
+                    </div>
+                  </div>
+                  {activeAccordion === idx ? <ChevronUp size={20} className="text-gray-300" /> : <ChevronDown size={20} className="text-gray-300" />}
+                </button>
+                
+                {activeAccordion === idx && (
+                  <div className="p-6 bg-gray-50/50 border-t border-gray-100">
+                    <div className="bg-white p-5 rounded-lg border-l-4 border-[#292D63] shadow-sm text-sm leading-relaxed mb-4 text-gray-700 font-medium italic">
+                      "{msg.content}"
+                    </div>
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                      <div className="flex items-center gap-2 text-[#28a745] font-black text-[11px] uppercase tracking-tighter">
+                        <UserCheck size={16} />
+                        CTA: {msg.cta}
+                      </div>
+                      <div className="flex gap-2">
+                        <button className="bg-[#292D63] text-white px-4 py-2 rounded font-bold text-[10px] hover:bg-[#1D70B7] transition-colors uppercase tracking-widest">
+                          COPIAR PARA ENVÍO
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Sidebar: Validation & Contingency */}
+        <div className="space-y-6">
+          
+          {/* Checklist */}
+          <div className="bg-white rounded-lg shadow-sm p-6 border-t-4 border-[#F8B133]">
+            <h2 className="font-bold text-[#292D63] mb-6 flex items-center gap-2 text-sm uppercase">
+              <ShieldAlert size={18} className="text-[#1D70B7]" />
+              VALIDACIONES OBLIGATORIAS
+            </h2>
+            <div className="space-y-6">
+              <div className="flex gap-4 items-start">
+                <div className="p-1 bg-red-100 rounded text-red-600"><CheckCircle2 size={16} /></div>
+                <div>
+                  <p className="text-xs font-bold text-gray-800">Validación Legal</p>
+                  <p className="text-[10px] text-gray-400 leading-snug">Confirmar vinculación de extensión sin Otrosí.</p>
+                </div>
+              </div>
+              <div className="flex gap-4 items-start">
+                <div className="p-1 bg-yellow-100 rounded text-yellow-600"><Clock size={16} /></div>
+                <div>
+                  <p className="text-xs font-bold text-gray-800">Fechas Arriendos</p>
+                  <p className="text-[10px] text-gray-400 leading-snug">PENDIENTE: Fecha exacta vencimiento contratos.</p>
+                </div>
+              </div>
+              <div className="flex gap-4 items-start">
+                <div className="p-1 bg-blue-100 rounded text-blue-600"><UserCheck size={16} /></div>
+                <div>
+                  <p className="text-xs font-bold text-gray-800">Aval Juan Guillermo Pérez</p>
+                  <p className="text-[10px] text-gray-400 leading-snug">Aprobar comunicación sobre cambio de dirección.</p>
+                </div>
+              </div>
+              <div className="flex gap-4 items-start">
+                <div className="p-1 bg-gray-100 rounded text-gray-400"><FileText size={16} /></div>
+                <div>
+                  <p className="text-xs font-bold text-gray-800">Inventario Sergio Céspedes</p>
+                  <p className="text-[10px] text-gray-400 leading-snug">Adjuntar reporte físico antes de conciliar compras.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Contingency Section */}
+          <div className="bg-red-50 rounded-lg p-5 border-2 border-red-100">
+            <h3 className="text-red-700 font-black text-[10px] uppercase flex items-center gap-2 mb-3 tracking-widest">
+              <Ban size={16} />
+              NO ENVIAR: Metrogas / Bancos
+            </h3>
+            <p className="text-[11px] text-red-800 leading-tight mb-4 font-medium">
+              Alinear primero la dirección estratégica antes de presentar el panorama 2026. Resolver flujo de materiales vía caja menor internamente.
+            </p>
+            <div className="bg-white/90 p-3 rounded border border-red-200 shadow-sm">
+              <p className="text-[9px] font-black text-gray-400 uppercase mb-1">Guion de contingencia:</p>
+              <p className="text-[10px] text-gray-600 italic leading-relaxed">
+                "Estamos finalizando la planeación operativa tras el hallazgo de la extensión contractual..."
+              </p>
+            </div>
+          </div>
+
+          {/* Tools & Links */}
+          <div className="bg-[#292D63] rounded-lg p-6 text-white shadow-xl">
+            <h3 className="font-bold text-xs mb-4 uppercase tracking-[0.2em] flex items-center gap-2">
+              <Settings size={14} className="text-[#F8B133]" />
+              ACCIONES DE APOYO
+            </h3>
+            <div className="space-y-3">
+              <button className="w-full flex items-center justify-between bg-white/10 hover:bg-white/20 p-3 rounded text-[10px] font-bold transition-all border border-white/5">
+                Escribir Correo Compras (Anticipos)
+                <ExternalLink size={14} />
+              </button>
+              <button className="w-full flex items-center justify-between bg-white/10 hover:bg-white/20 p-3 rounded text-[10px] font-bold transition-all border border-white/5">
+                Ver Cláusula Extensión (6 meses)
+                <FileText size={14} />
+              </button>
+              <button className="w-full bg-[#F8B133] text-[#292D63] p-3 rounded font-black text-xs uppercase hover:bg-white transition-all shadow-lg mt-4 flex items-center justify-center gap-2">
+                <Truck size={14} />
+                Gestionar Suministros
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      {/* Footer Branding */}
+      <div className="max-w-7xl mx-auto mt-12 pt-6 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="flex items-center gap-4 opacity-30">
+          <p className="text-[11px] font-black tracking-[.4em] text-[#292D63]">CONDUGAS</p>
+          <div className="h-4 w-px bg-gray-400"></div>
+          <p className="text-[11px] font-black tracking-[.4em] text-[#1D70B7]">FLORIDA BLANCA</p>
+        </div>
+        <div className="flex items-center gap-2 text-gray-400 text-[9px] uppercase font-bold tracking-widest">
+          <Clock size={10} />
+          Última Actualización: 02 FEB 2026
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default App;
