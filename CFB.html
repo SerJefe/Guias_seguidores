@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONDUGAS - Reporte Florida Blanca</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; color: #333; }
+        .condugas-blue { color: #1D70B7; }
+        .condugas-dark { color: #292D63; }
+        .condugas-yellow-bg { background-color: #F8B133; }
+        .condugas-border-yellow { border-color: #F8B133; }
+        .card-shadow { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+        .accordion-content.active { max-height: 500px; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <!-- HEADER -->
+    <header class="max-w-7xl mx-auto mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4 border-b-4 condugas-border-yellow pb-4">
+        <div>
+            <h1 class="text-4xl font-extrabold condugas-dark tracking-tighter">CONDUGAS</h1>
+            <p class="condugas-blue font-semibold text-lg uppercase tracking-wider">Contrato Florida Blanca • Reporte de Actividades</p>
+        </div>
+        <div class="text-right flex flex-col items-end">
+            <span class="bg-[#292D63] text-white px-4 py-1 rounded text-sm font-bold flex items-center gap-2">
+                <i class="fas fa-chart-line"></i> FEB 2026
+            </span>
+            <p class="text-[10px] text-gray-400 mt-1 uppercase font-bold tracking-widest">Proyecto 3.5 KM • Red Metrogas</p>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- COLUMNA PRINCIPAL -->
+        <div class="lg:col-span-2 space-y-8">
+            
+            <!-- KPIs -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <!-- KPI 1 -->
+                <div class="bg-white p-5 rounded-lg card-shadow border-l-[5px] border-[#1D70B7]">
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Vigencia Contrato</p>
+                    <p class="text-2xl font-black condugas-dark my-1">SEP 2026</p>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] px-2 py-0.5 rounded-full font-bold condugas-yellow-bg condugas-dark">+6 Meses</span>
+                        <span class="text-[9px] text-gray-500 font-medium italic">Extensión</span>
+                    </div>
+                </div>
+                <!-- KPI 2 -->
+                <div class="bg-white p-5 rounded-lg card-shadow border-l-[5px] border-[#1D70B7]">
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Rendimiento</p>
+                    <p class="text-2xl font-black condugas-dark my-1">10-12m</p>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] px-2 py-0.5 rounded-full font-bold condugas-yellow-bg condugas-dark">Manual</span>
+                        <span class="text-[9px] text-gray-500 font-medium italic">Metros / Día</span>
+                    </div>
+                </div>
+                <!-- KPI 3 -->
+                <div class="bg-white p-5 rounded-lg card-shadow border-l-[5px] border-[#1D70B7]">
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Proyecto Red</p>
+                    <p class="text-2xl font-black condugas-dark my-1">3.5 KM</p>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] px-2 py-0.5 rounded-full font-bold condugas-yellow-bg condugas-dark">En curso</span>
+                        <span class="text-[9px] text-gray-500 font-medium italic">Excavación</span>
+                    </div>
+                </div>
+                <!-- KPI 4 -->
+                <div class="bg-white p-5 rounded-lg card-shadow border-l-[5px] border-[#1D70B7]">
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Dirección</p>
+                    <p class="text-2xl font-black condugas-dark my-1">TRANSICIÓN</p>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] px-2 py-0.5 rounded-full font-bold condugas-yellow-bg condugas-dark">Urgente</span>
+                        <span class="text-[9px] text-gray-500 font-medium italic">Liderazgo</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TABLA RADAR -->
+            <div class="bg-white rounded-lg card-shadow border border-gray-100 overflow-hidden">
+                <div class="p-4 border-b condugas-border-yellow bg-white">
+                    <h2 class="text-lg font-bold condugas-dark flex items-center gap-2">
+                        <i class="fas fa-users condugas-blue"></i>
+                        RADAR ESTRATÉGICO DE COMUNICACIONES
+                    </h2>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-[#292D63] text-white">
+                            <tr>
+                                <th class="p-4 font-bold uppercase text-[11px] tracking-wider">Audiencia</th>
+                                <th class="p-4 font-bold uppercase text-[11px] tracking-wider text-center">Estado</th>
+                                <th class="p-4 font-bold uppercase text-[11px] tracking-wider">Sensibilidad</th>
+                                <th class="p-4 font-bold uppercase text-[11px] tracking-wider">Riesgo Crítico</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            <tr class="bg-white">
+                                <td class="p-4 font-bold condugas-blue">Personal Estratégico</td>
+                                <td class="p-4 text-center"><span class="text-[#28a745] font-black text-[10px] border border-[#28a745] px-2 py-0.5 rounded">ENVIAR</span></td>
+                                <td class="p-4"><span class="px-2 py-1 rounded-full text-[10px] font-bold bg-red-100 text-red-700">Alta</span></td>
+                                <td class="p-4"><div class="flex items-center gap-2 text-[11px] text-red-500 font-semibold italic"><i class="fas fa-exclamation-triangle"></i> Fuga de talento</div></td>
+                            </tr>
+                            <tr class="bg-gray-50/40">
+                                <td class="p-4 font-bold condugas-blue">Abogados / Legal</td>
+                                <td class="p-4 text-center"><span class="text-[#28a745] font-black text-[10px] border border-[#28a745] px-2 py-0.5 rounded">ENVIAR</span></td>
+                                <td class="p-4"><span class="px-2 py-1 rounded-full text-[10px] font-bold bg-red-100 text-red-700">Alta</span></td>
+                                <td class="p-4"><div class="flex items-center gap-2 text-[11px] text-red-500 font-semibold italic"><i class="fas fa-exclamation-triangle"></i> Contingencia legal</div></td>
+                            </tr>
+                            <tr class="bg-white">
+                                <td class="p-4 font-bold condugas-blue">Clientes (Metrogas)</td>
+                                <td class="p-4 text-center"><span class="text-gray-300 font-black text-[10px] border border-gray-200 px-2 py-0.5 rounded">OMITIR</span></td>
+                                <td class="p-4"><span class="px-2 py-1 rounded-full text-[10px] font-bold bg-blue-50 text-blue-700">Media</span></td>
+                                <td class="p-4"><div class="flex items-center gap-2 text-[11px] text-red-500 font-semibold italic"><i class="fas fa-exclamation-triangle"></i> Retraso proyecto</div></td>
+                            </tr>
+                            <tr class="bg-gray-50/40">
+                                <td class="p-4 font-bold condugas-blue">Proveedores clave</td>
+                                <td class="p-4 text-center"><span class="text-[#28a745] font-black text-[10px] border border-[#28a745] px-2 py-0.5 rounded">ENVIAR</span></td>
+                                <td class="p-4"><span class="px-2 py-1 rounded-full text-[10px] font-bold bg-red-100 text-red-700">Alta</span></td>
+                                <td class="p-4"><div class="flex items-center gap-2 text-[11px] text-red-500 font-semibold italic"><i class="fas fa-exclamation-triangle"></i> Cese de suministro</div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ACORDEONES DE MENSAJERÍA -->
+            <div class="space-y-4">
+                <h2 class="text-lg font-bold condugas-dark border-b-2 condugas-border-yellow pb-1 w-fit">PROPUESTAS DE MENSAJERÍA</h2>
+                
+                <!-- Acordeón 1 -->
+                <div class="bg-white rounded-lg card-shadow border border-gray-200 overflow-hidden">
+                    <button onclick="toggleAccordion('msg1')" class="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 transition-colors">
+                        <div class="flex items-center gap-4">
+                            <div class="p-3 rounded-full bg-[#f8f9fa]"><i class="fas fa-envelope condugas-dark"></i></div>
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <p class="text-[10px] font-black condugas-blue uppercase tracking-widest">Personal Estratégico</p>
+                                    <span class="text-[9px] bg-gray-100 text-gray-500 px-1 rounded font-bold uppercase">Formal</span>
+                                </div>
+                                <h3 class="font-bold condugas-dark">Definición Estratégica: Extensión y Liderazgo</h3>
+                            </div>
+                        </div>
+                        <i id="icon-msg1" class="fas fa-chevron-down text-gray-300"></i>
+                    </button>
+                    <div id="msg1" class="accordion-content bg-gray-50/50">
+                        <div class="p-6">
+                            <div id="text-msg1" class="bg-white p-5 rounded-lg border-l-4 border-[#292D63] shadow-sm text-sm leading-relaxed mb-4 text-gray-700 font-medium italic">
+                                "Se informó que tras la revisión contractual, se identificó una cláusula de extensión de vigencia por seis (6) meses adicionales, proyectando la finalización para septiembre de 2026. Dado que la dirección actual no podrá continuar durante este periodo extendido, se requiere definir la nueva estructura directiva de manera urgente."
+                            </div>
+                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <div class="flex items-center gap-2 text-[#28a745] font-black text-[11px] uppercase tracking-tighter">
+                                    <i class="fas fa-user-check"></i> CTA: Solicitar reunión de 15 min para validar transición.
+                                </div>
+                                <button onclick="copyText('text-msg1')" class="bg-[#292D63] text-white px-4 py-2 rounded font-bold text-[10px] hover:bg-[#1D70B7] transition-colors uppercase tracking-widest">COPIAR MENSAJE</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Acordeón 2 -->
+                <div class="bg-white rounded-lg card-shadow border border-gray-200 overflow-hidden">
+                    <button onclick="toggleAccordion('msg2')" class="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 transition-colors">
+                        <div class="flex items-center gap-4">
+                            <div class="p-3 rounded-full bg-[#f8f9fa]"><i class="fab fa-whatsapp text-green-500"></i></div>
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <p class="text-[10px] font-black condugas-blue uppercase tracking-widest">Personal Operativo</p>
+                                    <span class="text-[9px] bg-gray-100 text-gray-500 px-1 rounded font-bold uppercase">Breve</span>
+                                </div>
+                                <h3 class="font-bold condugas-dark">Alineación Proyecto 3.5 km: Rendimientos</h3>
+                            </div>
+                        </div>
+                        <i id="icon-msg2" class="fas fa-chevron-down text-gray-300"></i>
+                    </button>
+                    <div id="msg2" class="accordion-content bg-gray-50/50">
+                        <div class="p-6">
+                            <div id="text-msg2" class="bg-white p-5 rounded-lg border-l-4 border-[#F8B133] shadow-sm text-sm leading-relaxed mb-4 text-gray-700 font-medium italic">
+                                "Equipo, sobre el proyecto de 3.5 km: Seguimos con excavación manual (rendimiento 10-12m/día) mientras validamos el uso de maquinaria. Importante: Cualquier falta de material reportarla de inmediato a Kimberly M. Se habilitó caja menor para compras urgentes."
+                            </div>
+                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <div class="flex items-center gap-2 text-[#28a745] font-black text-[11px] uppercase tracking-tighter">
+                                    <i class="fas fa-user-check"></i> CTA: Reportar stock de material al cierre de hoy.
+                                </div>
+                                <button onclick="copyText('text-msg2')" class="bg-[#292D63] text-white px-4 py-2 rounded font-bold text-[10px] hover:bg-[#1D70B7] transition-colors uppercase tracking-widest">COPIAR MENSAJE</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BARRA LATERAL -->
+        <div class="space-y-6">
+            
+            <!-- CHECKLIST -->
+            <div class="bg-white rounded-lg card-shadow p-6 border-t-4 condugas-border-yellow">
+                <h2 class="font-bold condugas-dark mb-6 flex items-center gap-2 text-sm uppercase">
+                    <i class="fas fa-shield-alt condugas-blue"></i> VALIDACIONES OBLIGATORIAS
+                </h2>
+                <div class="space-y-6">
+                    <div class="flex gap-4 items-start">
+                        <div class="p-1 bg-red-100 rounded text-red-600"><i class="fas fa-check-circle"></i></div>
+                        <div>
+                            <p class="text-xs font-bold text-gray-800">Validación Legal</p>
+                            <p class="text-[10px] text-gray-400">Confirmar vinculación de extensión sin Otrosí.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 items-start">
+                        <div class="p-1 bg-yellow-100 rounded text-yellow-600"><i class="fas fa-clock"></i></div>
+                        <div>
+                            <p class="text-xs font-bold text-gray-800">Fechas Arriendos</p>
+                            <p class="text-[10px] text-red-500 font-medium">PENDIENTE: Vencimiento exacto contratos.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 items-start">
+                        <div class="p-1 bg-blue-100 rounded text-blue-600"><i class="fas fa-user-check"></i></div>
+                        <div>
+                            <p class="text-xs font-bold text-gray-800">Aval J. Guillermo Pérez</p>
+                            <p class="text-[10px] text-gray-400">Aprobar comunicación sobre cambio de dirección.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTINGENCIA -->
+            <div class="bg-red-50 rounded-lg p-5 border-2 border-red-100">
+                <h3 class="text-red-700 font-black text-[10px] uppercase flex items-center gap-2 mb-3 tracking-widest">
+                    <i class="fas fa-ban"></i> NO ENVIAR: Metrogas / Bancos
+                </h3>
+                <p class="text-[11px] text-red-800 leading-tight mb-4 font-medium">
+                    Alinear primero la dirección estratégica antes de presentar el panorama 2026.
+                </p>
+                <div class="bg-white/90 p-3 rounded border border-red-200">
+                    <p class="text-[9px] font-black text-gray-400 uppercase mb-1">Respuesta reactiva:</p>
+                    <p class="text-[10px] text-gray-600 italic">"Estamos finalizando la planeación tras el hallazgo de la extensión..."</p>
+                </div>
+            </div>
+
+            <!-- ACCIONES -->
+            <div class="bg-[#292D63] rounded-lg p-6 text-white card-shadow">
+                <h3 class="font-bold text-xs mb-4 uppercase tracking-[0.2em] flex items-center gap-2">
+                    <i class="fas fa-cog text-[#F8B133]"></i> ACCIONES DE APOYO
+                </h3>
+                <div class="space-y-3">
+                    <button class="w-full flex items-center justify-between bg-white/10 hover:bg-white/20 p-3 rounded text-[10px] font-bold transition-all border border-white/5">
+                        Escribir Correo Anticipos
+                        <i class="fas fa-external-link-alt"></i>
+                    </button>
+                    <button class="w-full bg-[#F8B133] text-[#292D63] p-3 rounded font-black text-xs uppercase hover:bg-white transition-all shadow-lg mt-4 flex items-center justify-center gap-2">
+                        <i class="fas fa-truck"></i> GESTIONAR SUMINISTROS
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="max-w-7xl mx-auto mt-12 pt-6 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div class="flex items-center gap-4 opacity-30">
+            <p class="text-[11px] font-black tracking-[.4em] condugas-dark">CONDUGAS</p>
+            <div class="h-4 w-px bg-gray-400"></div>
+            <p class="text-[11px] font-black tracking-[.4em] condugas-blue">FLORIDA BLANCA</p>
+        </div>
+        <p class="text-gray-400 text-[9px] uppercase font-bold tracking-widest">Confidencial • Actualización: 02 FEB 2026</p>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script>
+        function toggleAccordion(id) {
+            const content = document.getElementById(id);
+            const icon = document.getElementById('icon-' + id);
+            
+            // Toggle active class
+            content.classList.toggle('active');
+            
+            // Toggle icon
+            if (content.classList.contains('active')) {
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+            } else {
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
+            }
+        }
+
+        function copyText(id) {
+            const text = document.getElementById(id).innerText;
+            const dummy = document.createElement("textarea");
+            document.body.appendChild(dummy);
+            dummy.value = text;
+            dummy.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummy);
+            
+            // Feedback visual simple
+            const btn = event.target;
+            const originalText = btn.innerText;
+            btn.innerText = "¡COPIADO!";
+            btn.classList.add('bg-green-600');
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.classList.remove('bg-green-600');
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
