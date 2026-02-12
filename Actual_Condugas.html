@@ -1,0 +1,336 @@
+import React, { useState } from 'react';
+import { 
+  AlertTriangle, 
+  TrendingDown, 
+  Settings, 
+  Users, 
+  Monitor, 
+  BarChart3, 
+  ChevronDown, 
+  ChevronUp, 
+  CheckCircle2, 
+  Clock, 
+  Zap,
+  Info
+} from 'lucide-react';
+
+const App = () => {
+  const [expandedSections, setExpandedSections] = useState({});
+
+  const toggleSection = (id) => {
+    setExpandedSections(prev => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  const colors = {
+    primary: '#1D70B7',
+    dark: '#292D63',
+    accent: '#F8B133',
+    bg: '#f8f9fa',
+    white: '#ffffff',
+    positive: '#28a745',
+    negative: '#dc3545',
+    warning: '#ffc107',
+    text: '#333333'
+  };
+
+  const SectionHeader = ({ title }) => (
+    <div className="mb-4">
+      <h3 className="text-xl font-bold uppercase" style={{ color: colors.dark }}>{title}</h3>
+      <div className="h-1 w-24 mt-1" style={{ backgroundColor: colors.accent }}></div>
+    </div>
+  );
+
+  const Card = ({ children, className = "" }) => (
+    <div className={`bg-white rounded-lg shadow-sm border border-gray-100 p-6 ${className}`}>
+      {children}
+    </div>
+  );
+
+  const KPICard = ({ label, value, subtext, type = "normal" }) => {
+    let borderColor = colors.primary;
+    if (type === "negative") borderColor = colors.negative;
+    if (type === "warning") borderColor = colors.warning;
+
+    return (
+      <div className="bg-white p-4 rounded-lg shadow-sm border-l-[5px]" style={{ borderLeftColor: borderColor }}>
+        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">{label}</p>
+        <p className="text-2xl font-bold mt-1" style={{ color: colors.dark }}>{value}</p>
+        {subtext && <p className="text-xs mt-1 font-medium" style={{ color: type === "negative" ? colors.negative : colors.text }}>{subtext}</p>}
+      </div>
+    );
+  };
+
+  const Accordion = ({ id, title, children, icon: Icon }) => {
+    const isOpen = expandedSections[id];
+    return (
+      <div className="mb-4 border border-gray-200 rounded-lg overflow-hidden bg-white">
+        <button 
+          onClick={() => toggleSection(id)}
+          className="w-full flex items-center justify-between p-4 text-left transition-colors hover:bg-gray-50"
+        >
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-md" style={{ backgroundColor: `${colors.primary}15` }}>
+              <Icon size={20} style={{ color: colors.primary }} />
+            </div>
+            <span className="font-bold text-gray-700">{title}</span>
+          </div>
+          {isOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+        </button>
+        {isOpen && (
+          <div className="p-4 border-t border-gray-200 bg-white">
+            {children}
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const Pill = ({ text, color }) => (
+    <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-tight text-white mr-2" style={{ backgroundColor: color }}>
+      {text}
+    </span>
+  );
+
+  return (
+    <div className="min-h-screen p-4 md:p-8 font-sans" style={{ backgroundColor: colors.bg, color: colors.text }}>
+      {/* Header */}
+      <header className="max-w-7xl mx-auto mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <h1 className="text-4xl font-black tracking-tighter" style={{ color: colors.dark }}>CONDUGAS</h1>
+          <p className="text-lg font-medium opacity-70">Reporte Ejecutivo de Continuidad Operativa - EPM</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Pill text="RIESGO CRÍTICO" color={colors.negative} />
+          <Pill text="URGENTE" color={colors.warning} />
+          <span className="text-sm font-bold text-gray-500">FEBRERO 2026</span>
+        </div>
+      </header>
+
+      <main className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-6">
+        
+        {/* SECCIÓN 1: KPI FINANCIEROS (Dashboard Rápido) */}
+        <div className="col-span-12 grid grid-cols-1 md:grid-cols-4 gap-4 mb-2">
+          <KPICard label="EBITDA" value="-$950 MM" subtext="Destrucción patrimonial activa" type="negative" />
+          <KPICard label="Deuda / Capacidad" value="68%" subtext="Bloqueo de licitaciones" type="negative" />
+          <KPICard label="Resultado Operativo" value="-$900 MM" subtext="Pérdida acumulada del 3%" type="negative" />
+          <KPICard label="Rentabilidad" value="-25%" subtext="Crisis de caja extrema" type="negative" />
+        </div>
+
+        {/* SECCIÓN 2: Riesgo Inminente */}
+        <div className="col-span-12 md:col-span-7">
+          <Card className="h-full">
+            <SectionHeader title="1. Alerta de Insolvencia Estructural" />
+            <div className="space-y-4">
+              <div className="bg-red-50 p-4 rounded-md border border-red-100 flex gap-4">
+                <AlertTriangle className="text-red-600 flex-shrink-0" />
+                <p className="text-sm text-red-900 leading-relaxed">
+                  Condugas enfrenta una <strong>insolvencia técnica estructural</strong> debido a la parálisis de facturación (Diciembre/Enero) por implementación de SAP y asimetrías en el reajuste económico de proyectos críticos.
+                </p>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead style={{ backgroundColor: colors.dark, color: colors.white }}>
+                    <tr>
+                      <th className="p-2 text-left">Indicador Financiero</th>
+                      <th className="p-2 text-right">Valor / Realidad</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    <tr className="bg-gray-50">
+                      <td className="p-2 font-medium">Ingresos contratos EPM</td>
+                      <td className="p-2 text-right">$29,785 MM (55.5% Op. Total)</td>
+                    </tr>
+                    <tr>
+                      <td className="p-2 font-medium">Reajuste Desalineado</td>
+                      <td className="p-2 text-right text-red-600">Índice Camacol vs Realidad</td>
+                    </tr>
+                    <tr className="bg-gray-50">
+                      <td className="p-2 font-medium">Pérdida Productividad</td>
+                      <td className="p-2 text-right">Nuevas reglas laborales</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </Card>
+        </div>
+
+        {/* SECCIÓN 3: Resumen de Decisiones Pendientes */}
+        <div className="col-span-12 md:col-span-5">
+          <Card className="h-full border-t-4" style={{ borderTopColor: colors.accent }}>
+            <SectionHeader title="Decisiones Requeridas" />
+            <ul className="space-y-3 mt-4">
+              <li className="flex items-start gap-3 text-sm">
+                <CheckCircle2 size={18} className="text-gray-400 mt-1" />
+                <span>Aprobación de Reequilibrio Económico (Propuesta 2026)</span>
+              </li>
+              <li className="flex items-start gap-3 text-sm">
+                <CheckCircle2 size={18} className="text-gray-400 mt-1" />
+                <span>Validación de Modelo de Gestión Dual (MGD)</span>
+              </li>
+              <li className="flex items-start gap-3 text-sm">
+                <CheckCircle2 size={18} className="text-gray-400 mt-1" />
+                <span>Apertura de APIs para integración Odoo-EPM</span>
+              </li>
+              <li className="flex items-start gap-3 text-sm">
+                <CheckCircle2 size={18} className="text-gray-400 mt-1" />
+                <span>Reconocimiento de ítems ambientales en zona Rionegro</span>
+              </li>
+            </ul>
+            <div className="mt-8 p-4 bg-yellow-50 rounded-lg">
+              <p className="text-xs font-bold uppercase text-yellow-800">Mensaje de Gerencia Condugas:</p>
+              <p className="text-sm mt-1 italic text-yellow-900">"Estamos en un escenario similar al de hace 4.5 años. Necesitamos trabajo para resarcir la caja, no solo ajustes."</p>
+            </div>
+          </Card>
+        </div>
+
+        {/* SECCIONES EXPANDIBLES (TEMAS DENSOS) */}
+        <div className="col-span-12">
+          <SectionHeader title="Detalle Operativo y Proyectos" />
+          
+          <Accordion id="ayura" title="2. Proyecto Ayurá & Tecnología PHD" icon={Zap}>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <h4 className="font-bold text-sm mb-2 uppercase text-gray-500">Éxito Técnico</h4>
+                <ul className="space-y-2 text-sm">
+                  <li className="flex justify-between border-b pb-1"><span>Rendimiento Tradicional:</span> <span className="font-bold">70-100m/mes</span></li>
+                  <li className="flex justify-between border-b pb-1"><span>Rendimiento PHD:</span> <span className="font-bold text-green-600">270m/semana</span></li>
+                  <li className="flex justify-between border-b pb-1"><span>Tiempo Ahorrado:</span> <span className="font-bold">52 semanas</span></li>
+                  <li className="flex justify-between border-b pb-1"><span>Externalidades Evitadas:</span> <span className="font-bold">$600 MM</span></li>
+                </ul>
+              </div>
+              <div className="bg-red-50 p-4 rounded-md">
+                <h4 className="font-bold text-sm mb-2 uppercase text-red-600">Impacto Económico No Compensado</h4>
+                <p className="text-sm mb-2">Sobrecostos asumidos por Condugas debido a exigencias técnicas sobredimensionadas:</p>
+                <div className="flex justify-between text-xs font-bold bg-white p-2 rounded">
+                  <span>Recubrimiento de juntas (Specs EPM):</span>
+                  <span className="text-red-600">+$90 MM</span>
+                </div>
+              </div>
+            </div>
+          </Accordion>
+
+          <Accordion id="aguas" title="3. Desequilibrio en Contrato Aguas & Emergencias" icon={AlertTriangle}>
+            <div className="space-y-4">
+              <div className="grid md:grid-cols-3 gap-4">
+                <KPICard label="Déficit Anual Aguas" value="$1.000 MM" type="negative" />
+                <KPICard label="Caso Rionegro (Deuda)" value="$100 MM" type="warning" />
+                <KPICard label="Índice Desviado" value="CAMACOL" subtext="No captura logística regional" />
+              </div>
+              <div className="p-4 bg-gray-50 rounded text-sm">
+                <strong>Riesgo Crítico Rionegro:</strong> La interventoría niega el pago de los ítems ambientales 60-63, ignorando costos fijos ya ejecutados y la condición de aceptación del 26-sep-2025.
+              </div>
+            </div>
+          </Accordion>
+
+          <Accordion id="talento" title="4. Modelo de Gestión Dual (MGD): Crisis de Talento" icon={Users}>
+            <div className="flex flex-col md:flex-row gap-6">
+              <div className="flex-1">
+                <p className="text-sm leading-relaxed mb-4">
+                  Ante la <strong>rotación del 14% de ingenieros</strong> y la "guerra de salarios", proponemos la célula MGD (Ley 842 de 2003).
+                </p>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="p-3 border rounded text-center">
+                    <p className="text-xs font-bold text-gray-500">RESIDENTE</p>
+                    <p className="text-sm font-bold">Validación Legal</p>
+                  </div>
+                  <div className="p-3 border rounded text-center" style={{ borderColor: colors.primary }}>
+                    <p className="text-xs font-bold text-blue-500 uppercase">Gestor Senior</p>
+                    <p className="text-sm font-bold text-blue-900">Know-how Empírico</p>
+                  </div>
+                </div>
+              </div>
+              <div className="flex-1 bg-blue-50 p-4 rounded-md">
+                <h4 className="font-bold text-sm mb-2 uppercase text-blue-800">Beneficios EPM</h4>
+                <ul className="text-xs space-y-2">
+                  <li className="flex items-center gap-2"><CheckCircle2 size={14} className="text-blue-600" /> Blindaje frente a ingenieros "firmones".</li>
+                  <li className="flex items-center gap-2"><CheckCircle2 size={14} className="text-blue-600" /> Retención de memoria operativa de obra.</li>
+                  <li className="flex items-center gap-2"><CheckCircle2 size={14} className="text-blue-600" /> Reducción de riesgo por vacantes técnicas.</li>
+                </ul>
+              </div>
+            </div>
+          </Accordion>
+
+          <Accordion id="digital" title="5. Transformación Digital: Fin al Triple Ciclo" icon={Monitor}>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between p-4 bg-gray-100 rounded-lg">
+                <div>
+                  <h5 className="font-bold text-sm">Eficiencia Perdida</h5>
+                  <p className="text-2xl font-black text-red-600">14%</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-xs font-medium text-gray-600">Causa: Triple Digitación</p>
+                  <p className="text-xs font-medium text-gray-600">Sistemas: FSE / FDSE / Odoo</p>
+                </div>
+              </div>
+              <div className="text-sm">
+                <p><strong>Solución:</strong> Integración vía API para transparencia y auditabilidad en tiempo real. No es eficiencia, es un requisito de supervivencia.</p>
+              </div>
+            </div>
+          </Accordion>
+
+          <Accordion id="reajuste" title="6. Propuesta Técnica de Reajuste 2026" icon={BarChart3}>
+            <div className="space-y-6">
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="p-4 border-2 border-blue-100 rounded-lg">
+                  <p className="text-xs font-bold text-gray-400 uppercase">Factura con Adm.</p>
+                  <p className="text-3xl font-black text-blue-700">20.53%</p>
+                </div>
+                <div className="p-4 border-2 border-blue-100 rounded-lg">
+                  <p className="text-xs font-bold text-gray-400 uppercase">Operación & Mant. Gas</p>
+                  <p className="text-3xl font-black text-blue-700">22.53%</p>
+                </div>
+              </div>
+
+              <div className="overflow-x-auto">
+                <table className="w-full text-xs">
+                  <thead className="bg-gray-100 text-gray-600 uppercase">
+                    <tr>
+                      <th className="p-3 text-left">Factor de Justificación</th>
+                      <th className="p-3 text-center">Impacto</th>
+                      <th className="p-3 text-left">Detalle Crítico</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200">
+                    <tr>
+                      <td className="p-3 font-bold">Laboral Estructural</td>
+                      <td className="p-3 text-center text-red-600 font-bold">31.75%</td>
+                      <td className="p-3">Alza SMMLV (23.7%) + Reducción jornada a 42h (8.05%).</td>
+                    </tr>
+                    <tr>
+                      <td className="p-3 font-bold">Productividad Real</td>
+                      <td className="p-3 text-center font-bold">20.6 días</td>
+                      <td className="p-3">Solo 20.6 días reales/mes tras festivos, vacaciones e incapacidad (5.92%).</td>
+                    </tr>
+                    <tr>
+                      <td className="p-3 font-bold">Recargos Nocturnos</td>
+                      <td className="p-3 text-center font-bold">8.05%</td>
+                      <td className="p-3">Afectación directa en mantenimiento por inicio jornada nocturna 19:00h.</td>
+                    </tr>
+                    <tr>
+                      <td className="p-3 font-bold">Erosión Administrativa</td>
+                      <td className="p-3 text-center font-bold">2.2%</td>
+                      <td className="p-3">Margen cero para riesgos operativos; el rubro se consume 100% en nómina.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </Accordion>
+        </div>
+
+        {/* Footer / Contacto */}
+        <div className="col-span-12 mt-4 text-center pb-12">
+          <p className="text-xs text-gray-400 font-medium">DOCUMENTO CONFIDENCIAL - PROPIEDAD DE CONDUGAS PARA USO EXCLUSIVO GERENCIAL EPM</p>
+          <div className="flex justify-center gap-4 mt-2">
+            <span className="text-xs bg-gray-200 px-2 py-1 rounded font-bold">SANTIAGO WILCHES</span>
+            <span className="text-xs bg-gray-200 px-2 py-1 rounded font-bold">LUIS GUILLERMO</span>
+            <span className="text-xs bg-gray-200 px-2 py-1 rounded font-bold">JUAN CARLOS GOMEZ</span>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+};
+
+export default App;
