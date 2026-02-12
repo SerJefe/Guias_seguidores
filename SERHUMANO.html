@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Página Web</title>
+    <style>
+        /* CSS: Aquí defines cómo se ve todo */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        header {
+            background: #2c3e50;
+            color: #ffffff;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+            padding: 2rem;
+            background: #fff;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.9rem;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Bienvenido a mi Sitio</h1>
+        <p>Una estructura básica, limpia y funcional</p>
+    </header>
+
+    <div class="container">
+        <h2>Sobre este código</h2>
+        <p>Este es un archivo HTML5 estándar. Puedes usarlo como base para crear landing pages, blogs o portafolios personales.</p>
+        
+        <h3>Interactividad</h3>
+        <p>Haz clic en el botón de abajo para probar un pequeño script de JavaScript.</p>
+        
+        <button onclick="saludar()">¡Haz clic aquí!</button>
+        
+        <p id="mensaje" style="margin-top: 20px; font-weight: bold; color: #27ae60;"></p>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 - Creado con la ayuda de Gemini</p>
+    </footer>
+
+    <script>
+        // JavaScript: Aquí defines la lógica
+        function saludar() {
+            const mensaje = document.getElementById('mensaje');
+            mensaje.innerText = "¡Hola! El código funciona perfectamente. 🚀";
+        }
+    </script>
+
+</body>
+</html>
