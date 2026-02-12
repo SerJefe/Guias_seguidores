@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHD Envigado | Valor Estratégico para EPM</title>
+    <!-- Carga de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Carga de Lucide Icons (para iconos limpios y modernos) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --epm-blue: #0076a3; /* Azul corporativo EPM (simulación) */
+            --epm-green: #2ecc71; /* Verde de sostenibilidad */
+            --inter-font: 'Inter', sans-serif;
+        }
+        body {
+            font-family: var(--inter-font);
+            background-color: #f8f9fa;
+        }
+        .header-bg {
+            background-color: var(--epm-blue);
+        }
+        .card-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+        }
+        .value-number {
+            color: var(--epm-green);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        /* Clase para animación simple de las tarjetas */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .card {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-6xl mx-auto bg-white rounded-xl overflow-hidden card-shadow">
+        
+        <!-- HEADER PRINCIPAL -->
+        <header class="header-bg p-6 text-white text-center">
+            <h1 class="text-3xl md:text-4xl font-extrabold mb-1">PHD en Envigado: Inversión Estratégica</h1>
+            <p class="text-lg md:text-xl font-light opacity-90">Transformando la Obra a Zanja Abierta en Rentabilidad Social y Gobernabilidad para EPM</p>
+        </header>
+
+        <!-- INTRODUCCIÓN Y MENSAJE CENTRAL -->
+        <section class="p-6 md:p-8">
+            <h2 class="text-xl md:text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">Mensaje Clave</h2>
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-lg">
+                <p class="italic text-gray-700 font-medium">
+                    "Invertimos en el presente (asumiendo el costo del PHD) para asegurar la licencia social y la continuidad operativa de EPM en el futuro, transformando el riesgo en un aliado estratégico en el territorio."
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN DE VALOR CLAVE (GRID DE 6 PUNTOS) -->
+        <div class="p-6 md:p-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+            <!-- 1. GOBERNABILIDAD TERRITORIAL -->
+            <div class="card bg-white p-5 rounded-xl border border-gray-200 card-shadow" style="animation-delay: 0s;">
+                <div class="flex items-center space-x-3 mb-3">
+                    <i data-lucide="building-2" class="w-8 h-8 text-blue-600"></i>
+                    <h3 class="text-xl font-bold text-gray-800">1. Relacionamiento y Gobernabilidad</h3>
+                </div>
+                <p class="text-gray-600 mb-4">La buena relación con la Alcaldía de Envigado agilizó trámites y redujo resistencias.</p>
+                <div class="mt-4 border-t pt-3">
+                    <p class="text-sm font-semibold text-gray-700">VALOR CUANTIFICADO</p>
+                    <div class="flex justify-between items-center mt-1">
+                        <span class="text-lg font-medium text-gray-500">Permisos Viales Reducidos:</span>
+                        <span class="text-2xl font-extrabold value-number text-green-600">65%</span>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-2">"Mayor agilidad institucional, respaldo político y una puerta abierta para futuras intervenciones de EPM sin conflictos."</p>
+                </div>
+            </div>
+
+            <!-- 2. MANEJO AMBIENTAL Y ESG -->
+            <div class="card bg-white p-5 rounded-xl border border-gray-200 card-shadow" style="animation-delay: 0.1s;">
+                <div class="flex items-center space-x-3 mb-3">
+                    <i data-lucide="leaf" class="w-8 h-8 text-green-600"></i>
+                    <h3 class="text-xl font-bold text-gray-800">2. Liderazgo Ambiental y ESG</h3>
+                </div>
+                <p class="text-gray-600 mb-4">El PHD minimiza la huella en zonas urbanas sensibles, apoyando los compromisos de EPM.</p>
+                <div class="mt-4 border-t pt-3">
+                    <p class="text-sm font-semibold text-gray-700">VALOR CUANTIFICADO</p>
+                    <div class="flex justify-between items-center mt-1">
+                        <span class="text-lg font-medium text-gray-500">Escombros y CO2 Evitado:</span>
+                        <span class="text-2xl font-extrabold value-number text-green-600">80%</span>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-2">"Minimiza la huella ambiental, apoya el cumplimiento de los compromisos ESG y demuestra liderazgo en construcción sostenible."</p>
+                </div>
+            </div>
+
+            <!-- 3. IMPACTO POSITIVO EN LA COMUNIDAD -->
+            <div class="card bg-white p-5 rounded-xl border border-gray-200 card-shadow" style="animation-delay: 0.2s;">
+                <div class="flex items-center space-x-3 mb-3">
+                    <i data-lucide="users" class="w-8 h-8 text-yellow-600"></i>
+                    <h3 class="text-xl font-bold text-gray-800">3. Licencia Social Reforzada</h3>
+                </div>
+                <p class="text-gray-600 mb-4">Comunidades que perciben beneficios se convierten en aliados, evitando conflictos operativos.</p>
+                <div class="mt-4 border-t pt-3">
+                    <p class="text-sm font-semibold text-gray-700">VALOR CUANTIFICADO</p>
+                    <div class="flex justify-between items-center mt-1">
+                        <span class="text-lg font-medium text-gray-500">Días de Obra Suspendida Evitados:</span>
+                        <span class="text-2xl font-extrabold value-number text-green-600">0</span>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-2">"Logramos evitar el bloqueo comunitario de una obra crítica gracias a la reducción del impacto diario. Ahorros operativos asegurados."</p>
+                </div>
+            </div>
+
+            <!-- 4. COSTO SOCIAL Y AMBIENTAL EVITADO -->
+            <div class="card bg-white p-5 rounded-xl border border-gray-200 card-shadow" style="animation-delay: 0.3s;">
+                <div class="flex items-center space-x-3 mb-3">
+                    <i data-lucide="wallet" class="w-8 h-8 text-red-600"></i>
+                    <h3 class="text-xl font-bold text-gray-800">4. Costos Ocultos Mitigados</h3>
+                </div>
+                <p class="text-gray-600 mb-4">Evitamos las "externalidades negativas" que generan sobrecostos invisibles en toda obra vial.</p>
+                <div class="mt-4 border-t pt-3">
+                    <p class="text-sm font-semibold text-gray-700">VALOR CUANTIFICADO</p>
+                    <div class="flex justify-between items-center mt-1">
+                        <span class="text-lg font-medium text-gray-500">Ahorro en PMT y Reparaciones:</span>
+                        <span class="text-2xl font-extrabold value-number text-green-600">$75M COP</span>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-2">"El PHD reduce costos ocultos: reclamaciones, cierres, mitigaciones, vigilancia extra. EPM evita ese gasto invisible."</p>
+                </div>
+            </div>
+
+            <!-- 5. IMAGEN Y RENTABILIDAD SOCIAL -->
+            <div class="card bg-white p-5 rounded-xl border border-gray-200 card-shadow" style="animation-delay: 0.4s;">
+                <div class="flex items-center space-x-3 mb-3">
+                    <i data-lucide="trending-up" class="w-8 h-8 text-teal-600"></i>
+                    <h3 class="text-xl font-bold text-gray-800">5. Imagen y Confianza Institucional</h3>
+                </div>
+                <p class="text-gray-600 mb-4">Invertir en calidad, sostenibilidad y bienestar gana puntos con la ciudadanía y refuerza la reputación.</p>
+                <div class="mt-4 border-t pt-3">
+                    <p class="text-sm font-semibold text-gray-700">VALOR CUANTIFICADO</p>
+                    <div class="flex justify-between items-center mt-1">
+                        <span class="text-lg font-medium text-gray-500">Incremento en Satisfacción Comunal:</span>
+                        <span class="text-2xl font-extrabold value-number text-green-600">15%</span>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-2">"Demuestra que EPM invierte en calidad de vida urbana, no solo en infraestructura técnica. Mensaje claro de compromiso."</p>
+                </div>
+            </div>
+
+            <!-- 6. INVERSIÓN ADICIONAL ESTRATÉGICA -->
+            <div class="card bg-white p-5 rounded-xl border border-gray-200 card-shadow" style="animation-delay: 0.5s;">
+                <div class="flex items-center space-x-3 mb-3">
+                    <i data-lucide="hand-coins" class="w-8 h-8 text-purple-600"></i>
+                    <h3 class="text-xl font-bold text-gray-800">6. Inversión Asumida vs. Riesgo Evitado</h3>
+                </div>
+                <p class="text-gray-600 mb-4">El sobrecosto inicial no fue una pérdida, sino una inversión para garantizar la continuidad.</p>
+                <div class="mt-4 border-t pt-3">
+                    <p class="text-sm font-semibold text-gray-700">VALOR CUANTIFICADO</p>
+                    <div class="flex justify-between items-center mt-1">
+                        <span class="text-lg font-medium text-gray-500">Riesgos Operativos Evitados:</span>
+                        <span class="text-2xl font-extrabold value-number text-green-600">~600M COP</span>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-2">"Invertimos más (sobrecosto asumido) para asegurar continuidad, cumplimiento, y fortalecer la relación con los actores del territorio. Esto es rentabilidad social de alto impacto."</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- PIE DE PÁGINA / CALL TO ACTION -->
+        <footer class="p-6 md:p-8 bg-gray-100 text-center rounded-b-xl">
+            <h4 class="text-xl font-bold text-gray-800 mb-2">Conclusión Operativa</h4>
+            <p class="text-gray-600">
+                El uso de la Perforación Horizontal Dirigida (PHD), financiada por nuestro equipo, se consolidó como una **estrategia de mitigación de riesgo y construcción de capital social**, asegurando el **cumplimiento sin fricciones** en un territorio clave para EPM.
+            </p>
+        </footer>
+
+    </div>
+
+    <script>
+        // Inicializa los iconos de Lucide
+        lucide.createIcons();
+    </script>
+</body>
+</html>
