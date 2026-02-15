@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Briefing de Transformación - SER.JEFE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-blue: #003f6b;
+            --brand-gold: #e0c05a;
+            --brand-gold-light: #fdfbf2;
+            --light-gray: #f8fafc;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-gray);
+            color: #334155;
+        }
+
+        h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; }
+
+        /* Branding Utility Classes */
+        .bg-brand-blue { background-color: var(--brand-blue); }
+        .text-brand-blue { color: var(--brand-blue); }
+        .border-brand-blue { border-color: var(--brand-blue); }
+        .bg-brand-gold { background-color: var(--brand-gold); }
+        .text-brand-gold { color: var(--brand-gold); }
+        
+        /* Editable Areas Styling */
+        [contenteditable="true"] {
+            border: 1px dashed transparent;
+            padding: 2px 5px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        [contenteditable="true"]:hover {
+            border-color: #cbd5e1;
+            background-color: rgba(255,255,255,0.5);
+            cursor: text;
+        }
+        [contenteditable="true"]:focus {
+            outline: none;
+            border-color: var(--brand-gold);
+            background-color: white;
+            box-shadow: 0 0 0 2px rgba(224, 192, 90, 0.2);
+        }
+
+        /* Inputs & Textareas */
+        .question-label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--brand-blue);
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .clean-textarea {
+            width: 100%;
+            background: rgba(255,255,255,0.8);
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 10px;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+            min-height: 80px;
+        }
+        .clean-textarea:focus {
+            background: white;
+            border-color: var(--brand-gold);
+            outline: none;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Section Cards */
+        .section-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 2rem;
+            border-top: 6px solid var(--brand-blue);
+        }
+        
+        .section-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #e2e8f0;
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-number {
+            background-color: var(--brand-blue);
+            color: var(--brand-gold);
+            font-weight: 800;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-family: 'Montserrat', sans-serif;
+            flex-shrink: 0;
+        }
+
+        /* Print Styles */
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white; }
+            .section-card { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
+            textarea { border: 1px solid #ccc; resize: none; min-height: 60px; }
+            .bg-gray-50 { background-color: white !important; }
+        }
+    </style>
+</head>
+<body class="pb-24">
+
+    <form id="briefingForm" action="https://formsubmit.co/sebastian.sanchez.docente@gmail.com" method="POST" enctype="multipart/form-data">
+        
+        <!-- Configuración FormSubmit -->
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_subject" id="emailSubject" value="Nuevo Briefing de Transformación Digital">
+        <!-- Inputs ocultos para capturar títulos editables -->
+        <input type="hidden" name="titulo_cliente" id="hidden_titulo_cliente">
+        <input type="hidden" name="notas_consultor" id="hidden_notas_consultor">
+
+        <!-- HEADER -->
+        <header class="bg-brand-blue text-white sticky top-0 z-50 shadow-lg no-print">
+            <div class="container mx-auto px-6 py-4">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-digital-tachograph text-brand-gold text-3xl"></i>
+                        <div>
+                            <h1 class="text-xl font-bold tracking-wider" contenteditable="true" id="editable_titulo_cliente">BRIEFING: [NOMBRE DEL CLIENTE / EMPRESA]</h1>
+                            <p class="text-xs text-brand-gold uppercase tracking-widest">Transformación Organizacional y Digital</p>
+                        </div>
+                    </div>
+                     <div class="bg-brand-gold/10 px-4 py-2 rounded text-sm w-full md:w-1/3 border border-brand-gold/30">
+                        <span class="text-brand-gold font-bold text-xs uppercase block mb-1">
+                            <i class="fas fa-sticky-note mr-1"></i> Notas del Consultor:
+                        </span>
+                        <div contenteditable="true" id="editable_notas_consultor" class="text-gray-200 text-xs italic">
+                            [Espacio para notas privadas antes de iniciar...]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="container mx-auto px-4 py-10 max-w-5xl">
+
+            <!-- INSTRUCCIONES -->
+            <div class="bg-brand-gold/20 border-l-4 border-brand-gold p-6 rounded-r-lg mb-10 shadow-sm">
+                <h3 class="font-bold text-brand-blue mb-2"><i class="fas fa-info-circle mr-2"></i>Instrucción para el Gerente:</h3>
+                <p class="text-gray-700 italic">"Responde con ejemplos reales, cifras cuando existan, y describe 'qué sería una evidencia' de que se logró. No busques la respuesta 'correcta', busca la respuesta honesta."</p>
+            </div>
+
+            <!-- SECCIÓN A: PROPÓSITO -->
+            <section class="section-card">
+                <div class="section-header">
+                    <div class="section-number">A</div>
+                    <h2 class="text-xl font-bold text-brand-blue">Propósito, ambición y "para qué"</h2>
+                </div>
+                <div class="p-6 md:p-8 grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="question-label">1. Si tuvieras que describir en 1 frase por qué quieres transformar la organización, ¿cuál sería?</label>
+                        <textarea name="A1_Frase_Transformacion" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">2. ¿Qué problema duele más hoy? Ordénalos (costo, tiempo, seguridad, calidad, servicio, control...).</label>
+                        <textarea name="A2_Problema_Dolor" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">3. ¿Qué quieres que sea distinto en la empresa dentro de 12 meses? (3 cambios visibles)</label>
+                        <textarea name="A3_Vision_12meses" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">4. ¿Qué quieres que sea distinto dentro de 3 años? (3 capacidades nuevas)</label>
+                        <textarea name="A4_Vision_3anos" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">5. ¿Cuál sería el peor escenario si no se hace nada en los próximos 18 meses?</label>
+                        <textarea name="A5_Peor_Escenario" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">6. ¿Qué sería un mejor escenario que hoy parece difícil pero posible con transformación?</label>
+                        <textarea name="A6_Mejor_Escenario" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">7. ¿Qué parte de la transformación es “no negociable” para ti y por qué?</label>
+                        <textarea name="A7_No_Negociable" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">8. ¿Qué cosas NO quieres que cambien (valores/estilo/fortalezas) aunque se digitalice?</label>
+                        <textarea name="A8_Intocables" class="clean-textarea"></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN B: ÉXITO -->
+            <section class="section-card">
+                <div class="section-header">
+                    <div class="section-number">B</div>
+                    <h2 class="text-xl font-bold text-brand-blue">Definición de éxito y evidencia</h2>
+                </div>
+                <div class="p-6 md:p-8 grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="question-label">1. ¿Cómo sabrás que fue un éxito? (define 5 señales observables)</label>
+                        <textarea name="B1_Senales_Exito" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">2. ¿Qué métricas aceptarías como “prueba” de que vamos bien?</label>
+                        <textarea name="B2_Metricas_Prueba" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">3. ¿Qué metas numéricas te parecen razonables para año 1 y año 2?</label>
+                        <textarea name="B3_Metas_Numericas" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">4. ¿Qué sería un “éxito engañoso” (se ve bien pero es humo)?</label>
+                        <textarea name="B4_Exito_Enganoso" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">5. ¿Qué sería un “fracaso silencioso” (nadie lo dice pero se siente)?</label>
+                        <textarea name="B5_Fracaso_Silencioso" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">6. ¿Cuáles son los 3 resultados que quieres ver en tableros cada semana?</label>
+                        <textarea name="B6_Resultados_Tablero" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">7. ¿Qué decisiones esperas tomar mejor y más rápido gracias a la transformación?</label>
+                        <textarea name="B7_Decisiones_Mejoradas" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">8. Si solo pudiéramos lograr una cosa el primer trimestre, ¿cuál sería?</label>
+                        <textarea name="B8_Prioridad_T1" class="clean-textarea"></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN C: ALCANCE -->
+            <section class="section-card">
+                <div class="section-header">
+                    <div class="section-number">C</div>
+                    <h2 class="text-xl font-bold text-brand-blue">Alcance real: qué entra, qué no entra</h2>
+                </div>
+                <div class="p-6 md:p-8 grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="question-label">1. ¿Qué procesos te quitan más energía hoy? (top 5)</label>
+                        <textarea name="C1_Procesos_Energia" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">2. ¿Qué áreas deben entrar sí o sí en la primera fase y cuáles pueden esperar?</label>
+                        <textarea name="C2_Fases_Areas" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">3. ¿Qué sería “hacer demasiado” y romper la operación?</label>
+                        <textarea name="C3_Riesgo_Sobrecarga" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">4. ¿Qué quieres que pase primero: mejorar procesos, datos, tecnología o cultura? ¿Por qué?</label>
+                        <textarea name="C4_Orden_Prioridad" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">5. ¿Cuál es el alcance mínimo que igual genera valor (MVP)?</label>
+                        <textarea name="C5_MVP" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">6. ¿Qué cosas se deben mantener manuales por seguridad/criterio humano?</label>
+                        <textarea name="C6_Procesos_Manuales" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">7. ¿Qué parte debe quedar estandarizada y dónde permites flexibilidad?</label>
+                        <textarea name="C7_Estandar_vs_Flexible" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">8. ¿Qué cosas hoy están “fuera del sistema” (Excel/WhatsApp) y por qué?</label>
+                        <textarea name="C8_Shadow_IT" class="clean-textarea"></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN D: SITUACIÓN ACTUAL -->
+            <section class="section-card">
+                <div class="section-header">
+                    <div class="section-number">D</div>
+                    <h2 class="text-xl font-bold text-brand-blue">Situación actual sin maquillaje: dolor operativo</h2>
+                </div>
+                <div class="p-6 md:p-8 grid md:grid-cols-2 gap-6">
+                    <div class="md:col-span-2">
+                        <label class="question-label">1. Describe un día típico en obra: ¿dónde se pierde tiempo y por qué?</label>
+                        <textarea name="D1_Dia_Tipico" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">2. ¿Cuáles son los 5 cuellos de botella más repetidos?</label>
+                        <textarea name="D2_Cuellos_Botella" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">3. ¿Qué errores son frecuentes (datos, compras, inventario, facturación)?</label>
+                        <textarea name="D3_Errores_Frecuentes" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">4. ¿Qué decisiones se toman tarde porque falta información? (3 casos)</label>
+                        <textarea name="D4_Decisiones_Tardias" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">5. ¿Qué incidentes te han dado susto: seguridad, fuga, pérdida?</label>
+                        <textarea name="D5_Incidentes_Graves" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">6. ¿Qué tareas existen solo para “cumplir” pero no agregan valor?</label>
+                        <textarea name="D6_Burocracia" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">7. ¿Dónde sientes que se “rompe la confianza” entre áreas?</label>
+                        <textarea name="D7_Confianza_Areas" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">8. ¿En qué momentos aparece el caos (cierres, auditorías, emergencias)?</label>
+                        <textarea name="D8_Momentos_Caos" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">9. ¿Qué cosas dependen de 1 o 2 personas clave (riesgo de dependencia)?</label>
+                        <textarea name="D9_Dependencia_Personas" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">10. Si mañana faltara internet, ¿qué procesos críticos deben seguir sí o sí?</label>
+                        <textarea name="D10_Continuidad_Sin_Sistema" class="clean-textarea"></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN E: CLIENTE -->
+            <section class="section-card">
+                <div class="section-header">
+                    <div class="section-number">E</div>
+                    <h2 class="text-xl font-bold text-brand-blue">Cliente/usuario y promesa de servicio</h2>
+                </div>
+                <div class="p-6 md:p-8 grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="question-label">1. ¿Quién es “el cliente” para ustedes? (usuario, contratante, regulador...)</label>
+                        <textarea name="E1_Definicion_Cliente" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">2. ¿Qué reclamos o quejas se repiten y por qué?</label>
+                        <textarea name="E2_Quejas_Recurrentes" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">3. ¿Qué parte del servicio te gustaría que fuera más “predecible” y medible?</label>
+                        <textarea name="E3_Predecibilidad" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">4. ¿Qué información debería poder responder cualquiera en 30 seg?</label>
+                        <textarea name="E4_Info_Inmediata" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">5. ¿Qué situaciones dañan más la reputación y cómo prevenirlas?</label>
+                        <textarea name="E5_Riesgo_Reputacional" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">6. ¿Cuál es la promesa de servicio ideal (tiempos, calidad)?</label>
+                        <textarea name="E6_Promesa_Servicio" class="clean-textarea"></textarea>
+                    </div>
+                </div>
+            </section>
+
+             <!-- SECCIÓN F: DATOS -->
+             <section class="section-card">
+                <div class="section-header">
+                    <div class="section-number">F</div>
+                    <h2 class="text-xl font-bold text-brand-blue">Datos, trazabilidad y gobierno</h2>
+                </div>
+                <div class="p-6 md:p-8 grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="question-label">1. Hoy, ¿cuál es la “fuente de verdad” y qué tan confiable es?</label>
+                        <textarea name="F1_Fuente_Verdad" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">2. ¿Dónde se crean datos incorrectos (captura, transcripción, duplicados)?</label>
+                        <textarea name="F2_Calidad_Datos" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">3. ¿Qué dato mal registrado podría causar un problema de seguridad o legal?</label>
+                        <textarea name="F3_Dato_Critico" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">4. ¿Qué catálogos deben estar perfectos sí o sí?</label>
+                        <textarea name="F4_Catalogos_Maestros" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">5. ¿Quién debería ser dueño del dato en cada área?</label>
+                        <textarea name="F5_Data_Owner" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">6. ¿Qué nivel de trazabilidad necesitas en materiales/equipos?</label>
+                        <textarea name="F6_Trazabilidad" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">7. ¿Cómo se debería auditar el dato sin volverlo burocrático?</label>
+                        <textarea name="F7_Auditoria_Datos" class="clean-textarea"></textarea>
+                    </div>
+                </div>
+            </section>
+
+             <!-- SECCIÓN G: CULTURA -->
+             <section class="section-card">
+                <div class="section-header">
+                    <div class="section-number">G</div>
+                    <h2 class="text-xl font-bold text-brand-blue">Personas, cultura, adopción y miedos</h2>
+                </div>
+                <div class="p-6 md:p-8 grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="question-label">1. ¿Qué te preocupa más de la adopción (resistencia, sabotaje, aprendizaje)?</label>
+                        <textarea name="G1_Preocupacion_Adopcion" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">2. ¿Qué creencias hoy frenan el cambio? (ej. “aquí siempre se ha hecho así”)</label>
+                        <textarea name="G2_Creencias_Limitantes" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">3. ¿Qué parte del personal podría sentir que “pierde poder” con transparencia?</label>
+                        <textarea name="G3_Perdida_Poder" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">4. ¿Qué incentivos hoy recompensan lo contrario a lo que quieres lograr?</label>
+                        <textarea name="G4_Incentivos_Perversos" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">5. ¿Qué comportamientos quieres ver en líderes durante el cambio? (3 conductas)</label>
+                        <textarea name="G5_Conductas_Lideres" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">6. ¿Qué comportamientos NO vas a permitir?</label>
+                        <textarea name="G6_No_Negociables_Conducta" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">7. ¿Cómo quieres manejar el error: castigo, aprendizaje? Dame un ejemplo.</label>
+                        <textarea name="G7_Manejo_Error" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">8. ¿Quiénes serían tus “campeones” naturales del cambio y por qué?</label>
+                        <textarea name="G8_Champions" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">9. ¿Qué entrenamiento mínimo debería tener alguien de campo para no sentirse perdido?</label>
+                        <textarea name="G9_Entrenamiento_Minimo" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">10. ¿Qué haría que un excavador/ayudante diga: “esto sí me ayuda”?</label>
+                        <textarea name="G10_WIIFM" class="clean-textarea"></textarea>
+                    </div>
+                </div>
+            </section>
+
+             <!-- SECCIÓN H: RIESGOS -->
+             <section class="section-card">
+                <div class="section-header">
+                    <div class="section-number">H</div>
+                    <h2 class="text-xl font-bold text-brand-blue">Riesgos, alertas y continuidad operativa</h2>
+                </div>
+                <div class="p-6 md:p-8 grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="question-label">1. ¿Qué riesgos te quitan el sueño: seguridad, legal, fraude, parálisis?</label>
+                        <textarea name="H1_Riesgos_Criticos" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">2. ¿Qué eventos no pueden ocurrir durante la implementación? (líneas rojas)</label>
+                        <textarea name="H2_Lineas_Rojas" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">3. ¿Qué harías si la productividad baja 15–20% en la “zona neutral”?</label>
+                        <textarea name="H3_Baja_Productividad" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">4. ¿Cómo quieres que funcionen los planes de contingencia?</label>
+                        <textarea name="H4_Contingencia" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">5. ¿Qué alertas tempranas te gustaría ver para actuar antes de que explote?</label>
+                        <textarea name="H5_Alertas_Tempranas" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">6. ¿Cuál es tu tolerancia al riesgo: conservador, balanceado, agresivo?</label>
+                        <textarea name="H6_Tolerancia_Riesgo" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">7. ¿Qué escenarios de crisis debes poder simular y entrenar?</label>
+                        <textarea name="H7_Simulacion_Crisis" class="clean-textarea"></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN I: GOBIERNO -->
+            <section class="section-card">
+                <div class="section-header">
+                    <div class="section-number">I</div>
+                    <h2 class="text-xl font-bold text-brand-blue">Decisiones, gobierno del proyecto y rigor</h2>
+                </div>
+                <div class="p-6 md:p-8 grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="question-label">1. ¿Quién decide alcance y prioridades (rol, no persona) y con qué criterio?</label>
+                        <textarea name="I1_Decision_Alcance" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">2. ¿Qué decisiones delegas y cuáles son solo tuyas?</label>
+                        <textarea name="I2_Delegacion" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">3. ¿Qué presupuesto/tiempo máximo estás dispuesto a sostener?</label>
+                        <textarea name="I3_Limites_Recursos" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">4. ¿Con qué frecuencia quieres seguimiento ejecutivo y qué formato?</label>
+                        <textarea name="I4_Seguimiento" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">5. ¿Qué significa para ti “rigurosidad” en este proyecto?</label>
+                        <textarea name="I5_Rigurosidad" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">6. ¿Qué proveedores/aliados tienes hoy y qué experiencias has tenido?</label>
+                        <textarea name="I6_Proveedores" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">7. ¿Qué dependencias externas existen (regulador, DIAN, contratistas)?</label>
+                        <textarea name="I7_Dependencias" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">8. ¿Cómo se va a aprobar que algo “está listo” (criterios de salida)?</label>
+                        <textarea name="I8_Criterios_Salida" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">9. ¿Qué vas a hacer cuando haya presión por “meter una excepción”?</label>
+                        <textarea name="I9_Manejo_Excepciones" class="clean-textarea"></textarea>
+                    </div>
+                    <div>
+                        <label class="question-label">10. ¿Qué NO quieres negociar aunque alguien lo pida “por urgencia”?</label>
+                        <textarea name="I10_No_Negociables_Gobierno" class="clean-textarea"></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CHECK FINAL DE COHERENCIA -->
+            <div class="bg-gray-800 text-white rounded-xl p-8 mb-12 shadow-2xl">
+                <h3 class="font-bold text-brand-gold text-lg mb-4"><i class="fas fa-clipboard-check mr-2"></i>Check de Coherencia (Antes de Enviar)</h3>
+                <p class="text-sm text-gray-400 mb-4">Verifica que las respuestas cumplen con estos criterios:</p>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="flex items-start gap-2">
+                        <i class="fas fa-check-circle text-green-400 mt-1"></i>
+                        <p class="text-sm"><strong>Claridad:</strong> Verbos y métricas, no solo "mejorar".</p>
+                    </div>
+                    <div class="flex items-start gap-2">
+                        <i class="fas fa-check-circle text-green-400 mt-1"></i>
+                        <p class="text-sm"><strong>Coherencia:</strong> A/B no contradice C ni D.</p>
+                    </div>
+                    <div class="flex items-start gap-2">
+                        <i class="fas fa-check-circle text-green-400 mt-1"></i>
+                        <p class="text-sm"><strong>Rigor:</strong> Evidencias, responsables y criterios.</p>
+                    </div>
+                     <div class="flex items-start gap-2">
+                        <i class="fas fa-check-circle text-green-400 mt-1"></i>
+                        <p class="text-sm"><strong>Humano:</strong> Reconoce miedos (G).</p>
+                    </div>
+                     <div class="flex items-start gap-2">
+                        <i class="fas fa-check-circle text-green-400 mt-1"></i>
+                        <p class="text-sm"><strong>Riesgo:</strong> Identifica líneas rojas (H).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BOTONES -->
+            <div class="fixed bottom-6 right-6 flex flex-col gap-3 no-print z-50">
+                <button type="submit" onclick="prepareSubmission()" class="bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-6 rounded-full shadow-lg transition transform hover:scale-105 flex items-center gap-2" title="Enviar al Correo">
+                    <i class="fas fa-paper-plane"></i> Enviar Briefing
+                </button>
+                <button type="button" onclick="window.print()" class="bg-brand-gold hover:bg-yellow-400 text-brand-blue font-bold py-3 px-4 rounded-full shadow-lg transition transform hover:scale-105 flex items-center gap-2" title="Imprimir PDF">
+                    <i class="fas fa-print"></i>
+                </button>
+            </div>
+
+        </main>
+    </form>
+
+    <script>
+        function prepareSubmission() {
+            // Capturar datos editables del header
+            const tituloCliente = document.getElementById('editable_titulo_cliente').innerText;
+            const notasConsultor = document.getElementById('editable_notas_consultor').innerText;
+            
+            document.getElementById('hidden_titulo_cliente').value = tituloCliente;
+            document.getElementById('hidden_notas_consultor').value = notasConsultor;
+            
+            // Actualizar asunto del correo
+            document.getElementById('emailSubject').value = "Briefing Completado: " + tituloCliente;
+        }
+    </script>
+</body>
+</html>
