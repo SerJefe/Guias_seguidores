@@ -3,151 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modelo de Roles de Intervención - SER JEFE</title>
+    <title>Los 9 Roles de Intervención - SER JEFE</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@700&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
     <style>
         :root {
             --brand-blue: #003f6b;
             --brand-gold: #e0c05a;
-            --brand-gold-light: #f4e6b0;
         }
-        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
         .font-bebas { font-family: 'Bebas Neue', cursive; }
-        .text-brand-blue { color: var(--brand-blue); }
         .bg-brand-blue { background-color: var(--brand-blue); }
         .text-brand-gold { color: var(--brand-gold); }
         .border-brand-gold { border-color: var(--brand-gold); }
         
         .role-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border-top: 4px solid var(--brand-gold);
+            transition: all 0.3s ease;
+            border-top: 5px solid #cbd5e1; /* Default gray */
         }
         .role-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transform: scale(1.02);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
-        .matrix-grid {
-            display: grid;
-            grid-template-columns: auto 1fr 1fr 1fr;
-            gap: 10px;
-        }
+        /* Colores específicos por tipo de impacto */
+        .card-high-results { border-top-color: #ef4444; } /* Rojo: Foco Resultados */
+        .card-high-people { border-top-color: var(--brand-gold); } /* Oro: Foco Personas */
+        .card-balanced { border-top-color: var(--brand-blue); } /* Azul: Equilibrio */
     </style>
 </head>
 <body>
 
-    <header class="bg-brand-blue text-white py-16 border-b-8 border-brand-gold">
+    <header class="bg-brand-blue text-white py-12 border-b-8 border-brand-gold shadow-lg">
         <div class="container mx-auto px-6 text-center">
-            <h1 class="text-5xl font-bebas tracking-wider text-brand-gold mb-4">Modelo de Roles de Intervención</h1>
-            <p class="text-xl max-w-3xl mx-auto font-light">
-                Champions, Kiel y McClendon: Profesionalizando la relación entre el líder y su equipo a través del equilibrio entre <strong>Resultados</strong> y <strong>Personas</strong>.
-            </p>
+            <h1 class="text-6xl font-bebas tracking-tighter text-brand-gold mb-2">Matriz de los 9 Estilos</h1>
+            <p class="text-lg font-light opacity-90 uppercase tracking-widest">Champions, Kiel y McClendon</p>
         </div>
     </header>
 
     <main class="container mx-auto px-6 py-12">
         
-        <section class="mb-16 bg-white p-8 rounded-lg shadow-sm border-l-8 border-brand-blue">
-            <h2 class="text-3xl font-bold text-brand-blue mb-4">¿Por qué este modelo?</h2>
-            <p class="text-gray-700 text-lg leading-relaxed mb-4">
-                No existe un estilo de liderazgo perfecto. El éxito reside en la <strong>versatilidad estratégica</strong>. Este mapa te permite navegar entre dos ejes críticos:
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <div class="role-card bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-xs font-bold text-gray-400">COORD: (1,1)</span>
+                    <i class="fas fa-eye text-gray-300 text-xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-brand-blue mb-2 uppercase">Observador</h3>
+                <p class="text-gray-600 text-sm italic">"Solo recopilo datos sin interferir."</p>
+                <p class="mt-4 text-sm text-gray-500">Útil para fases de diagnóstico inicial donde el jefe analiza el flujo de trabajo sin modificarlo.</p>
+            </div>
+
+            <div class="role-card bg-white p-6 rounded-xl shadow-sm border border-gray-100 card-high-people">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-xs font-bold text-brand-gold">COORD: (1,5)</span>
+                    <i class="fas fa-hands-helping text-brand-gold text-xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-brand-blue mb-2 uppercase">Facilitador</h3>
+                <p class="text-gray-600 text-sm italic">"Me aseguro de que el grupo trabaje cómodo."</p>
+                <p class="mt-4 text-sm text-gray-500">Para equipos competentes que necesitan mejorar su dinámica interna y clima laboral.</p>
+            </div>
+
+            <div class="role-card bg-white p-6 rounded-xl shadow-sm border border-gray-100 card-high-people">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-xs font-bold text-brand-gold">COORD: (1,9)</span>
+                    <i class="fas fa-heart text-brand-gold text-xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-brand-blue mb-2 uppercase">Consejero Personal</h3>
+                <p class="text-gray-600 text-sm italic">"Tu bienestar es mi prioridad ahora."</p>
+                <p class="mt-4 text-sm text-gray-500">Uso en crisis emocionales para asegurar el bienestar del empleado a largo plazo.</p>
+            </div>
+
+            <div class="role-card bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-xs font-bold text-gray-400">COORD: (5,1)</span>
+                    <i class="fas fa-tools text-gray-300 text-xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-brand-blue mb-2 uppercase">Consejero Técnico</h3>
+                <p class="text-gray-600 text-sm italic">"Tengo una recomendación técnica específica."</p>
+                <p class="mt-4 text-sm text-gray-500">Aporta sugerencias técnicas puntuales sin profundizar en el desarrollo humano.</p>
+            </div>
+
+            <div class="role-card bg-white p-6 rounded-xl shadow-sm border border-gray-100 card-balanced">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-xs font-bold text-brand-blue">COORD: (5,5)</span>
+                    <i class="fas fa-chalkboard-teacher text-brand-blue text-xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-brand-blue mb-2 uppercase text-brand-blue">Profesor</h3>
+                <p class="text-gray-600 text-sm italic text-brand-blue">"Te enseño la teoría y la práctica."</p>
+                <p class="mt-4 text-sm text-gray-500">El estilo de equilibrio. Transmite conocimientos mientras el equipo produce.</p>
+            </div>
+
+            <div class="role-card bg-white p-6 rounded-xl shadow-sm border border-gray-100 card-high-people">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-xs font-bold text-brand-gold">COORD: (5,9)</span>
+                    <i class="fas fa-seedling text-brand-gold text-xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-brand-blue mb-2 uppercase">Coach</h3>
+                <p class="text-gray-600 text-sm italic">"Te reto a crecer constantemente."</p>
+                <p class="mt-4 text-sm text-gray-500">Potencia habilidades mediante el acompañamiento y el desafío personal.</p>
+            </div>
+
+            <div class="role-card bg-white p-6 rounded-xl shadow-sm border border-gray-100 card-high-results">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-xs font-bold text-red-500">COORD: (9,1)</span>
+                    <i class="fas fa-exclamation-triangle text-red-500 text-xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-red-800 mb-2 uppercase">Experto</h3>
+                <p class="text-gray-600 text-sm italic">"Hay que cumplir la meta a toda costa."</p>
+                <p class="mt-4 text-sm text-gray-500">Adoptado en emergencias donde no hay tiempo para el aprendizaje lento; el resultado manda.</p>
+            </div>
+
+            <div class="role-card bg-white p-6 rounded-xl shadow-sm border border-gray-100 card-balanced">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-xs font-bold text-brand-blue">COORD: (9,5)</span>
+                    <i class="fas fa-star text-brand-blue text-xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-brand-blue mb-2 uppercase">Modelo</h3>
+                <p class="text-gray-600 text-sm italic">"Observa cómo se hace con calidad y ética."</p>
+                <p class="mt-4 text-sm text-gray-500">Establece altos estándares de acción directa para inspirar al equipo.</p>
+            </div>
+
+            <div class="role-card bg-brand-blue p-6 rounded-xl shadow-lg border-none transform scale-105">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-xs font-bold text-brand-gold">COORD: (9,9)</span>
+                    <i class="fas fa-handshake text-brand-gold text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2 uppercase">Socio</h3>
+                <p class="text-brand-gold-light text-sm italic font-bold">"Crecemos juntos, ganamos juntos."</p>
+                <p class="mt-4 text-sm text-gray-200">Nivel óptimo de colaboración para proyectos de alta complejidad y compromiso mutuo.</p>
+            </div>
+
+        </div>
+
+        <section class="mt-20 p-8 bg-white rounded-2xl border-2 border-brand-gold border-dashed text-center">
+            <h2 class="text-3xl font-bebas text-brand-blue mb-4 uppercase tracking-widest">¿Cómo elegir tu rol?</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                Antes de actuar, hazte la pregunta clave: <br>
+                <span class="text-xl font-bold text-brand-blue">"¿Qué necesita mi equipo hoy: que sea un Experto que dicte el camino o un Socio que colabore hombro con hombro?"</span>
             </p>
-            <div class="grid md:grid-cols-2 gap-6">
-                <div class="p-4 bg-gray-50 rounded border border-gray-200">
-                    <span class="font-bold text-brand-blue underline">Eje X: Responsabilidad por Resultados</span>
-                    <p class="text-sm text-gray-600">Enfoque en metas, tareas y objetivos técnicos.</p>
-                </div>
-                <div class="p-4 bg-gray-50 rounded border border-gray-200">
-                    <span class="font-bold text-brand-gold underline">Eje Y: Responsabilidad por Personas</span>
-                    <p class="text-sm text-gray-600">Enfoque en el crecimiento, bienestar y aprendizaje.</p>
-                </div>
-            </div>
         </section>
-
-        <h2 class="text-3xl font-bebas text-brand-blue mb-8 text-center uppercase tracking-widest">El Mapa de los 9 Estilos</h2>
-        
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-            <div class="role-card bg-white p-6 rounded-lg shadow-md">
-                <div class="flex justify-between items-start mb-4">
-                    <h3 class="text-xl font-bold text-brand-blue">Socio (9,9)</h3>
-                    <span class="bg-brand-gold text-white text-xs px-2 py-1 rounded">ÓPTIMO</span>
-                </div>
-                <p class="text-gray-600 text-sm mb-4">Máximo compromiso mutuo. Ideal para proyectos de alta complejidad y crecimiento compartido.</p>
-                <div class="text-xs font-semibold text-brand-blue italic">"Colaboramos hombro con hombro."</div>
-            </div>
-
-            <div class="role-card bg-white p-6 rounded-lg shadow-md">
-                <h3 class="text-xl font-bold text-brand-blue mb-2">Coach (5,9)</h3>
-                <p class="text-gray-600 text-sm mb-4">Potencia habilidades mediante el reto y acompañamiento constante.</p>
-                <div class="text-xs font-semibold text-brand-blue italic">"Te desafío a crecer."</div>
-            </div>
-
-            <div class="role-card bg-white p-6 rounded-lg shadow-md">
-                <h3 class="text-xl font-bold text-brand-blue mb-2 text-red-700">Experto (9,1)</h3>
-                <p class="text-gray-600 text-sm mb-4">Enfoque total en el resultado técnico. Crítico en emergencias o crisis de tiempo.</p>
-                <div class="text-xs font-semibold text-brand-blue italic">"El resultado es la prioridad absoluta."</div>
-            </div>
-
-            <div class="role-card bg-white p-6 rounded-lg shadow-md">
-                <h3 class="text-xl font-bold text-brand-blue mb-2 text-blue-500">Profesor (5,5)</h3>
-                <p class="text-gray-600 text-sm mb-4">Transmisión equitativa de teoría y práctica. Equilibrio perfecto para el aprendizaje.</p>
-            </div>
-
-            <div class="role-card bg-white p-6 rounded-lg shadow-md">
-                <h3 class="text-xl font-bold text-brand-blue mb-2">Modelo (9,5)</h3>
-                <p class="text-gray-600 text-sm mb-4">Enseñar con el ejemplo. Establece estándares de alta ética y calidad.</p>
-            </div>
-
-            <div class="role-card bg-white p-6 rounded-lg shadow-md">
-                <h3 class="text-xl font-bold text-brand-blue mb-2 text-green-600">Facilitador (1,5)</h3>
-                <p class="text-gray-600 text-sm mb-4">Prioriza la comodidad y dinámica grupal en equipos técnicamente competentes.</p>
-            </div>
-        </div>
-
-        <section class="bg-brand-blue text-white p-10 rounded-2xl shadow-xl">
-            <h2 class="text-3xl font-bebas text-brand-gold mb-6">Beneficios para el Jefe Consciente</h2>
-            <ul class="grid md:grid-cols-2 gap-8">
-                <li class="flex items-start">
-                    <i class="fas fa-chess-knight text-brand-gold mt-1 mr-4"></i>
-                    <div>
-                        <span class="font-bold block text-lg">Versatilidad Estratégica</span>
-                        <p class="text-gray-300 text-sm">Deja de ser "siempre el mismo" y adapta tu intervención a la necesidad del equipo.</p>
-                    </div>
-                </li>
-                <li class="flex items-start">
-                    <i class="fas fa-bullseye text-brand-gold mt-1 mr-4"></i>
-                    <div>
-                        <span class="font-bold block text-lg">Claridad de Expectativas</span>
-                        <p class="text-gray-300 text-sm">Reduce la fricción: el equipo sabe exactamente qué esperar de ti en cada fase.</p>
-                    </div>
-                </li>
-                <li class="flex items-start">
-                    <i class="fas fa-users-slash text-brand-gold mt-1 mr-4"></i>
-                    <div>
-                        <span class="font-bold block text-lg">Reducción del Aislamiento</span>
-                        <p class="text-gray-300 text-sm">Integración legítima en la dinámica del grupo sin invadir códigos privados.</p>
-                    </div>
-                </li>
-                <li class="flex items-start">
-                    <i class="fas fa-seedling text-brand-gold mt-1 mr-4"></i>
-                    <div>
-                        <span class="font-bold block text-lg">Desarrollo de Autonomía</span>
-                        <p class="text-gray-300 text-sm">Fomenta equipos independientes y libérate de la microgestión.</p>
-                    </div>
-                </li>
-            </ul>
-        </section>
-
-        <div class="mt-16 text-center italic text-gray-500">
-            <p>"La capacidad de moverse entre estos roles es lo que define a un líder de alto impacto."</p>
-        </div>
 
     </main>
 
-    <footer class="bg-gray-900 text-gray-400 py-8 text-center border-t-4 border-brand-gold">
-        <p class="text-sm font-bold text-brand-gold uppercase tracking-widest mb-2">SER JEFE x Sebastián Sánchez</p>
-        <p>&copy; 2024 - Guía de Roles de Intervención. "Solo se es... siendo."</p>
+    <footer class="bg-gray-900 text-gray-400 py-10 text-center border-t-8 border-brand-gold">
+        <p class="text-brand-gold font-bold mb-2">SER JEFE | DESMITIFICANDO LA JEFATURA</p>
+        <p class="text-xs">Código generado por HTML JEFE - 2024</p>
     </footer>
 
 </body>
