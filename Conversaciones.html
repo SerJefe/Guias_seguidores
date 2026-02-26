@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Guía de Comunicación Consultiva</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --azul-principal: #1D70B7;
+            --azul-oscuro: #292D63;
+            --amarillo-condugas: #F8B133;
+            --fondo-gris: #f8f9fa;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--fondo-gris);
+            color: #333;
+        }
+        .condugas-card {
+            background: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s;
+        }
+        .section-title {
+            border-bottom: 4px solid var(--amarillo-condugas);
+            display: inline-block;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.25rem;
+            color: var(--azul-oscuro);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .kpi-card {
+            border-left: 5px solid var(--azul-principal);
+        }
+        .btn-condugas {
+            background-color: var(--azul-oscuro);
+            color: white;
+            transition: all 0.3s;
+        }
+        .btn-condugas:hover {
+            background-color: var(--azul-principal);
+            transform: translateY(-2px);
+        }
+        .chat-bubble-guide {
+            background-color: var(--azul-principal);
+            color: white;
+            border-radius: 1rem 1rem 1rem 0;
+        }
+        .chat-bubble-user {
+            background-color: #e9ecef;
+            color: #333;
+            border-radius: 1rem 1rem 0 1rem;
+        }
+        .tab-active {
+            border-bottom: 3px solid var(--amarillo-condugas);
+            color: var(--azul-principal);
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <!-- BARRA SUPERIOR / LOGO -->
+    <header class="max-w-6xl mx-auto mb-8 flex justify-between items-center">
+        <div>
+            <h1 class="text-3xl font-extrabold text-[#292D63]">CONDUGAS</h1>
+            <p class="text-xs text-gray-500 uppercase tracking-widest">Siendo Consulting | Toolset</p>
+        </div>
+        <div class="hidden md:block text-right">
+            <span class="text-sm font-semibold text-[#1D70B7]">Módulo: Comunicación de Impacto</span>
+            <p class="text-xs text-gray-400">Actualización: 2024</p>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="max-w-6xl mx-auto mb-12">
+        <div class="condugas-card p-8 md:p-12 flex flex-col md:flex-row items-center gap-8 bg-gradient-to-br from-white to-gray-50">
+            <div class="md:w-3/5">
+                <h2 class="text-4xl font-bold text-[#292D63] mb-4">Refutar: Una herramienta práctica de conversación</h2>
+                <p class="text-lg text-gray-600 mb-8">Una técnica de preguntas, escucha y claridad para que la otra persona revise su idea por sí misma. Basada en el <strong>Élenchos</strong> socrático.</p>
+                <div class="flex flex-wrap gap-4">
+                    <a href="#metodologia" class="btn-condugas px-6 py-3 rounded-md font-bold text-sm shadow-lg">Ver la metodología</a>
+                    <button onclick="copyChecklist()" class="border-2 border-[#292D63] text-[#292D63] px-6 py-3 rounded-md font-bold text-sm hover:bg-gray-100">Copiar Checklist</button>
+                </div>
+            </div>
+            <div class="md:w-2/5 w-full">
+                <div class="kpi-card bg-white p-6 shadow-sm rounded-r-lg border border-gray-100">
+                    <h3 class="font-bold text-[#292D63] mb-4 border-b pb-2 italic">Resumen Ejecutivo</h3>
+                    <ul class="space-y-3 text-sm">
+                        <li class="flex items-center gap-2"><i class="fas fa-check-circle text-green-500"></i> No es ganar, es depurar ideas.</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check-circle text-green-500"></i> Ataca el argumento, no a la persona.</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check-circle text-green-500"></i> El silencio es tu mejor aliado.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 1: ¿QUÉ ES? -->
+    <section class="max-w-6xl mx-auto mb-16">
+        <h3 class="section-title">Qué es y Para qué sirve</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="condugas-card p-6 border-t-4 border-[#1D70B7]">
+                <div class="w-12 h-12 bg-[#f0f7ff] rounded-full flex items-center justify-center mb-4">
+                    <i class="fas fa-shield-alt text-[#1D70B7] text-xl"></i>
+                </div>
+                <h4 class="font-bold text-lg mb-2">No es ganar</h4>
+                <p class="text-gray-600 text-sm">Elimina la necesidad de tener la razón. El éxito es que la verdad emerja del diálogo.</p>
+            </div>
+            <div class="condugas-card p-6 border-t-4 border-[#1D70B7]">
+                <div class="w-12 h-12 bg-[#fffbeb] rounded-full flex items-center justify-center mb-4">
+                    <i class="fas fa-vial text-[#F8B133] text-xl"></i>
+                </div>
+                <h4 class="font-bold text-lg mb-2">Es depurar ideas</h4>
+                <p class="text-gray-600 text-sm">Como un laboratorio: filtramos las premisas hasta que solo quede lo que es coherente.</p>
+            </div>
+            <div class="condugas-card p-6 border-t-4 border-[#1D70B7]">
+                <div class="w-12 h-12 bg-[#f0fff4] rounded-full flex items-center justify-center mb-4">
+                    <i class="fas fa-leaf text-[#28a745] text-xl"></i>
+                </div>
+                <h4 class="font-bold text-lg mb-2">Claridad sin agresión</h4>
+                <p class="text-gray-600 text-sm">Usa el lenguaje limpio. La contradicción se muestra, no se arroja como un insulto.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 2: LA METODOLOGÍA (NÚCLEO) -->
+    <section id="metodologia" class="max-w-6xl mx-auto mb-16">
+        <h3 class="section-title">Metodología de los 6 Pasos</h3>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div class="lg:col-span-4 flex flex-col gap-2">
+                <button onclick="showStep(1)" class="step-btn w-full text-left p-4 rounded-md border-l-4 border-gray-300 hover:bg-gray-100 transition font-semibold" data-step="1">01. La Idea (Tesis)</button>
+                <button onclick="showStep(2)" class="step-btn w-full text-left p-4 rounded-md border-l-4 border-gray-300 hover:bg-gray-100 transition font-semibold" data-step="2">02. Precisión (Semántica)</button>
+                <button onclick="showStep(3)" class="step-btn w-full text-left p-4 rounded-md border-l-4 border-gray-300 hover:bg-gray-100 transition font-semibold" data-step="3">03. Compromisos (Premisas)</button>
+                <button onclick="showStep(4)" class="step-btn w-full text-left p-4 rounded-md border-l-4 border-gray-300 hover:bg-gray-100 transition font-semibold" data-step="4">04. Prueba (Ejemplos)</button>
+                <button onclick="showStep(5)" class="step-btn w-full text-left p-4 rounded-md border-l-4 border-gray-300 hover:bg-gray-100 transition font-semibold" data-step="5">05. Contradicción Limpia</button>
+                <button onclick="showStep(6)" class="step-btn w-full text-left p-4 rounded-md border-l-4 border-gray-300 hover:bg-gray-100 transition font-semibold" data-step="6">06. Ajuste (Revisión)</button>
+            </div>
+            <div class="lg:col-span-8">
+                <div id="step-content" class="condugas-card p-8 h-full min-h-[300px] border-l-8 border-[#F8B133]">
+                    <div id="step-data">
+                        <h4 class="text-2xl font-bold text-[#292D63] mb-4">Selecciona un paso para explorar</h4>
+                        <p class="text-gray-600">Haz clic en la lista de la izquierda para ver el detalle técnico, la etimología y la aplicación práctica de cada fase del Élenchos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 3: TRES HABILIDADES -->
+    <section class="max-w-6xl mx-auto mb-16">
+        <h3 class="section-title">Capacidades Críticas</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Ironía -->
+            <div class="flex flex-col">
+                <span class="bg-[#292D63] text-white px-3 py-1 text-xs font-bold rounded-full w-fit mb-4">HABILIDAD 1</span>
+                <h4 class="text-xl font-bold mb-4 italic">Ironía Útil (Modestia)</h4>
+                <div class="condugas-card overflow-hidden text-sm">
+                    <div class="p-4 bg-green-50 border-b border-green-100">
+                        <p class="font-bold text-green-700 uppercase text-xs">Sirve</p>
+                        <p class="italic">"Yo no estoy seguro, quizá tú lo tienes claro. ¿Me explicas?"</p>
+                    </div>
+                    <div class="p-4 bg-red-50">
+                        <p class="font-bold text-red-700 uppercase text-xs">No sirve</p>
+                        <p class="italic">"Ah, claro, eres un genio y por eso dices eso..."</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Escucha -->
+            <div class="flex flex-col">
+                <span class="bg-[#292D63] text-white px-3 py-1 text-xs font-bold rounded-full w-fit mb-4">HABILIDAD 2</span>
+                <h4 class="text-xl font-bold mb-4 italic">Escucha + Pregunta</h4>
+                <div class="space-y-4">
+                    <div class="flex gap-3">
+                        <div class="bg-[#F8B133] text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0">1</div>
+                        <p class="text-sm"><strong>Repetir:</strong> "Si te sigo bien, dices que..."</p>
+                    </div>
+                    <div class="flex gap-3">
+                        <div class="bg-[#F8B133] text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0">2</div>
+                        <p class="text-sm"><strong>Detectar:</strong> Identificar el "Siempre" o "Nunca".</p>
+                    </div>
+                    <div class="flex gap-3">
+                        <div class="bg-[#F8B133] text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0">3</div>
+                        <p class="text-sm"><strong>Un objetivo:</strong> Cada pregunta busca definir o comprobar.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Metáfora -->
+            <div class="flex flex-col">
+                <span class="bg-[#292D63] text-white px-3 py-1 text-xs font-bold rounded-full w-fit mb-4">HABILIDAD 3</span>
+                <h4 class="text-xl font-bold mb-4 italic">Metáfora Funcional</h4>
+                <div class="space-y-3">
+                    <div class="p-3 bg-white border border-gray-200 rounded-md text-sm">
+                        <strong>Mapa / Terreno:</strong> "¿Tu definición sirve en todos los casos?"
+                    </div>
+                    <div class="p-3 bg-white border border-gray-200 rounded-md text-sm">
+                        <strong>La Balanza:</strong> "¿Estas dos ideas pueden pesar lo mismo?"
+                    </div>
+                    <div class="p-3 bg-white border border-gray-200 rounded-md text-sm">
+                        <strong>El Filtro:</strong> "Pasemos tu idea por este caso límite."
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 4: EJEMPLO DE CHAT -->
+    <section class="max-w-4xl mx-auto mb-16">
+        <h3 class="section-title">Caso Práctico: El Élenchos en vivo</h3>
+        <div class="condugas-card p-6 md:p-10">
+            <div class="space-y-6">
+                <div class="flex justify-start">
+                    <div class="chat-bubble-user p-4 max-w-[80%] shadow-sm">
+                        <p class="text-xs font-bold mb-1">INTERLOCUTOR (Tesis)</p>
+                        "Ser un buen líder es nunca tener dudas."
+                    </div>
+                </div>
+                <div class="flex justify-end">
+                    <div class="chat-bubble-guide p-4 max-w-[80%] shadow-sm">
+                        <p class="text-xs font-bold mb-1">GUÍA (Ironía + Precisión)</p>
+                        "Puede ser; yo me confundo fácil. Ayúdame: ¿'nunca dudas' significa que si te equivocas no deberías haber dudado?"
+                    </div>
+                </div>
+                <div class="flex justify-start">
+                    <div class="chat-bubble-user p-4 max-w-[80%] shadow-sm">
+                        <p class="text-xs font-bold mb-1">INTERLOCUTOR (Aclara)</p>
+                        "No, significa que siempre debes proyectar seguridad."
+                    </div>
+                </div>
+                <div class="flex justify-end">
+                    <div class="chat-bubble-guide p-4 max-w-[80%] shadow-sm">
+                        <p class="text-xs font-bold mb-1">GUÍA (Contradicción Limpia)</p>
+                        "Dices que el buen líder proyecta seguridad, pero también aceptamos que un líder que no cuestiona sus riesgos es peligroso. ¿Cómo encajan ambas?"
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 pt-6 border-t border-gray-100 text-center">
+                <p class="text-sm text-gray-500 italic">Resultado: El interlocutor revisa su premisa por sí mismo.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 5: CHECKLIST & AUTOEVALUACIÓN -->
+    <section class="max-w-6xl mx-auto mb-16 grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Checklist -->
+        <div>
+            <h3 class="section-title">Checklist de Conversación</h3>
+            <div class="condugas-card p-6" id="checklist-container">
+                <ul class="space-y-3" id="checklist-items">
+                    <li class="flex items-start gap-3">
+                        <input type="checkbox" class="mt-1 h-5 w-5 text-[#1D70B7] rounded">
+                        <span>¿Pedí una definición antes de opinar?</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <input type="checkbox" class="mt-1 h-5 w-5 text-[#1D70B7] rounded">
+                        <span>¿Evité adjetivos sobre la persona?</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <input type="checkbox" class="mt-1 h-5 w-5 text-[#1D70B7] rounded">
+                        <span>¿Usé "Si te sigo bien..." para validar?</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <input type="checkbox" class="mt-1 h-5 w-5 text-[#1D70B7] rounded">
+                        <span>¿Planteé un caso límite para probar la idea?</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <input type="checkbox" class="mt-1 h-5 w-5 text-[#1D70B7] rounded">
+                        <span>¿Mantuve un tono de curiosidad (Ironía)?</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <input type="checkbox" class="mt-1 h-5 w-5 text-[#1D70B7] rounded">
+                        <span>¿La conclusión la sacó la otra persona?</span>
+                    </li>
+                </ul>
+                <div class="mt-6 flex gap-2">
+                    <button onclick="copyChecklist()" class="text-xs font-bold text-[#1D70B7] border border-[#1D70B7] px-4 py-2 rounded uppercase hover:bg-blue-50">Copiar items</button>
+                    <button class="text-xs font-bold text-gray-400 border border-gray-400 px-4 py-2 rounded uppercase cursor-not-allowed">Descargar PDF</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Divelog / Autoevaluación -->
+        <div>
+            <h3 class="section-title">DiveLog de Reunión</h3>
+            <div class="condugas-card p-6">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Nombre de la sesión</label>
+                        <input type="text" placeholder="Ej. Feedback Trimestral" class="w-full p-2 border rounded text-sm focus:border-[#1D70B7] outline-none">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">¿Nivel de Aporía?</label>
+                            <select class="w-full p-2 border rounded text-sm outline-none">
+                                <option>Bajo</option>
+                                <option>Medio (Incertidumbre útil)</option>
+                                <option>Alto (Replanteamiento total)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Tono emocional</label>
+                            <select class="w-full p-2 border rounded text-sm outline-none">
+                                <option>Colaborativo</option>
+                                <option>Tenso</option>
+                                <option>Neutral</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Reflexión: ¿Qué premisa se ajustó?</label>
+                        <textarea rows="3" class="w-full p-2 border rounded text-sm focus:border-[#1D70B7] outline-none" placeholder="Describe el cambio de perspectiva logrado..."></textarea>
+                    </div>
+                    <button class="btn-condugas w-full py-2 rounded-md text-sm font-bold uppercase tracking-wider shadow-md">Guardar en Log Personal</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 6: REGLAS LENGUAJE LIMPIO -->
+    <section class="max-w-6xl mx-auto mb-16">
+        <div class="bg-[#292D63] text-white p-8 rounded-lg shadow-xl relative overflow-hidden">
+            <div class="relative z-10">
+                <h3 class="text-2xl font-bold mb-6 flex items-center gap-2">
+                    <i class="fas fa-broom text-[#F8B133]"></i> Reglas de Lenguaje Limpio
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-sm">
+                    <div class="bg-white/10 p-4 rounded border border-white/20">
+                        <h5 class="font-bold text-[#F8B133] mb-2 uppercase text-xs tracking-widest">Frases Cortas</h5>
+                        <p>No satures. Una pregunta, un objetivo. Deja que el otro llene el silencio.</p>
+                    </div>
+                    <div class="bg-white/10 p-4 rounded border border-white/20">
+                        <h5 class="font-bold text-[#F8B133] mb-2 uppercase text-xs tracking-widest">Neutralidad</h5>
+                        <p>Elimina "creo que te equivocas". Usa "tus premisas A y B parecen chocar".</p>
+                    </div>
+                    <div class="bg-white/10 p-4 rounded border border-white/20">
+                        <h5 class="font-bold text-[#F8B133] mb-2 uppercase text-xs tracking-widest">No Etiquetas</h5>
+                        <p>Habla de la proposición, no de la persona. La idea es incoherente, no el interlocutor.</p>
+                    </div>
+                    <div class="bg-white/10 p-4 rounded border border-white/20">
+                        <h5 class="font-bold text-[#F8B133] mb-2 uppercase text-xs tracking-widest">Sin Trampas</h5>
+                        <p>No hagas preguntas con la respuesta incluida. Guía la atención, no la conclusión.</p>
+                    </div>
+                </div>
+            </div>
+            <i class="fas fa-comments absolute bottom-[-20px] right-[-20px] text-white/5 text-9xl"></i>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="max-w-6xl mx-auto py-8 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center text-gray-400 text-xs">
+        <div class="mb-4 md:mb-0">
+            <p>© 2024 CONDUGAS. Todos los derechos reservados.</p>
+            <p>Diseño por Especialista en Comunicación Interna & Siendo Consulting.</p>
+        </div>
+        <div class="flex gap-6">
+            <a href="#" class="hover:text-[#1D70B7]">Políticas de Capacitación</a>
+            <a href="#" class="hover:text-[#1D70B7]">Metodologías Ágiles</a>
+            <a href="#" class="hover:text-[#1D70B7]">Contacto</a>
+        </div>
+    </footer>
+
+    <script>
+        const steps = {
+            1: {
+                title: "01. La Idea (Tesis)",
+                desc: "El interlocutor afirma algo. Es el punto de partida.",
+                guide: "¿Qué es X para ti? ¿Cómo lo definirías?",
+                extra: "Etimología: Del griego 'Thesis' (posición). No juzgamos la idea, solo la recibimos para examinarla."
+            },
+            2: {
+                title: "02. Precisión (Semántica)",
+                desc: "Aclaramos el significado de las palabras para no pelear con sombras.",
+                guide: "¿A qué te refieres exactamente con X?",
+                extra: "Regla: Si no hay definición común, no hay diálogo, solo ruido."
+            },
+            3: {
+                title: "03. Compromisos",
+                desc: "Haces que acepte premisas relacionadas que también cree verdaderas.",
+                guide: "¿Estás de acuerdo en que A es necesario para B?",
+                extra: "Aquí buscamos la estructura lógica detrás de la opinión inicial."
+            },
+            4: {
+                title: "04. Prueba (Ejemplo)",
+                desc: "Someter la idea a un caso límite o contraejemplo real.",
+                guide: "¿Qué pasaría si aplicamos esto en la situación Y?",
+                extra: "Metáfora del Mapa: 'Tu definición es el mapa; probemos si sirve en este terreno escabroso'."
+            },
+            5: {
+                title: "05. Contradicción Limpia",
+                desc: "Muestras el choque lógico sin agresión personal.",
+                guide: "Si aceptas A y aceptas B, ¿cómo encaja que digas C?",
+                extra: "Microcopy: 'Ataca la idea, no a la persona'. Muestra el choque, no el error."
+            },
+            6: {
+                title: "06. Ajuste (Revisión)",
+                desc: "La persona ajusta su tesis o la abandona. Inicio del ciclo.",
+                guide: "¿Cómo formularías ahora tu idea considerando lo anterior?",
+                extra: "Resultado: Aporía. No es derrota, es el espacio para pensar mejor."
+            }
+        };
+
+        function showStep(num) {
+            const data = steps[num];
+            const content = document.getElementById('step-content');
+            const dataDiv = document.getElementById('step-data');
+            
+            // Highlight button
+            document.querySelectorAll('.step-btn').forEach(btn => {
+                btn.classList.remove('border-[#F8B133]', 'bg-gray-100', 'text-[#1D70B7]');
+                if(btn.getAttribute('data-step') == num) {
+                    btn.classList.add('border-[#F8B133]', 'bg-gray-100', 'text-[#1D70B7]');
+                }
+            });
+
+            dataDiv.innerHTML = `
+                <span class="text-xs font-bold text-[#F8B133] uppercase tracking-widest mb-2 block">Metodología Paso a Paso</span>
+                <h4 class="text-2xl font-bold text-[#292D63] mb-4">${data.title}</h4>
+                <p class="text-gray-700 mb-6">${data.desc}</p>
+                <div class="bg-blue-50 p-4 rounded-md border-l-4 border-[#1D70B7] mb-6">
+                    <p class="text-xs font-bold text-[#1D70B7] uppercase mb-1">Pregunta Guía:</p>
+                    <p class="italic text-[#292D63]">"${data.guide}"</p>
+                </div>
+                <div class="text-sm text-gray-500 bg-gray-50 p-4 rounded border border-gray-100 italic">
+                    <i class="fas fa-info-circle mr-2"></i> ${data.extra}
+                </div>
+            `;
+        }
+
+        function copyChecklist() {
+            const items = [
+                "1. Pedí una definición antes de opinar.",
+                "2. Evité adjetivos sobre la persona.",
+                "3. Usé 'Si te sigo bien...' para validar.",
+                "4. Planteé un caso límite para probar la idea.",
+                "5. Mantuve un tono de curiosidad (Ironía).",
+                "6. La conclusión la sacó la otra persona."
+            ];
+            const text = items.join("\n");
+            
+            const el = document.createElement('textarea');
+            el.value = text;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            
+            // Simple visual feedback
+            const btn = event.target;
+            const originalText = btn.innerText;
+            btn.innerText = "¡COPIADO!";
+            btn.classList.add('bg-green-100');
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.classList.remove('bg-green-100');
+            }, 2000);
+        }
+
+        // Initialize first step
+        window.onload = () => showStep(1);
+    </script>
+</body>
+</html>
