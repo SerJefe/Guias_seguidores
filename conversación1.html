@@ -3,220 +3,281 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>El Arte de Refutar sin Pelear - Herramienta Gerencial SER JEFE</title>
+    <title>Refutar sin Pelear | Siendo Consulting - Herramienta Práctica</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@700&family=Poppins:wght@600&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
             --brand-blue: #003f6b;
             --brand-gold: #e0c05a;
             --brand-gold-dark: #c8ab49;
-            --light-gray: #f9fafb;
-            --white: #ffffff;
+            --light-bg: #f8fafc;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: var(--light-bg); color: #334155; }
+        h1, h2, h3 { font-family: 'Poppins', sans-serif; }
+        
+        .bg-brand-blue { background-color: var(--brand-blue); }
+        .text-brand-gold { color: var(--brand-gold); }
+        .border-brand-gold { border-color: var(--brand-gold); }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, var(--brand-blue) 0%, #002a47 100%);
         }
 
-        body { font-family: 'Inter', sans-serif; background-color: var(--light-gray); color: #333; }
-        .font-bebas { font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.05em; }
-        .font-montserrat { font-family: 'Montserrat', sans-serif; }
-
-        /* Estilos de Tarjetas e Infografía */
         .step-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border-left: 4px solid var(--brand-gold);
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
         }
         .step-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border-left-color: var(--brand-gold);
+            transform: translateX(5px);
         }
 
-        .interactive-box {
-            background: white;
-            border: 2px solid var(--brand-blue);
-            border-radius: 8px;
-            padding: 20px;
+        .chat-bubble {
+            border-radius: 18px;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            max-width: 80%;
         }
+        .chat-guia { background-color: var(--brand-blue); color: white; align-self: flex-start; border-bottom-left-radius: 2px; }
+        .chat-persona { background-color: #e2e8f0; color: #1e293b; align-self: flex-end; border-bottom-right-radius: 2px; }
 
-        .btn-check {
-            background-color: var(--brand-blue);
-            color: var(--brand-gold);
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: all 0.3s;
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+        .accordion-active .accordion-content { max-height: 200px; }
+        
+        .btn-primary {
+            background-color: var(--brand-gold);
+            color: var(--brand-blue);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: background 0.3s;
         }
-        .btn-check:hover {
-            background-color: #002d4d;
-            color: white;
-        }
-
-        /* Simulación de Infografía */
-        .infographic-line {
-            position: relative;
-        }
-        .infographic-line::before {
-            content: '';
-            position: absolute;
-            left: 20px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: var(--brand-gold);
-            z-index: 0;
-        }
-        @media (min-width: 768px) {
-            .infographic-line::before { left: 50%; }
-        }
+        .btn-primary:hover { background-color: var(--brand-gold-dark); }
     </style>
 </head>
 <body>
 
-    <header class="bg-[#003f6b] text-white py-12 border-b-8 border-[#e0c05a] text-center">
-        <div class="container mx-auto px-6">
-            <h1 class="text-4xl md:text-6xl font-montserrat mb-4">EL ARTE DE REFUTAR SIN PELEAR</h1>
-            <p class="text-xl text-[#e0c05a] font-poppins">Guía Maestra para Jefes: De la Imposición a la Claridad Colectiva</p>
+    <nav class="bg-white border-b border-gray-200 py-4 shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <span class="text-xl font-bold text-brand-blue tracking-tight">SIENDO <span class="text-brand-gold">CONSULTING</span></span>
+            <div class="hidden md:flex space-x-8 text-sm font-semibold text-gray-600 uppercase tracking-wider">
+                <a href="#metodo" class="hover:text-brand-blue">Metodología</a>
+                <a href="#habilidades" class="hover:text-brand-blue">Habilidades</a>
+                <a href="#ejemplo" class="hover:text-brand-blue">Caso Real</a>
+                <a href="#checklist" class="hover:text-brand-blue">Checklist</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero-gradient text-white py-16 md:py-24">
+        <div class="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+            <div>
+                <h1 class="text-4xl md:text-5xl font-bold leading-tight mb-6">
+                    Refutar sin pelear: <br><span class="text-brand-gold">Herramienta de Conversación</span>
+                </h1>
+                <p class="text-lg text-blue-100 mb-8 leading-relaxed">
+                    Una técnica de preguntas, escucha y claridad para que la otra persona revise su idea por sí misma. No se trata de ganar, sino de depurar la verdad.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="#metodo" class="btn-primary text-center">Ver la metodología</a>
+                    <a href="#checklist" class="border-2 border-brand-gold text-brand-gold py-3 px-6 rounded-lg font-semibold hover:bg-brand-gold hover:text-brand-blue transition text-center">Descargar Checklist</a>
+                </div>
+            </div>
+            <div class="bg-white/10 p-8 rounded-2xl backdrop-blur-md border border-white/20">
+                <h3 class="text-brand-gold font-bold mb-4 uppercase text-sm tracking-widest">El Proceso de 6 Pasos</h3>
+                <ul class="space-y-3">
+                    <li class="flex items-center gap-3"><span class="bg-brand-gold text-brand-blue w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs">1</span> La Idea Base</li>
+                    <li class="flex items-center gap-3"><span class="bg-brand-gold text-brand-blue w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs">2</span> Precisión</li>
+                    <li class="flex items-center gap-3"><span class="bg-brand-gold text-brand-blue w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs">3</span> El Ejemplo</li>
+                    <li class="flex items-center gap-3 text-brand-gold font-bold italic">...y el camino hacia el ajuste</li>
+                </ul>
+            </div>
         </div>
     </header>
 
-    <main class="container mx-auto px-6 py-12 max-w-5xl">
-        
-        <section class="mb-16 bg-white p-8 rounded-lg shadow-sm border-l-8 border-[#003f6b]">
-            <h2 class="text-2xl font-bold text-[#003f6b] mb-4">Objetivo de la Herramienta</h2>
-            <div class="grid md:grid-cols-2 gap-8">
-                <p class="text-lg italic">"La idea no es 'ganar' una discusión. Es ayudar a que la otra persona revise su propia idea hasta que quede clara, firme y sin contradicciones. Tú no impones: haces preguntas para que el otro se escuche pensando."</p>
-                <ul class="space-y-2">
-                    <li class="flex items-center"><i class="fas fa-check-circle text-[#e0c05a] mr-2"></i> Pasar del "lo digo porque sí" al sentido común.</li>
-                    <li class="flex items-center"><i class="fas fa-check-circle text-[#e0c05a] mr-2"></i> Permitir que el otro descubra y mejore su idea.</li>
-                </ul>
+    <section class="py-20 container mx-auto px-6">
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100 text-center">
+                <i class="fas fa-handshake text-3xl text-brand-gold mb-4"></i>
+                <h3 class="text-xl font-bold text-brand-blue mb-2">No es ganar</h3>
+                <p class="text-gray-500 text-sm">El objetivo no es la rendición del otro, sino el encuentro con la coherencia.</p>
             </div>
-        </section>
+            <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100 text-center">
+                <i class="fas fa-filter text-3xl text-brand-gold mb-4"></i>
+                <h3 class="text-xl font-bold text-brand-blue mb-2">Es depurar ideas</h3>
+                <p class="text-gray-500 text-sm">Filtramos el ruido y las suposiciones para llegar a la esencia del argumento.</p>
+            </div>
+            <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100 text-center">
+                <i class="fas fa-feather text-3xl text-brand-gold mb-4"></i>
+                <h3 class="text-xl font-bold text-brand-blue mb-2">Claridad sin agresión</h3>
+                <p class="text-gray-500 text-sm">La verdad brilla más cuando no se impone con gritos, sino con lógica.</p>
+            </div>
+        </div>
+    </section>
 
-        <h2 class="text-3xl font-bebas text-center text-[#003f6b] mb-10">La Estructura Socrática (6 Pasos)</h2>
-        
-        <div class="infographic-line space-y-12">
-            <div class="relative z-10 flex flex-col md:flex-row items-center justify-between">
-                <div class="md:w-5/12 order-2 md:order-1 bg-white p-6 rounded shadow step-card">
-                    <h3 class="font-bold text-[#003f6b]">1. Punto de Partida</h3>
-                    <p class="text-sm text-gray-600">No reacciones. Toma la idea del otro como base neutral.</p>
+    <section id="metodo" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-brand-blue mb-12 text-center underline decoration-brand-gold decoration-4 underline-offset-8">La Metodología: El Camino Socrático</h2>
+            
+            <div class="max-w-4xl mx-auto space-y-4">
+                <div class="accordion-item border border-gray-200 rounded-lg overflow-hidden" onclick="toggleAccordion(this)">
+                    <div class="bg-gray-50 p-5 flex justify-between items-center cursor-pointer">
+                        <span class="font-bold text-brand-blue">Paso 1: La Idea</span>
+                        <i class="fas fa-chevron-down text-gray-400"></i>
+                    </div>
+                    <div class="accordion-content px-6 pb-5 bg-white">
+                        <p class="text-gray-600 mb-3 pt-4">Identifica la afirmación central que la otra persona está defendiendo.</p>
+                        <p class="text-brand-blue font-semibold italic text-sm">Pregunta guía: "¿Cuál es exactamente la idea que quieres proponer?"</p>
+                    </div>
                 </div>
-                <div class="w-10 h-10 bg-[#e0c05a] rounded-full flex items-center justify-center font-bold z-20 order-1 md:order-2 my-4 md:my-0">1</div>
-                <div class="md:w-5/12 order-3 hidden md:block"></div>
-            </div>
 
-            <div class="relative z-10 flex flex-col md:flex-row items-center justify-between">
-                <div class="md:w-5/12 hidden md:block"></div>
-                <div class="w-10 h-10 bg-[#e0c05a] rounded-full flex items-center justify-center font-bold z-20 my-4 md:my-0">2</div>
-                <div class="md:w-5/12 bg-white p-6 rounded shadow step-card">
-                    <h3 class="font-bold text-[#003f6b]">2. Pedir Precisión</h3>
-                    <p class="text-sm text-gray-600">¿Qué significa exactamente? Limpia la vaguedad.</p>
+                <div class="accordion-item border border-gray-200 rounded-lg overflow-hidden" onclick="toggleAccordion(this)">
+                    <div class="bg-gray-50 p-5 flex justify-between items-center cursor-pointer">
+                        <span class="font-bold text-brand-blue">Paso 2: Precisión</span>
+                        <i class="fas fa-chevron-down text-gray-400"></i>
+                    </div>
+                    <div class="accordion-content px-6 pb-5 bg-white">
+                        <p class="text-gray-600 mb-3 pt-4">Define los términos. Evita ambigüedades en palabras clave.</p>
+                        <p class="text-brand-blue font-semibold italic text-sm">Pregunta guía: "¿A qué te refieres exactamente cuando dices [término]?"</p>
+                    </div>
                 </div>
-            </div>
 
-            <div class="relative z-10 flex flex-col md:flex-row items-center justify-between">
-                <div class="md:w-5/12 bg-white p-6 rounded shadow step-card">
-                    <h3 class="font-bold text-[#003f6b]">3. El Suelo de la Realidad</h3>
-                    <p class="text-sm text-gray-600">Pide un ejemplo real. Baja la idea del aire al suelo.</p>
+                <div class="accordion-item border-2 border-brand-gold rounded-lg overflow-hidden" onclick="toggleAccordion(this)">
+                    <div class="bg-brand-gold/10 p-5 flex justify-between items-center cursor-pointer">
+                        <span class="font-bold text-brand-blue uppercase"><i class="fas fa-bolt mr-2"></i> Paso 5: Contradicción Limpia</span>
+                        <i class="fas fa-chevron-down text-brand-blue"></i>
+                    </div>
+                    <div class="accordion-content px-6 pb-5 bg-white">
+                        <p class="text-gray-600 mb-3 pt-4 font-bold">"Ataca la idea, no a la persona."</p>
+                        <p class="text-gray-600 mb-3">Muestra el choque: Aceptas A y aceptas B, pero aquí no encajan.</p>
+                        <p class="text-brand-blue font-semibold italic text-sm">Frase clave: "Si esto es cierto, ¿cómo se conecta con lo que dijiste antes?"</p>
+                    </div>
                 </div>
-                <div class="w-10 h-10 bg-[#e0c05a] rounded-full flex items-center justify-center font-bold z-20 my-4 md:my-0">3</div>
-                <div class="md:w-5/12 hidden md:block"></div>
+                
+                <p class="text-center text-sm text-gray-400 mt-4 italic">Pasos 3, 4 y 6 disponibles en el manual completo de formación.</p>
             </div>
+        </div>
+    </section>
 
-            <div class="relative z-10 flex flex-col md:flex-row items-center justify-between">
-                <div class="md:w-5/12 hidden md:block"></div>
-                <div class="w-10 h-10 bg-[#e0c05a] rounded-full flex items-center justify-center font-bold z-20 my-4 md:my-0">4</div>
-                <div class="md:w-5/12 bg-white p-6 rounded shadow step-card">
-                    <h3 class="font-bold text-[#003f6b]">4. El Caso Límite</h3>
-                    <p class="text-sm text-gray-600">¿Qué pasa si sucede X? Pon a prueba la resistencia de la idea.</p>
+    <section id="habilidades" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-brand-blue mb-16 text-center">Habilidades Críticas de Conversación</h2>
+            
+            <div class="grid md:grid-cols-2 gap-12">
+                <div class="bg-white p-8 rounded-2xl shadow-sm">
+                    <h3 class="text-xl font-bold text-brand-blue mb-4"><i class="fas fa-smile-wink text-brand-gold mr-2"></i> Ironía Útil (Sin burla)</h3>
+                    <p class="text-sm text-gray-500 italic mb-6">"Habla como quien quiere entender, no como quien quiere exhibir."</p>
+                    <div class="grid grid-cols-2 gap-4 text-xs font-bold uppercase tracking-wider">
+                        <div class="text-green-600 bg-green-50 p-3 rounded">Sirve: <br>Mostrar curiosidad ante una contradicción.</div>
+                        <div class="text-red-600 bg-red-50 p-3 rounded">No sirve: <br>Usar el sarcasmo para humillar al otro.</div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="relative z-10 flex flex-col md:flex-row items-center justify-between">
-                <div class="md:w-5/12 bg-white p-6 rounded shadow step-card">
-                    <h3 class="font-bold text-[#003f6b]">5. Mostrar Contradicción</h3>
-                    <p class="text-sm text-gray-600">Ataca la lógica, no a la persona. "A y B chocan aquí".</p>
-                </div>
-                <div class="w-10 h-10 bg-[#e0c05a] rounded-full flex items-center justify-center font-bold z-20 my-4 md:my-0">5</div>
-                <div class="md:w-5/12 hidden md:block"></div>
-            </div>
-
-             <div class="relative z-10 flex flex-col md:flex-row items-center justify-between">
-                <div class="md:w-5/12 hidden md:block"></div>
-                <div class="w-10 h-10 bg-[#e0c05a] rounded-full flex items-center justify-center font-bold z-20 my-4 md:my-0">6</div>
-                <div class="md:w-5/12 bg-white p-6 rounded shadow step-card">
-                    <h3 class="font-bold text-[#003f6b]">6. Invitación a Corregir</h3>
-                    <p class="text-sm text-gray-600">¿Cómo la ajustarías? El ciclo se repite hasta la solidez.</p>
+                <div class="bg-white p-8 rounded-2xl shadow-sm border-t-4 border-brand-gold">
+                    <h3 class="text-xl font-bold text-brand-blue mb-4"><i class="fas fa-lightbulb text-brand-gold mr-2"></i> Metáfora Funcional</h3>
+                    <p class="text-sm text-gray-500 mb-4">"La metáfora no decora: aclara y vuelve a lo literal."</p>
+                    <ul class="text-sm space-y-3">
+                        <li><strong>1. El Filtro:</strong> ¿Esta idea deja pasar la realidad o se queda atrapada en el juicio?</li>
+                        <li><strong>2. Mesa Coja:</strong> ¿Qué pasaría si le quitamos este argumento de apoyo?</li>
+                        <li><strong>3. Mapa vs Terreno:</strong> ¿Estamos hablando del plan o de lo que pasa en la calle?</li>
+                    </ul>
                 </div>
             </div>
         </div>
+    </section>
 
-        <section class="mt-20 grid md:grid-cols-2 gap-10">
-            <div class="interactive-box border-brand-gold">
-                <h3 class="text-xl font-bold text-[#003f6b] mb-4 font-bebas">La Ironía Útil (Bajar el Ego)</h3>
-                <p class="text-sm mb-4">La ironía gerencial sirve para que el otro explique mejor, no para humillar.</p>
-                <ul class="text-sm space-y-2">
-                    <li class="p-2 bg-green-50 rounded border-l-4 border-green-500"><strong>Sí:</strong> "Ayúdame: si eso es así, ¿qué pasa en este ejemplo?"</li>
-                    <li class="p-2 bg-red-50 rounded border-l-4 border-red-500"><strong>No:</strong> "Ah, claro... tú siempre tienes razón."</li>
-                </ul>
+    <section id="ejemplo" class="py-20 bg-white">
+        <div class="container mx-auto px-6 max-w-3xl">
+            <h2 class="text-3xl font-bold text-brand-blue mb-8 text-center">Simulación de Caso</h2>
+            <div class="bg-gray-100 rounded-3xl p-8 flex flex-col space-y-4 shadow-inner">
+                <div class="chat-bubble chat-persona self-end">"Es que los jóvenes de hoy no tienen compromiso con nada."</div>
+                <div class="chat-bubble chat-guia self-start">"Entiendo. ¿A qué te refieres exactamente con 'compromiso'?"</div>
+                <div class="chat-bubble chat-persona self-end">"A quedarse más tiempo, a sudar la camiseta por la empresa."</div>
+                <div class="chat-bubble chat-guia self-start">"¿Conoces a algún joven que sea apasionado por un hobby o deporte?"</div>
+                <div class="chat-bubble chat-persona self-end">"Sí, mi sobrino entrena 4 horas al día sin falta."</div>
+                <div class="chat-bubble chat-guia self-start italic">"Entonces el problema no es que no tengan compromiso 'con nada', sino que no han encontrado el motivo para tenerlo aquí, ¿cierto?"</div>
             </div>
+            <div class="mt-8 grid grid-cols-3 gap-4 text-center">
+                <div><span class="block font-bold text-brand-blue">Situación</span><span class="text-xs text-gray-500 text-balance">Generalización negativa</span></div>
+                <div><span class="block font-bold text-brand-blue">Diálogo</span><span class="text-xs text-gray-500 text-balance">Uso de ejemplo contra-intuitivo</span></div>
+                <div><span class="block font-bold text-brand-blue">Resultado</span><span class="text-xs text-gray-500 text-balance">Ajuste de la idea inicial</span></div>
+            </div>
+        </div>
+    </section>
 
-            <div class="interactive-box border-brand-blue">
-                <h3 class="text-xl font-bold text-[#003f6b] mb-4 font-bebas">Metáforas de Poder</h3>
-                <div class="space-y-4 text-sm">
-                    <p><strong>🗺️ El Mapa y el Terreno:</strong> ¿Coincide tu frase con la realidad?</p>
-                    <p><strong>🪑 La Mesa Coja:</strong> Si la idea tiene una pata floja, se tambalea.</p>
-                    <p><strong>☕ El Filtro:</strong> ¿Qué deja pasar tu definición?</p>
+    <section id="checklist" class="py-20 bg-brand-blue text-white">
+        <div class="container mx-auto px-6 max-w-2xl">
+            <div class="bg-white text-gray-800 rounded-2xl p-8 shadow-2xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 bg-brand-gold px-4 py-1 text-xs font-bold text-brand-blue uppercase">Flash Tool</div>
+                <h2 class="text-2xl font-bold mb-6 text-brand-blue border-b pb-4">Checklist: ¿Estoy refutando bien?</h2>
+                <ul class="space-y-4 mb-8" id="checklistItems">
+                    <li class="flex gap-3 items-center"><input type="checkbox" class="w-5 h-5 accent-brand-gold"> <span>¿He repetido su idea para confirmar que la entiendo?</span></li>
+                    <li class="flex gap-3 items-center"><input type="checkbox" class="w-5 h-5 accent-brand-gold"> <span>¿He evitado usar las palabras "pero" o "estás mal"?</span></li>
+                    <li class="flex gap-3 items-center"><input type="checkbox" class="w-5 h-5 accent-brand-gold"> <span>¿Mi pregunta busca claridad o busca ganar?</span></li>
+                    <li class="flex gap-3 items-center"><input type="checkbox" class="w-5 h-5 accent-brand-gold"> <span>¿Ataco la idea y no el carácter de la persona?</span></li>
+                    <li class="flex gap-3 items-center"><input type="checkbox" class="w-5 h-5 accent-brand-gold"> <span>¿He guardado silencio tras hacer una pregunta difícil?</span></li>
+                </ul>
+                <div class="flex gap-3">
+                    <button onclick="copyChecklist()" class="flex-1 bg-gray-100 hover:bg-gray-200 py-3 rounded-lg font-bold text-brand-blue transition flex items-center justify-center gap-2">
+                        <i class="fas fa-copy"></i> Copiar Checklist
+                    </button>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section id="evaluacion" class="mt-20 bg-[#003f6b] text-white p-10 rounded-xl shadow-2xl">
-            <h2 class="text-3xl font-bebas text-[#e0c05a] mb-6">Laboratorio Gerencial: ¿Cómo te fue?</h2>
-            <p class="mb-8">Usa esta tabla para evaluar tu desempeño tras una conversación difícil.</p>
-            
-            <div class="overflow-x-auto">
-                <table class="w-full text-left bg-white text-gray-800 rounded-lg overflow-hidden">
-                    <thead class="bg-gray-200">
-                        <tr>
-                            <th class="p-4">Hábito</th>
-                            <th class="p-4">Autoevaluación (1-5)</th>
-                            <th class="p-4">Notas de Mejora</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="border-b">
-                            <td class="p-4 font-semibold">¿Repetí lo que entendí?</td>
-                            <td class="p-4"><input type="number" class="w-16 border rounded p-1" min="1" max="5"></td>
-                            <td class="p-4"><input type="text" class="w-full border rounded p-1" placeholder="..."></td>
-                        </tr>
-                        <tr class="border-b">
-                            <td class="p-4 font-semibold">¿Hice solo una pregunta por vez?</td>
-                            <td class="p-4"><input type="number" class="w-16 border rounded p-1" min="1" max="5"></td>
-                            <td class="p-4"><input type="text" class="w-full border rounded p-1" placeholder="..."></td>
-                        </tr>
-                        <tr class="border-b">
-                            <td class="p-4 font-semibold">¿Ataqué la idea y no a la persona?</td>
-                            <td class="p-4"><input type="number" class="w-16 border rounded p-1" min="1" max="5"></td>
-                            <td class="p-4"><input type="text" class="w-full border rounded p-1" placeholder="..."></td>
-                        </tr>
-                        <tr>
-                            <td class="p-4 font-semibold">¿Usé lenguaje limpio (sin etiquetas)?</td>
-                            <td class="p-4"><input type="number" class="w-16 border rounded p-1" min="1" max="5"></td>
-                            <td class="p-4"><input type="text" class="w-full border rounded p-1" placeholder="..."></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="mt-8 text-center">
-                <button onclick="alert('Ejercicio guardado en tu memoria gerencial. ¡Sigue practicando!')" class="btn-check">DESCARGAR PLAN DE ACCIÓN (PRÓXIMAMENTE)</button>
-            </div>
-        </section>
+    <section class="py-20 container mx-auto px-6 text-center">
+        <h3 class="text-brand-gold font-bold uppercase tracking-widest text-sm mb-4">Principios de Lenguaje Limpio</h3>
+        <div class="flex flex-wrap justify-center gap-8">
+            <span class="px-4 py-2 bg-white rounded-full border border-gray-200 text-sm font-semibold shadow-sm">Frases cortas</span>
+            <span class="px-4 py-2 bg-white rounded-full border border-gray-200 text-sm font-semibold shadow-sm">Neutralidad absoluta</span>
+            <span class="px-4 py-2 bg-white rounded-full border border-gray-200 text-sm font-semibold shadow-sm">No etiquetas (Eres/Soy)</span>
+            <span class="px-4 py-2 bg-white rounded-full border border-gray-200 text-sm font-semibold shadow-sm">Preguntas sin conclusión</span>
+        </div>
+    </section>
 
-    </main>
-
-    <footer class="bg-gray-900 text-gray-400 py-10 text-center">
-        <p class="mb-2">© 2026 SER JEFE x Sebastián Sánchez. Herramienta diseñada por <strong>HTML JEFE</strong>.</p>
-        <p class="text-sm">"Solo se puede SER... siendo."</p>
+    <footer class="bg-gray-900 text-gray-500 py-12 text-center border-t-4 border-brand-gold">
+        <div class="container mx-auto px-6">
+            <p class="text-white font-bold mb-2">SIENDO <span class="text-brand-gold">CONSULTING</span></p>
+            <p class="text-sm max-w-sm mx-auto mb-6">Herramienta educativa para líderes y equipos que buscan transformar la confrontación en colaboración.</p>
+            <p class="text-xs uppercase tracking-tighter">&copy; 2024 Sebastián Sánchez - Una nueva mirada a la jefatura: SER... siendo.</p>
+        </div>
     </footer>
 
+    <script>
+        function toggleAccordion(element) {
+            const items = document.querySelectorAll('.accordion-item');
+            items.forEach(item => {
+                if (item === element) {
+                    item.classList.toggle('accordion-active');
+                    const icon = item.querySelector('.fas');
+                    icon.classList.toggle('fa-chevron-down');
+                    icon.classList.toggle('fa-chevron-up');
+                } else {
+                    item.classList.remove('accordion-active');
+                    const icon = item.querySelector('.fas');
+                    icon.classList.add('fa-chevron-down');
+                    icon.classList.remove('fa-chevron-up');
+                }
+            });
+        }
+
+        function copyChecklist() {
+            const items = [
+                "1. ¿He repetido su idea para confirmar?",
+                "2. ¿He evitado el 'pero'?",
+                "3. ¿Mi pregunta busca claridad?",
+                "4. ¿Ataco la idea, no la persona?",
+                "5. ¿He guardado silencio estratégico?"
+            ];
+            const text = items.join("\n");
+            navigator.clipboard.writeText(text).then(() => {
+                alert("Checklist copiado al portapapeles");
+            });
+        }
+    </script>
 </body>
 </html>
+
