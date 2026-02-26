@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Arte de Refutar sin Pelear - Herramienta Gerencial SER JEFE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@700&family=Poppins:wght@600&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-blue: #003f6b;
+            --brand-gold: #e0c05a;
+            --brand-gold-dark: #c8ab49;
+            --light-gray: #f9fafb;
+            --white: #ffffff;
+        }
+
+        body { font-family: 'Inter', sans-serif; background-color: var(--light-gray); color: #333; }
+        .font-bebas { font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.05em; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+
+        /* Estilos de Tarjetas e Infografía */
+        .step-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 4px solid var(--brand-gold);
+        }
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .interactive-box {
+            background: white;
+            border: 2px solid var(--brand-blue);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .btn-check {
+            background-color: var(--brand-blue);
+            color: var(--brand-gold);
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .btn-check:hover {
+            background-color: #002d4d;
+            color: white;
+        }
+
+        /* Simulación de Infografía */
+        .infographic-line {
+            position: relative;
+        }
+        .infographic-line::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--brand-gold);
+            z-index: 0;
+        }
+        @media (min-width: 768px) {
+            .infographic-line::before { left: 50%; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="bg-[#003f6b] text-white py-12 border-b-8 border-[#e0c05a] text-center">
+        <div class="container mx-auto px-6">
+            <h1 class="text-4xl md:text-6xl font-montserrat mb-4">EL ARTE DE REFUTAR SIN PELEAR</h1>
+            <p class="text-xl text-[#e0c05a] font-poppins">Guía Maestra para Jefes: De la Imposición a la Claridad Colectiva</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12 max-w-5xl">
+        
+        <section class="mb-16 bg-white p-8 rounded-lg shadow-sm border-l-8 border-[#003f6b]">
+            <h2 class="text-2xl font-bold text-[#003f6b] mb-4">Objetivo de la Herramienta</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <p class="text-lg italic">"La idea no es 'ganar' una discusión. Es ayudar a que la otra persona revise su propia idea hasta que quede clara, firme y sin contradicciones. Tú no impones: haces preguntas para que el otro se escuche pensando."</p>
+                <ul class="space-y-2">
+                    <li class="flex items-center"><i class="fas fa-check-circle text-[#e0c05a] mr-2"></i> Pasar del "lo digo porque sí" al sentido común.</li>
+                    <li class="flex items-center"><i class="fas fa-check-circle text-[#e0c05a] mr-2"></i> Permitir que el otro descubra y mejore su idea.</li>
+                </ul>
+            </div>
+        </section>
+
+        <h2 class="text-3xl font-bebas text-center text-[#003f6b] mb-10">La Estructura Socrática (6 Pasos)</h2>
+        
+        <div class="infographic-line space-y-12">
+            <div class="relative z-10 flex flex-col md:flex-row items-center justify-between">
+                <div class="md:w-5/12 order-2 md:order-1 bg-white p-6 rounded shadow step-card">
+                    <h3 class="font-bold text-[#003f6b]">1. Punto de Partida</h3>
+                    <p class="text-sm text-gray-600">No reacciones. Toma la idea del otro como base neutral.</p>
+                </div>
+                <div class="w-10 h-10 bg-[#e0c05a] rounded-full flex items-center justify-center font-bold z-20 order-1 md:order-2 my-4 md:my-0">1</div>
+                <div class="md:w-5/12 order-3 hidden md:block"></div>
+            </div>
+
+            <div class="relative z-10 flex flex-col md:flex-row items-center justify-between">
+                <div class="md:w-5/12 hidden md:block"></div>
+                <div class="w-10 h-10 bg-[#e0c05a] rounded-full flex items-center justify-center font-bold z-20 my-4 md:my-0">2</div>
+                <div class="md:w-5/12 bg-white p-6 rounded shadow step-card">
+                    <h3 class="font-bold text-[#003f6b]">2. Pedir Precisión</h3>
+                    <p class="text-sm text-gray-600">¿Qué significa exactamente? Limpia la vaguedad.</p>
+                </div>
+            </div>
+
+            <div class="relative z-10 flex flex-col md:flex-row items-center justify-between">
+                <div class="md:w-5/12 bg-white p-6 rounded shadow step-card">
+                    <h3 class="font-bold text-[#003f6b]">3. El Suelo de la Realidad</h3>
+                    <p class="text-sm text-gray-600">Pide un ejemplo real. Baja la idea del aire al suelo.</p>
+                </div>
+                <div class="w-10 h-10 bg-[#e0c05a] rounded-full flex items-center justify-center font-bold z-20 my-4 md:my-0">3</div>
+                <div class="md:w-5/12 hidden md:block"></div>
+            </div>
+
+            <div class="relative z-10 flex flex-col md:flex-row items-center justify-between">
+                <div class="md:w-5/12 hidden md:block"></div>
+                <div class="w-10 h-10 bg-[#e0c05a] rounded-full flex items-center justify-center font-bold z-20 my-4 md:my-0">4</div>
+                <div class="md:w-5/12 bg-white p-6 rounded shadow step-card">
+                    <h3 class="font-bold text-[#003f6b]">4. El Caso Límite</h3>
+                    <p class="text-sm text-gray-600">¿Qué pasa si sucede X? Pon a prueba la resistencia de la idea.</p>
+                </div>
+            </div>
+
+            <div class="relative z-10 flex flex-col md:flex-row items-center justify-between">
+                <div class="md:w-5/12 bg-white p-6 rounded shadow step-card">
+                    <h3 class="font-bold text-[#003f6b]">5. Mostrar Contradicción</h3>
+                    <p class="text-sm text-gray-600">Ataca la lógica, no a la persona. "A y B chocan aquí".</p>
+                </div>
+                <div class="w-10 h-10 bg-[#e0c05a] rounded-full flex items-center justify-center font-bold z-20 my-4 md:my-0">5</div>
+                <div class="md:w-5/12 hidden md:block"></div>
+            </div>
+
+             <div class="relative z-10 flex flex-col md:flex-row items-center justify-between">
+                <div class="md:w-5/12 hidden md:block"></div>
+                <div class="w-10 h-10 bg-[#e0c05a] rounded-full flex items-center justify-center font-bold z-20 my-4 md:my-0">6</div>
+                <div class="md:w-5/12 bg-white p-6 rounded shadow step-card">
+                    <h3 class="font-bold text-[#003f6b]">6. Invitación a Corregir</h3>
+                    <p class="text-sm text-gray-600">¿Cómo la ajustarías? El ciclo se repite hasta la solidez.</p>
+                </div>
+            </div>
+        </div>
+
+        <section class="mt-20 grid md:grid-cols-2 gap-10">
+            <div class="interactive-box border-brand-gold">
+                <h3 class="text-xl font-bold text-[#003f6b] mb-4 font-bebas">La Ironía Útil (Bajar el Ego)</h3>
+                <p class="text-sm mb-4">La ironía gerencial sirve para que el otro explique mejor, no para humillar.</p>
+                <ul class="text-sm space-y-2">
+                    <li class="p-2 bg-green-50 rounded border-l-4 border-green-500"><strong>Sí:</strong> "Ayúdame: si eso es así, ¿qué pasa en este ejemplo?"</li>
+                    <li class="p-2 bg-red-50 rounded border-l-4 border-red-500"><strong>No:</strong> "Ah, claro... tú siempre tienes razón."</li>
+                </ul>
+            </div>
+
+            <div class="interactive-box border-brand-blue">
+                <h3 class="text-xl font-bold text-[#003f6b] mb-4 font-bebas">Metáforas de Poder</h3>
+                <div class="space-y-4 text-sm">
+                    <p><strong>🗺️ El Mapa y el Terreno:</strong> ¿Coincide tu frase con la realidad?</p>
+                    <p><strong>🪑 La Mesa Coja:</strong> Si la idea tiene una pata floja, se tambalea.</p>
+                    <p><strong>☕ El Filtro:</strong> ¿Qué deja pasar tu definición?</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="evaluacion" class="mt-20 bg-[#003f6b] text-white p-10 rounded-xl shadow-2xl">
+            <h2 class="text-3xl font-bebas text-[#e0c05a] mb-6">Laboratorio Gerencial: ¿Cómo te fue?</h2>
+            <p class="mb-8">Usa esta tabla para evaluar tu desempeño tras una conversación difícil.</p>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-left bg-white text-gray-800 rounded-lg overflow-hidden">
+                    <thead class="bg-gray-200">
+                        <tr>
+                            <th class="p-4">Hábito</th>
+                            <th class="p-4">Autoevaluación (1-5)</th>
+                            <th class="p-4">Notas de Mejora</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b">
+                            <td class="p-4 font-semibold">¿Repetí lo que entendí?</td>
+                            <td class="p-4"><input type="number" class="w-16 border rounded p-1" min="1" max="5"></td>
+                            <td class="p-4"><input type="text" class="w-full border rounded p-1" placeholder="..."></td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="p-4 font-semibold">¿Hice solo una pregunta por vez?</td>
+                            <td class="p-4"><input type="number" class="w-16 border rounded p-1" min="1" max="5"></td>
+                            <td class="p-4"><input type="text" class="w-full border rounded p-1" placeholder="..."></td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="p-4 font-semibold">¿Ataqué la idea y no a la persona?</td>
+                            <td class="p-4"><input type="number" class="w-16 border rounded p-1" min="1" max="5"></td>
+                            <td class="p-4"><input type="text" class="w-full border rounded p-1" placeholder="..."></td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 font-semibold">¿Usé lenguaje limpio (sin etiquetas)?</td>
+                            <td class="p-4"><input type="number" class="w-16 border rounded p-1" min="1" max="5"></td>
+                            <td class="p-4"><input type="text" class="w-full border rounded p-1" placeholder="..."></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="mt-8 text-center">
+                <button onclick="alert('Ejercicio guardado en tu memoria gerencial. ¡Sigue practicando!')" class="btn-check">DESCARGAR PLAN DE ACCIÓN (PRÓXIMAMENTE)</button>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-900 text-gray-400 py-10 text-center">
+        <p class="mb-2">© 2026 SER JEFE x Sebastián Sánchez. Herramienta diseñada por <strong>HTML JEFE</strong>.</p>
+        <p class="text-sm">"Solo se puede SER... siendo."</p>
+    </footer>
+
+</body>
+</html>
