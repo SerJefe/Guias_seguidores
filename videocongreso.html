@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Guion + Fichas (Congreso vs Presidencia)</title>
+  <style>
+    :root{
+      --bg:#0b0f17; --card:#121a29; --muted:#9fb0c9; --text:#e9f0ff;
+      --line:#24304a; --accent:#7aa2ff; --good:#4ade80; --warn:#fbbf24; --bad:#fb7185;
+    }
+    body{margin:0;background:var(--bg);color:var(--text);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Arial}
+    .wrap{max-width:980px;margin:0 auto;padding:20px}
+    h1{font-size:22px;margin:6px 0 14px}
+    h2{font-size:18px;margin:22px 0 10px}
+    h3{font-size:15px;margin:18px 0 8px;color:#dbe7ff}
+    p{margin:8px 0;color:var(--text)}
+    .muted{color:var(--muted)}
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}
+    .card{
+      background:var(--card); border:1px solid var(--line);
+      border-radius:14px; padding:14px 14px 12px;
+      box-shadow:0 10px 30px rgba(0,0,0,.18)
+    }
+    .span-12{grid-column:span 12}
+    .span-8{grid-column:span 8}
+    .span-6{grid-column:span 6}
+    .span-4{grid-column:span 4}
+    .span-3{grid-column:span 3}
+    @media (max-width:860px){
+      .span-8,.span-6,.span-4,.span-3{grid-column:span 12}
+    }
+    .pill{display:inline-block;padding:4px 10px;border-radius:999px;border:1px solid var(--line);color:var(--muted);font-size:12px}
+    .kpi{display:flex;gap:10px;flex-wrap:wrap}
+    .kpi .box{flex:1;min-width:180px;background:#0e1524;border:1px solid var(--line);border-radius:12px;padding:10px}
+    .kpi .val{font-size:22px;font-weight:700}
+    .kpi .lab{font-size:12px;color:var(--muted)}
+    table{width:100%;border-collapse:collapse;margin-top:8px}
+    th,td{border-bottom:1px solid var(--line);padding:10px 8px;text-align:left;vertical-align:top}
+    th{font-size:12px;color:var(--muted);font-weight:600}
+    td{font-size:14px}
+    .note{font-size:12px;color:var(--muted);margin-top:10px}
+    .script{background:#0e1524;border:1px dashed #2c3b5a;border-radius:14px;padding:14px}
+    .script b{color:#dbe7ff}
+    .script .t{color:var(--muted);font-size:12px;margin-bottom:6px}
+    .barwrap{margin-top:10px;background:#0e1524;border:1px solid var(--line);border-radius:14px;padding:12px}
+    .bar{height:12px;border-radius:999px;background:#1a2540;overflow:hidden;border:1px solid #263659}
+    .seg{height:100%;float:left}
+    .seg.left{background:var(--bad)}
+    .seg.centerL{background:var(--warn)}
+    .seg.center{background:#60a5fa}
+    .seg.centerR{background:#34d399}
+    .seg.right{background:#a78bfa}
+    .legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+    .leg{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:12px}
+    .sw{width:12px;height:12px;border-radius:3px;border:1px solid #2b3a58}
+    .cta{border-left:4px solid var(--accent);padding-left:10px}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .small{font-size:12px}
+    .hr{height:1px;background:var(--line);margin:12px 0}
+    .badge{font-size:11px;color:#cfe0ff;border:1px solid #2b3a58;background:#0e1524;border-radius:999px;padding:3px 8px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Guion completo + fichas (Instagram) — Congreso vs Presidencia</h1>
+    <p class="muted">Diseñado para video “mediano” (2–3 min) y para carrusel/recortes por fichas.</p>
+
+    <!-- ===================== GUION ===================== -->
+    <h2>1) Guion completo (teleprompter)</h2>
+    <div class="card span-12 script">
+      <div class="t">Duración objetivo: 2–3 minutos | Ritmo: 130–150 palabras/min</div>
+
+      <p><b>[Gancho | 0:00–0:10]</b><br/>
+      “Si tú solo votas por presidente, estás dejando que otros elijan a quienes <b>aprueban las leyes</b>. Porque el presidente propone, pero <b>el Congreso decide</b>.”</p>
+
+      <p><b>[Idea central | 0:10–0:30]</b><br/>
+      “En Colombia votamos por <b>Senado</b> y <b>Cámara</b>, y ahí se define qué reformas pasan, cuáles se frenan y cómo se controla al gobierno. Por eso hablar de democracia sin Congreso es ver la mitad del partido.”</p>
+
+      <p><b>[Dato 1: participación | 0:30–0:55]</b><br/>
+      “En 2022, en elecciones de Congreso, la participación fue de alrededor de <b>48,75%</b>: o sea, más de la mitad no votó Congreso. Pero en presidencia la participación fue mayor: <b>54,98%</b> en primera vuelta y <b>58,17%</b> en segunda. Eso muestra algo: mucha gente aparece solo cuando es ‘presidente’, y se pierde el voto que define el poder real en las leyes.”</p>
+
+      <p><b>[Dato 2: pluralidad | 0:55–1:30]</b><br/>
+      “Mira la pluralidad del Senado: el partido más grande en 2022 tuvo <b>20 curules</b>, pero el Senado tiene <b>108</b>. Eso significa que nadie gobierna solo: todo depende de alianzas, negociación y control político. Si quieres equilibrio y contrapesos, el Congreso es clave.”</p>
+
+      <p><b>[Explicación simple: cómo se arma una mayoría | 1:30–2:00]</b><br/>
+      “Para aprobar cosas importantes se necesita mayoría en votaciones. En un Senado de 108, una mayoría simple suele ser alrededor de <b>55 votos</b>. Entonces, aun ganando presidencia, si el Congreso no acompaña, el gobierno no puede ‘hacer y deshacer’ como si fuera una sola persona.”</p>
+
+      <p class="cta"><b>[Mensaje práctico: voto estratégico y pluralidad | 2:00–2:35]</b><br/>
+      “La clave es entender esto: <b>puedes votar diferente</b> en presidencia y en Congreso para buscar pluralidad, o puedes concentrar tu voto si tu prioridad es que una agenda tenga fuerza legislativa. Lo que no conviene es votar ‘a ciegas’ y luego sorprenderte cuando el Congreso aprueba o bloquea reformas. Si te importan tus intereses, míralo como un paquete: <b>Presidencia + Senado + Cámara</b>.”</p>
+
+      <p><b>[Cierre | 2:35–2:55]</b><br/>
+      “Votar no es solo elegir un nombre. Es elegir quién escribe las reglas. Si quieres un país con controles y pluralidad, el Congreso importa tanto como —o más que— la presidencia.”</p>
+
+      <div class="hr"></div>
+      <p class="small muted"><span class="badge">Tip</span> Para no meterte en discusiones infinitas: habla de <b>reglas</b> (cómo funciona el poder) y de <b>datos</b> (participación y curules), no de insultos o etiquetas.</p>
+    </div>
+
+    <!-- ===================== FICHAS / INFOGRAFÍAS ===================== -->
+    <h2>2) Fichas (para carrusel / apoyos visuales)</h2>
+
+    <div class="grid">
+      <!-- Ficha 1: Participación -->
+      <div class="card span-6">
+        <h3>Ficha 1 — Participación 2022 (Congreso vs Presidencia)</h3>
+        <div class="kpi">
+          <div class="box">
+            <div class="val">48,75%</div>
+            <div class="lab">Participación Congreso (marzo 2022)</div>
+          </div>
+          <div class="box">
+            <div class="val">54,98%</div>
+            <div class="lab">Presidencia 1ra vuelta (mayo 2022)</div>
+          </div>
+          <div class="box">
+            <div class="val">58,17%</div>
+            <div class="lab">Presidencia 2da vuelta (junio 2022)</div>
+          </div>
+        </div>
+        <p class="note">Uso en voz: “Más gente vota presidente que Congreso, pero el Congreso define las leyes.”</p>
+      </div>
+
+      <!-- Ficha 2: Tamaño del Congreso -->
+      <div class="card span-6">
+        <h3>Ficha 2 — ¿Cuántos son?</h3>
+        <table>
+          <thead><tr><th>Cámara</th><th>Miembros</th><th>Qué significa</th></tr></thead>
+          <tbody>
+            <tr><td>Senado</td><td><b>108</b></td><td>Decide y negocia leyes a nivel nacional.</td></tr>
+            <tr><td>Cámara</td><td><b>172</b></td><td>Representación territorial; clave para mayorías.</td></tr>
+          </tbody>
+        </table>
+        <p class="note">Uso en voz: “El poder está repartido en 280 curules; no se decide todo desde Presidencia.”</p>
+      </div>
+
+      <!-- Ficha 3: Curules Senado por partido (top) -->
+      <div class="card span-12">
+        <h3>Ficha 3 — Pluralidad del Senado (curules 2022)</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Partido/coalición</th>
+              <th>Curules</th>
+              <th>Lectura rápida (para IG)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Pacto Histórico</td><td><b>20</b></td><td>Bloque grande, pero lejos de mayoría por sí solo.</td></tr>
+            <tr><td>Conservador</td><td><b>15</b></td><td>Clave en coaliciones y acuerdos.</td></tr>
+            <tr><td>Liberal</td><td><b>14</b></td><td>Bisagra frecuente según tema.</td></tr>
+            <tr><td>Alianza Verde – Centro Esperanza</td><td><b>13</b></td><td>Centro/centro-izquierda, decisivo en mayorías.</td></tr>
+            <tr><td>Centro Democrático</td><td><b>13</b></td><td>Oposición/contrapeso en varias votaciones.</td></tr>
+            <tr><td>Cambio Radical</td><td><b>11</b></td><td>Influyente en balances y agenda económica.</td></tr>
+            <tr><td>Partido de la U</td><td><b>10</b></td><td>Alianzas variables; peso en votaciones cerradas.</td></tr>
+            <tr><td>MIRA – Colombia Justa Libres</td><td><b>4</b></td><td>Bloque pequeño, pero suma en mayorías.</td></tr>
+          </tbody>
+        </table>
+        <p class="note">Uso en voz: “El partido más grande tiene 20/108: la ley sale por acuerdos, no por una sola fuerza.”</p>
+      </div>
+
+      <!-- Ficha 4: Mapa ideológico (simplificado) -->
+      <div class="card span-12">
+        <h3>Ficha 4 — “Mapa” ideológico simplificado (Senado 2022)</h3>
+        <p class="muted small">Nota: es una clasificación <b>aproximada</b> para explicar bloques; los partidos pueden votar distinto según tema.</p>
+
+        <div class="barwrap">
+          <div class="bar" aria-label="Mapa ideológico simplificado">
+            <!-- Proporciones aproximadas sobre 108 -->
+            <!-- Izquierda 20 -->
+            <div class="seg left" style="width:18.52%"></div>
+            <!-- Centro-izquierda 13 -->
+            <div class="seg centerL" style="width:12.04%"></div>
+            <!-- Centro 14 -->
+            <div class="seg center" style="width:12.96%"></div>
+            <!-- Centro-derecha 10 -->
+            <div class="seg centerR" style="width:9.26%"></div>
+            <!-- Derecha 39 (15+13+11) -->
+            <div class="seg right" style="width:36.11%"></div>
+            <!-- Otros / curules especiales / no incluidos en tabla -->
+            <div class="seg" style="width:11.11%;background:#334155"></div>
+          </div>
+
+          <div class="legend">
+            <div class="leg"><span class="sw" style="background:var(--bad)"></span>Izquierda (20)</div>
+            <div class="leg"><span class="sw" style="background:var(--warn)"></span>Centro-izq. (13)</div>
+            <div class="leg"><span class="sw" style="background:#60a5fa"></span>Centro (14)</div>
+            <div class="leg"><span class="sw" style="background:#34d399"></span>Centro-der. (10)</div>
+            <div class="leg"><span class="sw" style="background:#a78bfa"></span>Derecha (39)</div>
+            <div class="leg"><span class="sw" style="background:#334155"></span>Otros / especiales (~12)</div>
+          </div>
+        </div>
+
+        <p class="note">Uso en voz: “La política no es solo presidente: el Congreso está repartido en bloques y obliga a negociar.”</p>
+      </div>
+
+      <!-- Ficha 5: Mayoría -->
+      <div class="card span-6">
+        <h3>Ficha 5 — ¿Cuántos votos se necesitan?</h3>
+        <div class="kpi">
+          <div class="box">
+            <div class="val">108</div>
+            <div class="lab">Total Senado</div>
+          </div>
+          <div class="box">
+            <div class="val">≈55</div>
+            <div class="lab">Mayoría simple (referencia)</div>
+          </div>
+        </div>
+        <p class="note">Uso en voz: “Sin 55 votos, no hay ley: por eso el Congreso manda en lo legislativo.”</p>
+      </div>
+
+      <!-- Ficha 6: Mensaje final -->
+      <div class="card span-6">
+        <h3>Ficha 6 — Mensaje para cerrar (1 frase)</h3>
+        <p class="cta"><b>“Presidencia propone; Congreso decide. Si te importan tus intereses, vota mirando el paquete completo: Senado, Cámara y Presidencia.”</b></p>
+        <p class="note">Útil como texto grande para la última lámina del carrusel.</p>
+      </div>
+    </div>
+
+    <!-- ===================== FUENTES ===================== -->
+    <h2>3) Fuentes (para poner en descripción o última ficha)</h2>
+    <div class="card span-12">
+      <ul class="muted">
+        <li>Registraduría — Segunda vuelta 2022: participación <b>58,17%</b>:
+          <a href="https://www.registraduria.gov.co/En-la-segunda-vuelta-presidencial-del-2022-se-registro-la-abstencion-mas-baja.html" target="_blank" rel="noreferrer">link</a>
+        </li>
+        <li>MOE — Participación y conformación del Senado y Cámara 2022 (documentos en PDF):
+          <a href="https://moe.org.co/wp-content/uploads/2022/06/pdf-output_62c97d85fd8a3_0.pdf" target="_blank" rel="noreferrer">link</a>
+          y
+          <a href="https://www.moe.org.co/wp-content/uploads/2022/07/Conformacion-del-congreso-por-partidos-politicos-.pdf" target="_blank" rel="noreferrer">link</a>
+        </li>
+        <li>Resultados por partido (tabla consolidada de referencia, contrastable con actas E-26):
+          <a href="https://es.wikipedia.org/wiki/Elecciones_legislativas_de_Colombia_de_2022" target="_blank" rel="noreferrer">link</a>
+        </li>
+      </ul>
+      <p class="note">Si quieres máxima solidez: usa MOE/Registraduría como fuentes principales; Wikipedia solo como tabla resumida.</p>
+    </div>
+
+  </div>
+</body>
+</html>
