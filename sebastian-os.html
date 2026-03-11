@@ -9,199 +9,271 @@
 :root{
   --bg:#0d0f14;--bg2:#161920;--bg3:#1e2130;--bg4:#252840;
   --border:#2a2d3e;--border2:#3a3e58;
-  --accent:#4f8ef7;--accent-glow:rgba(79,142,247,0.12);
+  --accent:#4f8ef7;--ag:rgba(79,142,247,0.12);
   --gold:#f5a623;--danger:#e74c3c;--warn:#f39c12;--success:#2ecc71;
   --text:#e8eaf0;--text2:#9ba3c0;--text3:#6b7399;
-  --sidebar-w:248px;
+  --sw:260px;
 }
 html,body{height:100%;overflow:hidden}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;font-size:14px;line-height:1.5}
-a{color:var(--accent);text-decoration:none}
-button{cursor:pointer;font-family:inherit;font-size:14px}
-input,textarea,select{font-family:inherit;font-size:14px}
-::-webkit-scrollbar{width:5px;height:5px}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;font-size:13px;line-height:1.5}
+button{cursor:pointer;font-family:inherit;font-size:13px}
+input,textarea,select{font-family:inherit;font-size:13px}
+::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-track{background:var(--bg2)}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
 
 /* TOPBAR */
-.topbar{height:50px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 14px;gap:10px;flex-shrink:0;z-index:100}
-.logo{font-size:15px;font-weight:700;color:var(--accent);display:flex;align-items:center;gap:7px;white-space:nowrap;letter-spacing:0.3px}
-.logo span:first-child{font-size:22px}
-.agent-badge{background:var(--bg3);border:1px solid var(--border2);padding:3px 10px;border-radius:20px;font-size:12px;color:var(--text2);white-space:nowrap;cursor:default}
-.topbar-center{display:flex;gap:5px;flex:1;justify-content:center;flex-wrap:wrap}
-.qbtn{background:var(--bg3);border:1px solid var(--border);color:var(--text3);padding:4px 11px;border-radius:18px;font-size:12px;transition:all 0.13s;white-space:nowrap}
+.topbar{height:48px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 12px;gap:8px;flex-shrink:0;z-index:100}
+.logo{font-size:14px;font-weight:700;color:var(--accent);display:flex;align-items:center;gap:6px;white-space:nowrap}
+.logo-hex{font-size:20px}
+.view-tabs{display:flex;gap:2px;background:var(--bg3);padding:3px;border-radius:8px;border:1px solid var(--border)}
+.vtab{padding:3px 12px;border-radius:5px;border:none;background:transparent;color:var(--text3);font-size:12px;font-weight:500;transition:all 0.12s;cursor:pointer}
+.vtab.on{background:var(--bg4);color:var(--text);border:1px solid var(--border2)}
+.agent-badge{background:var(--bg3);border:1px solid var(--border2);padding:2px 9px;border-radius:16px;font-size:11px;color:var(--text2);white-space:nowrap}
+.topbar-center{display:flex;gap:4px;flex:1;justify-content:center;flex-wrap:wrap}
+.qbtn{background:var(--bg3);border:1px solid var(--border);color:var(--text3);padding:3px 10px;border-radius:16px;font-size:11px;transition:all 0.12s;white-space:nowrap}
 .qbtn:hover{background:var(--bg4);border-color:var(--accent);color:var(--text)}
-.qbtn.red:hover{border-color:var(--danger);color:var(--danger)}
-.qbtn.gold:hover{border-color:var(--gold);color:var(--gold)}
-.qbtn.green:hover{border-color:var(--success);color:var(--success)}
-.topbar-right{display:flex;gap:5px;margin-left:auto}
-.ibtn{background:transparent;border:1px solid var(--border);color:var(--text3);width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all 0.13s}
-.ibtn:hover{background:var(--bg3);border-color:var(--border2);color:var(--text)}
-.ibtn.on{background:var(--accent-glow);border-color:var(--accent);color:var(--accent)}
+.qbtn.r:hover{border-color:var(--danger);color:var(--danger)}
+.qbtn.g:hover{border-color:var(--gold);color:var(--gold)}
+.qbtn.s:hover{border-color:var(--success);color:var(--success)}
+.topbar-right{display:flex;gap:4px;margin-left:auto}
+.ibtn{background:transparent;border:1px solid var(--border);color:var(--text3);width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;transition:all 0.12s}
+.ibtn:hover{background:var(--bg3);color:var(--text)}
+.ibtn.on{background:var(--ag);border-color:var(--accent);color:var(--accent)}
 
 /* LAYOUT */
 .layout{display:flex;flex:1;overflow:hidden}
 
 /* SIDEBAR */
-.sidebar{width:var(--sidebar-w);background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;flex-shrink:0}
-.s-section{padding:10px 8px;border-bottom:1px solid var(--border)}
-.s-label{font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--text3);padding:0 8px 7px;text-transform:uppercase}
-.agent-item{display:flex;align-items:center;gap:9px;padding:7px 9px;border-radius:7px;cursor:pointer;transition:all 0.11s;margin-bottom:2px;border:1px solid transparent}
+.sidebar{width:var(--sw);background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;flex-shrink:0}
+.ss{padding:8px 7px;border-bottom:1px solid var(--border)}
+.slbl{font-size:9px;font-weight:700;letter-spacing:1.5px;color:var(--text3);padding:0 7px 6px;text-transform:uppercase}
+.agent-item{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;cursor:pointer;transition:all 0.11s;margin-bottom:1px;border:1px solid transparent}
 .agent-item:hover{background:var(--bg3)}
-.agent-item.active{background:var(--accent-glow);border-color:var(--accent)}
-.a-icon{font-size:17px;flex-shrink:0;width:20px;text-align:center}
-.a-name{font-size:12px;font-weight:600;color:var(--text)}
+.agent-item.active{background:var(--ag);border-color:var(--accent)}
+.a-icon{font-size:16px;flex-shrink:0;width:20px;text-align:center}
+.a-name{font-size:11px;font-weight:600;color:var(--text)}
 .a-desc{font-size:10px;color:var(--text3)}
 .agent-item.active .a-name{color:var(--accent)}
-.people-grid{display:flex;flex-wrap:wrap;gap:4px;padding:0 8px}
-.pchip{background:var(--bg3);border:1px solid var(--border);padding:3px 7px;border-radius:10px;font-size:11px;color:var(--text2);cursor:pointer;transition:all 0.11s}
-.pchip:hover{border-color:var(--accent);color:var(--accent)}
+.people-list{display:flex;flex-direction:column;gap:2px;padding:0 4px}
+.prow{display:flex;align-items:center;gap:6px;padding:4px 6px;border-radius:5px;cursor:pointer;transition:all 0.11s;border:1px solid transparent}
+.prow:hover{background:var(--bg3);border-color:var(--border)}
+.pname{font-size:11px;color:var(--text);font-weight:500;flex:1}
+.prole{font-size:9px;color:var(--text3)}
+.pini{width:20px;height:20px;border-radius:50%;background:var(--bg4);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--text2);flex-shrink:0}
 
-/* CHAT MAIN */
+/* MAIN CHAT */
 .chat-main{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--bg)}
-.messages{flex:1;overflow-y:auto;padding:18px 22px;display:flex;flex-direction:column;gap:14px}
-.msg{display:flex;gap:11px;max-width:100%}
+.messages{flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:12px}
+.msg{display:flex;gap:10px;max-width:100%}
 .msg.user{flex-direction:row-reverse}
-.m-avatar{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px}
-.msg.assistant .m-avatar{background:var(--accent-glow);border:1px solid var(--accent)}
-.msg.user .m-avatar{background:rgba(245,166,35,0.12);border:1px solid var(--gold);font-size:12px;font-weight:700;color:var(--gold)}
-.m-content{max-width:78%;background:var(--bg2);border:1px solid var(--border);border-radius:11px;padding:11px 14px}
-.msg.user .m-content{background:rgba(245,166,35,0.06);border-color:rgba(245,166,35,0.25)}
-.m-content p{margin-bottom:7px}
+.m-avatar{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px}
+.msg.assistant .m-avatar{background:var(--ag);border:1px solid var(--accent)}
+.msg.user .m-avatar{background:rgba(245,166,35,0.1);border:1px solid var(--gold);font-size:11px;font-weight:700;color:var(--gold)}
+.m-bubble{max-width:78%}
+.m-content{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:10px 13px}
+.msg.user .m-content{background:rgba(245,166,35,0.05);border-color:rgba(245,166,35,0.22)}
+.m-content p{margin-bottom:6px}
 .m-content p:last-child{margin-bottom:0}
 .m-content strong{color:var(--gold);font-weight:600}
-.m-content ul,ol{padding-left:17px;margin-bottom:7px}
+.m-content ul,ol{padding-left:16px;margin-bottom:6px}
 .m-content li{margin-bottom:2px}
-.m-content code{background:var(--bg3);border:1px solid var(--border2);padding:1px 5px;border-radius:3px;font-size:12px;font-family:monospace;color:var(--accent)}
-.m-content pre{background:var(--bg3);border:1px solid var(--border2);padding:10px;border-radius:7px;overflow-x:auto;margin:7px 0}
+.m-content code{background:var(--bg3);border:1px solid var(--border2);padding:1px 4px;border-radius:3px;font-size:11px;font-family:monospace;color:var(--accent)}
+.m-content pre{background:var(--bg3);border:1px solid var(--border2);padding:9px;border-radius:6px;overflow-x:auto;margin:6px 0}
 .m-content pre code{background:none;border:none;padding:0;color:var(--text)}
-.m-content h1,.m-content h2,.m-content h3{color:var(--accent);margin-bottom:5px;margin-top:10px}
-.m-content h3{font-size:13px}
-.mlabel{display:inline-block;padding:1px 6px;border-radius:3px;font-size:10px;font-weight:700;letter-spacing:0.5px;margin:0 2px}
-.lsurv{background:rgba(231,76,60,0.18);color:var(--danger);border:1px solid rgba(231,76,60,0.3)}
-.lstrat{background:rgba(79,142,247,0.13);color:var(--accent);border:1px solid rgba(79,142,247,0.3)}
-.lops{background:rgba(46,204,113,0.13);color:var(--success);border:1px solid rgba(46,204,113,0.3)}
-.ldel{background:rgba(155,163,192,0.13);color:var(--text2);border:1px solid var(--border2)}
-.lwarn{background:rgba(243,156,18,0.13);color:var(--warn);border:1px solid rgba(243,156,18,0.3)}
-.m-actions{margin-top:7px;display:flex;gap:5px;flex-wrap:wrap}
-.m-act{background:transparent;border:1px solid var(--border);color:var(--text3);padding:2px 7px;border-radius:5px;font-size:10px;transition:all 0.11s}
-.m-act:hover{border-color:var(--border2);color:var(--text2)}
-.m-time{font-size:10px;color:var(--text3);margin-top:3px;text-align:right}
+.m-content h1,.m-content h2,.m-content h3{color:var(--accent);margin-bottom:4px;margin-top:9px}
+.m-content h3{font-size:12px}
+.m-content hr{border:none;border-top:1px solid var(--border);margin:6px 0}
+.mlbl{display:inline-block;padding:1px 5px;border-radius:3px;font-size:9px;font-weight:700;letter-spacing:.5px;margin:0 1px}
+.ls{background:rgba(231,76,60,.15);color:var(--danger);border:1px solid rgba(231,76,60,.28)}
+.le{background:rgba(79,142,247,.12);color:var(--accent);border:1px solid rgba(79,142,247,.28)}
+.lo{background:rgba(46,204,113,.12);color:var(--success);border:1px solid rgba(46,204,113,.28)}
+.ld{background:rgba(155,163,192,.12);color:var(--text2);border:1px solid var(--border2)}
+.m-acts{margin-top:6px;display:flex;gap:4px;flex-wrap:wrap}
+.mact{background:transparent;border:1px solid var(--border);color:var(--text3);padding:2px 6px;border-radius:4px;font-size:10px;transition:all .11s}
+.mact:hover{border-color:var(--border2);color:var(--text2)}
+.m-time{font-size:9px;color:var(--text3);margin-top:2px;text-align:right}
+
+/* SMART SAVE POPUP */
+.smart-save{background:var(--bg2);border:1px solid var(--accent);border-radius:8px;padding:7px 10px;margin-top:5px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.ss-label{font-size:10px;color:var(--text2);white-space:nowrap}
+.ss-btn{background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:2px 7px;border-radius:4px;font-size:10px;transition:all .11s}
+.ss-btn:hover{border-color:var(--accent);color:var(--accent)}
 
 /* TYPING */
-.typing{display:flex;align-items:center;gap:4px;padding:6px 2px}
-.tdot{width:6px;height:6px;background:var(--text3);border-radius:50%;animation:tdot 1.2s infinite}
-.tdot:nth-child(2){animation-delay:.2s}
-.tdot:nth-child(3){animation-delay:.4s}
+.typing{display:flex;align-items:center;gap:3px;padding:5px 2px}
+.tdot{width:5px;height:5px;background:var(--text3);border-radius:50%;animation:tdot 1.2s infinite}
+.tdot:nth-child(2){animation-delay:.2s}.tdot:nth-child(3){animation-delay:.4s}
 @keyframes tdot{0%,80%,100%{transform:scale(1);opacity:.5}40%{transform:scale(1.2);opacity:1}}
 
 /* INPUT */
-.input-area{padding:10px 14px;border-top:1px solid var(--border);background:var(--bg2);display:flex;gap:9px;align-items:flex-end}
-.input-wrap{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:11px;padding:9px 12px;transition:border-color 0.13s}
+.input-area{padding:9px 13px;border-top:1px solid var(--border);background:var(--bg2);display:flex;gap:8px;align-items:flex-end}
+.input-wrap{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:8px 11px;transition:border-color .12s}
 .input-wrap:focus-within{border-color:var(--accent)}
-#chat-input{width:100%;background:transparent;border:none;outline:none;color:var(--text);resize:none;max-height:180px;line-height:1.5;min-height:20px}
+#chat-input{width:100%;background:transparent;border:none;outline:none;color:var(--text);resize:none;max-height:160px;line-height:1.5;min-height:20px}
 #chat-input::placeholder{color:var(--text3)}
-.input-foot{display:flex;justify-content:space-between;align-items:center;margin-top:5px}
-.input-hint{font-size:10px;color:var(--text3)}
-.send-btn{background:var(--accent);border:none;color:white;width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;transition:all 0.13s;flex-shrink:0}
+.input-foot{display:flex;justify-content:space-between;align-items:center;margin-top:4px}
+.input-hint{font-size:9px;color:var(--text3)}
+.send-btn{background:var(--accent);border:none;color:white;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .12s;flex-shrink:0}
 .send-btn:hover{background:#3d7ee8;transform:scale(1.04)}
 .send-btn:disabled{background:var(--bg3);color:var(--text3);transform:none;cursor:not-allowed}
 
 /* RIGHT PANEL */
-.right-panel{width:290px;background:var(--bg2);border-left:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;transition:width 0.18s}
+.right-panel{width:272px;background:var(--bg2);border-left:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;transition:width .18s}
 .right-panel.hidden{width:0;overflow:hidden}
-.p-section{padding:12px 13px;border-bottom:1px solid var(--border)}
-.p-title{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:9px;display:flex;justify-content:space-between;align-items:center}
-.p-title button{background:transparent;border:none;color:var(--text3);font-size:11px;cursor:pointer}
+.p-sec{padding:10px 11px;border-bottom:1px solid var(--border)}
+.p-title{font-size:9px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.p-title button{background:transparent;border:none;color:var(--text3);font-size:10px;cursor:pointer}
 .p-title button:hover{color:var(--accent)}
 
-/* KPI */
-.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px}
-.kpi-card{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:7px 9px;cursor:pointer;transition:all 0.11s}
+/* DASHBOARD */
+.dash-view{flex:1;display:none;flex-direction:column;overflow:hidden;background:var(--bg)}
+.dash-view.on{display:flex}
+.dash-hdr{padding:10px 16px;border-bottom:1px solid var(--border);background:var(--bg2);display:flex;align-items:center;gap:10px;flex-shrink:0;flex-wrap:wrap}
+.dash-date{font-size:13px;font-weight:700;color:var(--text);white-space:nowrap}
+.dash-mega-wrap{flex:1;display:flex;align-items:center;gap:6px;min-width:200px}
+.dash-mega-lbl{font-size:11px;color:var(--gold);font-weight:600;white-space:nowrap}
+.dash-mega-input{flex:1;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:4px 9px;border-radius:6px;outline:none;font-size:12px}
+.dash-mega-input:focus{border-color:var(--gold)}
+.dash-refresh{background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:4px 10px;border-radius:6px;font-size:11px;transition:all .12s}
+.dash-refresh:hover{border-color:var(--accent);color:var(--accent)}
+.dash-grid{flex:1;overflow-y:auto;padding:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;align-content:start}
+.dc{background:var(--bg2);border:1px solid var(--border);border-radius:9px;display:flex;flex-direction:column;min-height:140px;overflow:hidden}
+.dc.wide{grid-column:span 2}
+.dc.full{grid-column:1/-1}
+.dc-hdr{padding:8px 11px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.dc-title{font-size:11px;font-weight:700;color:var(--text2);display:flex;align-items:center;gap:5px}
+.dc-badge{font-size:9px;padding:1px 5px;border-radius:3px;background:var(--bg3);color:var(--text3)}
+.dc-badge.ok{background:rgba(46,204,113,.12);color:var(--success)}
+.dc-badge.err{background:rgba(231,76,60,.12);color:var(--danger)}
+.dc-badge.warn{background:rgba(243,156,18,.12);color:var(--warn)}
+.dc-refresh{background:transparent;border:none;color:var(--text3);font-size:12px;cursor:pointer;padding:2px}
+.dc-refresh:hover{color:var(--accent)}
+.dc-body{flex:1;overflow-y:auto;padding:8px 11px}
+.dc-loading{color:var(--text3);font-size:11px;display:flex;align-items:center;gap:6px;padding:4px 0}
+.dc-err{color:var(--danger);font-size:10px;padding:4px 0}
+.dc-item{padding:4px 0;border-bottom:1px solid var(--border);font-size:11px;color:var(--text2);display:flex;align-items:start;gap:6px}
+.dc-item:last-child{border-bottom:none}
+.dc-item-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:5px}
+.dc-item-dot.r{background:var(--danger)}
+.dc-item-dot.g{background:var(--success)}
+.dc-item-dot.y{background:var(--warn)}
+.dc-item-time{font-size:10px;color:var(--text3);white-space:nowrap;flex-shrink:0}
+.dc-item-text{flex:1;line-height:1.4}
+.dc-item-from{font-size:9px;color:var(--text3)}
+.dc-empty{font-size:11px;color:var(--text3);padding:4px 0;font-style:italic}
+.dc-connect-btn{background:var(--bg3);border:1px dashed var(--border2);color:var(--text3);padding:5px 10px;border-radius:5px;font-size:10px;width:100%;margin-top:6px;transition:all .12s}
+.dc-connect-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* KPI DASHBOARD (within dashboard view) */
+.kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.kpi-card{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 8px;cursor:pointer;transition:all .11s}
 .kpi-card:hover{border-color:var(--border2)}
-.kpi-card.red{border-color:rgba(231,76,60,0.4);background:rgba(231,76,60,0.04)}
-.kpi-card.yellow{border-color:rgba(243,156,18,0.4);background:rgba(243,156,18,0.04)}
-.kpi-card.green{border-color:rgba(46,204,113,0.3);background:rgba(46,204,113,0.04)}
+.kpi-card.red{border-color:rgba(231,76,60,.38);background:rgba(231,76,60,.04)}
+.kpi-card.yellow{border-color:rgba(243,156,18,.38);background:rgba(243,156,18,.04)}
+.kpi-card.green{border-color:rgba(46,204,113,.28);background:rgba(46,204,113,.04)}
 .kpi-lbl{font-size:9px;color:var(--text3);margin-bottom:2px}
-.kpi-val{font-size:12px;font-weight:600;color:var(--text)}
+.kpi-val{font-size:11px;font-weight:600;color:var(--text)}
 .kpi-st{display:flex;align-items:center;gap:3px;margin-top:2px}
-.kpi-dot{width:5px;height:5px;border-radius:50%;background:var(--text3);flex-shrink:0}
+.kpi-dot{width:5px;height:5px;border-radius:50%;background:var(--text3)}
 .kpi-card.red .kpi-dot{background:var(--danger)}
 .kpi-card.yellow .kpi-dot{background:var(--warn)}
 .kpi-card.green .kpi-dot{background:var(--success)}
 .kpi-stxt{font-size:9px;color:var(--text3)}
-.surv-alert{background:rgba(231,76,60,0.08);border:1px solid rgba(231,76,60,0.35);border-radius:7px;padding:8px 10px;margin:7px 0}
-.surv-title{font-size:11px;font-weight:700;color:var(--danger);margin-bottom:3px}
+.surv-alert{background:rgba(231,76,60,.08);border:1px solid rgba(231,76,60,.32);border-radius:6px;padding:7px 9px;margin-top:7px}
+.surv-title{font-size:11px;font-weight:700;color:var(--danger);margin-bottom:2px}
 .surv-txt{font-size:10px;color:var(--text2)}
 
+/* SOURCES GRID (ecosystem tab) */
+.src-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:4px}
+.src-card{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 8px;display:flex;align-items:center;gap:6px;cursor:pointer;transition:all .11s}
+.src-card:hover{border-color:var(--border2)}
+.src-card.conn{border-color:rgba(46,204,113,.3)}
+.src-card.partial{border-color:rgba(243,156,18,.3)}
+.src-dot{width:7px;height:7px;border-radius:50%;background:var(--text3);flex-shrink:0}
+.src-card.conn .src-dot{background:var(--success)}
+.src-card.partial .src-dot{background:var(--warn)}
+.src-info{flex:1;min-width:0}
+.src-name{font-size:10px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.src-role{font-size:9px;color:var(--text3)}
+
 /* TASKS */
-.task-item{display:flex;align-items:start;gap:7px;padding:4px 0;border-bottom:1px solid var(--border);font-size:11px;color:var(--text2)}
+.task-item{display:flex;align-items:start;gap:6px;padding:4px 0;border-bottom:1px solid var(--border);font-size:11px;color:var(--text2)}
 .task-item:last-child{border-bottom:none}
-.tcheck{width:13px;height:13px;border:1px solid var(--border2);border-radius:3px;flex-shrink:0;margin-top:1px;cursor:pointer;transition:all 0.11s;display:flex;align-items:center;justify-content:center;font-size:9px}
+.tcheck{width:12px;height:12px;border:1px solid var(--border2);border-radius:2px;flex-shrink:0;margin-top:1px;cursor:pointer;transition:all .11s;display:flex;align-items:center;justify-content:center;font-size:8px}
 .tcheck:hover{border-color:var(--success)}
 .tcheck.done{background:var(--success);border-color:var(--success);color:white}
 .ttext{flex:1;line-height:1.4}
-.ttext.done{text-decoration:line-through;opacity:.45}
-.ttag{font-size:9px;padding:1px 4px;border-radius:2px;flex-shrink:0;background:rgba(231,76,60,0.12);color:var(--danger);border:1px solid rgba(231,76,60,0.2)}
-.ttag.med{background:rgba(243,156,18,0.1);color:var(--warn);border-color:rgba(243,156,18,0.2)}
+.ttext.done{text-decoration:line-through;opacity:.4}
+.ttag{font-size:8px;padding:1px 4px;border-radius:2px;flex-shrink:0;background:rgba(231,76,60,.1);color:var(--danger);border:1px solid rgba(231,76,60,.18)}
+.ttag.med{background:rgba(243,156,18,.1);color:var(--warn);border-color:rgba(243,156,18,.18)}
 
-/* NOTES */
-.notes-area{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:7px 9px;color:var(--text);resize:none;min-height:100px;outline:none;font-size:11px;line-height:1.5}
+/* MEMORY / NOTES */
+.notes-area{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 9px;color:var(--text);resize:none;min-height:90px;outline:none;font-size:11px;line-height:1.5}
 .notes-area:focus{border-color:var(--accent)}
-
-/* MEMORY */
 .mem-list{display:flex;flex-direction:column;gap:3px}
-.mem-item{background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:5px 8px;font-size:10px;color:var(--text2);display:flex;justify-content:space-between;align-items:start;gap:6px;cursor:pointer;transition:border-color 0.11s}
-.mem-item:hover{border-color:var(--border2)}
+.mem-item{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:4px 7px;font-size:10px;color:var(--text2);display:flex;justify-content:space-between;align-items:start;gap:5px}
 .mem-text{flex:1;line-height:1.4}
-.mem-del{color:var(--text3);flex-shrink:0;font-size:13px;line-height:1;background:transparent;border:none;cursor:pointer}
+.mem-del{background:transparent;border:none;color:var(--text3);font-size:12px;cursor:pointer;line-height:1}
 .mem-del:hover{color:var(--danger)}
-.add-mem{background:transparent;border:1px dashed var(--border);color:var(--text3);padding:4px 9px;border-radius:5px;font-size:10px;width:100%;margin-top:3px;transition:all 0.11s}
+.add-mem{background:transparent;border:1px dashed var(--border);color:var(--text3);padding:4px 9px;border-radius:5px;font-size:10px;width:100%;margin-top:3px;transition:all .12s}
 .add-mem:hover{border-color:var(--accent);color:var(--accent)}
 
 /* MODAL */
-.m-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.72);z-index:1000;display:flex;align-items:center;justify-content:center}
-.m-overlay.hidden{display:none}
-.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:22px;min-width:400px;max-width:620px;width:90%;max-height:88vh;overflow-y:auto;position:relative}
-.modal-title{font-size:17px;font-weight:700;margin-bottom:3px}
-.modal-sub{font-size:12px;color:var(--text3);margin-bottom:18px}
-.modal-close{position:absolute;top:14px;right:14px;background:transparent;border:none;color:var(--text3);font-size:19px;line-height:1;cursor:pointer}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1000;display:flex;align-items:center;justify-content:center}
+.ov.hidden{display:none}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:13px;padding:20px;min-width:380px;max-width:700px;width:92%;max-height:88vh;overflow-y:auto;position:relative}
+.modal-title{font-size:16px;font-weight:700;margin-bottom:2px}
+.modal-sub{font-size:11px;color:var(--text3);margin-bottom:16px}
+.modal-close{position:absolute;top:12px;right:12px;background:transparent;border:none;color:var(--text3);font-size:18px;line-height:1;cursor:pointer}
 .modal-close:hover{color:var(--text)}
-.fg{margin-bottom:14px}
-.flbl{font-size:11px;font-weight:600;color:var(--text2);margin-bottom:5px;display:block}
-.finput{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:8px 11px;border-radius:7px;outline:none;transition:border-color 0.13s}
+.fg{margin-bottom:12px}
+.flbl{font-size:11px;font-weight:600;color:var(--text2);margin-bottom:4px;display:block}
+.finput{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:7px 10px;border-radius:6px;outline:none;transition:border-color .12s}
 .finput:focus{border-color:var(--accent)}
 .fhint{font-size:10px;color:var(--text3);margin-top:3px}
-.btn{padding:8px 16px;border-radius:7px;font-weight:600;font-size:13px;transition:all 0.13s;border:none;cursor:pointer}
+.btn{padding:7px 15px;border-radius:6px;font-weight:600;font-size:12px;transition:all .12s;border:none;cursor:pointer}
 .btn-p{background:var(--accent);color:white}
 .btn-p:hover{background:#3d7ee8}
 .btn-s{background:var(--bg3);border:1px solid var(--border);color:var(--text2)}
 .btn-s:hover{border-color:var(--border2);color:var(--text)}
-.btn-d{background:rgba(231,76,60,0.09);border:1px solid rgba(231,76,60,0.28);color:var(--danger)}
-.btn-d:hover{background:rgba(231,76,60,0.18)}
-.m-footer{display:flex;gap:7px;justify-content:flex-end;margin-top:18px}
-.divider{height:1px;background:var(--border);margin:14px 0}
+.btn-d{background:rgba(231,76,60,.08);border:1px solid rgba(231,76,60,.25);color:var(--danger)}
+.btn-d:hover{background:rgba(231,76,60,.16)}
+.mfooter{display:flex;gap:6px;justify-content:flex-end;margin-top:16px}
+.divider{height:1px;background:var(--border);margin:12px 0}
+
+/* INT SECTION (integrations) */
+.int-group{margin-bottom:14px}
+.int-group-title{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--border)}
+.int-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.int-label{font-size:11px;color:var(--text2);width:120px;flex-shrink:0}
+.int-input{flex:1;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:5px 9px;border-radius:5px;outline:none;font-size:11px}
+.int-input:focus{border-color:var(--accent)}
+.int-st{width:8px;height:8px;border-radius:50%;background:var(--text3);flex-shrink:0}
+.int-st.ok{background:var(--success)}
+.int-st.err{background:var(--danger)}
+.int-hint{font-size:9px;color:var(--text3);margin-top:2px;grid-column:2}
 
 /* EXPORT */
-.exp-preview{background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:11px;font-size:11px;color:var(--text2);max-height:260px;overflow-y:auto;white-space:pre-wrap;font-family:monospace;line-height:1.5}
-.copy-ok{font-size:11px;color:var(--success);text-align:center;padding:5px}
+.exp-preview{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;font-size:11px;color:var(--text2);max-height:240px;overflow-y:auto;white-space:pre-wrap;font-family:monospace;line-height:1.5}
+.copy-ok{font-size:10px;color:var(--success);text-align:center;padding:4px}
 
 /* WELCOME */
-.welcome{max-width:560px;margin:auto;text-align:center;padding:36px 18px}
-.w-title{font-size:22px;font-weight:700;margin-bottom:7px}
-.w-sub{font-size:14px;color:var(--text2);margin-bottom:22px;line-height:1.6}
-.w-cards{display:grid;grid-template-columns:1fr 1fr;gap:9px;text-align:left}
-.w-card{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:13px;cursor:pointer;transition:all 0.13s}
+.welcome{max-width:540px;margin:auto;text-align:center;padding:32px 16px}
+.w-title{font-size:20px;font-weight:700;margin-bottom:6px}
+.w-sub{font-size:13px;color:var(--text2);margin-bottom:20px;line-height:1.6}
+.w-cards{display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:left}
+.w-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:11px;cursor:pointer;transition:all .12s}
 .w-card:hover{border-color:var(--accent);transform:translateY(-1px)}
-.w-icon{font-size:19px;margin-bottom:5px}
-.w-ctitle{font-size:12px;font-weight:600;margin-bottom:2px}
-.w-cdesc{font-size:10px;color:var(--text3);line-height:1.4}
+.w-icon{font-size:17px;margin-bottom:4px}
+.w-ct{font-size:11px;font-weight:600;margin-bottom:2px}
+.w-cd{font-size:10px;color:var(--text3);line-height:1.3}
 
 /* TOAST */
-.toast-box{position:fixed;bottom:18px;right:18px;z-index:2000;display:flex;flex-direction:column;gap:5px}
-.toast{background:var(--bg2);border:1px solid var(--border2);border-radius:9px;padding:9px 14px;font-size:12px;color:var(--text);animation:tin .18s ease;box-shadow:0 6px 20px rgba(0,0,0,.3)}
-.toast.success{border-color:rgba(46,204,113,.38);color:var(--success)}
-.toast.error{border-color:rgba(231,76,60,.38);color:var(--danger)}
+.toast-box{position:fixed;bottom:16px;right:16px;z-index:2000;display:flex;flex-direction:column;gap:4px}
+.toast{background:var(--bg2);border:1px solid var(--border2);border-radius:8px;padding:8px 13px;font-size:12px;color:var(--text);animation:tin .17s ease;box-shadow:0 5px 18px rgba(0,0,0,.3)}
+.toast.success{border-color:rgba(46,204,113,.35);color:var(--success)}
+.toast.error{border-color:rgba(231,76,60,.35);color:var(--danger)}
 @keyframes tin{from{transform:translateX(100%);opacity:0}to{transform:none;opacity:1}}
 </style>
 </head>
@@ -209,23 +281,28 @@ input,textarea,select{font-family:inherit;font-size:14px}
 
 <!-- TOPBAR -->
 <div class="topbar">
-  <div class="logo"><span>⬡</span><span>SEB OS</span></div>
+  <div class="logo"><span class="logo-hex">⬡</span><span>SEB OS</span></div>
+  <div class="view-tabs">
+    <button class="vtab on" id="tab-chat" onclick="setView('chat')">💬 Chat</button>
+    <button class="vtab" id="tab-dash" onclick="setView('dash')">📊 Dashboard</button>
+    <button class="vtab" id="tab-eco" onclick="setView('eco')">🔗 Fuentes</button>
+  </div>
   <div id="agent-badge" class="agent-badge">🧠 Meta-Orquestador</div>
-  <div class="topbar-center">
-    <button class="qbtn" onclick="quickAction('briefing')">🌅 Briefing</button>
-    <button class="qbtn red" onclick="quickAction('survival')">🔴 Supervivencia</button>
-    <button class="qbtn gold" onclick="quickAction('serjefe')">👥 Ser Jefe</button>
-    <button class="qbtn" onclick="quickAction('content')">✍️ Contenido</button>
-    <button class="qbtn" onclick="quickAction('decision')">🎯 Decisión</button>
-    <button class="qbtn green" onclick="quickAction('plan-week')">📅 Semana</button>
-    <button class="qbtn" onclick="quickAction('idea')">💡 Idea</button>
+  <div class="topbar-center" id="quick-bar">
+    <button class="qbtn" onclick="qa('briefing')">🌅 Briefing</button>
+    <button class="qbtn r" onclick="qa('survival')">🔴 Supervivencia</button>
+    <button class="qbtn g" onclick="qa('serjefe')">👥 Ser Jefe</button>
+    <button class="qbtn" onclick="qa('content')">✍️ Contenido</button>
+    <button class="qbtn" onclick="qa('decision')">🎯 Decisión</button>
+    <button class="qbtn s" onclick="qa('plan-week')">📅 Semana</button>
+    <button class="qbtn" onclick="qa('idea')">💡 Idea</button>
   </div>
   <div class="topbar-right">
-    <button class="ibtn" id="btn-kpi" onclick="toggleTab('kpi')" title="KPIs Supervivencia">📊</button>
+    <button class="ibtn" id="btn-kpi" onclick="toggleTab('kpi')" title="KPIs">📊</button>
     <button class="ibtn" id="btn-tasks" onclick="toggleTab('tasks')" title="Pendientes">✅</button>
     <button class="ibtn" id="btn-notes" onclick="toggleTab('notes')" title="Notas">📝</button>
     <button class="ibtn" id="btn-memory" onclick="toggleTab('memory')" title="Memoria">🧠</button>
-    <button class="ibtn" onclick="openExport()" title="Exportar / GitHub">🐙</button>
+    <button class="ibtn" onclick="openExport()" title="Exportar">🐙</button>
     <button class="ibtn" onclick="clearChat()" title="Nueva conversación">🔄</button>
     <button class="ibtn" onclick="openSettings()" title="Configuración">⚙️</button>
   </div>
@@ -236,143 +313,309 @@ input,textarea,select{font-family:inherit;font-size:14px}
 
   <!-- SIDEBAR -->
   <aside class="sidebar">
-    <div class="s-section">
-      <div class="s-label">Agentes</div>
+    <div class="ss">
+      <div class="slbl">Agentes</div>
       <div id="agent-list"></div>
     </div>
-    <div class="s-section">
-      <div class="s-label">Equipo Condugas</div>
-      <div class="people-grid" id="team-condugas"></div>
+    <div class="ss">
+      <div class="slbl">Condugas — Directo</div>
+      <div class="people-list" id="team-condugas"></div>
     </div>
-    <div class="s-section">
-      <div class="s-label">Sendo Consulting</div>
-      <div class="people-grid" id="team-sendo"></div>
+    <div class="ss">
+      <div class="slbl">Sendo Consulting</div>
+      <div class="people-list" id="team-sendo"></div>
     </div>
-    <div class="s-section">
-      <div class="s-label">EPM Clave</div>
-      <div class="people-grid" id="team-epm"></div>
+    <div class="ss">
+      <div class="slbl">EPM — Clientes Clave</div>
+      <div class="people-list" id="team-epm"></div>
     </div>
-    <div class="s-section">
-      <div class="s-label">Proveedores</div>
-      <div class="people-grid" id="team-provs"></div>
+    <div class="ss">
+      <div class="slbl">Outros Clientes</div>
+      <div class="people-list" id="team-clientes"></div>
+    </div>
+    <div class="ss">
+      <div class="slbl">Proveedores</div>
+      <div class="people-list" id="team-provs"></div>
     </div>
   </aside>
 
-  <!-- CHAT -->
-  <main class="chat-main">
-    <div id="messages" class="messages">
-      <div id="welcome" class="welcome">
-        <div class="w-title">Buenos días, Sebastián ☀️</div>
-        <div class="w-sub">Tu sistema personal. Opera como jefe desde aquí.</div>
-        <div class="w-cards">
-          <div class="w-card" onclick="quickAction('briefing')"><div class="w-icon">🌅</div><div class="w-ctitle">Briefing del día</div><div class="w-cdesc">¿Qué tengo hoy? Mis 3 prioridades.</div></div>
-          <div class="w-card" onclick="quickAction('survival')"><div class="w-icon">🔴</div><div class="w-ctitle">Triage Condugas</div><div class="w-cdesc">¿Estoy en modo supervivencia? 6 KPIs.</div></div>
-          <div class="w-card" onclick="quickAction('serjefe')"><div class="w-icon">👥</div><div class="w-ctitle">Intervención de jefatura</div><div class="w-cdesc">Problema con alguien del equipo.</div></div>
-          <div class="w-card" onclick="quickAction('content')"><div class="w-icon">✍️</div><div class="w-ctitle">Generar contenido</div><div class="w-cdesc">Post, fragmento, propuesta desde el modelo.</div></div>
-          <div class="w-card" onclick="quickAction('plan-week')"><div class="w-icon">📅</div><div class="w-ctitle">Planear semana</div><div class="w-cdesc">MEGA, agenda y bloques protegidos.</div></div>
-          <div class="w-card" onclick="quickAction('decision')"><div class="w-icon">🎯</div><div class="w-ctitle">Decisión consciente</div><div class="w-cdesc">Ruta de 4 niveles para decidir bien.</div></div>
+  <!-- MAIN AREA wrapper -->
+  <div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+
+    <!-- CHAT VIEW -->
+    <main class="chat-main" id="view-chat">
+      <div id="messages" class="messages">
+        <div id="welcome" class="welcome">
+          <div class="w-title">Buenos días, Sebastián ☀️</div>
+          <div class="w-sub">Tu sistema personal. Opera como jefe desde aquí.</div>
+          <div class="w-cards">
+            <div class="w-card" onclick="qa('briefing')"><div class="w-icon">🌅</div><div class="w-ct">Briefing del día</div><div class="w-cd">Mis 3 prioridades de hoy.</div></div>
+            <div class="w-card" onclick="qa('survival')"><div class="w-icon">🔴</div><div class="w-ct">Triage Condugas</div><div class="w-cd">6 KPIs de supervivencia.</div></div>
+            <div class="w-card" onclick="qa('serjefe')"><div class="w-icon">👥</div><div class="w-ct">Intervención jefatura</div><div class="w-cd">Problema con alguien del equipo.</div></div>
+            <div class="w-card" onclick="qa('content')"><div class="w-icon">✍️</div><div class="w-ct">Generar contenido</div><div class="w-cd">Post, fragmento, propuesta.</div></div>
+            <div class="w-card" onclick="qa('plan-week')"><div class="w-icon">📅</div><div class="w-ct">Planear semana</div><div class="w-cd">MEGA y bloques protegidos.</div></div>
+            <div class="w-card" onclick="qa('decision')"><div class="w-icon">🎯</div><div class="w-ct">Decisión consciente</div><div class="w-cd">Ruta de 4 niveles.</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="input-area">
+        <div class="input-wrap">
+          <textarea id="chat-input" rows="1" placeholder="Escríbele a tu agente... (Enter = enviar)" oninput="autoResize(this);updateCC()" onkeydown="handleKey(event)"></textarea>
+          <div class="input-foot">
+            <span class="input-hint">Agente: <span id="cur-agent">Meta-Orquestador</span></span>
+            <span class="input-hint" id="char-count">0</span>
+          </div>
+        </div>
+        <button class="send-btn" id="send-btn" onclick="sendMsg()">➤</button>
+      </div>
+    </main>
+
+    <!-- DASHBOARD VIEW -->
+    <div class="dash-view" id="view-dash">
+      <div class="dash-hdr">
+        <div class="dash-date" id="dash-date">—</div>
+        <div class="dash-mega-wrap">
+          <span class="dash-mega-lbl">🎯 MEGA:</span>
+          <input class="dash-mega-input" id="mega-input" placeholder="¿Cuál es tu intención esta semana?" oninput="saveMega()">
+        </div>
+        <button class="dash-refresh" onclick="refreshDash()">↻ Actualizar todo</button>
+      </div>
+      <div class="dash-grid">
+        <!-- Agenda -->
+        <div class="dc">
+          <div class="dc-hdr">
+            <div class="dc-title">📅 Agenda Hoy</div>
+            <div style="display:flex;gap:4px;align-items:center">
+              <span class="dc-badge" id="badge-cal">—</span>
+              <button class="dc-refresh" onclick="fetchCalendars()" title="Refrescar">↻</button>
+            </div>
+          </div>
+          <div class="dc-body" id="dash-agenda"><div class="dc-loading">⏳ Esperando conexión...</div></div>
+        </div>
+        <!-- Tareas -->
+        <div class="dc">
+          <div class="dc-hdr">
+            <div class="dc-title">✅ Tareas Hoy</div>
+            <div style="display:flex;gap:4px;align-items:center">
+              <span class="dc-badge" id="badge-tasks">Todoist</span>
+              <button class="dc-refresh" onclick="fetchTodoist()" title="Refrescar">↻</button>
+            </div>
+          </div>
+          <div class="dc-body" id="dash-tasks"><div class="dc-loading">⏳ Esperando conexión...</div></div>
+        </div>
+        <!-- KPIs -->
+        <div class="dc">
+          <div class="dc-hdr">
+            <div class="dc-title">📊 KPIs Condugas</div>
+            <button class="dc-refresh" onclick="editKPIs()" style="font-size:10px;color:var(--text3);border:none;background:transparent;cursor:pointer">Editar</button>
+          </div>
+          <div class="dc-body" id="dash-kpis"></div>
+        </div>
+        <!-- Emails -->
+        <div class="dc wide">
+          <div class="dc-hdr">
+            <div class="dc-title">📧 Emails Sin Leer</div>
+            <div style="display:flex;gap:4px;align-items:center">
+              <span class="dc-badge" id="badge-email">Gmail + Outlook</span>
+              <button class="dc-refresh" onclick="fetchEmails()" title="Refrescar">↻</button>
+            </div>
+          </div>
+          <div class="dc-body" id="dash-email"><div class="dc-loading">⏳ Esperando conexión...</div></div>
+        </div>
+        <!-- WhatsApp -->
+        <div class="dc">
+          <div class="dc-hdr">
+            <div class="dc-title">📱 WhatsApp (WATI)</div>
+            <div style="display:flex;gap:4px;align-items:center">
+              <span class="dc-badge" id="badge-wa">—</span>
+              <button class="dc-refresh" onclick="fetchWATI()" title="Refrescar">↻</button>
+            </div>
+          </div>
+          <div class="dc-body" id="dash-wa"><div class="dc-loading">⏳ Esperando conexión...</div></div>
+        </div>
+        <!-- Noticias -->
+        <div class="dc">
+          <div class="dc-hdr">
+            <div class="dc-title">📰 Noticias EPM</div>
+            <div style="display:flex;gap:4px;align-items:center">
+              <span class="dc-badge" id="badge-news">NewsAPI</span>
+              <button class="dc-refresh" onclick="fetchNews()" title="Refrescar">↻</button>
+            </div>
+          </div>
+          <div class="dc-body" id="dash-news"><div class="dc-loading">⏳ Esperando conexión...</div></div>
+        </div>
+        <!-- Memoria / Ideas activas -->
+        <div class="dc full">
+          <div class="dc-hdr">
+            <div class="dc-title">🧠 Memoria + Ideas Activas</div>
+            <button class="dc-refresh" onclick="toggleTab('memory');setView('chat')" style="font-size:10px;color:var(--text3);border:none;background:transparent;cursor:pointer">Ver todo →</button>
+          </div>
+          <div class="dc-body" id="dash-memory" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:6px"></div>
         </div>
       </div>
     </div>
-    <div class="input-area">
-      <div class="input-wrap">
-        <textarea id="chat-input" rows="1" placeholder="Escríbele a tu agente... (Enter = enviar, Shift+Enter = nueva línea)" oninput="autoResize(this)" onkeydown="handleKey(event)"></textarea>
-        <div class="input-foot">
-          <span class="input-hint">Agente activo: <span id="cur-agent">Meta-Orquestador</span></span>
-          <span class="input-hint" id="char-count">0 chars</span>
-        </div>
+
+    <!-- ECOSYSTEM VIEW -->
+    <div class="dash-view" id="view-eco">
+      <div class="dash-hdr">
+        <div class="dash-date">🔗 Ecosistema de Fuentes — 33 Fuentes</div>
+        <button class="dash-refresh" onclick="openSettings()">⚙️ Configurar integraciones</button>
       </div>
-      <button class="send-btn" id="send-btn" onclick="sendMessage()">➤</button>
+      <div style="flex:1;overflow-y:auto;padding:12px">
+        <div class="src-grid" id="src-grid"></div>
+      </div>
     </div>
-  </main>
+
+  </div><!-- end main wrapper -->
 
   <!-- RIGHT PANEL -->
   <aside class="right-panel hidden" id="right-panel">
-
-    <!-- KPI TAB -->
-    <div id="tab-kpi" class="p-section" style="display:none">
+    <div id="tab-kpi" class="p-sec" style="display:none">
       <div class="p-title">KPIs Supervivencia <button onclick="editKPIs()">Editar</button></div>
-      <div id="kpi-grid" class="kpi-grid"></div>
-      <div id="surv-alert" class="surv-alert" style="display:none">
+      <div id="rp-kpi-grid" class="kpi-grid"></div>
+      <div id="rp-surv-alert" class="surv-alert" style="display:none">
         <div class="surv-title">🔴 MODO SUPERVIVENCIA</div>
-        <div class="surv-txt" id="surv-txt">2+ KPIs críticos.</div>
+        <div class="surv-txt" id="rp-surv-txt">2+ KPIs críticos.</div>
       </div>
-      <button onclick="quickAction('survival')" style="width:100%;margin-top:7px;background:rgba(231,76,60,.09);border:1px solid rgba(231,76,60,.28);color:var(--danger);padding:5px;border-radius:5px;font-size:11px;cursor:pointer">Analizar con IA →</button>
+      <button onclick="qa('survival')" style="width:100%;margin-top:7px;background:rgba(231,76,60,.08);border:1px solid rgba(231,76,60,.25);color:var(--danger);padding:4px;border-radius:5px;font-size:10px;cursor:pointer">Analizar con IA →</button>
     </div>
-
-    <!-- TASKS TAB -->
-    <div id="tab-tasks" class="p-section" style="display:none">
-      <div class="p-title">Pendientes Reales <button onclick="addTask()">+ Agregar</button></div>
+    <div id="tab-tasks" class="p-sec" style="display:none">
+      <div class="p-title">Pendientes Reales <button onclick="addTask()">+</button></div>
       <div id="tasks-list"></div>
     </div>
-
-    <!-- NOTES TAB -->
-    <div id="tab-notes" class="p-section" style="display:none">
+    <div id="tab-notes" class="p-sec" style="display:none">
       <div class="p-title">Notas de Sesión</div>
-      <textarea class="notes-area" id="notes-area" placeholder="Notas, contexto, ideas de esta sesión..." oninput="saveNotes()"></textarea>
+      <textarea class="notes-area" id="notes-area" placeholder="Notas, contexto, ideas..." oninput="saveNotes()"></textarea>
     </div>
-
-    <!-- MEMORY TAB -->
-    <div id="tab-memory" class="p-section" style="display:none">
-      <div class="p-title">Memoria Permanente <button onclick="addMemory()">+ Agregar</button></div>
+    <div id="tab-memory" class="p-sec" style="display:none">
+      <div class="p-title">Memoria Permanente <button onclick="addMemory()">+</button></div>
       <div class="mem-list" id="mem-list"></div>
     </div>
-
   </aside>
-</div>
+
+</div><!-- layout -->
 
 <!-- SETTINGS MODAL -->
-<div class="m-overlay hidden" id="settings-ov">
-  <div class="modal">
+<div class="ov hidden" id="settings-ov">
+  <div class="modal" style="max-width:680px">
     <button class="modal-close" onclick="closeSettings()">✕</button>
-    <div class="modal-title">⚙️ Configuración</div>
-    <div class="modal-sub">Conecta tus APIs. Todo se guarda solo en tu navegador.</div>
-    <div class="fg">
-      <label class="flbl">🔑 Anthropic API Key (Claude) — <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a></label>
-      <input type="password" class="finput" id="s-apikey" placeholder="sk-ant-api03-...">
-      <div class="fhint">Requerida para que el agente funcione</div>
+    <div class="modal-title">⚙️ Configuración e Integraciones</div>
+    <div class="modal-sub">Conecta tus fuentes. Todo se guarda solo en tu navegador.</div>
+
+    <div class="int-group">
+      <div class="int-group-title">🤖 IA</div>
+      <div class="int-row">
+        <span class="int-label">Anthropic API Key</span>
+        <input type="password" class="int-input" id="s-apikey" placeholder="sk-ant-api03-...">
+        <div class="int-st" id="st-claude"></div>
+      </div>
+      <div class="int-row">
+        <span class="int-label">Modelo Claude</span>
+        <select class="int-input" id="s-model">
+          <option value="claude-sonnet-4-6">claude-sonnet-4-6 (recomendado)</option>
+          <option value="claude-opus-4-6">claude-opus-4-6 (más potente)</option>
+          <option value="claude-haiku-4-5-20251001">claude-haiku-4-5 (más rápido)</option>
+        </select>
+      </div>
     </div>
-    <div class="divider"></div>
-    <div class="fg">
-      <label class="flbl">🐙 GitHub Personal Access Token</label>
-      <input type="password" class="finput" id="s-ghtoken" placeholder="ghp_...">
-      <div class="fhint">Para exportar sesiones a tus repositorios</div>
+
+    <div class="int-group">
+      <div class="int-group-title">📅 Google (Calendar + Gmail) — <a href="https://developers.google.com/oauthplayground" target="_blank" style="font-size:9px">Obtener token →</a></div>
+      <div class="fhint" style="margin-bottom:6px">Ve a OAuth Playground → selecciona Calendar API v3 + Gmail API v1 → obtén Access Token (dura ~1h)</div>
+      <div class="int-row">
+        <span class="int-label">Google Access Token</span>
+        <input type="password" class="int-input" id="s-gtoken" placeholder="ya29...">
+        <div class="int-st" id="st-google"></div>
+      </div>
     </div>
-    <div class="fg">
-      <label class="flbl">📁 Repositorio destino</label>
-      <input type="text" class="finput" id="s-ghrepo" placeholder="SerJefe/Guias_seguidores">
+
+    <div class="int-group">
+      <div class="int-group-title">📧 Microsoft (Outlook + Calendar) — <a href="https://developer.microsoft.com/en-us/graph/graph-explorer" target="_blank" style="font-size:9px">Obtener token →</a></div>
+      <div class="fhint" style="margin-bottom:6px">Inicia sesión en Graph Explorer → copia el Access Token de la pestaña "Access token" (dura ~1h)</div>
+      <div class="int-row">
+        <span class="int-label">Microsoft Graph Token</span>
+        <input type="password" class="int-input" id="s-mstoken" placeholder="eyJ0...">
+        <div class="int-st" id="st-ms"></div>
+      </div>
+      <div class="int-row">
+        <span class="int-label">Correo Condugas</span>
+        <input type="text" class="int-input" id="s-msemail" placeholder="s.sanchez@condugas.com.co">
+      </div>
     </div>
-    <div class="divider"></div>
-    <div class="fg">
-      <label class="flbl">📱 WATI API Key (WhatsApp)</label>
-      <input type="password" class="finput" id="s-wati" placeholder="eyJ...">
+
+    <div class="int-group">
+      <div class="int-group-title">✅ Todoist</div>
+      <div class="int-row">
+        <span class="int-label">Todoist API Key</span>
+        <input type="password" class="int-input" id="s-todoist" placeholder="Token de todoist.com → Settings → Developer">
+        <div class="int-st" id="st-todoist"></div>
+      </div>
     </div>
-    <div class="divider"></div>
-    <div class="fg">
-      <label class="flbl">🤖 Modelo Claude</label>
-      <select class="finput" id="s-model">
-        <option value="claude-sonnet-4-6">claude-sonnet-4-6 (recomendado)</option>
-        <option value="claude-opus-4-6">claude-opus-4-6 (más potente)</option>
-        <option value="claude-haiku-4-5-20251001">claude-haiku-4-5 (más rápido)</option>
-      </select>
+
+    <div class="int-group">
+      <div class="int-group-title">📱 WhatsApp — WATI</div>
+      <div class="int-row">
+        <span class="int-label">WATI API Key</span>
+        <input type="password" class="int-input" id="s-wati" placeholder="eyJ...">
+        <div class="int-st" id="st-wati"></div>
+      </div>
+      <div class="int-row">
+        <span class="int-label">WATI Server URL</span>
+        <input type="text" class="int-input" id="s-wati-server" placeholder="live-mt-server.wati.io/10108068">
+      </div>
     </div>
-    <div id="conn-status" style="font-size:11px;color:var(--text3);margin-top:4px"></div>
-    <div class="m-footer">
+
+    <div class="int-group">
+      <div class="int-group-title">📰 NewsAPI — <a href="https://newsapi.org" target="_blank" style="font-size:9px">Registrarse gratis →</a></div>
+      <div class="int-row">
+        <span class="int-label">NewsAPI Key</span>
+        <input type="password" class="int-input" id="s-news" placeholder="API key de newsapi.org">
+        <div class="int-st" id="st-news"></div>
+      </div>
+    </div>
+
+    <div class="int-group">
+      <div class="int-group-title">🐙 GitHub</div>
+      <div class="int-row">
+        <span class="int-label">Personal Access Token</span>
+        <input type="password" class="int-input" id="s-ghtoken" placeholder="ghp_...">
+        <div class="int-st" id="st-gh"></div>
+      </div>
+      <div class="int-row">
+        <span class="int-label">Repositorio</span>
+        <input type="text" class="int-input" id="s-ghrepo" placeholder="SerJefe/Guias_seguidores">
+      </div>
+    </div>
+
+    <div class="int-group">
+      <div class="int-group-title">📓 Notion</div>
+      <div class="int-row">
+        <span class="int-label">Integration Token</span>
+        <input type="password" class="int-input" id="s-notion" placeholder="secret_...">
+        <div class="int-st" id="st-notion"></div>
+      </div>
+      <div class="int-row">
+        <span class="int-label">Database ID (inbox)</span>
+        <input type="text" class="int-input" id="s-notion-db" placeholder="ID de tu base de datos">
+      </div>
+    </div>
+
+    <div class="mfooter">
       <button class="btn btn-d" onclick="clearAll()">Borrar todo</button>
       <button class="btn btn-s" onclick="closeSettings()">Cancelar</button>
-      <button class="btn btn-p" onclick="saveSettings()">Guardar</button>
+      <button class="btn btn-p" onclick="saveSettings()">Guardar y conectar</button>
     </div>
   </div>
 </div>
 
 <!-- KPI EDIT MODAL -->
-<div class="m-overlay hidden" id="kpi-ov">
+<div class="ov hidden" id="kpi-ov">
   <div class="modal">
     <button class="modal-close" onclick="closeKPIModal()">✕</button>
     <div class="modal-title">📊 KPIs Supervivencia Condugas</div>
-    <div class="modal-sub">Actualiza el estado de cada indicador</div>
+    <div class="modal-sub">Actualiza estado de cada indicador</div>
     <div id="kpi-form"></div>
-    <div class="m-footer">
+    <div class="mfooter">
       <button class="btn btn-s" onclick="closeKPIModal()">Cancelar</button>
       <button class="btn btn-p" onclick="saveKPIs()">Guardar</button>
     </div>
@@ -380,304 +623,281 @@ input,textarea,select{font-family:inherit;font-size:14px}
 </div>
 
 <!-- EXPORT MODAL -->
-<div class="m-overlay hidden" id="export-ov">
-  <div class="modal" style="max-width:680px">
+<div class="ov hidden" id="export-ov">
+  <div class="modal" style="max-width:660px">
     <button class="modal-close" onclick="closeExport()">✕</button>
-    <div class="modal-title">🐙 Exportar Sesión</div>
-    <div class="modal-sub">Guarda el contenido en GitHub o cópialo</div>
+    <div class="modal-title">💾 Guardar contenido</div>
+    <div class="modal-sub">Exporta esta sesión o el contenido generado</div>
     <div class="fg">
       <label class="flbl">Nombre del archivo</label>
-      <input type="text" class="finput" id="exp-filename" placeholder="sesion-2026-03-10.md">
+      <input type="text" class="finput" id="exp-fn" placeholder="sesion-2026-03-11.md">
     </div>
     <div class="fg">
-      <label class="flbl">Contenido (editable)</label>
+      <label class="flbl">Contenido</label>
       <div class="exp-preview" id="exp-content" contenteditable="true"></div>
     </div>
     <div id="copy-ok" class="copy-ok" style="display:none">✓ Copiado al portapapeles</div>
-    <div class="m-footer">
-      <button class="btn btn-s" onclick="copyExport()">📋 Copiar</button>
-      <button class="btn btn-p" onclick="pushGitHub()">🐙 Subir a GitHub</button>
+    <div class="mfooter">
+      <button class="btn btn-s" onclick="copyExp()">📋 Copiar</button>
+      <button class="btn btn-s" onclick="saveToNotion()">📓 Notion</button>
+      <button class="btn btn-p" onclick="pushGitHub()">🐙 GitHub</button>
     </div>
   </div>
 </div>
 
-<!-- TOAST CONTAINER -->
+<!-- SMART SAVE MODAL -->
+<div class="ov hidden" id="smartsave-ov">
+  <div class="modal" style="max-width:440px">
+    <button class="modal-close" onclick="document.getElementById('smartsave-ov').classList.add('hidden')">✕</button>
+    <div class="modal-title">💾 ¿Guardar esto?</div>
+    <div class="modal-sub" id="smartsave-preview" style="background:var(--bg3);padding:8px;border-radius:6px;font-size:11px;line-height:1.5;max-height:120px;overflow-y:auto;white-space:pre-wrap;margin-bottom:12px"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+      <button class="btn btn-s" style="font-size:11px" onclick="smartSaveTo('clip')">📋 Copiar</button>
+      <button class="btn btn-s" style="font-size:11px" onclick="smartSaveTo('memory')">🧠 Memoria</button>
+      <button class="btn btn-s" style="font-size:11px" onclick="smartSaveTo('notes')">📝 Notas sesión</button>
+      <button class="btn btn-s" style="font-size:11px" onclick="smartSaveTo('github')">🐙 GitHub</button>
+      <button class="btn btn-s" style="font-size:11px" onclick="smartSaveTo('notion')">📓 Notion</button>
+      <button class="btn btn-p" style="font-size:11px" onclick="document.getElementById('smartsave-ov').classList.add('hidden')">Omitir</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast-box" id="toast-box"></div>
 
 <script>
 // ================================================================
-// CONFIG & STATE
+// STATE & CONFIG
 // ================================================================
-const S = {
-  agent: 'maestro',
-  loading: false,
-  tab: null,
-  history: []
+const S = { agent:'maestro', loading:false, tab:null, view:'chat', history:[], lastRaw:'' };
+
+const C = {
+  g(k){ return localStorage.getItem('seb_'+k)||'' },
+  s(k,v){ localStorage.setItem('seb_'+k,v) },
+  get apiKey(){ return this.g('key') }, set apiKey(v){ this.s('key',v) },
+  get model(){ return this.g('model')||'claude-sonnet-4-6' }, set model(v){ this.s('model',v) },
+  get gToken(){ return this.g('gt') }, set gToken(v){ this.s('gt',v) },
+  get msToken(){ return this.g('mst') }, set msToken(v){ this.s('mst',v) },
+  get msEmail(){ return this.g('mse') }, set msEmail(v){ this.s('mse',v) },
+  get todoist(){ return this.g('td') }, set todoist(v){ this.s('td',v) },
+  get watiKey(){ return this.g('wk') }, set watiKey(v){ this.s('wk',v) },
+  get watiServer(){ return this.g('ws')||'live-mt-server.wati.io/10108068' }, set watiServer(v){ this.s('ws',v) },
+  get newsKey(){ return this.g('nk') }, set newsKey(v){ this.s('nk',v) },
+  get ghToken(){ return this.g('gh') }, set ghToken(v){ this.s('gh',v) },
+  get ghRepo(){ return this.g('ghr')||'SerJefe/Guias_seguidores' }, set ghRepo(v){ this.s('ghr',v) },
+  get notionToken(){ return this.g('nt') }, set notionToken(v){ this.s('nt',v) },
+  get notionDB(){ return this.g('ndb') }, set notionDB(v){ this.s('ndb',v) },
 };
 
-const CFG = {
-  get apiKey(){ return localStorage.getItem('seb_key') || '' },
-  set apiKey(v){ localStorage.setItem('seb_key', v) },
-  get ghToken(){ return localStorage.getItem('seb_gh') || '' },
-  set ghToken(v){ localStorage.setItem('seb_gh', v) },
-  get ghRepo(){ return localStorage.getItem('seb_repo') || 'SerJefe/Guias_seguidores' },
-  set ghRepo(v){ localStorage.setItem('seb_repo', v) },
-  get wati(){ return localStorage.getItem('seb_wati') || '' },
-  set wati(v){ localStorage.setItem('seb_wati', v) },
-  get model(){ return localStorage.getItem('seb_model') || 'claude-sonnet-4-6' },
-  set model(v){ localStorage.setItem('seb_model', v) }
-};
-
 // ================================================================
-// BASE CONTEXT (MAESTRO)
+// SYSTEM PROMPTS
 // ================================================================
-const BASE = `CONTEXTO COMPLETO DE SEBASTIÁN SÁNCHEZ ACEVEDO — Medellín, Colombia
+const BASE = `CONTEXTO COMPLETO — SEBASTIÁN SÁNCHEZ ACEVEDO, Medellín Colombia
 
 === 4 IDENTIDADES PARALELAS ===
-1. GERENTE CONDUGAS S.A. — empresa familiar infraestructura servicios públicos (gas, agua, emergencias, tubería). Cliente principal: EPM. Sistema central: Odoo. CRISIS DE CAJA ACTUAL — opera modo reactivo (paradoja con su propio modelo: un jefe no debería estar en el día a día).
+1. GERENTE CONDUGAS S.A. — empresa familiar infraestructura servicios públicos (gas, agua, emergencias, tubería). Cliente principal EPM. Sistema: Odoo. CRISIS DE CAJA ACTUAL — paradoja: opera modo reactivo cuando su propio modelo dice que el jefe no debería estar en el día a día.
 2. FUNDADOR SIENDO CONSULTING — consultoría organizacional, integrador Odoo, agentes IA, modelo "Ser Siendo".
-3. DOCENTE/CONSULTOR — EAFIT Medellín, modelo Ser Siendo, concepto propio "alletagia" (arte de ser quien ayuda a otros a sacar su potencial).
+3. DOCENTE/CONSULTOR — EAFIT, "Ser Siendo", concepto propio "alletagia".
 4. INVERSIONISTA — Charles Schwab, Trii, Wenia, Plenti, Bancolombia, Scotiabank.
 
-=== MODELO SER JEFE (núcleo conceptual) ===
-"Un jefe es quien logra que otros logren."
-DIFERENCIA CRÍTICA: jefatura ≠ liderazgo. SIEMPRE usar "jefatura", NUNCA "liderazgo".
-4 PREMISAS FUNDAMENTALES:
-1. Nadie motiva a otra persona — motivación nace de identidad + autonomía + disfrute
-2. Nadie enseña a otra persona — el jefe crea condiciones para el aprendizaje
-3. Nunca asumir que entiendes la existencia del otro — realidad fenomenológica única
-4. Dar objetivos, no métodos — define el QUÉ y PARA QUÉ, no el CÓMO
-9 FORMAS DE INTERVENCIÓN (según el momento):
-Consejero | Coach | Compañero | Facilitador | Profesor | Modelo | Observador | Asesor técnico | Experto (último recurso)
-6 ELEMENTOS DE EQUIPO FUNCIONAL: Propósito compartido | Roles claros | Conversaciones honestas | Compromisos cumplidos | Capacidad de aprender | Confianza básica
+=== MODELO SER JEFE ===
+"Un jefe es quien logra que otros logren." SIEMPRE "jefatura" NUNCA "liderazgo".
+4 PREMISAS: (1) Nadie motiva a otro — motivación = identidad+autonomía+disfrute (2) Nadie enseña a otro — crea condiciones (3) Nunca asumir que entiendes la existencia del otro (4) Dar objetivos no métodos.
+9 INTERVENCIONES: Consejero|Coach|Compañero|Facilitador|Profesor|Modelo|Observador|Asesor técnico|Experto (último recurso).
 
 === EQUIPO CONDUGAS DIRECTO ===
-Cami (Juan Camilo Berrío): Gerente Proyectos
-Andre (Andrea Bernal): Director Financiero y Contable — SITUACIÓN ACTIVA (pendiente resolución)
-Juan (Juan Guillermo): Gerente Estrategia
-Carlos (Carlos Hernán López): Gerente Nuevos Negocios
-Willi (William López): Director Administrativo
-Naty (Natalia Rojas): Director RRHH
-Nelson (Fabio Nelson Escobar): Director Logística
-Clau (Claudia Quintero): Directora Contable
-Ma (Olga Acevedo): Dueña y Madre
+Juan Camilo Berrío (Cami): Gerente Proyectos
+Andrea Bernal (Andre): Director Financiero — SITUACIÓN ACTIVA
+Juan Guillermo: Gerente Estrategia
+Carlos Hernán López: Gerente Nuevos Negocios
+William López (Willi): Director Administrativo
+Natalia Rojas (Naty): Director RRHH
+Fabio Nelson Escobar (Nelson): Director Logística
+Claudia Quintero (Clau): Directora Contable
+Olga Acevedo (Ma): Dueña y Madre
 
 === EQUIPO CONDUGAS INDIRECTO ===
-Margo (Luz Margoth Hernández): HSEQ | Bibi (Bibiana Castaño): Admin | Lore (Lorena Fajardo): Tesorería
-Lucy (Lucy Tamayo): Auditor Logística | Hilda (Hilda Mary): Nuevos Negocios | JuanPa (Juan Pablo Franco): Productividad
-Carlos Andrés Acevedo: Dir. Proyectos | Edwar (Edwar Tello): Dir. Proyectos | Aldemar Bermúdez: Dir. Proyectos
-Diana Giraldo: Dir. Proyectos | Daniel Herrera: Asistente Financiero | Alexa (Alexandra Botero): Ing. Nuevos Negocios
-Jhonatan Argüello: Coordinador Transporte | Andrés (Jorge André López): Coordinador Logístico
-Paola Valencia: Residente Gas Internas | Nicacio (Jhon Nicacio Salazar): Residente OyM Aguas
-Alexander: Gestor Social
+Luz Margoth Hernández (Margo): HSEQ | Bibiana Castaño (Bibi): Admin | Lorena Fajardo (Lore): Tesorería
+Lucy Tamayo: Auditor Logística | Hilda Mary Martínez: Nuevos Negocios | Juan Pablo Franco (JuanPa): Productividad
+Carlos Andrés Acevedo / Edwar Tello / Aldemar Bermúdez / Diana Giraldo: Dir. Proyectos
+Daniel Herrera: Asistente Financiero | Alexandra Botero (Alexa): Ing. Nuevos Negocios
+Jhonatan Argüello: Coordinador Transporte | Jorge André López (Andrés): Coordinador Logístico
+Paola Valencia: Residente Gas | Jhon Nicacio Salazar (Nicacio): Residente OyM Aguas | Alexander: Gestor Social
 
 === SENDO CONSULTING ===
-Mona (Mónica González): Socia Comercial
-Lina (Lina Russi): Socia Gestora
-Ema (Emanuel): Socio Desarrollador
+Mónica González (Mona): Socia Comercial | Lina Russi: Socia Gestora | Emanuel (Ema): Socio Desarrollador
 
-=== CLIENTES EPM CLAVE ===
+=== EPM CLAVE ===
 Juan Carlos Gómez: Subgerente Gas | Luis Guillermo Villada: Subgerente Aguas
 Humberto Iglesias: VP Negocios | Santiago Wilches: Gerente Aguas | Jhon Maya: Gerente General
-ESTRATEGIA EPM: EPM divide y enfrenta contratistas entre sí. Sebastián tiene estrategia colectiva con colegas para neutralizarla. Los problemas de fórmulas de reajuste son punto técnico-legal crítico.
+EPM divide y enfrenta contratistas. Sebastián tiene estrategia colectiva con colegas. Fórmulas de reajuste = punto técnico-legal crítico.
 
 === OTROS CLIENTES ===
-Rafael Gallego: La Vasconia (dueño) | Jorge Medina: Montesereno (gerente)
-GDO | Metrogas | VANTI (Luis Abril: Gerente Técnico)
+Rafael Gallego: La Vasconia | Jorge Medina: Montesereno | GDO | Metrogas | VANTI (Luis Abril: Gerente Técnico)
 
-=== PROVEEDORES CLAVE ===
+=== PROVEEDORES ===
 Camilo Marín (Doctor): Abogado | Andrea Zuleta: Seguros | José Daniel González (Dani): Rasher
 
-=== KPIs SUPERVIVENCIA CONDUGAS ===
-ALERTA si 2+ en rojo → etiquetar [SUPERVIVENCIA] como prioridad absoluta:
-1. Flujo de caja: ¿dinero para operar 30 días?
-2. Cartera vencida: ¿cuánto le deben y cuándo entra?
-3. Compromisos EPM: ¿hay incumplimiento inminente?
-4. Nómina: ¿cubierta la próxima?
-5. Proveedores críticos: ¿hay cortes de suministro en riesgo?
-6. Capacidad operativa: ¿tiene equipo para ejecutar contratos activos?
+=== KPIs SUPERVIVENCIA (alerta si 2+ rojo) ===
+1.Flujo caja — 30 días? 2.Cartera vencida — cuándo entra? 3.Compromisos EPM — incumplimiento? 4.Nómina — cubierta? 5.Proveedores — cortes? 6.Capacidad operativa — equipo?
 
 === PROYECTOS ACTIVOS ===
-Casa Ozzio (Capullo): construcción propia, cierre objetivo sep 2025, presupuesto $950M COP, constructor Oscar (diseño grado cero). Recursos críticos: licencia construcción, acabados, contratistas, formas de pago.
-Cultura Autogestión Condugas: iniciado feb 2024, "Reinventar las Organizaciones" + exigencia MPA EPM.
-Automatización Condugas con IA: activo, abierto — apps IA, n8n, agentes.
-Propuesta EPM Rionegro: URGENTE/pendiente.
+Casa Ozzio: construcción, $950M COP, cierre sep 2025, constructor Oscar.
+Cultura Autogestión Condugas | Automatización con IA | Propuesta EPM Rionegro (URGENTE).
 
-=== PENDIENTES REALES (de GoodNotes) ===
-• Revisar PRG (urgente)
-• Propuesta EPM Rionegro (urgente)
-• Situación Andrea Bernal Directora
-• Bono gerentes y directores
-• Análisis Silar (técnico — ojo valores)
-• Pedir informes comité mensual
-• Pulir Dashboard Condugas
-• Terminar reunión Jorge William
-• Ver informes financieros
-• Apps IA: bajar Claude, OpenDaw, automatizar procesos
+=== PENDIENTES (GoodNotes) ===
+Revisar PRG | Propuesta EPM Rionegro | Situación Andrea Bernal | Bono gerentes | Análisis Silar | Informes comité | Dashboard Condugas | Reunión Jorge William | Informes financieros | Apps IA.
 
-=== IDEAS ACTIVAS ===
-• Tema VOIP para Condugas
-• Análisis patrimonio e inversiones
-• Socialización organigrama
-• Productividad en transporte
-• Facturas NC y ManyChat
-• Viaje Miami (compras)
-• Sesión con los 2 "torninos" (no vínculo)
-• Discurso de cambios de vida / empleos / proyectos terminados
-• Hoja de ruta como junta con objetivos, proyectos e inversiones
-• Marca personal como "loncero"
+=== DEPORTISTA/BIENESTAR ===
+Padel competitivo | Fisioterapia activa | Gym | Whoop (sueño/recuperación) | "Guerrero de la roca".
+Semana debe tener: Fisio/Padel/Gym/Leer/Familia protegidos.
 
-=== ECOSISTEMA DIGITAL ===
-Microsoft S.SANCHEZ (Condugas) | Microsoft SSANCH17 (EAFIT) | Hotmail (personal)
-WhatsApp Business + WATI + ManyChat | Limitless (transcripciones auto) | Todoist (tareas Condugas)
-Google (Docente / Personal / S.SANCHEZ) | GoodNotes (iPad — notas manuales)
-GitHub: SerJefe/Guias_seguidores (60+ herramientas HTML documentadas)
-Notion (hub conocimiento) | OneCalendar (agenda unificada)
-Odoo Condugas + Odoo Partner (Sendo) | Whoop (salud: sueño, recuperación)
+=== FAMILIA ===
+Esposa e hijo bebé. Casa Ozzio en construcción.
 
-=== DIMENSIÓN DEPORTISTA ===
-Padel: competitivo, torneos frecuentes
-Fisioterapia: tratamiento activo | Gym: rutina fuerza
-Whoop: tracking sueño y recuperación
-Marco: "Guerrero de la roca" — disciplina personal
-Agenda semanal protege: Fisio / Padel / Gym / Leer / Familia
+=== REGLAS ===
+Etiquetas: [SUPERVIVENCIA][ESTRATEGIA][OPERATIVO][REQUIERE TU ATENCIÓN][DELEGAR A: nombre]
+Máx 3 párrafos o lista corta. Español colombiano, tuteo, directo. NUNCA "liderazgo". NUNCA generar sistemas que no se pidan. Una sola pregunta si hay ambigüedad.`;
 
-=== FAMILIA Y PERSONAL ===
-Vive con esposa e hijo (bebé). Construye Casa Ozzio.
-Inversiones: Charles Schwab + Trii + Wenia + Plenti + Bancolombia + Scotiabank.
-
-=== STACK TÉCNICO ACTIVO ===
-WATI → WhatsApp Business | n8n cloud (siendoconsulting.app.n8n.cloud)
-Claude API (claude-sonnet-4-6) | OpenAI gpt-4o-mini (temporal)
-Número WhatsApp: 573128508826
-Fase 2: memoria Supabase + pgvector
-
-=== REGLAS DE RESPUESTA ===
-FORMATO: Español colombiano, tuteo, directo. Máx 3 párrafos o lista corta.
-ETIQUETAS: [SUPERVIVENCIA] / [ESTRATEGIA] / [OPERATIVO] / [REQUIERE TU ATENCIÓN] / [DELEGAR A: nombre]
-PROHIBICIONES:
-— NUNCA decir "liderazgo" — siempre "jefatura"
-— NUNCA generar sistemas o herramientas que no se pidieron
-— NUNCA ser condescendiente o decorativo
-— Si hay ambigüedad: pregunta UNA sola cosa, la más importante
-`;
-
-// ================================================================
-// AGENT DEFINITIONS
-// ================================================================
 const AGENTS = [
-  {
-    id: 'maestro', name: 'Meta-Orquestador', icon: '🧠', desc: 'Cerebro central — todo el contexto',
-    system: `Eres el asistente personal inteligente de Sebastián Sánchez Acevedo. Tienes TODO el contexto de su vida, empresa y modelo mental.\n\n${BASE}\n\nComo Meta-Orquestador, identificas automáticamente cuál de las 4 identidades está activada en cada mensaje y activas el modo correcto. Eres su cerebro externo: reduces complejidad, priorizas y actúas desde el modelo.`
-  },
-  {
-    id: 'condugas', name: 'Analista Condugas', icon: '🏗️', desc: 'EPM, caja, equipo, KPIs',
-    system: `Eres el Analista de Condugas S.A., empresa familiar de infraestructura de servicios públicos.\n\n${BASE}\n\nFOCO EXCLUSIVO: flujo de caja, contratos EPM, equipo directo, KPIs de supervivencia. Cuando recibes datos financieros u operativos, evalúas inmediatamente los 6 KPIs. Si 2+ en rojo: [SUPERVIVENCIA] como primer token. Eres el Secretario Supervivencia de Condugas.`
-  },
-  {
-    id: 'serjefe', name: 'Ser Jefe', icon: '👥', desc: 'Intervenciones, jefatura, equipo',
-    system: `Eres el agente Ser Jefe de Sebastián Sánchez Acevedo.\n\n${BASE}\n\nEspecialidad: diagnosticar cuál de las 9 formas de intervención aplica a cada situación con personas del equipo y dar el guión exacto de cómo intervenir. Razonas siempre desde las 4 premisas. Nunca das métodos cuando se piden objetivos. Nunca usas la palabra "liderazgo".`
-  },
-  {
-    id: 'siendo', name: 'Siendo Consulting', icon: '🔮', desc: 'Consultoría, Odoo, clientes',
-    system: `Eres el agente de Sendo Consulting.\n\n${BASE}\n\nFOCO: clientes de consultoría, implementaciones Odoo, propuestas, el modelo Ser Siendo en organizaciones, estrategia comercial con Mona, Lina y Ema. Modelo fenomenológico: la realidad de una empresa es lo que sus miembros viven y sienten.`
-  },
-  {
-    id: 'digital', name: 'Transformación Digital', icon: '⚡', desc: 'IA, automatización, n8n, Odoo',
-    system: `Eres el agente de Transformación Digital de Sebastián.\n\n${BASE}\n\nFOCO: automatización con n8n, agentes IA, Odoo, digitalización de procesos. Stack: WATI + n8n + Claude API + Supabase + OpenAI. Dices exactamente qué hacer, no das 5 opciones. Priorizas costo-complejidad: Opus para lo complejo, Sonnet para lo medio, Haiku para lo simple.`
-  },
-  {
-    id: 'ideas', name: 'Ideas e Innovación', icon: '💡', desc: 'Ideas, MVPs, conceptos, frases',
-    system: `Eres el agente de Ideas e Innovación de Sebastián.\n\n${BASE}\n\nCuando Sebastián dice "tengo una idea", captura, estructura y desarrolla. Creas prototipos de ideas, conectas conceptos con el modelo, ayudas con frases, aforismos y fragmentos del libro/modelo en construcción. También "alletagia" — el arte de ser quien ayuda a otros a sacar su potencial.`
-  },
-  {
-    id: 'contenido', name: 'Contenido + ADD', icon: '✍️', desc: 'Posts, redes, audiencia SerJefe',
-    system: `Eres el agente de Contenido de Sebastián para su audiencia SerJefe.\n\n${BASE}\n\nGeneras posts para LinkedIn, Instagram y WhatsApp desde el modelo Ser Jefe. Voz: directa, analítica, colombiana, sin floreos. Nunca "liderazgo", siempre "jefatura". Formatos: reflexiones cortas (3-5 líneas), preguntas que activan pensamiento, conceptos del modelo en situaciones reales. También: propuestas, correos ejecutivos, síntesis de reuniones, actas.`
-  },
-  {
-    id: 'entrenador', name: 'Entrenador Personal', icon: '💪', desc: 'Whoop, padel, gym, bienestar',
-    system: `Eres el Entrenador Personal de Sebastián.\n\n${BASE}\n\nAnalizas datos Whoop (sueño, recuperación, strain), padel, gym, fisio. Proteges bloques de bienestar en la agenda. Si una semana no tiene bloques de ejercicio o recuperación: alertas. Marco "Guerrero de la roca" = disciplina personal. Bloques protegidos: Fisio / Padel / Gym / Leer / Familia.`
-  },
-  {
-    id: 'familia', name: 'Vida Personal + Familia', icon: '🏠', desc: 'Casa, familia, inversiones',
-    system: `Eres el agente de Vida Personal y Familia de Sebastián.\n\n${BASE}\n\nTe ocupas de: Casa Ozzio (construcción, presupuesto $950M, cierre sep 2025), inversiones personales (Charles Schwab, Trii, Wenia, Plenti, Bancolombia, Scotiabank), vida familiar (esposa e hijo bebé), compras, mercado, agenda personal y espacios de descanso que hay que proteger.`
-  }
+  { id:'maestro', name:'Meta-Orquestador', icon:'🧠', desc:'Cerebro central — todo el contexto',
+    sys:`Eres el asistente personal inteligente de Sebastián Sánchez Acevedo. Identificas automáticamente cuál identidad está activa y respondes en consecuencia. Eres su cerebro externo: reduces complejidad, priorizas, actúas desde el modelo.\n\n${BASE}` },
+  { id:'condugas', name:'Analista Condugas', icon:'🏗️', desc:'EPM, caja, equipo, KPIs',
+    sys:`Eres el Analista de Condugas S.A. Foco: flujo de caja, EPM, equipo, KPIs supervivencia. Si 2+ KPIs en rojo: [SUPERVIVENCIA] primer token.\n\n${BASE}` },
+  { id:'serjefe', name:'Ser Jefe', icon:'👥', desc:'Intervenciones, jefatura, equipo',
+    sys:`Eres el agente Ser Jefe. Diagnosticas qué intervención de las 9 aplica y das el guión exacto. Siempre desde las 4 premisas. Nunca "liderazgo".\n\n${BASE}` },
+  { id:'siendo', name:'Siendo Consulting', icon:'🔮', desc:'Consultoría, Odoo, clientes',
+    sys:`Eres el agente de Sendo Consulting. Foco: clientes, Odoo, propuestas, modelo Ser Siendo en organizaciones.\n\n${BASE}` },
+  { id:'digital', name:'Transformación Digital', icon:'⚡', desc:'IA, n8n, automatización',
+    sys:`Eres el agente de Transformación Digital. Foco: n8n, agentes IA, Odoo, digitalización. Stack: WATI+n8n+Claude+Supabase. Dices qué hacer, no 5 opciones.\n\n${BASE}` },
+  { id:'ideas', name:'Ideas e Innovación', icon:'💡', desc:'Ideas, MVPs, conceptos, frases',
+    sys:`Eres el agente de Ideas. Cuando Sebastián dice "tengo una idea" — capturas, estructuras, conectas con el modelo, propones MVP mínimo.\n\n${BASE}` },
+  { id:'contenido', name:'Contenido + ADD', icon:'✍️', desc:'Posts, redes, audiencia SerJefe',
+    sys:`Eres el agente de Contenido. Voz: directa, analítica, colombiana. Nunca "liderazgo". Formatos: reflexiones 3-5 líneas, preguntas que activan, conceptos del modelo aplicados.\n\n${BASE}` },
+  { id:'entrenador', name:'Entrenador Personal', icon:'💪', desc:'Whoop, padel, gym, bienestar',
+    sys:`Eres el Entrenador Personal. Analizas Whoop, proteges bloques de bienestar. Si semana sin ejercicio/recuperación: alertas. Marco "Guerrero de la roca".\n\n${BASE}` },
+  { id:'familia', name:'Vida Personal + Familia', icon:'🏠', desc:'Casa, familia, inversiones',
+    sys:`Eres el agente de Vida Personal. Foco: Casa Ozzio, inversiones personales, familia (esposa + bebé), agenda personal, espacios de descanso.\n\n${BASE}` }
 ];
 
-// ================================================================
-// QUICK ACTIONS
-// ================================================================
-const QA = {
-  briefing: {
-    agent: 'maestro',
-    prompt: `Genérame un briefing ejecutivo del día de hoy. Estructura exacta:\n\n🌅 Buenos días Sebastián — [día, fecha]\n\n[Si aplica: 🔴 SUPERVIVENCIA: descripción urgente]\n\n📋 MIS 3 DE HOY:\n1. [urgente — etiqueta OPERATIVO/ESTRATEGIA/SUPERVIVENCIA]\n2. \n3. \n\n🎯 MEGA DEL DÍA: [una sola cosa]\n\n📅 AGENDA: Primero pregúntame qué tengo hoy en agenda.\n\n👥 CONTACTA HOY: [nombre + motivo concreto basado en pendientes]\n\n💡 FOCO: [reflexión del modelo Ser Jefe aplicada a este día]\n\nFormato WhatsApp. Máx 22 líneas. Directo.`
-  },
-  survival: {
-    agent: 'condugas',
-    prompt: `Ejecuta el Triage de Supervivencia de Condugas ahora. Evalúa los 6 KPIs:\n\n1. Flujo de caja — ¿dinero para 30 días?\n2. Cartera vencida — ¿cuánto entra y cuándo?\n3. Compromisos EPM — ¿incumplimiento inminente?\n4. Nómina — ¿cubierta la próxima?\n5. Proveedores críticos — ¿cortes en riesgo?\n6. Capacidad operativa — ¿equipo para los contratos?\n\nPrimero pregúntame el estado actual de cada uno (una pregunta directa). Si 2+ están en rojo: [SUPERVIVENCIA] y plan de acción inmediato.`
-  },
-  serjefe: {
-    agent: 'serjefe',
-    prompt: `Necesito hacer una intervención con alguien de mi equipo. ¿Con quién es y qué está pasando?\n\nDime el nombre y la situación. Yo te determino:\n1. Cuál de las 9 formas de intervención aplica y por qué\n2. Qué decirle exactamente o cómo abordarlo\n3. Qué NO hacer`
-  },
-  content: {
-    agent: 'contenido',
-    prompt: `Quiero generar contenido desde el modelo Ser Jefe.\n\n¿Para qué plataforma? (LinkedIn / Instagram / WhatsApp)\n¿Tengo un tema específico o quieres proponer desde los conceptos más potentes del modelo?\n\nDame el contexto o dime "propón tú".`
-  },
-  decision: {
-    agent: 'maestro',
-    prompt: `Tengo una decisión difícil. Aplica la Ruta de Decisiones Conscientes:\n\n1. DIAGNÓSTICO: ¿qué tipo de decisión? (operativa/estratégica/personal/jefatura)\n2. OPCIONES: ¿cuáles son las alternativas reales?\n3. CONSECUENCIAS: ¿qué pasa si... en cada caso?\n4. ACCIÓN: ¿cuál es la decisión desde el modelo?\n\nPrimero dime cuál es la decisión que estás enfrentando.`
-  },
-  'plan-week': {
-    agent: 'maestro',
-    prompt: `Ayúdame a planear mi semana. Estructura:\n\n🎯 MEGA DE LA SEMANA: [una sola intención]\n\nPara cada día (Lunes–Sábado):\n• OBJETIVO del día (única cosa que define si el día fue exitoso)\n• REUS (reuniones con horarios)\n• TAREAS accionables\n• Bloques protegidos: Fisio / Padel / Gym / Leer / Familia\n\nPrimero dime: ¿qué compromisos fijos tienes esta semana y cuáles son los pendientes más urgentes de Condugas?`
-  },
-  idea: {
-    agent: 'ideas',
-    prompt: `Tengo una idea. Escúchame y ayúdame a estructurarla:\n— ¿Qué problema resuelve?\n— ¿Cómo conecta con el modelo Ser Jefe/Ser Siendo?\n— ¿Cuál es el MVP mínimo viable?\n— ¿Dónde va: contenido, herramienta, proceso, negocio?\n\nCuéntame la idea.`
-  }
+const QA_MAP = {
+  briefing:{ agent:'maestro', p:`Genera el briefing del día de hoy. Estructura:\n\n🌅 Buenos días Sebastián — [día fecha]\n[Si aplica: 🔴 SUPERVIVENCIA]\n\n📋 MIS 3 DE HOY:\n1. [urgente — etiqueta]\n2.\n3.\n\n🎯 MEGA DEL DÍA: [una sola cosa]\n📅 AGENDA: Pregúntame qué tengo hoy.\n👥 CONTACTA HOY: [nombre + motivo]\n💡 FOCO: [reflexión Ser Jefe]\n\nMáx 22 líneas. Directo.` },
+  survival:{ agent:'condugas', p:`Triage de Supervivencia Condugas. Evalúa 6 KPIs:\n1.Flujo caja 2.Cartera vencida 3.Compromisos EPM 4.Nómina 5.Proveedores 6.Capacidad operativa\nPregúntame estado actual. Si 2+ rojo: [SUPERVIVENCIA] y plan inmediato.` },
+  serjefe:{ agent:'serjefe', p:`Intervención con alguien del equipo. Dime: ¿con quién y qué pasa?\n\nYo determino:\n1. Cuál de las 9 formas aplica y por qué\n2. Qué decirle exactamente\n3. Qué NO hacer` },
+  content:{ agent:'contenido', p:`Contenido desde el modelo Ser Jefe. ¿Plataforma? (LinkedIn/Instagram/WhatsApp)\n¿Tema específico o propongo yo?\nDame contexto o di "propón tú".` },
+  decision:{ agent:'maestro', p:`Decisión difícil. Ruta de 4 niveles:\n1.DIAGNÓSTICO: ¿qué tipo?\n2.OPCIONES: ¿alternativas reales?\n3.CONSECUENCIAS: ¿qué pasa si...?\n4.ACCIÓN: ¿decisión desde el modelo?\n\nDime cuál es la decisión.` },
+  'plan-week':{ agent:'maestro', p:`Planear semana. Estructura:\n🎯 MEGA DE LA SEMANA\nPor día (L-S):\n• OBJETIVO (única cosa que define si el día fue exitoso)\n• REUS (reuniones+horarios)\n• TAREAS accionables\n• Bloques: Fisio/Padel/Gym/Leer/Familia\n\nDime compromisos fijos y pendientes urgentes de Condugas.` },
+  idea:{ agent:'ideas', p:`Tengo una idea. Escúchame:\n—¿Qué problema resuelve?\n—¿Conecta con Ser Jefe/Ser Siendo?\n—¿MVP mínimo viable?\n—¿Va como contenido/herramienta/proceso/negocio?\n\nCuéntame la idea.` }
 };
 
 // ================================================================
-// KPI DATA
+// KPI / TASKS / MEMORY
 // ================================================================
 const KPI_DEF = [
-  { id: 'caja', label: 'Flujo de Caja', status: 'unknown', value: '?' },
-  { id: 'cartera', label: 'Cartera Vencida', status: 'unknown', value: '?' },
-  { id: 'epm', label: 'Compromisos EPM', status: 'unknown', value: '?' },
-  { id: 'nomina', label: 'Nómina', status: 'unknown', value: '?' },
-  { id: 'provs', label: 'Proveedores', status: 'unknown', value: '?' },
-  { id: 'capacidad', label: 'Capacidad Op.', status: 'unknown', value: '?' }
+  {id:'caja',label:'Flujo de Caja',status:'unknown',value:'?'},
+  {id:'cartera',label:'Cartera Vencida',status:'unknown',value:'?'},
+  {id:'epm',label:'Compromisos EPM',status:'unknown',value:'?'},
+  {id:'nomina',label:'Nómina',status:'unknown',value:'?'},
+  {id:'provs',label:'Proveedores',status:'unknown',value:'?'},
+  {id:'cap',label:'Capacidad Op.',status:'unknown',value:'?'}
 ];
-function getKPIs(){ const s = localStorage.getItem('seb_kpis'); return s ? JSON.parse(s) : KPI_DEF }
-function storeKPIs(k){ localStorage.setItem('seb_kpis', JSON.stringify(k)) }
-
-// ================================================================
-// TASKS DATA
-// ================================================================
 const TASKS_DEF = [
-  { id: 't1', text: 'Revisar PRG', p: 'high', done: false },
-  { id: 't2', text: 'Propuesta EPM Rionegro', p: 'high', done: false },
-  { id: 't3', text: 'Situación Andrea Bernal', p: 'high', done: false },
-  { id: 't4', text: 'Bono gerentes y directores', p: 'med', done: false },
-  { id: 't5', text: 'Análisis Silar', p: 'med', done: false },
-  { id: 't6', text: 'Pedir informes comité mensual', p: 'med', done: false },
-  { id: 't7', text: 'Pulir Dashboard Condugas', p: 'med', done: false },
-  { id: 't8', text: 'Terminar reunión Jorge William', p: 'med', done: false },
-  { id: 't9', text: 'Ver informes financieros', p: 'med', done: false },
-  { id: 't10', text: 'Apps IA: Claude + OpenDaw', p: 'med', done: false }
+  {id:'t1',text:'Revisar PRG',p:'high',done:false},
+  {id:'t2',text:'Propuesta EPM Rionegro',p:'high',done:false},
+  {id:'t3',text:'Situación Andrea Bernal',p:'high',done:false},
+  {id:'t4',text:'Bono gerentes y directores',p:'med',done:false},
+  {id:'t5',text:'Análisis Silar',p:'med',done:false},
+  {id:'t6',text:'Pedir informes comité mensual',p:'med',done:false},
+  {id:'t7',text:'Pulir Dashboard Condugas',p:'med',done:false},
+  {id:'t8',text:'Terminar reunión Jorge William',p:'med',done:false},
+  {id:'t9',text:'Ver informes financieros',p:'med',done:false},
+  {id:'t10',text:'Apps IA: Claude + OpenDaw',p:'med',done:false}
 ];
-function getTasks(){ const s = localStorage.getItem('seb_tasks'); return s ? JSON.parse(s) : TASKS_DEF }
-function storeTasks(t){ localStorage.setItem('seb_tasks', JSON.stringify(t)) }
+const ls = k => { try{ const s=localStorage.getItem('seb_'+k); return s?JSON.parse(s):null; }catch(e){return null;} };
+const lss = (k,v) => { try{ localStorage.setItem('seb_'+k,JSON.stringify(v)); }catch(e){} };
+const getKPIs = () => ls('kpis') || KPI_DEF;
+const getTasks = () => ls('tasks') || TASKS_DEF;
+const getMem = () => ls('mem') || [];
 
 // ================================================================
-// MEMORY
+// ECOSYSTEM SOURCES (from CSV)
 // ================================================================
-function getMem(){ const s = localStorage.getItem('seb_mem'); return s ? JSON.parse(s) : [] }
-function storeMem(m){ localStorage.setItem('seb_mem', JSON.stringify(m)) }
+const SOURCES = [
+  {name:'Microsoft S.SANCHEZ',role:'Gerente / Condugas',cat:'correo',key:'msToken'},
+  {name:'Microsoft SSANCH17',role:'EAFIT / Docente',cat:'',key:''},
+  {name:'Microsoft Hotmail',role:'Personal / Inv.',cat:'',key:''},
+  {name:'WhatsApp / WATI',role:'Todos',cat:'wa',key:'watiKey'},
+  {name:'Limitless',role:'Transcripciones',cat:'',key:''},
+  {name:'Todoist',role:'Tareas Condugas',cat:'tasks',key:'todoist'},
+  {name:'Google Docente',role:'Consultor / Docente',cat:'correo',key:'gToken'},
+  {name:'Google Personal',role:'Todos',cat:'correo',key:'gToken'},
+  {name:'Google S.SANCHEZ',role:'Consultor / Deporte',cat:'correo',key:'gToken'},
+  {name:'Instagram',role:'Consultor / Docente',cat:'',key:''},
+  {name:'X (Twitter)',role:'Todos',cat:'',key:''},
+  {name:'LinkedIn',role:'Empresario / Cons.',cat:'',key:''},
+  {name:'Facebook',role:'Consultor / Docente',cat:'',key:''},
+  {name:'YouTube',role:'Contenido',cat:'',key:''},
+  {name:'GoodNotes',role:'Todos — notas iPad',cat:'',key:''},
+  {name:'PC Fijo',role:'Condugas',cat:'',key:''},
+  {name:'PC Portátil',role:'Condugas',cat:'',key:''},
+  {name:'iCloud',role:'Personal / Salud',cat:'',key:''},
+  {name:'GitHub',role:'Siendo Consulting',cat:'gh',key:'ghToken'},
+  {name:'Notion',role:'Hub conocimiento',cat:'notion',key:'notionToken'},
+  {name:'OneCalendar',role:'Agenda unificada',cat:'cal',key:'gToken'},
+  {name:'ChatGPT',role:'IA — herramientas',cat:'',key:''},
+  {name:'Gemini',role:'IA — herramientas',cat:'',key:''},
+  {name:'Claude',role:'IA — cerebro',cat:'ia',key:'apiKey'},
+  {name:'OpenClaw',role:'IA — herramientas',cat:'',key:''},
+  {name:'Whoop',role:'Salud / Deportista',cat:'',key:''},
+  {name:'Odoo Condugas',role:'ERP Condugas',cat:'',key:''},
+  {name:'Partner Odoo',role:'Sendo Consulting',cat:'',key:''},
+  {name:'Charles Schwab',role:'Inversiones',cat:'',key:''},
+  {name:'Insights',role:'Inversiones',cat:'',key:''},
+  {name:'Cuentas Ahorro',role:'Patrimonio',cat:'',key:''},
+  {name:'Trii',role:'Inversiones CO',cat:'',key:''},
+  {name:'ManyChat/WATI',role:'Automatización WA',cat:'wa',key:'watiKey'},
+];
 
 // ================================================================
-// RENDER
+// PEOPLE
+// ================================================================
+const PEOPLE = {
+  condugas: [
+    {name:'Juan Camilo Berrío',alias:'Cami',rol:'Gte. Proyectos'},
+    {name:'Andrea Bernal',alias:'Andre',rol:'Dir. Financiero ⚡'},
+    {name:'Juan Guillermo',alias:'Juan',rol:'Gte. Estrategia'},
+    {name:'Carlos H. López',alias:'Carlos',rol:'Gte. N. Negocios'},
+    {name:'William López',alias:'Willi',rol:'Dir. Administrativo'},
+    {name:'Natalia Rojas',alias:'Naty',rol:'Dir. RRHH'},
+    {name:'Fabio Nelson Escobar',alias:'Nelson',rol:'Dir. Logística'},
+    {name:'Claudia Quintero',alias:'Clau',rol:'Dir. Contable'},
+    {name:'Olga Acevedo',alias:'Ma',rol:'Dueña'}
+  ],
+  sendo: [
+    {name:'Mónica González',alias:'Mona',rol:'Socia Comercial'},
+    {name:'Lina Russi',alias:'Lina',rol:'Socia Gestora'},
+    {name:'Emanuel',alias:'Ema',rol:'Socio Dev'}
+  ],
+  epm: [
+    {name:'Juan Carlos Gómez',alias:'JC',rol:'Subg. Gas'},
+    {name:'Luis G. Villada',alias:'Villada',rol:'Subg. Aguas'},
+    {name:'Humberto Iglesias',alias:'Humberto',rol:'VP Negocios'},
+    {name:'Santiago Wilches',alias:'Santiago',rol:'Gte. Aguas'},
+    {name:'Jhon Maya',alias:'Maya',rol:'Gerente Gral.'}
+  ],
+  clientes: [
+    {name:'Rafael Gallego',alias:'Rafael',rol:'La Vasconia'},
+    {name:'Jorge Medina',alias:'Medina',rol:'Montesereno'},
+    {name:'Luis Abril',alias:'Luis',rol:'VANTI Téc.'}
+  ],
+  provs: [
+    {name:'Camilo Marín',alias:'Doctor',rol:'Abogado'},
+    {name:'Andrea Zuleta',alias:'Andrea Z.',rol:'Seguros'},
+    {name:'José Daniel González',alias:'Dani',rol:'Rasher'}
+  ]
+};
+
+// ================================================================
+// RENDER UI
 // ================================================================
 function renderAgents(){
   document.getElementById('agent-list').innerHTML = AGENTS.map(a => `
@@ -688,33 +908,53 @@ function renderAgents(){
 }
 
 function renderPeople(){
-  const r = (data, cid) => {
-    document.getElementById(cid).innerHTML = data.map(([n,r]) =>
-      `<div class="pchip" onclick="mention('${n}')" title="${r}">${n}</div>`).join('');
+  const R = (data, cid) => {
+    document.getElementById(cid).innerHTML = data.map(p => {
+      const ini = p.name.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+      return `<div class="prow" onclick="mention('${p.name}')" title="${p.rol}">
+        <div class="pini">${ini}</div>
+        <div class="pname">${p.name}</div>
+        <div class="prole">${p.rol}</div>
+      </div>`;
+    }).join('');
   };
-  r([['Cami','Proyectos'],['Andre','Financiero'],['Juan','Estrategia'],['Carlos','N.Neg.'],['Willi','Admin'],['Naty','RRHH'],['Nelson','Logística'],['Clau','Contable'],['Ma','Dueña']], 'team-condugas');
-  r([['Mona','Comercial'],['Lina','Gestora'],['Ema','Dev']], 'team-sendo');
-  r([['JC Gómez','Gas'],['Villada','Aguas'],['Humberto','VP'],['Jhon Maya','GG']], 'team-epm');
-  r([['Doctor','Abogado'],['Andre Z.','Seguros'],['Dani','Rasher']], 'team-provs');
+  R(PEOPLE.condugas,'team-condugas');
+  R(PEOPLE.sendo,'team-sendo');
+  R(PEOPLE.epm,'team-epm');
+  R(PEOPLE.clientes,'team-clientes');
+  R(PEOPLE.provs,'team-provs');
 }
 
-function renderKPIs(){
+function renderKPIs(target){
   const kpis = getKPIs();
-  document.getElementById('kpi-grid').innerHTML = kpis.map(k => `
-    <div class="kpi-card ${k.status}" onclick="editKPIs()" title="Clic para editar">
+  const el = document.getElementById(target);
+  if(!el) return;
+  el.innerHTML = `<div class="kpi-grid">${kpis.map(k=>`
+    <div class="kpi-card ${k.status}" onclick="editKPIs()" title="Editar">
+      <div class="kpi-lbl">${k.label}</div>
+      <div class="kpi-val">${k.value}</div>
+      <div class="kpi-st"><div class="kpi-dot"></div><div class="kpi-stxt">${k.status==='red'?'Crítico':k.status==='yellow'?'Alerta':k.status==='green'?'OK':'Sin datos'}</div></div>
+    </div>`).join('')}</div>`;
+  const reds = kpis.filter(k=>k.status==='red').length;
+  if(reds>=2) el.innerHTML += `<div class="surv-alert" style="margin-top:7px"><div class="surv-title">🔴 MODO SUPERVIVENCIA</div><div class="surv-txt">${reds} KPIs en rojo. Actuar ahora.</div></div>`;
+}
+
+function renderRPKPIs(){
+  const kpis = getKPIs();
+  document.getElementById('rp-kpi-grid').innerHTML = kpis.map(k=>`
+    <div class="kpi-card ${k.status}" onclick="editKPIs()">
       <div class="kpi-lbl">${k.label}</div>
       <div class="kpi-val">${k.value}</div>
       <div class="kpi-st"><div class="kpi-dot"></div><div class="kpi-stxt">${k.status==='red'?'Crítico':k.status==='yellow'?'Alerta':k.status==='green'?'OK':'Sin datos'}</div></div>
     </div>`).join('');
-  const reds = kpis.filter(k => k.status === 'red').length;
-  const alert = document.getElementById('surv-alert');
-  if(reds >= 2){ alert.style.display='block'; document.getElementById('surv-txt').textContent = `${reds} KPIs en rojo. Activar modo SUPERVIVENCIA inmediatamente.`; }
-  else { alert.style.display='none'; }
+  const al=document.getElementById('rp-surv-alert');
+  const reds=kpis.filter(k=>k.status==='red').length;
+  if(reds>=2){al.style.display='block';document.getElementById('rp-surv-txt').textContent=`${reds} KPIs críticos.`;}
+  else al.style.display='none';
 }
 
 function renderTasks(){
-  const tasks = getTasks();
-  document.getElementById('tasks-list').innerHTML = tasks.map(t => `
+  document.getElementById('tasks-list').innerHTML = getTasks().map(t=>`
     <div class="task-item">
       <div class="tcheck ${t.done?'done':''}" onclick="toggleTask('${t.id}')">${t.done?'✓':''}</div>
       <div class="ttext ${t.done?'done':''}">${t.text}</div>
@@ -723,207 +963,315 @@ function renderTasks(){
 }
 
 function renderMem(){
-  const mem = getMem();
-  const el = document.getElementById('mem-list');
-  if(!mem.length){ el.innerHTML='<div style="font-size:10px;color:var(--text3)">Sin memorias. Agrega cosas importantes.</div>'; return; }
-  el.innerHTML = mem.map((m,i) => `
-    <div class="mem-item">
-      <div class="mem-text">${m}</div>
-      <button class="mem-del" onclick="delMem(${i})">×</button>
-    </div>`).join('');
+  const mem=getMem();
+  const el=document.getElementById('mem-list');
+  if(!mem.length){el.innerHTML='<div style="font-size:10px;color:var(--text3)">Sin memorias. Agrega cosas importantes.</div>';return;}
+  el.innerHTML=mem.map((m,i)=>`<div class="mem-item"><div class="mem-text">${m}</div><button class="mem-del" onclick="delMem(${i})">×</button></div>`).join('');
+}
+
+function renderSources(){
+  document.getElementById('src-grid').innerHTML = SOURCES.map(s => {
+    const connected = s.key && C[s.key];
+    const cls = connected ? 'conn' : '';
+    return `<div class="src-card ${cls}" title="${s.role}" onclick="openSettings()">
+      <div class="src-dot"></div>
+      <div class="src-info"><div class="src-name">${s.name}</div><div class="src-role">${s.role}</div></div>
+    </div>`;
+  }).join('');
+}
+
+function renderDashMemory(){
+  const mem=getMem();
+  const el=document.getElementById('dash-memory');
+  if(!el) return;
+  if(!mem.length){el.innerHTML='<div class="dc-empty">Sin memorias guardadas.</div>';return;}
+  el.innerHTML=mem.slice(0,6).map(m=>`<div style="background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 9px;font-size:10px;color:var(--text2);line-height:1.4">${m}</div>`).join('');
 }
 
 // ================================================================
-// MARKDOWN PARSER
+// MARKDOWN
 // ================================================================
-function md(text){
-  if(!text) return '';
-  return text
+function md(t){
+  if(!t) return '';
+  return t
     .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-    .replace(/^### (.+)$/gm,'<h3>$1</h3>')
-    .replace(/^## (.+)$/gm,'<h2>$1</h2>')
-    .replace(/^# (.+)$/gm,'<h1>$1</h1>')
-    .replace(/\*\*\*(.+?)\*\*\*/g,'<strong><em>$1</em></strong>')
-    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g,'<em>$1</em>')
-    .replace(/```[\s\S]*?```/g, m => { const c=m.replace(/```\w*\n?/g,'').replace(/```/g,''); return `<pre><code>${c}</code></pre>`; })
+    .replace(/^### (.+)$/gm,'<h3>$1</h3>').replace(/^## (.+)$/gm,'<h2>$1</h2>').replace(/^# (.+)$/gm,'<h1>$1</h1>')
+    .replace(/\*\*\*(.+?)\*\*\*/g,'<strong><em>$1</em></strong>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>')
+    .replace(/```[\s\S]*?```/g,m=>{const c=m.replace(/```\w*\n?/g,'').replace(/```/g,'');return`<pre><code>${c}</code></pre>`;})
     .replace(/`([^`]+)`/g,'<code>$1</code>')
-    .replace(/\[SUPERVIVENCIA\]/g,'<span class="mlabel lsurv">SUPERVIVENCIA</span>')
-    .replace(/\[ESTRATEGIA\]/g,'<span class="mlabel lstrat">ESTRATEGIA</span>')
-    .replace(/\[OPERATIVO\]/g,'<span class="mlabel lops">OPERATIVO</span>')
-    .replace(/\[REQUIERE TU ATENCIÓN\]/g,'<span class="mlabel lsurv">REQUIERE TU ATENCIÓN</span>')
-    .replace(/\[DELEGAR A:?\s*([^\]]+)\]/g,'<span class="mlabel ldel">DELEGAR A: $1</span>')
-    .replace(/^[-•*] (.+)$/gm,'<li>$1</li>')
-    .replace(/(<li>[\s\S]+?<\/li>)/g,'<ul>$1</ul>')
+    .replace(/\[SUPERVIVENCIA\]/g,'<span class="mlbl ls">SUPERVIVENCIA</span>')
+    .replace(/\[ESTRATEGIA\]/g,'<span class="mlbl le">ESTRATEGIA</span>')
+    .replace(/\[OPERATIVO\]/g,'<span class="mlbl lo">OPERATIVO</span>')
+    .replace(/\[REQUIERE TU ATENCIÓN\]/g,'<span class="mlbl ls">REQUIERE TU ATENCIÓN</span>')
+    .replace(/\[DELEGAR A:?\s*([^\]]+)\]/g,'<span class="mlbl ld">DELEGAR A: $1</span>')
+    .replace(/^[-•*] (.+)$/gm,'<li>$1</li>').replace(/(<li>[\s\S]+?<\/li>)/g,'<ul>$1</ul>')
     .replace(/^\d+\. (.+)$/gm,'<li>$1</li>')
-    .replace(/^---$/gm,'<hr style="border-color:var(--border);margin:6px 0">')
-    .replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>')
-    .replace(/^([^<].+)$/,'<p>$1</p>');
+    .replace(/^---$/gm,'<hr>')
+    .replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>').replace(/^([^<].+)$/,'<p>$1</p>');
 }
 
 // ================================================================
 // CLAUDE API
 // ================================================================
 async function callClaude(msg){
-  if(!CFG.apiKey){ toast('Configura tu API key primero','error'); openSettings(); return null; }
-  const agent = AGENTS.find(a => a.id === S.agent) || AGENTS[0];
-  S.history.push({ role:'user', content: msg });
+  if(!C.apiKey){ toast('Configura tu API key primero','error'); openSettings(); return null; }
+  const agent = AGENTS.find(a=>a.id===S.agent)||AGENTS[0];
+  S.history.push({role:'user',content:msg});
   const hist = S.history.slice(-24);
-  const resp = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: {
-      'x-api-key': CFG.apiKey,
-      'anthropic-version': '2023-06-01',
-      'content-type': 'application/json',
-      'anthropic-dangerous-direct-browser-access': 'true'
-    },
-    body: JSON.stringify({ model: CFG.model, max_tokens: 2048, system: agent.system, messages: hist })
+  const resp = await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'x-api-key':C.apiKey,'anthropic-version':'2023-06-01','content-type':'application/json','anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify({model:C.model,max_tokens:2048,system:agent.sys,messages:hist})
   });
-  if(!resp.ok){ const e = await resp.json(); throw new Error(e.error?.message || `HTTP ${resp.status}`); }
-  const data = await resp.json();
-  const reply = data.content?.[0]?.text || 'Sin respuesta';
-  S.history.push({ role:'assistant', content: reply });
+  if(!resp.ok){const e=await resp.json();throw new Error(e.error?.message||`HTTP ${resp.status}`);}
+  const data=await resp.json();
+  const reply=data.content?.[0]?.text||'Sin respuesta';
+  S.history.push({role:'assistant',content:reply});
   return reply;
 }
 
 // ================================================================
 // CHAT
 // ================================================================
-function addMsg(role, content, raw){
-  const agent = AGENTS.find(a => a.id === S.agent) || AGENTS[0];
-  const time = new Date().toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'});
-  const id = 'msg-' + Date.now() + '-' + Math.random().toString(36).slice(2);
-  const el = document.createElement('div');
-  el.className = `msg ${role}`;
-  el.id = id;
-  el.dataset.raw = raw || content;
-  const avatar = role === 'assistant'
-    ? `<div class="m-avatar">${agent.icon}</div>`
-    : `<div class="m-avatar">S</div>`;
-  const body = role === 'assistant' ? md(content) : `<p>${content.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')}</p>`;
-  const acts = role === 'assistant' ? `<div class="m-actions">
-    <button class="m-act" onclick="copyMsg('${id}')">📋 Copiar</button>
-    <button class="m-act" onclick="exportMsg('${id}')">🐙 GitHub</button>
-    <button class="m-act" onclick="saveToMem('${id}')">🧠 Guardar</button>
-  </div>` : '';
-  el.innerHTML = `${avatar}<div><div class="m-content">${body}${acts}</div><div class="m-time">${role==='assistant'?agent.name+' · ':''}${time}</div></div>`;
-  const msgs = document.getElementById('messages');
-  const w = document.getElementById('welcome');
-  if(w) w.remove();
-  msgs.appendChild(el);
-  msgs.scrollTop = msgs.scrollHeight;
-  return id;
+function addMsg(role, content){
+  const agent=AGENTS.find(a=>a.id===S.agent)||AGENTS[0];
+  const time=new Date().toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'});
+  const id='m'+Date.now()+Math.random().toString(36).slice(2);
+  const el=document.createElement('div');
+  el.className=`msg ${role}`; el.id=id; el.dataset.raw=content;
+  const ava=role==='assistant'?`<div class="m-avatar">${agent.icon}</div>`:`<div class="m-avatar">S</div>`;
+  const body=role==='assistant'?md(content):`<p>${content.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')}</p>`;
+  const acts=role==='assistant'?`<div class="m-acts">
+    <button class="mact" onclick="copyMsg('${id}')">📋 Copiar</button>
+    <button class="mact" onclick="openSmartSave('${id}')">💾 Guardar</button>
+    <button class="mact" onclick="openExportFrom('${id}')">🐙 GitHub</button>
+    <button class="mact" onclick="saveToMemFrom('${id}')">🧠 Memoria</button>
+  </div>`:'';
+  el.innerHTML=`${ava}<div class="m-bubble"><div class="m-content">${body}${acts}</div><div class="m-time">${role==='assistant'?agent.name+' · ':''}${time}</div></div>`;
+  const msgs=document.getElementById('messages');
+  const w=document.getElementById('welcome'); if(w) w.remove();
+  msgs.appendChild(el); msgs.scrollTop=msgs.scrollHeight;
 }
 
 function addTyping(){
-  const el = document.createElement('div');
-  el.className = 'msg assistant'; el.id = 'typing';
-  const agent = AGENTS.find(a => a.id === S.agent) || AGENTS[0];
-  el.innerHTML = `<div class="m-avatar">${agent.icon}</div><div class="m-content"><div class="typing"><div class="tdot"></div><div class="tdot"></div><div class="tdot"></div></div></div>`;
-  document.getElementById('messages').appendChild(el);
-  el.scrollIntoView({behavior:'smooth'});
+  const el=document.createElement('div'); el.className='msg assistant'; el.id='typing';
+  const agent=AGENTS.find(a=>a.id===S.agent)||AGENTS[0];
+  el.innerHTML=`<div class="m-avatar">${agent.icon}</div><div class="m-bubble"><div class="m-content"><div class="typing"><div class="tdot"></div><div class="tdot"></div><div class="tdot"></div></div></div></div>`;
+  document.getElementById('messages').appendChild(el); el.scrollIntoView({behavior:'smooth'});
 }
-function rmTyping(){ const e = document.getElementById('typing'); if(e) e.remove(); }
+function rmTyping(){ const e=document.getElementById('typing'); if(e) e.remove(); }
 
-async function sendMessage(override){
-  const inp = document.getElementById('chat-input');
-  const text = override || inp.value.trim();
-  if(!text || S.loading) return;
+async function sendMsg(override){
+  const inp=document.getElementById('chat-input');
+  const text=override||inp.value.trim();
+  if(!text||S.loading) return;
   if(!override){ inp.value=''; autoResize(inp); updateCC(); }
-  S.loading = true;
-  document.getElementById('send-btn').disabled = true;
-  addMsg('user', text);
-  addTyping();
-  try {
-    const reply = await callClaude(text);
+  S.loading=true; document.getElementById('send-btn').disabled=true;
+  addMsg('user',text); addTyping();
+  try{
+    const reply=await callClaude(text);
     rmTyping();
     if(reply){
-      addMsg('assistant', reply);
+      S.lastRaw=reply;
+      addMsg('assistant',reply);
       if(reply.includes('[SUPERVIVENCIA]')) toast('⚠️ Modo supervivencia detectado','error');
     }
-  } catch(err){
-    rmTyping();
-    addMsg('assistant', `❌ Error: ${err.message}\n\nVerifica tu API key en ⚙️ Configuración.`);
+  }catch(err){
+    rmTyping(); addMsg('assistant',`❌ Error: ${err.message}\n\nVerifica API key en ⚙️`);
     toast('Error al conectar con Claude','error');
   }
-  S.loading = false;
-  document.getElementById('send-btn').disabled = false;
+  S.loading=false; document.getElementById('send-btn').disabled=false;
   if(!override) inp.focus();
 }
 
-function handleKey(e){ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendMessage(); } }
-function autoResize(t){ t.style.height='auto'; t.style.height = Math.min(t.scrollHeight,180)+'px'; }
-function updateCC(){ document.getElementById('char-count').textContent = document.getElementById('chat-input').value.length + ' chars'; }
+function handleKey(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();} }
+function autoResize(t){ t.style.height='auto'; t.style.height=Math.min(t.scrollHeight,160)+'px'; }
+function updateCC(){ document.getElementById('char-count').textContent=document.getElementById('chat-input').value.length; }
 
 // ================================================================
-// AGENT SWITCH
+// VIEW & AGENT SWITCH
 // ================================================================
+function setView(v){
+  S.view=v;
+  document.getElementById('view-chat').style.display = v==='chat'?'flex':'none';
+  document.getElementById('view-dash').classList.toggle('on', v==='dash');
+  document.getElementById('view-eco').classList.toggle('on', v==='eco');
+  document.getElementById('quick-bar').style.display = v==='chat'?'flex':'none';
+  ['chat','dash','eco'].forEach(x=>document.getElementById('tab-'+x).classList.toggle('on',x===v));
+  if(v==='dash'){ renderDashDate(); renderKPIs('dash-kpis'); renderDashMemory(); }
+  if(v==='eco') renderSources();
+}
+
 function switchAgent(id){
-  S.agent = id; S.history = [];
-  const a = AGENTS.find(x => x.id === id) || AGENTS[0];
-  document.getElementById('agent-badge').textContent = `${a.icon} ${a.name}`;
-  document.getElementById('cur-agent').textContent = a.name;
-  document.querySelectorAll('.agent-item').forEach(el => el.classList.toggle('active', el.dataset.id === id));
+  S.agent=id; S.history=[];
+  const a=AGENTS.find(x=>x.id===id)||AGENTS[0];
+  document.getElementById('agent-badge').textContent=`${a.icon} ${a.name}`;
+  document.getElementById('cur-agent').textContent=a.name;
+  document.querySelectorAll('.agent-item').forEach(el=>el.classList.toggle('active',el.dataset.id===id));
   toast(`Agente: ${a.icon} ${a.name}`,'success');
 }
 
 function mention(name){
-  const inp = document.getElementById('chat-input');
-  inp.value = (inp.value ? inp.value+' ' : '') + name + ' ';
-  inp.focus(); autoResize(inp);
+  const inp=document.getElementById('chat-input');
+  inp.value=(inp.value?inp.value+' ':'')+name+' ';
+  setView('chat'); inp.focus(); autoResize(inp);
+}
+
+function qa(id){
+  const q=QA_MAP[id]; if(!q) return;
+  if(q.agent!==S.agent) switchAgent(q.agent);
+  setView('chat');
+  sendMsg(q.p);
 }
 
 // ================================================================
-// QUICK ACTIONS
+// DASHBOARD DATE
 // ================================================================
-function quickAction(id){
-  const q = QA[id]; if(!q) return;
-  if(q.agent !== S.agent) switchAgent(q.agent);
-  sendMessage(q.prompt);
+function renderDashDate(){
+  const now=new Date();
+  const dias=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+  const meses=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  document.getElementById('dash-date').textContent=`${dias[now.getDay()]} ${now.getDate()} de ${meses[now.getMonth()]} de ${now.getFullYear()}`;
+  document.getElementById('mega-input').value=localStorage.getItem('seb_mega')||'';
 }
+function saveMega(){ localStorage.setItem('seb_mega',document.getElementById('mega-input').value); }
 
 // ================================================================
-// MESSAGE ACTIONS
+// DASHBOARD DATA FETCHERS
 // ================================================================
-function copyMsg(id){ const e=document.getElementById(id); if(!e) return; navigator.clipboard.writeText(e.dataset.raw||'').then(()=>toast('Copiado','success')); }
-function exportMsg(id){ const e=document.getElementById(id); if(!e) return; openExportWith(e.dataset.raw||''); }
-function saveToMem(id){
-  const e=document.getElementById(id); if(!e) return;
-  const snip = (e.dataset.raw||'').substring(0,160)+'...';
-  const mem = getMem(); mem.unshift(snip); storeMem(mem.slice(0,20));
-  renderMem(); toast('Guardado en memoria','success'); toggleTab('memory');
+async function refreshDash(){
+  renderDashDate(); renderKPIs('dash-kpis'); renderDashMemory();
+  await Promise.allSettled([fetchCalendars(), fetchTodoist(), fetchEmails(), fetchWATI(), fetchNews()]);
 }
 
-// ================================================================
-// RIGHT PANEL TABS
-// ================================================================
-function toggleTab(tab){
-  const panel = document.getElementById('right-panel');
-  const tabs = ['kpi','tasks','notes','memory'];
-  const btns = {kpi:'btn-kpi',tasks:'btn-tasks',notes:'btn-notes',memory:'btn-memory'};
-  if(S.tab === tab && !panel.classList.contains('hidden')){
-    panel.classList.add('hidden');
-    document.getElementById(btns[tab])?.classList.remove('on');
-    S.tab = null; return;
+async function fetchCalendars(){
+  const el=document.getElementById('dash-agenda');
+  const badge=document.getElementById('badge-cal');
+  const today=new Date(); const tz='America/Bogota';
+  const tmin=new Date(today.setHours(0,0,0,0)).toISOString();
+  const tmax=new Date(today.setHours(23,59,59,999)).toISOString();
+  let events=[];
+  // Google
+  if(C.gToken){
+    try{
+      const r=await fetch(`https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=${tmin}&timeMax=${tmax}&singleEvents=true&orderBy=startTime&maxResults=15`,
+        {headers:{Authorization:`Bearer ${C.gToken}`}});
+      if(r.ok){ const d=await r.json(); (d.items||[]).forEach(e=>{ const s=e.start?.dateTime||e.start?.date||''; const t=s.includes('T')?new Date(s).toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit',timeZone:tz}):'Todo el día'; events.push({time:t,title:e.summary||'Sin título',src:'📅'}); }); }
+    }catch(e){}
   }
-  panel.classList.remove('hidden'); S.tab = tab;
-  tabs.forEach(t => {
-    document.getElementById(`tab-${t}`).style.display = t===tab?'block':'none';
-    document.getElementById(btns[t])?.classList.toggle('on', t===tab);
-  });
+  // Microsoft
+  if(C.msToken){
+    try{
+      const r=await fetch(`https://graph.microsoft.com/v1.0/me/calendarView?startDateTime=${tmin}&endDateTime=${tmax}&$select=subject,start&$top=10&$orderby=start/dateTime`,
+        {headers:{Authorization:`Bearer ${C.msToken}`,Prefer:`outlook.timezone="America/Bogota"`}});
+      if(r.ok){ const d=await r.json(); (d.value||[]).forEach(e=>{ const s=e.start?.dateTime||''; const t=s?new Date(s).toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit',timeZone:tz}):'Todo el día'; events.push({time:t,title:e.subject||'Sin título',src:'📧'}); }); }
+    }catch(e){}
+  }
+  if(!C.gToken&&!C.msToken){
+    el.innerHTML=`<div class="dc-empty">Sin conexión.<br><button class="dc-connect-btn" onclick="openSettings()">Conectar Google / Outlook →</button></div>`;
+    badge.textContent='Sin conectar'; badge.className='dc-badge err'; return;
+  }
+  events.sort((a,b)=>a.time.localeCompare(b.time));
+  el.innerHTML=events.length?events.map(e=>`<div class="dc-item"><div class="dc-item-time">${e.src} ${e.time}</div><div class="dc-item-text">${e.title}</div></div>`).join(''):`<div class="dc-empty">Sin reuniones hoy ✓</div>`;
+  badge.textContent=`${events.length} eventos`; badge.className='dc-badge ok';
+}
+
+async function fetchTodoist(){
+  const el=document.getElementById('dash-tasks');
+  const badge=document.getElementById('badge-tasks');
+  // Local tasks always shown
+  const local=getTasks().filter(t=>!t.done);
+  let items=local.map(t=>({text:t.text,src:'local',p:t.p}));
+  if(C.todoist){
+    try{
+      const r=await fetch('https://api.todoist.com/rest/v2/tasks?filter=today|overdue',{headers:{Authorization:`Bearer ${C.todoist}`}});
+      if(r.ok){ const d=await r.json(); const td=(Array.isArray(d)?d:[]).map(t=>({text:t.content,src:'todoist',p:t.priority>=4?'high':'med'})); items=[...td,...items.filter(i=>i.src==='local')]; }
+    }catch(e){}
+  }
+  el.innerHTML=items.length?items.map(t=>`<div class="dc-item"><div class="dc-item-dot ${t.p==='high'?'r':'y'}"></div><div class="dc-item-text">${t.text}</div><div class="dc-item-from">${t.src}</div></div>`).join(''):`<div class="dc-empty">Sin tareas pendientes ✓</div>`;
+  badge.textContent=`${items.length} tareas`; badge.className=`dc-badge ${items.filter(t=>t.p==='high').length?'err':'ok'}`;
+}
+
+async function fetchEmails(){
+  const el=document.getElementById('dash-email');
+  const badge=document.getElementById('badge-email');
+  let msgs=[];
+  // Gmail
+  if(C.gToken){
+    try{
+      const r=await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages?q=is:unread newer_than:1d -category:promotions -category:social&maxResults=6',{headers:{Authorization:`Bearer ${C.gToken}`}});
+      if(r.ok){ const d=await r.json(); if(d.resultSizeEstimate>0) msgs.push({from:'Gmail',text:`${d.resultSizeEstimate} emails sin leer (últimas 24h)`,src:'gmail',dot:'y'}); }
+    }catch(e){}
+  }
+  // Outlook
+  if(C.msToken){
+    try{
+      const r=await fetch("https://graph.microsoft.com/v1.0/me/messages?$filter=isRead eq false&$select=subject,from,receivedDateTime,importance&$top=8&$orderby=receivedDateTime desc",{headers:{Authorization:`Bearer ${C.msToken}`}});
+      if(r.ok){ const d=await r.json(); (d.value||[]).forEach(m=>{ msgs.push({from:m.from?.emailAddress?.name||'?',text:m.subject||'Sin asunto',src:'outlook',dot:m.importance==='high'?'r':'y'}); }); }
+    }catch(e){}
+  }
+  if(!C.gToken&&!C.msToken){
+    el.innerHTML=`<div class="dc-empty">Sin conexión.<br><button class="dc-connect-btn" onclick="openSettings()">Conectar Gmail / Outlook →</button></div>`;
+    badge.textContent='Sin conectar'; badge.className='dc-badge err'; return;
+  }
+  el.innerHTML=msgs.length?msgs.map(m=>`<div class="dc-item"><div class="dc-item-dot ${m.dot}"></div><div><div class="dc-item-text">${m.text}</div><div class="dc-item-from">${m.from} · ${m.src}</div></div></div>`).join(''):`<div class="dc-empty">Sin emails urgentes ✓</div>`;
+  badge.textContent=`${msgs.length} mensajes`; badge.className=`dc-badge ${msgs.filter(m=>m.dot==='r').length?'err':'warn'}`;
+}
+
+async function fetchWATI(){
+  const el=document.getElementById('dash-wa');
+  const badge=document.getElementById('badge-wa');
+  if(!C.watiKey){
+    el.innerHTML=`<div class="dc-empty">WATI no conectado.<br><button class="dc-connect-btn" onclick="openSettings()">Conectar →</button></div>`;
+    badge.textContent='Sin conectar'; badge.className='dc-badge err'; return;
+  }
+  try{
+    const server=C.watiServer;
+    const r=await fetch(`https://${server}/api/v1/getMessages/573128508826?pageSize=5`,{headers:{Authorization:`Bearer ${C.watiKey}`}});
+    if(r.ok){
+      const d=await r.json();
+      const msgs=(d.messages?.items||d.items||[]);
+      el.innerHTML=msgs.length?msgs.map(m=>`<div class="dc-item"><div class="dc-item-dot"></div><div><div class="dc-item-text">${m.text||m.body||'Mensaje'}</div><div class="dc-item-from">${m.senderName||m.waId||'?'}</div></div></div>`).join(''):`<div class="dc-empty">Sin mensajes recientes.</div>`;
+      badge.textContent='Conectado'; badge.className='dc-badge ok';
+    }else throw new Error('Auth');
+  }catch(e){
+    el.innerHTML=`<div class="dc-err">Error WATI: ${e.message}<br>Verifica API key y server URL.</div>`;
+    badge.textContent='Error'; badge.className='dc-badge err';
+  }
+}
+
+async function fetchNews(){
+  const el=document.getElementById('dash-news');
+  const badge=document.getElementById('badge-news');
+  if(!C.newsKey){
+    el.innerHTML=`<div class="dc-empty">NewsAPI no configurado.<br><button class="dc-connect-btn" onclick="openSettings()">Conectar →</button></div>`;
+    badge.textContent='Sin conectar'; badge.className='dc-badge err'; return;
+  }
+  try{
+    const r=await fetch(`https://newsapi.org/v2/everything?q=EPM+Colombia+infraestructura+gas&language=es&sortBy=publishedAt&pageSize=4&apiKey=${C.newsKey}`);
+    if(r.ok){
+      const d=await r.json();
+      const arts=d.articles||[];
+      el.innerHTML=arts.length?arts.slice(0,4).map(a=>`<div class="dc-item"><div class="dc-item-dot"></div><div><div class="dc-item-text">${a.title||''}</div><div class="dc-item-from">${a.source?.name||''} · ${a.publishedAt?.substring(0,10)||''}</div></div></div>`).join(''):`<div class="dc-empty">Sin noticias recientes.</div>`;
+      badge.textContent='Conectado'; badge.className='dc-badge ok';
+    }else throw new Error('API error');
+  }catch(e){
+    el.innerHTML=`<div class="dc-err">Error NewsAPI: ${e.message}</div>`;
+    badge.textContent='Error'; badge.className='dc-badge err';
+  }
 }
 
 // ================================================================
 // KPI MANAGEMENT
 // ================================================================
 function editKPIs(){
-  const kpis = getKPIs();
-  document.getElementById('kpi-form').innerHTML = kpis.map(k => `
+  const kpis=getKPIs();
+  document.getElementById('kpi-form').innerHTML=kpis.map(k=>`
     <div class="fg">
       <label class="flbl">${k.label}</label>
       <div style="display:flex;gap:7px">
         <input type="text" class="finput" style="flex:1" id="kv-${k.id}" value="${k.value}" placeholder="ej: $45M disponible">
-        <select class="finput" style="width:115px" id="ks-${k.id}">
+        <select class="finput" style="width:110px" id="ks-${k.id}">
           <option value="green" ${k.status==='green'?'selected':''}>✅ OK</option>
           <option value="yellow" ${k.status==='yellow'?'selected':''}>⚠️ Alerta</option>
           <option value="red" ${k.status==='red'?'selected':''}>🔴 Crítico</option>
@@ -934,157 +1282,210 @@ function editKPIs(){
   document.getElementById('kpi-ov').classList.remove('hidden');
 }
 function saveKPIs(){
-  const kpis = getKPIs();
-  kpis.forEach(k => {
-    const v=document.getElementById(`kv-${k.id}`), st=document.getElementById(`ks-${k.id}`);
+  const kpis=getKPIs();
+  kpis.forEach(k=>{
+    const v=document.getElementById(`kv-${k.id}`),st=document.getElementById(`ks-${k.id}`);
     if(v) k.value=v.value; if(st) k.status=st.value;
   });
-  storeKPIs(kpis); renderKPIs(); closeKPIModal(); toast('KPIs actualizados','success');
+  lss('kpis',kpis); renderRPKPIs(); renderKPIs('dash-kpis'); closeKPIModal(); toast('KPIs actualizados','success');
 }
 function closeKPIModal(){ document.getElementById('kpi-ov').classList.add('hidden'); }
 
 // ================================================================
 // TASKS
 // ================================================================
-function toggleTask(id){
-  const tasks=getTasks(); const t=tasks.find(x=>x.id===id); if(t){ t.done=!t.done; storeTasks(tasks); renderTasks(); }
+function toggleTask(id){ const t=getTasks(); const x=t.find(i=>i.id===id); if(x){x.done=!x.done;lss('tasks',t);renderTasks();} }
+function addTask(){ const text=prompt('Nueva tarea:'); if(!text) return; const t=getTasks(); t.unshift({id:'t'+Date.now(),text,p:'med',done:false}); lss('tasks',t); renderTasks(); }
+
+// ================================================================
+// MEMORY / NOTES
+// ================================================================
+function addMemory(){ const t=prompt('¿Qué guardar en memoria?'); if(!t) return; const m=getMem(); m.unshift(t); lss('mem',m.slice(0,20)); renderMem(); renderDashMemory(); toast('Guardado','success'); }
+function delMem(i){ const m=getMem(); m.splice(i,1); lss('mem',m); renderMem(); renderDashMemory(); }
+function saveNotes(){ localStorage.setItem('seb_notes',document.getElementById('notes-area').value); }
+function loadNotes(){ document.getElementById('notes-area').value=localStorage.getItem('seb_notes')||''; }
+
+// ================================================================
+// MESSAGE ACTIONS
+// ================================================================
+function copyMsg(id){ const e=document.getElementById(id); if(!e) return; navigator.clipboard.writeText(e.dataset.raw||'').then(()=>toast('Copiado','success')); }
+function saveToMemFrom(id){
+  const e=document.getElementById(id); if(!e) return;
+  const snip=(e.dataset.raw||'').substring(0,180)+'...';
+  const m=getMem(); m.unshift(snip); lss('mem',m.slice(0,20)); renderMem(); renderDashMemory(); toast('Guardado en memoria','success'); toggleTab('memory');
 }
-function addTask(){
-  const text=prompt('Nueva tarea:'); if(!text) return;
-  const tasks=getTasks(); tasks.unshift({id:'t'+Date.now(),text,p:'med',done:false}); storeTasks(tasks); renderTasks();
+function openExportFrom(id){ const e=document.getElementById(id); if(!e) return; openExportWith(e.dataset.raw||''); }
+
+// ================================================================
+// SMART SAVE
+// ================================================================
+let _smartContent='';
+function openSmartSave(id){
+  const e=document.getElementById(id); if(!e) return;
+  _smartContent=e.dataset.raw||'';
+  document.getElementById('smartsave-preview').textContent=_smartContent.substring(0,200)+((_smartContent.length>200)?'...':'');
+  document.getElementById('smartsave-ov').classList.remove('hidden');
+}
+async function smartSaveTo(dest){
+  document.getElementById('smartsave-ov').classList.add('hidden');
+  switch(dest){
+    case 'clip': navigator.clipboard.writeText(_smartContent).then(()=>toast('Copiado','success')); break;
+    case 'memory': { const m=getMem(); m.unshift(_smartContent.substring(0,180)); lss('mem',m.slice(0,20)); renderMem(); renderDashMemory(); toast('Guardado en memoria','success'); } break;
+    case 'notes': { document.getElementById('notes-area').value+=(document.getElementById('notes-area').value?'\n\n':'')+_smartContent; saveNotes(); toast('Agregado a notas','success'); toggleTab('notes'); } break;
+    case 'github': openExportWith(_smartContent); break;
+    case 'notion': await saveToNotionContent(_smartContent); break;
+  }
 }
 
 // ================================================================
-// MEMORY
+// EXPORT / GITHUB / NOTION
 // ================================================================
-function addMemory(){ const t=prompt('¿Qué guardar en memoria permanente?'); if(!t) return; const m=getMem(); m.unshift(t); storeMem(m.slice(0,20)); renderMem(); toast('Guardado','success'); }
-function delMem(i){ const m=getMem(); m.splice(i,1); storeMem(m); renderMem(); }
+function openExport(){
+  let c=`# Sesión Sebastián OS — ${new Date().toLocaleDateString('es-CO')}\n\n`;
+  document.querySelectorAll('.msg.assistant').forEach(e=>{c+=e.dataset.raw+'\n\n---\n\n';});
+  openExportWith(c);
+}
+function openExportWith(content){
+  document.getElementById('exp-content').textContent=content;
+  document.getElementById('exp-fn').value=`sesion-${new Date().toISOString().split('T')[0]}.md`;
+  document.getElementById('copy-ok').style.display='none';
+  document.getElementById('export-ov').classList.remove('hidden');
+}
+function closeExport(){ document.getElementById('export-ov').classList.add('hidden'); }
+async function copyExp(){
+  await navigator.clipboard.writeText(document.getElementById('exp-content').textContent);
+  const ok=document.getElementById('copy-ok'); ok.style.display='block'; setTimeout(()=>ok.style.display='none',2000);
+}
+async function pushGitHub(){
+  if(!C.ghToken){toast('Configura tu GitHub token','error');openSettings();return;}
+  const fn=document.getElementById('exp-fn').value.trim();
+  const content=document.getElementById('exp-content').textContent;
+  if(!fn||!content){toast('Completa los campos','error');return;}
+  try{
+    let sha=null;
+    try{ const cr=await fetch(`https://api.github.com/repos/${C.ghRepo}/contents/sesiones/${fn}`,{headers:{Authorization:`Bearer ${C.ghToken}`}}); if(cr.ok){const cd=await cr.json();sha=cd.sha;} }catch(e){}
+    const body={message:`Sesión Sebastián OS — ${new Date().toLocaleDateString('es-CO')}`,content:btoa(unescape(encodeURIComponent(content))),...(sha?{sha}:{})};
+    const r=await fetch(`https://api.github.com/repos/${C.ghRepo}/contents/sesiones/${fn}`,{method:'PUT',headers:{Authorization:`Bearer ${C.ghToken}`,'Content-Type':'application/json'},body:JSON.stringify(body)});
+    if(r.ok){toast('✅ Subido a GitHub','success');closeExport();}
+    else{const e=await r.json();throw new Error(e.message);}
+  }catch(err){toast(`Error GitHub: ${err.message}`,'error');}
+}
+async function saveToNotion(){ await saveToNotionContent(document.getElementById('exp-content').textContent); }
+async function saveToNotionContent(content){
+  if(!C.notionToken||!C.notionDB){toast('Configura Notion en ajustes','error');openSettings();return;}
+  try{
+    const r=await fetch('https://api.notion.com/v1/pages',{
+      method:'POST',
+      headers:{'Authorization':`Bearer ${C.notionToken}`,'Content-Type':'application/json','Notion-Version':'2022-06-28'},
+      body:JSON.stringify({parent:{database_id:C.notionDB},properties:{title:{title:[{text:{content:`Sesión ${new Date().toLocaleDateString('es-CO')}`}}]}},children:[{object:'block',type:'paragraph',paragraph:{rich_text:[{text:{content:content.substring(0,2000)}}]}}]})
+    });
+    if(r.ok) toast('✅ Guardado en Notion','success');
+    else{const e=await r.json();throw new Error(e.message);}
+  }catch(err){toast(`Error Notion: ${err.message}`,'error');}
+}
 
 // ================================================================
-// NOTES
+// RIGHT PANEL TABS
 // ================================================================
-function saveNotes(){ localStorage.setItem('seb_notes', document.getElementById('notes-area').value); }
-function loadNotes(){ document.getElementById('notes-area').value = localStorage.getItem('seb_notes')||''; }
+function toggleTab(tab){
+  const panel=document.getElementById('right-panel');
+  const tabs=['kpi','tasks','notes','memory'];
+  const btns={kpi:'btn-kpi',tasks:'btn-tasks',notes:'btn-notes',memory:'btn-memory'};
+  if(S.tab===tab&&!panel.classList.contains('hidden')){
+    panel.classList.add('hidden'); document.getElementById(btns[tab])?.classList.remove('on'); S.tab=null; return;
+  }
+  panel.classList.remove('hidden'); S.tab=tab;
+  tabs.forEach(t=>{ document.getElementById(`tab-${t}`).style.display=t===tab?'block':'none'; document.getElementById(btns[t])?.classList.toggle('on',t===tab); });
+}
 
 // ================================================================
 // SETTINGS
 // ================================================================
 function openSettings(){
-  document.getElementById('s-apikey').value = CFG.apiKey;
-  document.getElementById('s-ghtoken').value = CFG.ghToken;
-  document.getElementById('s-ghrepo').value = CFG.ghRepo;
-  document.getElementById('s-wati').value = CFG.wati;
-  document.getElementById('s-model').value = CFG.model;
-  document.getElementById('conn-status').innerHTML = `<div style="font-size:11px;color:var(--text3)">Claude: ${CFG.apiKey?'✅ Configurado':'❌ Sin API key'} &nbsp;|&nbsp; GitHub: ${CFG.ghToken?'✅':'⚠️ Sin token'}</div>`;
+  document.getElementById('s-apikey').value=C.apiKey;
+  document.getElementById('s-model').value=C.model;
+  document.getElementById('s-gtoken').value=C.gToken;
+  document.getElementById('s-mstoken').value=C.msToken;
+  document.getElementById('s-msemail').value=C.msEmail;
+  document.getElementById('s-todoist').value=C.todoist;
+  document.getElementById('s-wati').value=C.watiKey;
+  document.getElementById('s-wati-server').value=C.watiServer;
+  document.getElementById('s-news').value=C.newsKey;
+  document.getElementById('s-ghtoken').value=C.ghToken;
+  document.getElementById('s-ghrepo').value=C.ghRepo;
+  document.getElementById('s-notion').value=C.notionToken;
+  document.getElementById('s-notion-db').value=C.notionDB;
+  ['claude','google','ms','todoist','wati','news','gh','notion'].forEach(k=>{
+    const keys={claude:'apiKey',google:'gToken',ms:'msToken',todoist:'todoist',wati:'watiKey',news:'newsKey',gh:'ghToken',notion:'notionToken'};
+    const el=document.getElementById('st-'+k); if(el) el.className='int-st '+(C[keys[k]]?'ok':'');
+  });
   document.getElementById('settings-ov').classList.remove('hidden');
 }
 function closeSettings(){ document.getElementById('settings-ov').classList.add('hidden'); }
 function saveSettings(){
-  CFG.apiKey = document.getElementById('s-apikey').value.trim();
-  CFG.ghToken = document.getElementById('s-ghtoken').value.trim();
-  CFG.ghRepo = document.getElementById('s-ghrepo').value.trim();
-  CFG.wati = document.getElementById('s-wati').value.trim();
-  CFG.model = document.getElementById('s-model').value;
+  C.apiKey=document.getElementById('s-apikey').value.trim();
+  C.model=document.getElementById('s-model').value;
+  C.gToken=document.getElementById('s-gtoken').value.trim();
+  C.msToken=document.getElementById('s-mstoken').value.trim();
+  C.msEmail=document.getElementById('s-msemail').value.trim();
+  C.todoist=document.getElementById('s-todoist').value.trim();
+  C.watiKey=document.getElementById('s-wati').value.trim();
+  C.watiServer=document.getElementById('s-wati-server').value.trim();
+  C.newsKey=document.getElementById('s-news').value.trim();
+  C.ghToken=document.getElementById('s-ghtoken').value.trim();
+  C.ghRepo=document.getElementById('s-ghrepo').value.trim();
+  C.notionToken=document.getElementById('s-notion').value.trim();
+  C.notionDB=document.getElementById('s-notion-db').value.trim();
   closeSettings(); toast('Configuración guardada','success');
+  if(S.view==='eco') renderSources();
 }
-function clearAll(){ if(confirm('¿Borrar TODOS los datos? (API keys, KPIs, memoria, historial)')) { localStorage.clear(); location.reload(); } }
+function clearAll(){ if(confirm('¿Borrar TODOS los datos?')){ localStorage.clear(); location.reload(); } }
 
 // ================================================================
-// EXPORT / GITHUB
-// ================================================================
-function openExport(){
-  let content = `# Sesión Sebastián OS — ${new Date().toLocaleDateString('es-CO')}\n\n`;
-  document.querySelectorAll('.msg.assistant').forEach(e => { content += e.dataset.raw + '\n\n---\n\n'; });
-  openExportWith(content);
-}
-function openExportWith(content){
-  document.getElementById('exp-content').textContent = content;
-  document.getElementById('exp-filename').value = `sesion-${new Date().toISOString().split('T')[0]}.md`;
-  document.getElementById('copy-ok').style.display='none';
-  document.getElementById('export-ov').classList.remove('hidden');
-}
-function closeExport(){ document.getElementById('export-ov').classList.add('hidden'); }
-async function copyExport(){
-  await navigator.clipboard.writeText(document.getElementById('exp-content').textContent);
-  const ok = document.getElementById('copy-ok'); ok.style.display='block'; setTimeout(()=>ok.style.display='none',2000);
-}
-async function pushGitHub(){
-  if(!CFG.ghToken){ toast('Configura tu GitHub token','error'); openSettings(); return; }
-  const fn = document.getElementById('exp-filename').value.trim();
-  const content = document.getElementById('exp-content').textContent;
-  const repo = CFG.ghRepo;
-  if(!fn||!content||!repo){ toast('Completa todos los campos','error'); return; }
-  try {
-    let sha = null;
-    try {
-      const cr = await fetch(`https://api.github.com/repos/${repo}/contents/sesiones/${fn}`, { headers:{'Authorization':`Bearer ${CFG.ghToken}`} });
-      if(cr.ok){ const cd=await cr.json(); sha=cd.sha; }
-    } catch(e){}
-    const body = { message:`Sesión Sebastián OS — ${new Date().toLocaleDateString('es-CO')}`, content: btoa(unescape(encodeURIComponent(content))), ...(sha?{sha}:{}) };
-    const r = await fetch(`https://api.github.com/repos/${repo}/contents/sesiones/${fn}`, { method:'PUT', headers:{'Authorization':`Bearer ${CFG.ghToken}`,'Content-Type':'application/json'}, body:JSON.stringify(body) });
-    if(r.ok){ toast('✅ Subido a GitHub','success'); closeExport(); }
-    else { const e=await r.json(); throw new Error(e.message); }
-  } catch(err){ toast(`Error GitHub: ${err.message}`,'error'); }
-}
-
-// ================================================================
-// CHAT CLEAR
+// CLEAR CHAT
 // ================================================================
 function clearChat(){
-  if(!confirm('¿Nueva conversación? Se perderá el historial.')) return;
-  S.history = [];
-  document.getElementById('messages').innerHTML = `
-    <div id="welcome" class="welcome">
-      <div class="w-title">Buenos días, Sebastián ☀️</div>
-      <div class="w-sub">Tu sistema personal. Opera como jefe desde aquí.</div>
-      <div class="w-cards">
-        <div class="w-card" onclick="quickAction('briefing')"><div class="w-icon">🌅</div><div class="w-ctitle">Briefing del día</div><div class="w-cdesc">Mis 3 prioridades de hoy.</div></div>
-        <div class="w-card" onclick="quickAction('survival')"><div class="w-icon">🔴</div><div class="w-ctitle">Triage Condugas</div><div class="w-cdesc">6 KPIs de supervivencia.</div></div>
-        <div class="w-card" onclick="quickAction('serjefe')"><div class="w-icon">👥</div><div class="w-ctitle">Intervención jefatura</div><div class="w-cdesc">Problema con alguien del equipo.</div></div>
-        <div class="w-card" onclick="quickAction('content')"><div class="w-icon">✍️</div><div class="w-ctitle">Generar contenido</div><div class="w-cdesc">Post, fragmento, propuesta.</div></div>
-        <div class="w-card" onclick="quickAction('plan-week')"><div class="w-icon">📅</div><div class="w-ctitle">Planear semana</div><div class="w-cdesc">MEGA y bloques protegidos.</div></div>
-        <div class="w-card" onclick="quickAction('decision')"><div class="w-icon">🎯</div><div class="w-ctitle">Decisión consciente</div><div class="w-cdesc">Ruta de 4 niveles.</div></div>
-      </div>
-    </div>`;
+  if(!confirm('¿Nueva conversación?')) return; S.history=[];
+  document.getElementById('messages').innerHTML=`<div id="welcome" class="welcome">
+    <div class="w-title">Buenos días, Sebastián ☀️</div>
+    <div class="w-sub">Tu sistema personal. Opera como jefe desde aquí.</div>
+    <div class="w-cards">
+      <div class="w-card" onclick="qa('briefing')"><div class="w-icon">🌅</div><div class="w-ct">Briefing</div><div class="w-cd">Mis 3 prioridades.</div></div>
+      <div class="w-card" onclick="qa('survival')"><div class="w-icon">🔴</div><div class="w-ct">Triage</div><div class="w-cd">6 KPIs Condugas.</div></div>
+      <div class="w-card" onclick="qa('serjefe')"><div class="w-icon">👥</div><div class="w-ct">Ser Jefe</div><div class="w-cd">Intervención equipo.</div></div>
+      <div class="w-card" onclick="qa('content')"><div class="w-icon">✍️</div><div class="w-ct">Contenido</div><div class="w-cd">Post, fragmento.</div></div>
+      <div class="w-card" onclick="qa('plan-week')"><div class="w-icon">📅</div><div class="w-ct">Semana</div><div class="w-cd">MEGA y bloques.</div></div>
+      <div class="w-card" onclick="qa('decision')"><div class="w-icon">🎯</div><div class="w-ct">Decisión</div><div class="w-cd">Ruta de 4 niveles.</div></div>
+    </div></div>`;
 }
 
 // ================================================================
 // TOAST
 // ================================================================
-function toast(msg, type='info'){
-  const box = document.getElementById('toast-box');
-  const t = document.createElement('div');
-  t.className = `toast ${type}`; t.textContent = msg;
-  box.appendChild(t);
-  setTimeout(()=>{ t.style.animation='tin .18s ease reverse'; setTimeout(()=>t.remove(),180); }, 2800);
+function toast(msg,type='info'){
+  const b=document.getElementById('toast-box');
+  const t=document.createElement('div'); t.className=`toast ${type}`; t.textContent=msg;
+  b.appendChild(t);
+  setTimeout(()=>{t.style.animation='tin .17s ease reverse';setTimeout(()=>t.remove(),170);},2700);
 }
 
 // ================================================================
-// MODALS — close on overlay click / ESC
+// CLOSE ON OVERLAY / ESC
 // ================================================================
-document.addEventListener('click', e => { if(e.target.classList.contains('m-overlay')) e.target.classList.add('hidden'); });
-document.addEventListener('keydown', e => { if(e.key==='Escape') document.querySelectorAll('.m-overlay:not(.hidden)').forEach(x=>x.classList.add('hidden')); });
+document.addEventListener('click',e=>{ if(e.target.classList.contains('ov')) e.target.classList.add('hidden'); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') document.querySelectorAll('.ov:not(.hidden)').forEach(x=>x.classList.add('hidden')); });
 
 // ================================================================
 // INIT
 // ================================================================
 function init(){
-  renderAgents();
-  renderPeople();
-  renderKPIs();
-  renderTasks();
-  renderMem();
-  loadNotes();
-  toggleTab('kpi');
-  document.getElementById('chat-input').addEventListener('input', updateCC);
-  if(!CFG.apiKey){
-    setTimeout(()=>{ toast('Configura tu API key de Anthropic para comenzar','error'); openSettings(); }, 600);
-  } else {
-    toast(`SEB OS listo — ${CFG.model}`,'success');
-  }
+  renderAgents(); renderPeople(); renderRPKPIs(); renderTasks(); renderMem(); loadNotes();
+  setView('chat'); toggleTab('kpi');
+  document.getElementById('chat-input').addEventListener('input',updateCC);
+  if(!C.apiKey){ setTimeout(()=>{ toast('Configura tu API key de Anthropic para comenzar','error'); openSettings(); },600); }
+  else { toast(`SEB OS listo — ${C.model}`,'success'); }
   document.getElementById('chat-input').focus();
 }
-
 init();
 </script>
 </body>
