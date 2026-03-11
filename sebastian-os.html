@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sebastián OS ⬡</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0d0f14;--bg2:#161920;--bg3:#1e2130;--bg4:#252840;
+  --border:#2a2d3e;--border2:#3a3e58;
+  --accent:#4f8ef7;--accent-glow:rgba(79,142,247,0.12);
+  --gold:#f5a623;--danger:#e74c3c;--warn:#f39c12;--success:#2ecc71;
+  --text:#e8eaf0;--text2:#9ba3c0;--text3:#6b7399;
+  --sidebar-w:248px;
+}
+html,body{height:100%;overflow:hidden}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;font-size:14px;line-height:1.5}
+a{color:var(--accent);text-decoration:none}
+button{cursor:pointer;font-family:inherit;font-size:14px}
+input,textarea,select{font-family:inherit;font-size:14px}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+/* TOPBAR */
+.topbar{height:50px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 14px;gap:10px;flex-shrink:0;z-index:100}
+.logo{font-size:15px;font-weight:700;color:var(--accent);display:flex;align-items:center;gap:7px;white-space:nowrap;letter-spacing:0.3px}
+.logo span:first-child{font-size:22px}
+.agent-badge{background:var(--bg3);border:1px solid var(--border2);padding:3px 10px;border-radius:20px;font-size:12px;color:var(--text2);white-space:nowrap;cursor:default}
+.topbar-center{display:flex;gap:5px;flex:1;justify-content:center;flex-wrap:wrap}
+.qbtn{background:var(--bg3);border:1px solid var(--border);color:var(--text3);padding:4px 11px;border-radius:18px;font-size:12px;transition:all 0.13s;white-space:nowrap}
+.qbtn:hover{background:var(--bg4);border-color:var(--accent);color:var(--text)}
+.qbtn.red:hover{border-color:var(--danger);color:var(--danger)}
+.qbtn.gold:hover{border-color:var(--gold);color:var(--gold)}
+.qbtn.green:hover{border-color:var(--success);color:var(--success)}
+.topbar-right{display:flex;gap:5px;margin-left:auto}
+.ibtn{background:transparent;border:1px solid var(--border);color:var(--text3);width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all 0.13s}
+.ibtn:hover{background:var(--bg3);border-color:var(--border2);color:var(--text)}
+.ibtn.on{background:var(--accent-glow);border-color:var(--accent);color:var(--accent)}
+
+/* LAYOUT */
+.layout{display:flex;flex:1;overflow:hidden}
+
+/* SIDEBAR */
+.sidebar{width:var(--sidebar-w);background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;flex-shrink:0}
+.s-section{padding:10px 8px;border-bottom:1px solid var(--border)}
+.s-label{font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--text3);padding:0 8px 7px;text-transform:uppercase}
+.agent-item{display:flex;align-items:center;gap:9px;padding:7px 9px;border-radius:7px;cursor:pointer;transition:all 0.11s;margin-bottom:2px;border:1px solid transparent}
+.agent-item:hover{background:var(--bg3)}
+.agent-item.active{background:var(--accent-glow);border-color:var(--accent)}
+.a-icon{font-size:17px;flex-shrink:0;width:20px;text-align:center}
+.a-name{font-size:12px;font-weight:600;color:var(--text)}
+.a-desc{font-size:10px;color:var(--text3)}
+.agent-item.active .a-name{color:var(--accent)}
+.people-grid{display:flex;flex-wrap:wrap;gap:4px;padding:0 8px}
+.pchip{background:var(--bg3);border:1px solid var(--border);padding:3px 7px;border-radius:10px;font-size:11px;color:var(--text2);cursor:pointer;transition:all 0.11s}
+.pchip:hover{border-color:var(--accent);color:var(--accent)}
+
+/* CHAT MAIN */
+.chat-main{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--bg)}
+.messages{flex:1;overflow-y:auto;padding:18px 22px;display:flex;flex-direction:column;gap:14px}
+.msg{display:flex;gap:11px;max-width:100%}
+.msg.user{flex-direction:row-reverse}
+.m-avatar{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px}
+.msg.assistant .m-avatar{background:var(--accent-glow);border:1px solid var(--accent)}
+.msg.user .m-avatar{background:rgba(245,166,35,0.12);border:1px solid var(--gold);font-size:12px;font-weight:700;color:var(--gold)}
+.m-content{max-width:78%;background:var(--bg2);border:1px solid var(--border);border-radius:11px;padding:11px 14px}
+.msg.user .m-content{background:rgba(245,166,35,0.06);border-color:rgba(245,166,35,0.25)}
+.m-content p{margin-bottom:7px}
+.m-content p:last-child{margin-bottom:0}
+.m-content strong{color:var(--gold);font-weight:600}
+.m-content ul,ol{padding-left:17px;margin-bottom:7px}
+.m-content li{margin-bottom:2px}
+.m-content code{background:var(--bg3);border:1px solid var(--border2);padding:1px 5px;border-radius:3px;font-size:12px;font-family:monospace;color:var(--accent)}
+.m-content pre{background:var(--bg3);border:1px solid var(--border2);padding:10px;border-radius:7px;overflow-x:auto;margin:7px 0}
+.m-content pre code{background:none;border:none;padding:0;color:var(--text)}
+.m-content h1,.m-content h2,.m-content h3{color:var(--accent);margin-bottom:5px;margin-top:10px}
+.m-content h3{font-size:13px}
+.mlabel{display:inline-block;padding:1px 6px;border-radius:3px;font-size:10px;font-weight:700;letter-spacing:0.5px;margin:0 2px}
+.lsurv{background:rgba(231,76,60,0.18);color:var(--danger);border:1px solid rgba(231,76,60,0.3)}
+.lstrat{background:rgba(79,142,247,0.13);color:var(--accent);border:1px solid rgba(79,142,247,0.3)}
+.lops{background:rgba(46,204,113,0.13);color:var(--success);border:1px solid rgba(46,204,113,0.3)}
+.ldel{background:rgba(155,163,192,0.13);color:var(--text2);border:1px solid var(--border2)}
+.lwarn{background:rgba(243,156,18,0.13);color:var(--warn);border:1px solid rgba(243,156,18,0.3)}
+.m-actions{margin-top:7px;display:flex;gap:5px;flex-wrap:wrap}
+.m-act{background:transparent;border:1px solid var(--border);color:var(--text3);padding:2px 7px;border-radius:5px;font-size:10px;transition:all 0.11s}
+.m-act:hover{border-color:var(--border2);color:var(--text2)}
+.m-time{font-size:10px;color:var(--text3);margin-top:3px;text-align:right}
+
+/* TYPING */
+.typing{display:flex;align-items:center;gap:4px;padding:6px 2px}
+.tdot{width:6px;height:6px;background:var(--text3);border-radius:50%;animation:tdot 1.2s infinite}
+.tdot:nth-child(2){animation-delay:.2s}
+.tdot:nth-child(3){animation-delay:.4s}
+@keyframes tdot{0%,80%,100%{transform:scale(1);opacity:.5}40%{transform:scale(1.2);opacity:1}}
+
+/* INPUT */
+.input-area{padding:10px 14px;border-top:1px solid var(--border);background:var(--bg2);display:flex;gap:9px;align-items:flex-end}
+.input-wrap{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:11px;padding:9px 12px;transition:border-color 0.13s}
+.input-wrap:focus-within{border-color:var(--accent)}
+#chat-input{width:100%;background:transparent;border:none;outline:none;color:var(--text);resize:none;max-height:180px;line-height:1.5;min-height:20px}
+#chat-input::placeholder{color:var(--text3)}
+.input-foot{display:flex;justify-content:space-between;align-items:center;margin-top:5px}
+.input-hint{font-size:10px;color:var(--text3)}
+.send-btn{background:var(--accent);border:none;color:white;width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;transition:all 0.13s;flex-shrink:0}
+.send-btn:hover{background:#3d7ee8;transform:scale(1.04)}
+.send-btn:disabled{background:var(--bg3);color:var(--text3);transform:none;cursor:not-allowed}
+
+/* RIGHT PANEL */
+.right-panel{width:290px;background:var(--bg2);border-left:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;transition:width 0.18s}
+.right-panel.hidden{width:0;overflow:hidden}
+.p-section{padding:12px 13px;border-bottom:1px solid var(--border)}
+.p-title{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:9px;display:flex;justify-content:space-between;align-items:center}
+.p-title button{background:transparent;border:none;color:var(--text3);font-size:11px;cursor:pointer}
+.p-title button:hover{color:var(--accent)}
+
+/* KPI */
+.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.kpi-card{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:7px 9px;cursor:pointer;transition:all 0.11s}
+.kpi-card:hover{border-color:var(--border2)}
+.kpi-card.red{border-color:rgba(231,76,60,0.4);background:rgba(231,76,60,0.04)}
+.kpi-card.yellow{border-color:rgba(243,156,18,0.4);background:rgba(243,156,18,0.04)}
+.kpi-card.green{border-color:rgba(46,204,113,0.3);background:rgba(46,204,113,0.04)}
+.kpi-lbl{font-size:9px;color:var(--text3);margin-bottom:2px}
+.kpi-val{font-size:12px;font-weight:600;color:var(--text)}
+.kpi-st{display:flex;align-items:center;gap:3px;margin-top:2px}
+.kpi-dot{width:5px;height:5px;border-radius:50%;background:var(--text3);flex-shrink:0}
+.kpi-card.red .kpi-dot{background:var(--danger)}
+.kpi-card.yellow .kpi-dot{background:var(--warn)}
+.kpi-card.green .kpi-dot{background:var(--success)}
+.kpi-stxt{font-size:9px;color:var(--text3)}
+.surv-alert{background:rgba(231,76,60,0.08);border:1px solid rgba(231,76,60,0.35);border-radius:7px;padding:8px 10px;margin:7px 0}
+.surv-title{font-size:11px;font-weight:700;color:var(--danger);margin-bottom:3px}
+.surv-txt{font-size:10px;color:var(--text2)}
+
+/* TASKS */
+.task-item{display:flex;align-items:start;gap:7px;padding:4px 0;border-bottom:1px solid var(--border);font-size:11px;color:var(--text2)}
+.task-item:last-child{border-bottom:none}
+.tcheck{width:13px;height:13px;border:1px solid var(--border2);border-radius:3px;flex-shrink:0;margin-top:1px;cursor:pointer;transition:all 0.11s;display:flex;align-items:center;justify-content:center;font-size:9px}
+.tcheck:hover{border-color:var(--success)}
+.tcheck.done{background:var(--success);border-color:var(--success);color:white}
+.ttext{flex:1;line-height:1.4}
+.ttext.done{text-decoration:line-through;opacity:.45}
+.ttag{font-size:9px;padding:1px 4px;border-radius:2px;flex-shrink:0;background:rgba(231,76,60,0.12);color:var(--danger);border:1px solid rgba(231,76,60,0.2)}
+.ttag.med{background:rgba(243,156,18,0.1);color:var(--warn);border-color:rgba(243,156,18,0.2)}
+
+/* NOTES */
+.notes-area{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:7px 9px;color:var(--text);resize:none;min-height:100px;outline:none;font-size:11px;line-height:1.5}
+.notes-area:focus{border-color:var(--accent)}
+
+/* MEMORY */
+.mem-list{display:flex;flex-direction:column;gap:3px}
+.mem-item{background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:5px 8px;font-size:10px;color:var(--text2);display:flex;justify-content:space-between;align-items:start;gap:6px;cursor:pointer;transition:border-color 0.11s}
+.mem-item:hover{border-color:var(--border2)}
+.mem-text{flex:1;line-height:1.4}
+.mem-del{color:var(--text3);flex-shrink:0;font-size:13px;line-height:1;background:transparent;border:none;cursor:pointer}
+.mem-del:hover{color:var(--danger)}
+.add-mem{background:transparent;border:1px dashed var(--border);color:var(--text3);padding:4px 9px;border-radius:5px;font-size:10px;width:100%;margin-top:3px;transition:all 0.11s}
+.add-mem:hover{border-color:var(--accent);color:var(--accent)}
+
+/* MODAL */
+.m-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.72);z-index:1000;display:flex;align-items:center;justify-content:center}
+.m-overlay.hidden{display:none}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:22px;min-width:400px;max-width:620px;width:90%;max-height:88vh;overflow-y:auto;position:relative}
+.modal-title{font-size:17px;font-weight:700;margin-bottom:3px}
+.modal-sub{font-size:12px;color:var(--text3);margin-bottom:18px}
+.modal-close{position:absolute;top:14px;right:14px;background:transparent;border:none;color:var(--text3);font-size:19px;line-height:1;cursor:pointer}
+.modal-close:hover{color:var(--text)}
+.fg{margin-bottom:14px}
+.flbl{font-size:11px;font-weight:600;color:var(--text2);margin-bottom:5px;display:block}
+.finput{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:8px 11px;border-radius:7px;outline:none;transition:border-color 0.13s}
+.finput:focus{border-color:var(--accent)}
+.fhint{font-size:10px;color:var(--text3);margin-top:3px}
+.btn{padding:8px 16px;border-radius:7px;font-weight:600;font-size:13px;transition:all 0.13s;border:none;cursor:pointer}
+.btn-p{background:var(--accent);color:white}
+.btn-p:hover{background:#3d7ee8}
+.btn-s{background:var(--bg3);border:1px solid var(--border);color:var(--text2)}
+.btn-s:hover{border-color:var(--border2);color:var(--text)}
+.btn-d{background:rgba(231,76,60,0.09);border:1px solid rgba(231,76,60,0.28);color:var(--danger)}
+.btn-d:hover{background:rgba(231,76,60,0.18)}
+.m-footer{display:flex;gap:7px;justify-content:flex-end;margin-top:18px}
+.divider{height:1px;background:var(--border);margin:14px 0}
+
+/* EXPORT */
+.exp-preview{background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:11px;font-size:11px;color:var(--text2);max-height:260px;overflow-y:auto;white-space:pre-wrap;font-family:monospace;line-height:1.5}
+.copy-ok{font-size:11px;color:var(--success);text-align:center;padding:5px}
+
+/* WELCOME */
+.welcome{max-width:560px;margin:auto;text-align:center;padding:36px 18px}
+.w-title{font-size:22px;font-weight:700;margin-bottom:7px}
+.w-sub{font-size:14px;color:var(--text2);margin-bottom:22px;line-height:1.6}
+.w-cards{display:grid;grid-template-columns:1fr 1fr;gap:9px;text-align:left}
+.w-card{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:13px;cursor:pointer;transition:all 0.13s}
+.w-card:hover{border-color:var(--accent);transform:translateY(-1px)}
+.w-icon{font-size:19px;margin-bottom:5px}
+.w-ctitle{font-size:12px;font-weight:600;margin-bottom:2px}
+.w-cdesc{font-size:10px;color:var(--text3);line-height:1.4}
+
+/* TOAST */
+.toast-box{position:fixed;bottom:18px;right:18px;z-index:2000;display:flex;flex-direction:column;gap:5px}
+.toast{background:var(--bg2);border:1px solid var(--border2);border-radius:9px;padding:9px 14px;font-size:12px;color:var(--text);animation:tin .18s ease;box-shadow:0 6px 20px rgba(0,0,0,.3)}
+.toast.success{border-color:rgba(46,204,113,.38);color:var(--success)}
+.toast.error{border-color:rgba(231,76,60,.38);color:var(--danger)}
+@keyframes tin{from{transform:translateX(100%);opacity:0}to{transform:none;opacity:1}}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="logo"><span>⬡</span><span>SEB OS</span></div>
+  <div id="agent-badge" class="agent-badge">🧠 Meta-Orquestador</div>
+  <div class="topbar-center">
+    <button class="qbtn" onclick="quickAction('briefing')">🌅 Briefing</button>
+    <button class="qbtn red" onclick="quickAction('survival')">🔴 Supervivencia</button>
+    <button class="qbtn gold" onclick="quickAction('serjefe')">👥 Ser Jefe</button>
+    <button class="qbtn" onclick="quickAction('content')">✍️ Contenido</button>
+    <button class="qbtn" onclick="quickAction('decision')">🎯 Decisión</button>
+    <button class="qbtn green" onclick="quickAction('plan-week')">📅 Semana</button>
+    <button class="qbtn" onclick="quickAction('idea')">💡 Idea</button>
+  </div>
+  <div class="topbar-right">
+    <button class="ibtn" id="btn-kpi" onclick="toggleTab('kpi')" title="KPIs Supervivencia">📊</button>
+    <button class="ibtn" id="btn-tasks" onclick="toggleTab('tasks')" title="Pendientes">✅</button>
+    <button class="ibtn" id="btn-notes" onclick="toggleTab('notes')" title="Notas">📝</button>
+    <button class="ibtn" id="btn-memory" onclick="toggleTab('memory')" title="Memoria">🧠</button>
+    <button class="ibtn" onclick="openExport()" title="Exportar / GitHub">🐙</button>
+    <button class="ibtn" onclick="clearChat()" title="Nueva conversación">🔄</button>
+    <button class="ibtn" onclick="openSettings()" title="Configuración">⚙️</button>
+  </div>
+</div>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="s-section">
+      <div class="s-label">Agentes</div>
+      <div id="agent-list"></div>
+    </div>
+    <div class="s-section">
+      <div class="s-label">Equipo Condugas</div>
+      <div class="people-grid" id="team-condugas"></div>
+    </div>
+    <div class="s-section">
+      <div class="s-label">Sendo Consulting</div>
+      <div class="people-grid" id="team-sendo"></div>
+    </div>
+    <div class="s-section">
+      <div class="s-label">EPM Clave</div>
+      <div class="people-grid" id="team-epm"></div>
+    </div>
+    <div class="s-section">
+      <div class="s-label">Proveedores</div>
+      <div class="people-grid" id="team-provs"></div>
+    </div>
+  </aside>
+
+  <!-- CHAT -->
+  <main class="chat-main">
+    <div id="messages" class="messages">
+      <div id="welcome" class="welcome">
+        <div class="w-title">Buenos días, Sebastián ☀️</div>
+        <div class="w-sub">Tu sistema personal. Opera como jefe desde aquí.</div>
+        <div class="w-cards">
+          <div class="w-card" onclick="quickAction('briefing')"><div class="w-icon">🌅</div><div class="w-ctitle">Briefing del día</div><div class="w-cdesc">¿Qué tengo hoy? Mis 3 prioridades.</div></div>
+          <div class="w-card" onclick="quickAction('survival')"><div class="w-icon">🔴</div><div class="w-ctitle">Triage Condugas</div><div class="w-cdesc">¿Estoy en modo supervivencia? 6 KPIs.</div></div>
+          <div class="w-card" onclick="quickAction('serjefe')"><div class="w-icon">👥</div><div class="w-ctitle">Intervención de jefatura</div><div class="w-cdesc">Problema con alguien del equipo.</div></div>
+          <div class="w-card" onclick="quickAction('content')"><div class="w-icon">✍️</div><div class="w-ctitle">Generar contenido</div><div class="w-cdesc">Post, fragmento, propuesta desde el modelo.</div></div>
+          <div class="w-card" onclick="quickAction('plan-week')"><div class="w-icon">📅</div><div class="w-ctitle">Planear semana</div><div class="w-cdesc">MEGA, agenda y bloques protegidos.</div></div>
+          <div class="w-card" onclick="quickAction('decision')"><div class="w-icon">🎯</div><div class="w-ctitle">Decisión consciente</div><div class="w-cdesc">Ruta de 4 niveles para decidir bien.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="input-area">
+      <div class="input-wrap">
+        <textarea id="chat-input" rows="1" placeholder="Escríbele a tu agente... (Enter = enviar, Shift+Enter = nueva línea)" oninput="autoResize(this)" onkeydown="handleKey(event)"></textarea>
+        <div class="input-foot">
+          <span class="input-hint">Agente activo: <span id="cur-agent">Meta-Orquestador</span></span>
+          <span class="input-hint" id="char-count">0 chars</span>
+        </div>
+      </div>
+      <button class="send-btn" id="send-btn" onclick="sendMessage()">➤</button>
+    </div>
+  </main>
+
+  <!-- RIGHT PANEL -->
+  <aside class="right-panel hidden" id="right-panel">
+
+    <!-- KPI TAB -->
+    <div id="tab-kpi" class="p-section" style="display:none">
+      <div class="p-title">KPIs Supervivencia <button onclick="editKPIs()">Editar</button></div>
+      <div id="kpi-grid" class="kpi-grid"></div>
+      <div id="surv-alert" class="surv-alert" style="display:none">
+        <div class="surv-title">🔴 MODO SUPERVIVENCIA</div>
+        <div class="surv-txt" id="surv-txt">2+ KPIs críticos.</div>
+      </div>
+      <button onclick="quickAction('survival')" style="width:100%;margin-top:7px;background:rgba(231,76,60,.09);border:1px solid rgba(231,76,60,.28);color:var(--danger);padding:5px;border-radius:5px;font-size:11px;cursor:pointer">Analizar con IA →</button>
+    </div>
+
+    <!-- TASKS TAB -->
+    <div id="tab-tasks" class="p-section" style="display:none">
+      <div class="p-title">Pendientes Reales <button onclick="addTask()">+ Agregar</button></div>
+      <div id="tasks-list"></div>
+    </div>
+
+    <!-- NOTES TAB -->
+    <div id="tab-notes" class="p-section" style="display:none">
+      <div class="p-title">Notas de Sesión</div>
+      <textarea class="notes-area" id="notes-area" placeholder="Notas, contexto, ideas de esta sesión..." oninput="saveNotes()"></textarea>
+    </div>
+
+    <!-- MEMORY TAB -->
+    <div id="tab-memory" class="p-section" style="display:none">
+      <div class="p-title">Memoria Permanente <button onclick="addMemory()">+ Agregar</button></div>
+      <div class="mem-list" id="mem-list"></div>
+    </div>
+
+  </aside>
+</div>
+
+<!-- SETTINGS MODAL -->
+<div class="m-overlay hidden" id="settings-ov">
+  <div class="modal">
+    <button class="modal-close" onclick="closeSettings()">✕</button>
+    <div class="modal-title">⚙️ Configuración</div>
+    <div class="modal-sub">Conecta tus APIs. Todo se guarda solo en tu navegador.</div>
+    <div class="fg">
+      <label class="flbl">🔑 Anthropic API Key (Claude) — <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a></label>
+      <input type="password" class="finput" id="s-apikey" placeholder="sk-ant-api03-...">
+      <div class="fhint">Requerida para que el agente funcione</div>
+    </div>
+    <div class="divider"></div>
+    <div class="fg">
+      <label class="flbl">🐙 GitHub Personal Access Token</label>
+      <input type="password" class="finput" id="s-ghtoken" placeholder="ghp_...">
+      <div class="fhint">Para exportar sesiones a tus repositorios</div>
+    </div>
+    <div class="fg">
+      <label class="flbl">📁 Repositorio destino</label>
+      <input type="text" class="finput" id="s-ghrepo" placeholder="SerJefe/Guias_seguidores">
+    </div>
+    <div class="divider"></div>
+    <div class="fg">
+      <label class="flbl">📱 WATI API Key (WhatsApp)</label>
+      <input type="password" class="finput" id="s-wati" placeholder="eyJ...">
+    </div>
+    <div class="divider"></div>
+    <div class="fg">
+      <label class="flbl">🤖 Modelo Claude</label>
+      <select class="finput" id="s-model">
+        <option value="claude-sonnet-4-6">claude-sonnet-4-6 (recomendado)</option>
+        <option value="claude-opus-4-6">claude-opus-4-6 (más potente)</option>
+        <option value="claude-haiku-4-5-20251001">claude-haiku-4-5 (más rápido)</option>
+      </select>
+    </div>
+    <div id="conn-status" style="font-size:11px;color:var(--text3);margin-top:4px"></div>
+    <div class="m-footer">
+      <button class="btn btn-d" onclick="clearAll()">Borrar todo</button>
+      <button class="btn btn-s" onclick="closeSettings()">Cancelar</button>
+      <button class="btn btn-p" onclick="saveSettings()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- KPI EDIT MODAL -->
+<div class="m-overlay hidden" id="kpi-ov">
+  <div class="modal">
+    <button class="modal-close" onclick="closeKPIModal()">✕</button>
+    <div class="modal-title">📊 KPIs Supervivencia Condugas</div>
+    <div class="modal-sub">Actualiza el estado de cada indicador</div>
+    <div id="kpi-form"></div>
+    <div class="m-footer">
+      <button class="btn btn-s" onclick="closeKPIModal()">Cancelar</button>
+      <button class="btn btn-p" onclick="saveKPIs()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- EXPORT MODAL -->
+<div class="m-overlay hidden" id="export-ov">
+  <div class="modal" style="max-width:680px">
+    <button class="modal-close" onclick="closeExport()">✕</button>
+    <div class="modal-title">🐙 Exportar Sesión</div>
+    <div class="modal-sub">Guarda el contenido en GitHub o cópialo</div>
+    <div class="fg">
+      <label class="flbl">Nombre del archivo</label>
+      <input type="text" class="finput" id="exp-filename" placeholder="sesion-2026-03-10.md">
+    </div>
+    <div class="fg">
+      <label class="flbl">Contenido (editable)</label>
+      <div class="exp-preview" id="exp-content" contenteditable="true"></div>
+    </div>
+    <div id="copy-ok" class="copy-ok" style="display:none">✓ Copiado al portapapeles</div>
+    <div class="m-footer">
+      <button class="btn btn-s" onclick="copyExport()">📋 Copiar</button>
+      <button class="btn btn-p" onclick="pushGitHub()">🐙 Subir a GitHub</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-box" id="toast-box"></div>
+
+<script>
+// ================================================================
+// CONFIG & STATE
+// ================================================================
+const S = {
+  agent: 'maestro',
+  loading: false,
+  tab: null,
+  history: []
+};
+
+const CFG = {
+  get apiKey(){ return localStorage.getItem('seb_key') || '' },
+  set apiKey(v){ localStorage.setItem('seb_key', v) },
+  get ghToken(){ return localStorage.getItem('seb_gh') || '' },
+  set ghToken(v){ localStorage.setItem('seb_gh', v) },
+  get ghRepo(){ return localStorage.getItem('seb_repo') || 'SerJefe/Guias_seguidores' },
+  set ghRepo(v){ localStorage.setItem('seb_repo', v) },
+  get wati(){ return localStorage.getItem('seb_wati') || '' },
+  set wati(v){ localStorage.setItem('seb_wati', v) },
+  get model(){ return localStorage.getItem('seb_model') || 'claude-sonnet-4-6' },
+  set model(v){ localStorage.setItem('seb_model', v) }
+};
+
+// ================================================================
+// BASE CONTEXT (MAESTRO)
+// ================================================================
+const BASE = `CONTEXTO COMPLETO DE SEBASTIÁN SÁNCHEZ ACEVEDO — Medellín, Colombia
+
+=== 4 IDENTIDADES PARALELAS ===
+1. GERENTE CONDUGAS S.A. — empresa familiar infraestructura servicios públicos (gas, agua, emergencias, tubería). Cliente principal: EPM. Sistema central: Odoo. CRISIS DE CAJA ACTUAL — opera modo reactivo (paradoja con su propio modelo: un jefe no debería estar en el día a día).
+2. FUNDADOR SIENDO CONSULTING — consultoría organizacional, integrador Odoo, agentes IA, modelo "Ser Siendo".
+3. DOCENTE/CONSULTOR — EAFIT Medellín, modelo Ser Siendo, concepto propio "alletagia" (arte de ser quien ayuda a otros a sacar su potencial).
+4. INVERSIONISTA — Charles Schwab, Trii, Wenia, Plenti, Bancolombia, Scotiabank.
+
+=== MODELO SER JEFE (núcleo conceptual) ===
+"Un jefe es quien logra que otros logren."
+DIFERENCIA CRÍTICA: jefatura ≠ liderazgo. SIEMPRE usar "jefatura", NUNCA "liderazgo".
+4 PREMISAS FUNDAMENTALES:
+1. Nadie motiva a otra persona — motivación nace de identidad + autonomía + disfrute
+2. Nadie enseña a otra persona — el jefe crea condiciones para el aprendizaje
+3. Nunca asumir que entiendes la existencia del otro — realidad fenomenológica única
+4. Dar objetivos, no métodos — define el QUÉ y PARA QUÉ, no el CÓMO
+9 FORMAS DE INTERVENCIÓN (según el momento):
+Consejero | Coach | Compañero | Facilitador | Profesor | Modelo | Observador | Asesor técnico | Experto (último recurso)
+6 ELEMENTOS DE EQUIPO FUNCIONAL: Propósito compartido | Roles claros | Conversaciones honestas | Compromisos cumplidos | Capacidad de aprender | Confianza básica
+
+=== EQUIPO CONDUGAS DIRECTO ===
+Cami (Juan Camilo Berrío): Gerente Proyectos
+Andre (Andrea Bernal): Director Financiero y Contable — SITUACIÓN ACTIVA (pendiente resolución)
+Juan (Juan Guillermo): Gerente Estrategia
+Carlos (Carlos Hernán López): Gerente Nuevos Negocios
+Willi (William López): Director Administrativo
+Naty (Natalia Rojas): Director RRHH
+Nelson (Fabio Nelson Escobar): Director Logística
+Clau (Claudia Quintero): Directora Contable
+Ma (Olga Acevedo): Dueña y Madre
+
+=== EQUIPO CONDUGAS INDIRECTO ===
+Margo (Luz Margoth Hernández): HSEQ | Bibi (Bibiana Castaño): Admin | Lore (Lorena Fajardo): Tesorería
+Lucy (Lucy Tamayo): Auditor Logística | Hilda (Hilda Mary): Nuevos Negocios | JuanPa (Juan Pablo Franco): Productividad
+Carlos Andrés Acevedo: Dir. Proyectos | Edwar (Edwar Tello): Dir. Proyectos | Aldemar Bermúdez: Dir. Proyectos
+Diana Giraldo: Dir. Proyectos | Daniel Herrera: Asistente Financiero | Alexa (Alexandra Botero): Ing. Nuevos Negocios
+Jhonatan Argüello: Coordinador Transporte | Andrés (Jorge André López): Coordinador Logístico
+Paola Valencia: Residente Gas Internas | Nicacio (Jhon Nicacio Salazar): Residente OyM Aguas
+Alexander: Gestor Social
+
+=== SENDO CONSULTING ===
+Mona (Mónica González): Socia Comercial
+Lina (Lina Russi): Socia Gestora
+Ema (Emanuel): Socio Desarrollador
+
+=== CLIENTES EPM CLAVE ===
+Juan Carlos Gómez: Subgerente Gas | Luis Guillermo Villada: Subgerente Aguas
+Humberto Iglesias: VP Negocios | Santiago Wilches: Gerente Aguas | Jhon Maya: Gerente General
+ESTRATEGIA EPM: EPM divide y enfrenta contratistas entre sí. Sebastián tiene estrategia colectiva con colegas para neutralizarla. Los problemas de fórmulas de reajuste son punto técnico-legal crítico.
+
+=== OTROS CLIENTES ===
+Rafael Gallego: La Vasconia (dueño) | Jorge Medina: Montesereno (gerente)
+GDO | Metrogas | VANTI (Luis Abril: Gerente Técnico)
+
+=== PROVEEDORES CLAVE ===
+Camilo Marín (Doctor): Abogado | Andrea Zuleta: Seguros | José Daniel González (Dani): Rasher
+
+=== KPIs SUPERVIVENCIA CONDUGAS ===
+ALERTA si 2+ en rojo → etiquetar [SUPERVIVENCIA] como prioridad absoluta:
+1. Flujo de caja: ¿dinero para operar 30 días?
+2. Cartera vencida: ¿cuánto le deben y cuándo entra?
+3. Compromisos EPM: ¿hay incumplimiento inminente?
+4. Nómina: ¿cubierta la próxima?
+5. Proveedores críticos: ¿hay cortes de suministro en riesgo?
+6. Capacidad operativa: ¿tiene equipo para ejecutar contratos activos?
+
+=== PROYECTOS ACTIVOS ===
+Casa Ozzio (Capullo): construcción propia, cierre objetivo sep 2025, presupuesto $950M COP, constructor Oscar (diseño grado cero). Recursos críticos: licencia construcción, acabados, contratistas, formas de pago.
+Cultura Autogestión Condugas: iniciado feb 2024, "Reinventar las Organizaciones" + exigencia MPA EPM.
+Automatización Condugas con IA: activo, abierto — apps IA, n8n, agentes.
+Propuesta EPM Rionegro: URGENTE/pendiente.
+
+=== PENDIENTES REALES (de GoodNotes) ===
+• Revisar PRG (urgente)
+• Propuesta EPM Rionegro (urgente)
+• Situación Andrea Bernal Directora
+• Bono gerentes y directores
+• Análisis Silar (técnico — ojo valores)
+• Pedir informes comité mensual
+• Pulir Dashboard Condugas
+• Terminar reunión Jorge William
+• Ver informes financieros
+• Apps IA: bajar Claude, OpenDaw, automatizar procesos
+
+=== IDEAS ACTIVAS ===
+• Tema VOIP para Condugas
+• Análisis patrimonio e inversiones
+• Socialización organigrama
+• Productividad en transporte
+• Facturas NC y ManyChat
+• Viaje Miami (compras)
+• Sesión con los 2 "torninos" (no vínculo)
+• Discurso de cambios de vida / empleos / proyectos terminados
+• Hoja de ruta como junta con objetivos, proyectos e inversiones
+• Marca personal como "loncero"
+
+=== ECOSISTEMA DIGITAL ===
+Microsoft S.SANCHEZ (Condugas) | Microsoft SSANCH17 (EAFIT) | Hotmail (personal)
+WhatsApp Business + WATI + ManyChat | Limitless (transcripciones auto) | Todoist (tareas Condugas)
+Google (Docente / Personal / S.SANCHEZ) | GoodNotes (iPad — notas manuales)
+GitHub: SerJefe/Guias_seguidores (60+ herramientas HTML documentadas)
+Notion (hub conocimiento) | OneCalendar (agenda unificada)
+Odoo Condugas + Odoo Partner (Sendo) | Whoop (salud: sueño, recuperación)
+
+=== DIMENSIÓN DEPORTISTA ===
+Padel: competitivo, torneos frecuentes
+Fisioterapia: tratamiento activo | Gym: rutina fuerza
+Whoop: tracking sueño y recuperación
+Marco: "Guerrero de la roca" — disciplina personal
+Agenda semanal protege: Fisio / Padel / Gym / Leer / Familia
+
+=== FAMILIA Y PERSONAL ===
+Vive con esposa e hijo (bebé). Construye Casa Ozzio.
+Inversiones: Charles Schwab + Trii + Wenia + Plenti + Bancolombia + Scotiabank.
+
+=== STACK TÉCNICO ACTIVO ===
+WATI → WhatsApp Business | n8n cloud (siendoconsulting.app.n8n.cloud)
+Claude API (claude-sonnet-4-6) | OpenAI gpt-4o-mini (temporal)
+Número WhatsApp: 573128508826
+Fase 2: memoria Supabase + pgvector
+
+=== REGLAS DE RESPUESTA ===
+FORMATO: Español colombiano, tuteo, directo. Máx 3 párrafos o lista corta.
+ETIQUETAS: [SUPERVIVENCIA] / [ESTRATEGIA] / [OPERATIVO] / [REQUIERE TU ATENCIÓN] / [DELEGAR A: nombre]
+PROHIBICIONES:
+— NUNCA decir "liderazgo" — siempre "jefatura"
+— NUNCA generar sistemas o herramientas que no se pidieron
+— NUNCA ser condescendiente o decorativo
+— Si hay ambigüedad: pregunta UNA sola cosa, la más importante
+`;
+
+// ================================================================
+// AGENT DEFINITIONS
+// ================================================================
+const AGENTS = [
+  {
+    id: 'maestro', name: 'Meta-Orquestador', icon: '🧠', desc: 'Cerebro central — todo el contexto',
+    system: `Eres el asistente personal inteligente de Sebastián Sánchez Acevedo. Tienes TODO el contexto de su vida, empresa y modelo mental.\n\n${BASE}\n\nComo Meta-Orquestador, identificas automáticamente cuál de las 4 identidades está activada en cada mensaje y activas el modo correcto. Eres su cerebro externo: reduces complejidad, priorizas y actúas desde el modelo.`
+  },
+  {
+    id: 'condugas', name: 'Analista Condugas', icon: '🏗️', desc: 'EPM, caja, equipo, KPIs',
+    system: `Eres el Analista de Condugas S.A., empresa familiar de infraestructura de servicios públicos.\n\n${BASE}\n\nFOCO EXCLUSIVO: flujo de caja, contratos EPM, equipo directo, KPIs de supervivencia. Cuando recibes datos financieros u operativos, evalúas inmediatamente los 6 KPIs. Si 2+ en rojo: [SUPERVIVENCIA] como primer token. Eres el Secretario Supervivencia de Condugas.`
+  },
+  {
+    id: 'serjefe', name: 'Ser Jefe', icon: '👥', desc: 'Intervenciones, jefatura, equipo',
+    system: `Eres el agente Ser Jefe de Sebastián Sánchez Acevedo.\n\n${BASE}\n\nEspecialidad: diagnosticar cuál de las 9 formas de intervención aplica a cada situación con personas del equipo y dar el guión exacto de cómo intervenir. Razonas siempre desde las 4 premisas. Nunca das métodos cuando se piden objetivos. Nunca usas la palabra "liderazgo".`
+  },
+  {
+    id: 'siendo', name: 'Siendo Consulting', icon: '🔮', desc: 'Consultoría, Odoo, clientes',
+    system: `Eres el agente de Sendo Consulting.\n\n${BASE}\n\nFOCO: clientes de consultoría, implementaciones Odoo, propuestas, el modelo Ser Siendo en organizaciones, estrategia comercial con Mona, Lina y Ema. Modelo fenomenológico: la realidad de una empresa es lo que sus miembros viven y sienten.`
+  },
+  {
+    id: 'digital', name: 'Transformación Digital', icon: '⚡', desc: 'IA, automatización, n8n, Odoo',
+    system: `Eres el agente de Transformación Digital de Sebastián.\n\n${BASE}\n\nFOCO: automatización con n8n, agentes IA, Odoo, digitalización de procesos. Stack: WATI + n8n + Claude API + Supabase + OpenAI. Dices exactamente qué hacer, no das 5 opciones. Priorizas costo-complejidad: Opus para lo complejo, Sonnet para lo medio, Haiku para lo simple.`
+  },
+  {
+    id: 'ideas', name: 'Ideas e Innovación', icon: '💡', desc: 'Ideas, MVPs, conceptos, frases',
+    system: `Eres el agente de Ideas e Innovación de Sebastián.\n\n${BASE}\n\nCuando Sebastián dice "tengo una idea", captura, estructura y desarrolla. Creas prototipos de ideas, conectas conceptos con el modelo, ayudas con frases, aforismos y fragmentos del libro/modelo en construcción. También "alletagia" — el arte de ser quien ayuda a otros a sacar su potencial.`
+  },
+  {
+    id: 'contenido', name: 'Contenido + ADD', icon: '✍️', desc: 'Posts, redes, audiencia SerJefe',
+    system: `Eres el agente de Contenido de Sebastián para su audiencia SerJefe.\n\n${BASE}\n\nGeneras posts para LinkedIn, Instagram y WhatsApp desde el modelo Ser Jefe. Voz: directa, analítica, colombiana, sin floreos. Nunca "liderazgo", siempre "jefatura". Formatos: reflexiones cortas (3-5 líneas), preguntas que activan pensamiento, conceptos del modelo en situaciones reales. También: propuestas, correos ejecutivos, síntesis de reuniones, actas.`
+  },
+  {
+    id: 'entrenador', name: 'Entrenador Personal', icon: '💪', desc: 'Whoop, padel, gym, bienestar',
+    system: `Eres el Entrenador Personal de Sebastián.\n\n${BASE}\n\nAnalizas datos Whoop (sueño, recuperación, strain), padel, gym, fisio. Proteges bloques de bienestar en la agenda. Si una semana no tiene bloques de ejercicio o recuperación: alertas. Marco "Guerrero de la roca" = disciplina personal. Bloques protegidos: Fisio / Padel / Gym / Leer / Familia.`
+  },
+  {
+    id: 'familia', name: 'Vida Personal + Familia', icon: '🏠', desc: 'Casa, familia, inversiones',
+    system: `Eres el agente de Vida Personal y Familia de Sebastián.\n\n${BASE}\n\nTe ocupas de: Casa Ozzio (construcción, presupuesto $950M, cierre sep 2025), inversiones personales (Charles Schwab, Trii, Wenia, Plenti, Bancolombia, Scotiabank), vida familiar (esposa e hijo bebé), compras, mercado, agenda personal y espacios de descanso que hay que proteger.`
+  }
+];
+
+// ================================================================
+// QUICK ACTIONS
+// ================================================================
+const QA = {
+  briefing: {
+    agent: 'maestro',
+    prompt: `Genérame un briefing ejecutivo del día de hoy. Estructura exacta:\n\n🌅 Buenos días Sebastián — [día, fecha]\n\n[Si aplica: 🔴 SUPERVIVENCIA: descripción urgente]\n\n📋 MIS 3 DE HOY:\n1. [urgente — etiqueta OPERATIVO/ESTRATEGIA/SUPERVIVENCIA]\n2. \n3. \n\n🎯 MEGA DEL DÍA: [una sola cosa]\n\n📅 AGENDA: Primero pregúntame qué tengo hoy en agenda.\n\n👥 CONTACTA HOY: [nombre + motivo concreto basado en pendientes]\n\n💡 FOCO: [reflexión del modelo Ser Jefe aplicada a este día]\n\nFormato WhatsApp. Máx 22 líneas. Directo.`
+  },
+  survival: {
+    agent: 'condugas',
+    prompt: `Ejecuta el Triage de Supervivencia de Condugas ahora. Evalúa los 6 KPIs:\n\n1. Flujo de caja — ¿dinero para 30 días?\n2. Cartera vencida — ¿cuánto entra y cuándo?\n3. Compromisos EPM — ¿incumplimiento inminente?\n4. Nómina — ¿cubierta la próxima?\n5. Proveedores críticos — ¿cortes en riesgo?\n6. Capacidad operativa — ¿equipo para los contratos?\n\nPrimero pregúntame el estado actual de cada uno (una pregunta directa). Si 2+ están en rojo: [SUPERVIVENCIA] y plan de acción inmediato.`
+  },
+  serjefe: {
+    agent: 'serjefe',
+    prompt: `Necesito hacer una intervención con alguien de mi equipo. ¿Con quién es y qué está pasando?\n\nDime el nombre y la situación. Yo te determino:\n1. Cuál de las 9 formas de intervención aplica y por qué\n2. Qué decirle exactamente o cómo abordarlo\n3. Qué NO hacer`
+  },
+  content: {
+    agent: 'contenido',
+    prompt: `Quiero generar contenido desde el modelo Ser Jefe.\n\n¿Para qué plataforma? (LinkedIn / Instagram / WhatsApp)\n¿Tengo un tema específico o quieres proponer desde los conceptos más potentes del modelo?\n\nDame el contexto o dime "propón tú".`
+  },
+  decision: {
+    agent: 'maestro',
+    prompt: `Tengo una decisión difícil. Aplica la Ruta de Decisiones Conscientes:\n\n1. DIAGNÓSTICO: ¿qué tipo de decisión? (operativa/estratégica/personal/jefatura)\n2. OPCIONES: ¿cuáles son las alternativas reales?\n3. CONSECUENCIAS: ¿qué pasa si... en cada caso?\n4. ACCIÓN: ¿cuál es la decisión desde el modelo?\n\nPrimero dime cuál es la decisión que estás enfrentando.`
+  },
+  'plan-week': {
+    agent: 'maestro',
+    prompt: `Ayúdame a planear mi semana. Estructura:\n\n🎯 MEGA DE LA SEMANA: [una sola intención]\n\nPara cada día (Lunes–Sábado):\n• OBJETIVO del día (única cosa que define si el día fue exitoso)\n• REUS (reuniones con horarios)\n• TAREAS accionables\n• Bloques protegidos: Fisio / Padel / Gym / Leer / Familia\n\nPrimero dime: ¿qué compromisos fijos tienes esta semana y cuáles son los pendientes más urgentes de Condugas?`
+  },
+  idea: {
+    agent: 'ideas',
+    prompt: `Tengo una idea. Escúchame y ayúdame a estructurarla:\n— ¿Qué problema resuelve?\n— ¿Cómo conecta con el modelo Ser Jefe/Ser Siendo?\n— ¿Cuál es el MVP mínimo viable?\n— ¿Dónde va: contenido, herramienta, proceso, negocio?\n\nCuéntame la idea.`
+  }
+};
+
+// ================================================================
+// KPI DATA
+// ================================================================
+const KPI_DEF = [
+  { id: 'caja', label: 'Flujo de Caja', status: 'unknown', value: '?' },
+  { id: 'cartera', label: 'Cartera Vencida', status: 'unknown', value: '?' },
+  { id: 'epm', label: 'Compromisos EPM', status: 'unknown', value: '?' },
+  { id: 'nomina', label: 'Nómina', status: 'unknown', value: '?' },
+  { id: 'provs', label: 'Proveedores', status: 'unknown', value: '?' },
+  { id: 'capacidad', label: 'Capacidad Op.', status: 'unknown', value: '?' }
+];
+function getKPIs(){ const s = localStorage.getItem('seb_kpis'); return s ? JSON.parse(s) : KPI_DEF }
+function storeKPIs(k){ localStorage.setItem('seb_kpis', JSON.stringify(k)) }
+
+// ================================================================
+// TASKS DATA
+// ================================================================
+const TASKS_DEF = [
+  { id: 't1', text: 'Revisar PRG', p: 'high', done: false },
+  { id: 't2', text: 'Propuesta EPM Rionegro', p: 'high', done: false },
+  { id: 't3', text: 'Situación Andrea Bernal', p: 'high', done: false },
+  { id: 't4', text: 'Bono gerentes y directores', p: 'med', done: false },
+  { id: 't5', text: 'Análisis Silar', p: 'med', done: false },
+  { id: 't6', text: 'Pedir informes comité mensual', p: 'med', done: false },
+  { id: 't7', text: 'Pulir Dashboard Condugas', p: 'med', done: false },
+  { id: 't8', text: 'Terminar reunión Jorge William', p: 'med', done: false },
+  { id: 't9', text: 'Ver informes financieros', p: 'med', done: false },
+  { id: 't10', text: 'Apps IA: Claude + OpenDaw', p: 'med', done: false }
+];
+function getTasks(){ const s = localStorage.getItem('seb_tasks'); return s ? JSON.parse(s) : TASKS_DEF }
+function storeTasks(t){ localStorage.setItem('seb_tasks', JSON.stringify(t)) }
+
+// ================================================================
+// MEMORY
+// ================================================================
+function getMem(){ const s = localStorage.getItem('seb_mem'); return s ? JSON.parse(s) : [] }
+function storeMem(m){ localStorage.setItem('seb_mem', JSON.stringify(m)) }
+
+// ================================================================
+// RENDER
+// ================================================================
+function renderAgents(){
+  document.getElementById('agent-list').innerHTML = AGENTS.map(a => `
+    <div class="agent-item ${a.id===S.agent?'active':''}" data-id="${a.id}" onclick="switchAgent('${a.id}')">
+      <span class="a-icon">${a.icon}</span>
+      <div><div class="a-name">${a.name}</div><div class="a-desc">${a.desc}</div></div>
+    </div>`).join('');
+}
+
+function renderPeople(){
+  const r = (data, cid) => {
+    document.getElementById(cid).innerHTML = data.map(([n,r]) =>
+      `<div class="pchip" onclick="mention('${n}')" title="${r}">${n}</div>`).join('');
+  };
+  r([['Cami','Proyectos'],['Andre','Financiero'],['Juan','Estrategia'],['Carlos','N.Neg.'],['Willi','Admin'],['Naty','RRHH'],['Nelson','Logística'],['Clau','Contable'],['Ma','Dueña']], 'team-condugas');
+  r([['Mona','Comercial'],['Lina','Gestora'],['Ema','Dev']], 'team-sendo');
+  r([['JC Gómez','Gas'],['Villada','Aguas'],['Humberto','VP'],['Jhon Maya','GG']], 'team-epm');
+  r([['Doctor','Abogado'],['Andre Z.','Seguros'],['Dani','Rasher']], 'team-provs');
+}
+
+function renderKPIs(){
+  const kpis = getKPIs();
+  document.getElementById('kpi-grid').innerHTML = kpis.map(k => `
+    <div class="kpi-card ${k.status}" onclick="editKPIs()" title="Clic para editar">
+      <div class="kpi-lbl">${k.label}</div>
+      <div class="kpi-val">${k.value}</div>
+      <div class="kpi-st"><div class="kpi-dot"></div><div class="kpi-stxt">${k.status==='red'?'Crítico':k.status==='yellow'?'Alerta':k.status==='green'?'OK':'Sin datos'}</div></div>
+    </div>`).join('');
+  const reds = kpis.filter(k => k.status === 'red').length;
+  const alert = document.getElementById('surv-alert');
+  if(reds >= 2){ alert.style.display='block'; document.getElementById('surv-txt').textContent = `${reds} KPIs en rojo. Activar modo SUPERVIVENCIA inmediatamente.`; }
+  else { alert.style.display='none'; }
+}
+
+function renderTasks(){
+  const tasks = getTasks();
+  document.getElementById('tasks-list').innerHTML = tasks.map(t => `
+    <div class="task-item">
+      <div class="tcheck ${t.done?'done':''}" onclick="toggleTask('${t.id}')">${t.done?'✓':''}</div>
+      <div class="ttext ${t.done?'done':''}">${t.text}</div>
+      <div class="ttag ${t.p==='med'?'med':''}">${t.p==='high'?'URGENTE':'MEDIO'}</div>
+    </div>`).join('');
+}
+
+function renderMem(){
+  const mem = getMem();
+  const el = document.getElementById('mem-list');
+  if(!mem.length){ el.innerHTML='<div style="font-size:10px;color:var(--text3)">Sin memorias. Agrega cosas importantes.</div>'; return; }
+  el.innerHTML = mem.map((m,i) => `
+    <div class="mem-item">
+      <div class="mem-text">${m}</div>
+      <button class="mem-del" onclick="delMem(${i})">×</button>
+    </div>`).join('');
+}
+
+// ================================================================
+// MARKDOWN PARSER
+// ================================================================
+function md(text){
+  if(!text) return '';
+  return text
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/^### (.+)$/gm,'<h3>$1</h3>')
+    .replace(/^## (.+)$/gm,'<h2>$1</h2>')
+    .replace(/^# (.+)$/gm,'<h1>$1</h1>')
+    .replace(/\*\*\*(.+?)\*\*\*/g,'<strong><em>$1</em></strong>')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g,'<em>$1</em>')
+    .replace(/```[\s\S]*?```/g, m => { const c=m.replace(/```\w*\n?/g,'').replace(/```/g,''); return `<pre><code>${c}</code></pre>`; })
+    .replace(/`([^`]+)`/g,'<code>$1</code>')
+    .replace(/\[SUPERVIVENCIA\]/g,'<span class="mlabel lsurv">SUPERVIVENCIA</span>')
+    .replace(/\[ESTRATEGIA\]/g,'<span class="mlabel lstrat">ESTRATEGIA</span>')
+    .replace(/\[OPERATIVO\]/g,'<span class="mlabel lops">OPERATIVO</span>')
+    .replace(/\[REQUIERE TU ATENCIÓN\]/g,'<span class="mlabel lsurv">REQUIERE TU ATENCIÓN</span>')
+    .replace(/\[DELEGAR A:?\s*([^\]]+)\]/g,'<span class="mlabel ldel">DELEGAR A: $1</span>')
+    .replace(/^[-•*] (.+)$/gm,'<li>$1</li>')
+    .replace(/(<li>[\s\S]+?<\/li>)/g,'<ul>$1</ul>')
+    .replace(/^\d+\. (.+)$/gm,'<li>$1</li>')
+    .replace(/^---$/gm,'<hr style="border-color:var(--border);margin:6px 0">')
+    .replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>')
+    .replace(/^([^<].+)$/,'<p>$1</p>');
+}
+
+// ================================================================
+// CLAUDE API
+// ================================================================
+async function callClaude(msg){
+  if(!CFG.apiKey){ toast('Configura tu API key primero','error'); openSettings(); return null; }
+  const agent = AGENTS.find(a => a.id === S.agent) || AGENTS[0];
+  S.history.push({ role:'user', content: msg });
+  const hist = S.history.slice(-24);
+  const resp = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'x-api-key': CFG.apiKey,
+      'anthropic-version': '2023-06-01',
+      'content-type': 'application/json',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify({ model: CFG.model, max_tokens: 2048, system: agent.system, messages: hist })
+  });
+  if(!resp.ok){ const e = await resp.json(); throw new Error(e.error?.message || `HTTP ${resp.status}`); }
+  const data = await resp.json();
+  const reply = data.content?.[0]?.text || 'Sin respuesta';
+  S.history.push({ role:'assistant', content: reply });
+  return reply;
+}
+
+// ================================================================
+// CHAT
+// ================================================================
+function addMsg(role, content, raw){
+  const agent = AGENTS.find(a => a.id === S.agent) || AGENTS[0];
+  const time = new Date().toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'});
+  const id = 'msg-' + Date.now() + '-' + Math.random().toString(36).slice(2);
+  const el = document.createElement('div');
+  el.className = `msg ${role}`;
+  el.id = id;
+  el.dataset.raw = raw || content;
+  const avatar = role === 'assistant'
+    ? `<div class="m-avatar">${agent.icon}</div>`
+    : `<div class="m-avatar">S</div>`;
+  const body = role === 'assistant' ? md(content) : `<p>${content.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')}</p>`;
+  const acts = role === 'assistant' ? `<div class="m-actions">
+    <button class="m-act" onclick="copyMsg('${id}')">📋 Copiar</button>
+    <button class="m-act" onclick="exportMsg('${id}')">🐙 GitHub</button>
+    <button class="m-act" onclick="saveToMem('${id}')">🧠 Guardar</button>
+  </div>` : '';
+  el.innerHTML = `${avatar}<div><div class="m-content">${body}${acts}</div><div class="m-time">${role==='assistant'?agent.name+' · ':''}${time}</div></div>`;
+  const msgs = document.getElementById('messages');
+  const w = document.getElementById('welcome');
+  if(w) w.remove();
+  msgs.appendChild(el);
+  msgs.scrollTop = msgs.scrollHeight;
+  return id;
+}
+
+function addTyping(){
+  const el = document.createElement('div');
+  el.className = 'msg assistant'; el.id = 'typing';
+  const agent = AGENTS.find(a => a.id === S.agent) || AGENTS[0];
+  el.innerHTML = `<div class="m-avatar">${agent.icon}</div><div class="m-content"><div class="typing"><div class="tdot"></div><div class="tdot"></div><div class="tdot"></div></div></div>`;
+  document.getElementById('messages').appendChild(el);
+  el.scrollIntoView({behavior:'smooth'});
+}
+function rmTyping(){ const e = document.getElementById('typing'); if(e) e.remove(); }
+
+async function sendMessage(override){
+  const inp = document.getElementById('chat-input');
+  const text = override || inp.value.trim();
+  if(!text || S.loading) return;
+  if(!override){ inp.value=''; autoResize(inp); updateCC(); }
+  S.loading = true;
+  document.getElementById('send-btn').disabled = true;
+  addMsg('user', text);
+  addTyping();
+  try {
+    const reply = await callClaude(text);
+    rmTyping();
+    if(reply){
+      addMsg('assistant', reply);
+      if(reply.includes('[SUPERVIVENCIA]')) toast('⚠️ Modo supervivencia detectado','error');
+    }
+  } catch(err){
+    rmTyping();
+    addMsg('assistant', `❌ Error: ${err.message}\n\nVerifica tu API key en ⚙️ Configuración.`);
+    toast('Error al conectar con Claude','error');
+  }
+  S.loading = false;
+  document.getElementById('send-btn').disabled = false;
+  if(!override) inp.focus();
+}
+
+function handleKey(e){ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendMessage(); } }
+function autoResize(t){ t.style.height='auto'; t.style.height = Math.min(t.scrollHeight,180)+'px'; }
+function updateCC(){ document.getElementById('char-count').textContent = document.getElementById('chat-input').value.length + ' chars'; }
+
+// ================================================================
+// AGENT SWITCH
+// ================================================================
+function switchAgent(id){
+  S.agent = id; S.history = [];
+  const a = AGENTS.find(x => x.id === id) || AGENTS[0];
+  document.getElementById('agent-badge').textContent = `${a.icon} ${a.name}`;
+  document.getElementById('cur-agent').textContent = a.name;
+  document.querySelectorAll('.agent-item').forEach(el => el.classList.toggle('active', el.dataset.id === id));
+  toast(`Agente: ${a.icon} ${a.name}`,'success');
+}
+
+function mention(name){
+  const inp = document.getElementById('chat-input');
+  inp.value = (inp.value ? inp.value+' ' : '') + name + ' ';
+  inp.focus(); autoResize(inp);
+}
+
+// ================================================================
+// QUICK ACTIONS
+// ================================================================
+function quickAction(id){
+  const q = QA[id]; if(!q) return;
+  if(q.agent !== S.agent) switchAgent(q.agent);
+  sendMessage(q.prompt);
+}
+
+// ================================================================
+// MESSAGE ACTIONS
+// ================================================================
+function copyMsg(id){ const e=document.getElementById(id); if(!e) return; navigator.clipboard.writeText(e.dataset.raw||'').then(()=>toast('Copiado','success')); }
+function exportMsg(id){ const e=document.getElementById(id); if(!e) return; openExportWith(e.dataset.raw||''); }
+function saveToMem(id){
+  const e=document.getElementById(id); if(!e) return;
+  const snip = (e.dataset.raw||'').substring(0,160)+'...';
+  const mem = getMem(); mem.unshift(snip); storeMem(mem.slice(0,20));
+  renderMem(); toast('Guardado en memoria','success'); toggleTab('memory');
+}
+
+// ================================================================
+// RIGHT PANEL TABS
+// ================================================================
+function toggleTab(tab){
+  const panel = document.getElementById('right-panel');
+  const tabs = ['kpi','tasks','notes','memory'];
+  const btns = {kpi:'btn-kpi',tasks:'btn-tasks',notes:'btn-notes',memory:'btn-memory'};
+  if(S.tab === tab && !panel.classList.contains('hidden')){
+    panel.classList.add('hidden');
+    document.getElementById(btns[tab])?.classList.remove('on');
+    S.tab = null; return;
+  }
+  panel.classList.remove('hidden'); S.tab = tab;
+  tabs.forEach(t => {
+    document.getElementById(`tab-${t}`).style.display = t===tab?'block':'none';
+    document.getElementById(btns[t])?.classList.toggle('on', t===tab);
+  });
+}
+
+// ================================================================
+// KPI MANAGEMENT
+// ================================================================
+function editKPIs(){
+  const kpis = getKPIs();
+  document.getElementById('kpi-form').innerHTML = kpis.map(k => `
+    <div class="fg">
+      <label class="flbl">${k.label}</label>
+      <div style="display:flex;gap:7px">
+        <input type="text" class="finput" style="flex:1" id="kv-${k.id}" value="${k.value}" placeholder="ej: $45M disponible">
+        <select class="finput" style="width:115px" id="ks-${k.id}">
+          <option value="green" ${k.status==='green'?'selected':''}>✅ OK</option>
+          <option value="yellow" ${k.status==='yellow'?'selected':''}>⚠️ Alerta</option>
+          <option value="red" ${k.status==='red'?'selected':''}>🔴 Crítico</option>
+          <option value="unknown" ${k.status==='unknown'?'selected':''}>? Sin datos</option>
+        </select>
+      </div>
+    </div>`).join('');
+  document.getElementById('kpi-ov').classList.remove('hidden');
+}
+function saveKPIs(){
+  const kpis = getKPIs();
+  kpis.forEach(k => {
+    const v=document.getElementById(`kv-${k.id}`), st=document.getElementById(`ks-${k.id}`);
+    if(v) k.value=v.value; if(st) k.status=st.value;
+  });
+  storeKPIs(kpis); renderKPIs(); closeKPIModal(); toast('KPIs actualizados','success');
+}
+function closeKPIModal(){ document.getElementById('kpi-ov').classList.add('hidden'); }
+
+// ================================================================
+// TASKS
+// ================================================================
+function toggleTask(id){
+  const tasks=getTasks(); const t=tasks.find(x=>x.id===id); if(t){ t.done=!t.done; storeTasks(tasks); renderTasks(); }
+}
+function addTask(){
+  const text=prompt('Nueva tarea:'); if(!text) return;
+  const tasks=getTasks(); tasks.unshift({id:'t'+Date.now(),text,p:'med',done:false}); storeTasks(tasks); renderTasks();
+}
+
+// ================================================================
+// MEMORY
+// ================================================================
+function addMemory(){ const t=prompt('¿Qué guardar en memoria permanente?'); if(!t) return; const m=getMem(); m.unshift(t); storeMem(m.slice(0,20)); renderMem(); toast('Guardado','success'); }
+function delMem(i){ const m=getMem(); m.splice(i,1); storeMem(m); renderMem(); }
+
+// ================================================================
+// NOTES
+// ================================================================
+function saveNotes(){ localStorage.setItem('seb_notes', document.getElementById('notes-area').value); }
+function loadNotes(){ document.getElementById('notes-area').value = localStorage.getItem('seb_notes')||''; }
+
+// ================================================================
+// SETTINGS
+// ================================================================
+function openSettings(){
+  document.getElementById('s-apikey').value = CFG.apiKey;
+  document.getElementById('s-ghtoken').value = CFG.ghToken;
+  document.getElementById('s-ghrepo').value = CFG.ghRepo;
+  document.getElementById('s-wati').value = CFG.wati;
+  document.getElementById('s-model').value = CFG.model;
+  document.getElementById('conn-status').innerHTML = `<div style="font-size:11px;color:var(--text3)">Claude: ${CFG.apiKey?'✅ Configurado':'❌ Sin API key'} &nbsp;|&nbsp; GitHub: ${CFG.ghToken?'✅':'⚠️ Sin token'}</div>`;
+  document.getElementById('settings-ov').classList.remove('hidden');
+}
+function closeSettings(){ document.getElementById('settings-ov').classList.add('hidden'); }
+function saveSettings(){
+  CFG.apiKey = document.getElementById('s-apikey').value.trim();
+  CFG.ghToken = document.getElementById('s-ghtoken').value.trim();
+  CFG.ghRepo = document.getElementById('s-ghrepo').value.trim();
+  CFG.wati = document.getElementById('s-wati').value.trim();
+  CFG.model = document.getElementById('s-model').value;
+  closeSettings(); toast('Configuración guardada','success');
+}
+function clearAll(){ if(confirm('¿Borrar TODOS los datos? (API keys, KPIs, memoria, historial)')) { localStorage.clear(); location.reload(); } }
+
+// ================================================================
+// EXPORT / GITHUB
+// ================================================================
+function openExport(){
+  let content = `# Sesión Sebastián OS — ${new Date().toLocaleDateString('es-CO')}\n\n`;
+  document.querySelectorAll('.msg.assistant').forEach(e => { content += e.dataset.raw + '\n\n---\n\n'; });
+  openExportWith(content);
+}
+function openExportWith(content){
+  document.getElementById('exp-content').textContent = content;
+  document.getElementById('exp-filename').value = `sesion-${new Date().toISOString().split('T')[0]}.md`;
+  document.getElementById('copy-ok').style.display='none';
+  document.getElementById('export-ov').classList.remove('hidden');
+}
+function closeExport(){ document.getElementById('export-ov').classList.add('hidden'); }
+async function copyExport(){
+  await navigator.clipboard.writeText(document.getElementById('exp-content').textContent);
+  const ok = document.getElementById('copy-ok'); ok.style.display='block'; setTimeout(()=>ok.style.display='none',2000);
+}
+async function pushGitHub(){
+  if(!CFG.ghToken){ toast('Configura tu GitHub token','error'); openSettings(); return; }
+  const fn = document.getElementById('exp-filename').value.trim();
+  const content = document.getElementById('exp-content').textContent;
+  const repo = CFG.ghRepo;
+  if(!fn||!content||!repo){ toast('Completa todos los campos','error'); return; }
+  try {
+    let sha = null;
+    try {
+      const cr = await fetch(`https://api.github.com/repos/${repo}/contents/sesiones/${fn}`, { headers:{'Authorization':`Bearer ${CFG.ghToken}`} });
+      if(cr.ok){ const cd=await cr.json(); sha=cd.sha; }
+    } catch(e){}
+    const body = { message:`Sesión Sebastián OS — ${new Date().toLocaleDateString('es-CO')}`, content: btoa(unescape(encodeURIComponent(content))), ...(sha?{sha}:{}) };
+    const r = await fetch(`https://api.github.com/repos/${repo}/contents/sesiones/${fn}`, { method:'PUT', headers:{'Authorization':`Bearer ${CFG.ghToken}`,'Content-Type':'application/json'}, body:JSON.stringify(body) });
+    if(r.ok){ toast('✅ Subido a GitHub','success'); closeExport(); }
+    else { const e=await r.json(); throw new Error(e.message); }
+  } catch(err){ toast(`Error GitHub: ${err.message}`,'error'); }
+}
+
+// ================================================================
+// CHAT CLEAR
+// ================================================================
+function clearChat(){
+  if(!confirm('¿Nueva conversación? Se perderá el historial.')) return;
+  S.history = [];
+  document.getElementById('messages').innerHTML = `
+    <div id="welcome" class="welcome">
+      <div class="w-title">Buenos días, Sebastián ☀️</div>
+      <div class="w-sub">Tu sistema personal. Opera como jefe desde aquí.</div>
+      <div class="w-cards">
+        <div class="w-card" onclick="quickAction('briefing')"><div class="w-icon">🌅</div><div class="w-ctitle">Briefing del día</div><div class="w-cdesc">Mis 3 prioridades de hoy.</div></div>
+        <div class="w-card" onclick="quickAction('survival')"><div class="w-icon">🔴</div><div class="w-ctitle">Triage Condugas</div><div class="w-cdesc">6 KPIs de supervivencia.</div></div>
+        <div class="w-card" onclick="quickAction('serjefe')"><div class="w-icon">👥</div><div class="w-ctitle">Intervención jefatura</div><div class="w-cdesc">Problema con alguien del equipo.</div></div>
+        <div class="w-card" onclick="quickAction('content')"><div class="w-icon">✍️</div><div class="w-ctitle">Generar contenido</div><div class="w-cdesc">Post, fragmento, propuesta.</div></div>
+        <div class="w-card" onclick="quickAction('plan-week')"><div class="w-icon">📅</div><div class="w-ctitle">Planear semana</div><div class="w-cdesc">MEGA y bloques protegidos.</div></div>
+        <div class="w-card" onclick="quickAction('decision')"><div class="w-icon">🎯</div><div class="w-ctitle">Decisión consciente</div><div class="w-cdesc">Ruta de 4 niveles.</div></div>
+      </div>
+    </div>`;
+}
+
+// ================================================================
+// TOAST
+// ================================================================
+function toast(msg, type='info'){
+  const box = document.getElementById('toast-box');
+  const t = document.createElement('div');
+  t.className = `toast ${type}`; t.textContent = msg;
+  box.appendChild(t);
+  setTimeout(()=>{ t.style.animation='tin .18s ease reverse'; setTimeout(()=>t.remove(),180); }, 2800);
+}
+
+// ================================================================
+// MODALS — close on overlay click / ESC
+// ================================================================
+document.addEventListener('click', e => { if(e.target.classList.contains('m-overlay')) e.target.classList.add('hidden'); });
+document.addEventListener('keydown', e => { if(e.key==='Escape') document.querySelectorAll('.m-overlay:not(.hidden)').forEach(x=>x.classList.add('hidden')); });
+
+// ================================================================
+// INIT
+// ================================================================
+function init(){
+  renderAgents();
+  renderPeople();
+  renderKPIs();
+  renderTasks();
+  renderMem();
+  loadNotes();
+  toggleTab('kpi');
+  document.getElementById('chat-input').addEventListener('input', updateCC);
+  if(!CFG.apiKey){
+    setTimeout(()=>{ toast('Configura tu API key de Anthropic para comenzar','error'); openSettings(); }, 600);
+  } else {
+    toast(`SEB OS listo — ${CFG.model}`,'success');
+  }
+  document.getElementById('chat-input').focus();
+}
+
+init();
+</script>
+</body>
+</html>
