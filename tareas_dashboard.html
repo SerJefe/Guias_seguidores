@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tareas — Sebastián</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0a0a0a; color: #e0e0e0; padding: 20px; max-width: 900px; margin: 0 auto; }
+h1 { font-size: 28px; font-weight: 200; margin-bottom: 5px; }
+.updated { font-size: 12px; color: #555; margin-bottom: 30px; }
+.section { margin-bottom: 30px; }
+.section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; cursor: pointer; }
+.section-header h2 { font-size: 18px; font-weight: 400; }
+.badge { display: inline-block; padding: 2px 10px; border-radius: 10px; font-size: 12px; font-weight: 600; }
+.badge-red { background: #450a0a; color: #f87171; }
+.badge-yellow { background: #422006; color: #fbbf24; }
+.badge-blue { background: #172554; color: #60a5fa; }
+.badge-green { background: #14532d; color: #4ade80; }
+.task { padding: 12px 16px; border-left: 3px solid #333; margin-bottom: 8px; background: #111; border-radius: 0 8px 8px 0; font-size: 14px; line-height: 1.5; }
+.task.urgent { border-left-color: #ef4444; }
+.task.important { border-left-color: #eab308; }
+.task.project { border-left-color: #3b82f6; }
+.task.archived { border-left-color: #333; opacity: 0.5; }
+.task-title { font-weight: 500; color: #fff; }
+.task-meta { font-size: 12px; color: #666; margin-top: 4px; }
+.task-meta span { margin-right: 15px; }
+.resp { color: #60a5fa; }
+.age { color: #f87171; }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 30px; }
+.stat { background: #111; border: 1px solid #222; border-radius: 8px; padding: 16px; text-align: center; }
+.stat-num { font-size: 28px; font-weight: 200; color: #fff; }
+.stat-label { font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+.filter-bar { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+.filter-btn { padding: 6px 14px; border-radius: 20px; border: 1px solid #333; background: transparent; color: #888; font-size: 12px; cursor: pointer; }
+.filter-btn.active { background: #222; color: #fff; border-color: #555; }
+</style>
+</head>
+<body>
+
+<h1>🎯 Centro de Tareas</h1>
+<p class="updated">Actualizado: 19 mar 2026 — Fuentes: Google Tasks, Todoist, Odoo, conversaciones</p>
+
+<div class="stats">
+  <div class="stat"><div class="stat-num" style="color:#f87171">9</div><div class="stat-label">Urgente</div></div>
+  <div class="stat"><div class="stat-num" style="color:#fbbf24">15</div><div class="stat-label">Importante</div></div>
+  <div class="stat"><div class="stat-num" style="color:#60a5fa">8</div><div class="stat-label">Proyectos</div></div>
+  <div class="stat"><div class="stat-num" style="color:#666">15</div><div class="stat-label">Archivado</div></div>
+</div>
+
+<div class="filter-bar">
+  <button class="filter-btn active" onclick="filterAll()">Todas</button>
+  <button class="filter-btn" onclick="filterBy('urgent')">🔴 Urgente</button>
+  <button class="filter-btn" onclick="filterBy('important')">🟡 Importante</button>
+  <button class="filter-btn" onclick="filterBy('project')">🔵 Proyectos</button>
+  <button class="filter-btn" onclick="filterBy('condugas')">Condugas</button>
+  <button class="filter-btn" onclick="filterBy('siendo')">Siendo</button>
+  <button class="filter-btn" onclick="filterBy('personal')">Personal</button>
+</div>
+
+<div class="section">
+  <div class="section-header"><h2>🔴 Urgente — Esta semana</h2><span class="badge badge-red">9</span></div>
+  
+  <div class="task urgent" data-tags="urgent condugas">
+    <div class="task-title">Coordinar con Andrea movimiento de plata Construtem/Condugas</div>
+    <div class="task-meta"><span class="resp">👤 Sebastián/Andre</span><span class="age">⏱ 58 días</span></div>
+  </div>
+  <div class="task urgent" data-tags="urgent condugas">
+    <div class="task-title">Formalizar fórmula de reajuste para obra civil</div>
+    <div class="task-meta"><span class="resp">👤 Sebastián/Juan</span><span class="age">⏱ 58 días</span></div>
+  </div>
+  <div class="task urgent" data-tags="urgent condugas">
+    <div class="task-title">Insistir a Isidro sobre ajuste de precios de contratistas</div>
+    <div class="task-meta"><span class="resp">👤 Sebastián</span><span class="age">⏱ 58 días</span></div>
+  </div>
+  <div class="task urgent" data-tags="urgent condugas">
+    <div class="task-title">Hablar con Nelson sobre formar y reemplazar a Juan Esteban Ortiz</div>
+    <div class="task-meta"><span class="resp">👤 Sebastián</span><span class="age">⏱ 34 días</span></div>
+  </div>
+  <div class="task urgent" data-tags="urgent condugas">
+    <div class="task-title">Enviar datos para diseño eléctrico en Jericó</div>
+    <div class="task-meta"><span class="resp">👤 Sebastián</span><span class="age">⏱ 34 días</span></div>
+  </div>
+  <div class="task urgent" data-tags="urgent condugas">
+    <div class="task-title">Confirmar 39 nóminas de marzo en borrador (Odoo)</div>
+    <div class="task-meta"><span class="resp">👤 Naty/Willi</span><span class="age">⏱ 1 día</span></div>
+  </div>
+  <div class="task urgent" data-tags="urgent condugas">
+    <div class="task-title">Cargar extractos bancarios en Odoo (12 bancos)</div>
+    <div class="task-meta"><span class="resp">👤 Andre/Clau</span><span class="age">⏱ 1 día</span></div>
+  </div>
+  <div class="task urgent" data-tags="urgent condugas">
+    <div class="task-title">Confirmar 43 facturas compra en borrador ($157M)</div>
+    <div class="task-meta"><span class="resp">👤 Andre</span><span class="age">⏱ 1 día</span></div>
+  </div>
+  <div class="task urgent" data-tags="urgent condugas">
+    <div class="task-title">Completar 35 empleados sin departamento en Odoo</div>
+    <div class="task-meta"><span class="resp">👤 Naty</span><span class="age">⏱ 1 día</span></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header"><h2>🟡 Importante — Esta/próxima semana</h2><span class="badge badge-yellow">15</span></div>
+  
+  <div class="task important" data-tags="important condugas">
+    <div class="task-title">Revisar con abogados pliego clasificación servicio/obra</div>
+    <div class="task-meta"><span class="resp">👤 Doctor (Camilo Marín)</span><span class="age">⏱ 58 días</span></div>
+  </div>
+  <div class="task important" data-tags="important condugas">
+    <div class="task-title">Coordinar reunión preventiva con Camacol para solicitar índices</div>
+    <div class="task-meta"><span class="resp">👤 Sebastián</span><span class="age">⏱ 58 días</span></div>
+  </div>
+  <div class="task important" data-tags="important condugas">
+    <div class="task-title">Preparar posición corrección carros para asamblea de marzo</div>
+    <div class="task-meta"><span class="resp">👤 Sebastián</span><span class="age">⏱ 58 días</span></div>
+  </div>
+  <div class="task important" data-tags="important condugas">
+    <div class="task-title">Enviar informe a Silar</div>
+    <div class="task-meta"><span class="resp">👤 Sebastián</span><span class="age">⏱ 58 días</span></div>
+  </div>
+  <div class="task important" data-tags="important condugas">
+    <div class="task-title">Finalizar categorización de personal y gamificación con Juan</div>
+    <div class="task-meta"><span class="resp">👤 Sebastián/Juan</span><span class="age">⏱ 57 días</span></div>
+  </div>
+  <div class="task important" data-tags="important condugas">
+    <div class="task-title">Configurar 16 KPIs de sobrevivencia en Odoo</div>
+    <div class="task-meta"><span class="resp">👤 Sebastián/Ema</span><span class="age">⏱ 58 días</span></div>
+  </div>
+  <div class="task important" data-tags="important condugas">
+    <div class="task-title">Definir umbrales y plan de respuesta (30 días caja)</div>
+    <div class="task-meta"><span class="resp">👤 Sebastián/Andre</span><span class="age">⏱ 58 días</span></div>
+  </div>
+  <div class="task important" data-tags="important condugas">
+    <div class="task-title">Definir KPI unificado flujo operativo (ratio 1.1)</div>
+    <div class="task-meta"><span class="resp">👤 Sebastián</span><span class="age">⏱ 148 días</span></div>
+  </div>
+  <div class="task important" data-tags="important condugas">
+    <div class="task-title">Configurar centros de costos por contrato (Odoo)</div>
+    <div class="task-meta"><span class="resp">👤 Ema/Clau</span><span class="age">⏱ 58 días</span></div>
+  </div>
+  <div class="task important" data-tags="important condugas">
+    <div class="task-title">Definir estructura centros de costos (contrato vs línea negocio)</div>
+    <div class="task-meta"><span class="resp">👤 Sebastián/Ema</span><span class="age">⏱ 58 días</span></div>
+  </div>
+  <div class="task important" data-tags="important condugas">
+    <div class="task-title">Completar 40 empleados sin cargo (Odoo)</div>
+    <div class="task-meta"><span class="resp">👤 Naty</span><span class="age">⏱ 1 día</span></div>
+  </div>
+  <div class="task important" data-tags="important condugas">
+    <div class="task-title">Asignar ubicación trabajo a 450 empleados (Odoo)</div>
+    <div class="task-meta"><span class="resp">👤 Naty/Ema</span><span class="age">⏱ 1 día</span></div>
+  </div>
+  <div class="task important" data-tags="important condugas">
+    <div class="task-title">Priorizar 16 problemáticas del equipo (método ICE)</div>
+    <div class="task-meta"><span class="resp">👤 Sebastián</span><span class="age">⏱ 148 días</span></div>
+  </div>
+  <div class="task important" data-tags="important condugas">
+    <div class="task-title">Actualizar semáforo de competencias con ejemplos</div>
+    <div class="task-meta"><span class="resp">👤 Sebastián/Juan</span><span class="age">⏱ 146 días</span></div>
+  </div>
+  <div class="task important" data-tags="important condugas">
+    <div class="task-title">Definir reglas autorización nuevos centros de costo</div>
+    <div class="task-meta"><span class="resp">👤 Sebastián</span><span class="age">⏱ 58 días</span></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header"><h2>🔵 Proyectos</h2><span class="badge badge-blue">8</span></div>
+  
+  <div class="task project" data-tags="project siendo">
+    <div class="task-title">Implementación Odoo Condugas — cerrar brechas contabilidad/nómina</div>
+    <div class="task-meta"><span class="resp">👤 Ema</span><span>Activo</span></div>
+  </div>
+  <div class="task project" data-tags="project siendo">
+    <div class="task-title">Crear skills OpenClaw (reclamaciones, analista financiero, auditor)</div>
+    <div class="task-meta"><span class="resp">👤 Sebastián/Ema</span><span>Activo</span></div>
+  </div>
+  <div class="task project" data-tags="project siendo">
+    <div class="task-title">Conectar WhatsApp Business con agentes</div>
+    <div class="task-meta"><span class="resp">👤 Ema</span><span class="age">⏱ 1 día</span></div>
+  </div>
+  <div class="task project" data-tags="project condugas">
+    <div class="task-title">Crear asistente dictado para observaciones de campo</div>
+    <div class="task-meta"><span class="resp">👤 Sebastián/Ema</span><span class="age">⏱ 34 días</span></div>
+  </div>
+  <div class="task project" data-tags="project condugas">
+    <div class="task-title">Diseñar piloto IA análisis predictivo costos R1 y Z3</div>
+    <div class="task-meta"><span class="resp">👤 Sebastián</span><span class="age">⏱ 143 días</span></div>
+  </div>
+  <div class="task project" data-tags="project condugas">
+    <div class="task-title">Diseñar prototipo agente liquidación (WhatsApp + n8n + IA)</div>
+    <div class="task-meta"><span class="resp">👤 Sebastián/Steven</span><span class="age">⏱ 140 días</span></div>
+  </div>
+  <div class="task project" data-tags="project condugas">
+    <div class="task-title">Validar estrategia IA en obras y documentar propuesta piloto</div>
+    <div class="task-meta"><span class="resp">👤 Sebastián</span><span class="age">⏱ 148 días</span></div>
+  </div>
+  <div class="task project" data-tags="project personal">
+    <div class="task-title">Análisis de sociedad con David (acuerdos, estatutos, tributario)</div>
+    <div class="task-meta"><span class="resp">👤 Sebastián</span><span class="age">⏱ 349 días</span></div>
+  </div>
+</div>
+
+<script>
+function filterAll() {
+  document.querySelectorAll('.task').forEach(t => t.style.display = 'block');
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('.filter-btn').classList.add('active');
+}
+function filterBy(tag) {
+  document.querySelectorAll('.task').forEach(t => {
+    t.style.display = t.dataset.tags.includes(tag) ? 'block' : 'none';
+  });
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+}
+</script>
+
+</body>
+</html>
